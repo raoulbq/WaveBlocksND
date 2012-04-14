@@ -13,7 +13,7 @@ from WaveBlocksND import TensorProductGrid
 __all__ = ["GridFactory"]
 
 
-class GridFactory:
+class GridFactory(object):
     """A factory for :py:class:`Grid` and subclass instances.
     """
 

@@ -16,7 +16,7 @@ to represent a potential. Additionally it implements some of the common methods.
 __all__ = ["MatrixPotential"]
 
 
-class MatrixPotential:
+class MatrixPotential(object):
     """This class represents a potential :math:`V(x)` with :math:`x \in \mathbb{R}^D`.
     The potential is given as an analytic expression. Some calculations with the
     potential are supported. For example calculation of eigenvalues :amth:`\lambda_i(x)`

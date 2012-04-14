@@ -16,7 +16,7 @@ from PotentialFactory import PotentialFactory as PF
 from TimeManager import TimeManager
 
 
-class ParameterProvider:
+class ParameterProvider(object):
 
     def __init__(self):
         #: Dict for storing the configuration parameters.

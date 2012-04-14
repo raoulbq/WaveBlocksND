@@ -1,7 +1,7 @@
 r"""The WaveBlocks Project
 
-This file contains the abstract base class for basis transformation
-between the canonical basis and the basis spanned by the eigenvactors
+This file contains the abstract base class for basis transformations
+between the canonical basis and the basis spanned by the eigenvectors
 of the potential.
 
 @author: R. Bourquin
@@ -12,13 +12,17 @@ of the potential.
 __all__ = ["BasisTransformation"]
 
 
-class BasisTransformation:
-    """
+class BasisTransformation(object):
+    r"""This class is the interface definition for general basis transformation
+    procedures. The transformation switches between the canonical basis of the
+    potential :math:`V(x)` and its eigenbasis :math:`\Lambda(x)` consisting
+    of the energy levels :math:`\lambda_i(x)` with :math:`i \in [0, \ldots, N]`.
     """
 
     def __init__(self, potential):
-        """Create a new :py:class:`BasisTransformation` instance for a given potential
+        r"""Create a new :py:class:`BasisTransformation` instance for a given potential
         matrix :math:`V(x)`.
+
         :param potential: The potential underlying the basis transformation.
         :type potential: A :py:class:`MatrixPotential` instance.
         """
@@ -27,12 +31,12 @@ class BasisTransformation:
 
 
     def transform_to_canonical(self, transformable):
-        """Do nothing, implement a null transformation.
+        """Do nothing, implement an identity transformation.
         """
         return transformable
 
 
     def transform_to_eigen(self, transformable):
-        """Do nothing, implement a null transformation.
+        """Do nothing, implement an identity transformation.
         """
         return transformable

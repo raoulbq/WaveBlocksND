@@ -12,7 +12,7 @@ from scipy import floor
 
 # TODO: Clean up and allow for calculation of all time related quantities given a subset
 
-class TimeManager:
+class TimeManager(object):
     """This class performs several computation with time, timesteps and so for.
     The important quantities here are:
     T  : the fixed simulation end time

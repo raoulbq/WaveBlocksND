@@ -7,7 +7,7 @@ This file contains the main simulation loop interface.
 @license: Modified BSD License
 """
 
-class SimulationLoop:
+class SimulationLoop(object):
     """This class acts as the main simulation loop. It owns a propagator that
     propagates a set of initial values during a time evolution. It is responsible
     for preparing the simulation, setting up initial values and store the simulation

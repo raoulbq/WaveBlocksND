@@ -13,7 +13,7 @@ import sympy
 __all__ = ["PotentialFactory"]
 
 
-class PotentialFactory:
+class PotentialFactory(object):
     """A factory for :py:class:`MatrixPotential` instances. We decide which subclass of the
     abstract base class :py:class:`MatrixPotential` to instantiate according to the size
     of the potential's matrix. For a :math:`1 \\times 1` matrix we can use the class

@@ -14,7 +14,7 @@ from copy import deepcopy
 from ParameterProvider import ParameterProvider
 
 
-class ParameterLoader:
+class ParameterLoader(object):
 
     def __init__(self):
         pass
