@@ -28,6 +28,15 @@ class Quadrature(object):
         raise NotImplementedError("'Quadrature' is an abstract interface.")
 
 
+    def get_description(self):
+        r"""Return a description of this quadrature object.
+        A description is a ``dict`` containing all key-value pairs
+        necessary to reconstruct the current instance. A description
+        never contains any data.
+        """
+        raise NotImplementedError("'Quadrature' is an abstract interface.")
+
+
     def set_qr(self, QR):
         r"""Set the :py:class:`QuadratureRule` subclass instance used for quadrature.
 

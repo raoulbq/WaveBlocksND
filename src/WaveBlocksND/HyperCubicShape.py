@@ -56,6 +56,14 @@ class HyperCubicShape(BasisShape):
         self._basissize_ext = self._basissize + len(self._lima_ext)
 
 
+    def __hash__(self):
+        r"""Compute a unique hash for the basis shape. In the case of hypercubic
+        basis shapes :math:`\mathcal{K}` the basis is fully specified by its
+        maximal index :math:`K_i` along each direction :math:`i \in [0,\ldots,D-1]`.
+        """
+        return hash(("HyperCubicShape", self._limits))
+
+
     def __getitem__(self, k):
         r"""Make map lookups.
         """
@@ -109,6 +117,18 @@ class HyperCubicShape(BasisShape):
         else:
             l = tuple(k)
             return (l in self._lima or l in self._lima_ext)
+
+
+    def get_description(self):
+        r"""Return a description of this basis shape object.
+        A description is a ``dict`` containing all key-value pairs
+        necessary to reconstruct the current basis shape. A description
+        never contains any data.
+        """
+        d = {}
+        d["type"] = "HyperCubicShape"
+        d["limits"] = self._limits
+        return d
 
 
     def _get_index_iterator_lex(self, extended=False):

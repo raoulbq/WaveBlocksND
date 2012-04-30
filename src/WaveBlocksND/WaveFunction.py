@@ -194,6 +194,9 @@ class WaveFunction(object):
         N = self._grid.get_number_nodes()
         prefactor = product( array(T) / (1.0*array(N)**2) )
 
+        # Reshape from (1, prod_d^D N_d) to (N_1, ..., N_D) shape
+        potential = [ pot.reshape(N) for pot in potential ]
+
         # Apply the matrix potential to the ket
         tmp = [ zeros(component.shape, dtype=complexfloating) for component in self._values ]
         for row in xrange(0, self._number_components):

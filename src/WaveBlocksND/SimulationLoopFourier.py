@@ -50,8 +50,9 @@ class SimulationLoopFourier(SimulationLoop):
 
 
     def prepare_simulation(self):
-        """Set up a Fourier propagator for the simulation loop. Set the
+        r"""Set up a Fourier propagator for the simulation loop. Set the
         potential and initial values according to the configuration.
+
         :raise ValueError: For invalid or missing input data.
         """
         # The potential instance
@@ -85,8 +86,8 @@ class SimulationLoopFourier(SimulationLoop):
 
 
     def run_simulation(self):
-        """Run the simulation loop for a number of time steps. The number of steps
-        is calculated in the :py:method:`prepare` function."""
+        r"""Run the simulation loop for a number of time steps.
+        """
         # The number of time steps we will perform.
         nsteps = self._tm.compute_number_timesteps()
 

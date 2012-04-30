@@ -31,11 +31,14 @@ if PA["algorithm"] == "fourier":
     from WaveBlocksND import SimulationLoopFourier
     SL = SimulationLoopFourier(PA)
 
+elif PA["algorithm"] == "hagedorn":
+    from WaveBlocksND import SimulationLoopHagedorn
+    SL = SimulationLoopHagedorn(PA)
+
 # TODO: Add new algorithms here
 
 else:
     raise ValueError("Invalid propagator algorithm.")
-
 
 # Initialize and run the simulation
 SL.prepare_simulation()

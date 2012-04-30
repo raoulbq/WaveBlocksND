@@ -26,6 +26,15 @@ class QuadratureRule(object):
         raise NotImplementedError("'QuadratureRule' is an abstract interface.")
 
 
+    def get_description(self):
+        r"""Return a description of this quadrature rule object.
+        A description is a ``dict`` containing all key-value pairs
+        necessary to reconstruct the current instance. A description
+        never contains any data.
+        """
+        raise NotImplementedError("'QuadratureRule' is an abstract interface.")
+
+
     def get_dimension(self):
         r""":return: The space dimension :math:`D` of the quadrature rule.
         """

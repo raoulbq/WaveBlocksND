@@ -9,6 +9,7 @@
 from numpy import array, zeros
 
 from WaveFunction import WaveFunction
+from BlockFactory import BlockFactory
 
 
 class Initializer(object):
@@ -22,34 +23,25 @@ class Initializer(object):
         #       more versatile initial value specifications.
 
         # TODO: Make a specification of the IV setup in configurations
+        Psi = []
 
-        # Import a phi_{0,0,...} wavepacket
-        from phi0 import hawp
+        for packet_descr in self._parameters["initvals"]:
+            packet = BlockFactory().create_wavepacket(packet_descr)
 
-        # Set up values for a one-component wavefunction
-        dim = self._parameters["dimension"]
+            # Evaluate the
+            X = grid.get_nodes(flat=True)
+            values = packet.evaluate_at(X, prefactor=True)
 
-        Pi = [ self._parameters["q"],
-               self._parameters["p"],
-               self._parameters["Q"],
-               self._parameters["P"] ]
-        Pi = map(array, Pi)
+            # Reshape values into hypercubic shape
+            values = [ val.reshape(grid.get_number_nodes()) for val in values ]
+            Psi.append( values )
 
-        eps = self._parameters["eps"]
-
-        X = grid.get_nodes()
-
-        # Evaluate the phi_0
-        values = hawp(dim, Pi, eps, X)
-
-        # Reshape values into hypercubic shape
-        values = values.reshape(grid.get_number_nodes())
-
-        psi = [ values, zeros(values.shape) ]
+        # TODO: Maybe sum up immediately instead of at the end to reduce memory usage
+        Psi = reduce(lambda x,y: x+y, Psi)
 
         # Pack the values in a WaveFunction instance
         WF = WaveFunction(self._parameters)
         WF.set_grid(grid)
-        WF.set_values(psi)
+        WF.set_values(Psi)
 
         return WF

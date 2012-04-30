@@ -287,3 +287,26 @@ class HagedornWavepacketBase(Wavepacket):
                 result = sqrt(result)
 
         return result
+
+
+    # A wavepacket knows how to compute inner products
+    # TODO: Consider moving this inside the general codata framework
+    # TODO: Rethink if wavepackets should contain a QR
+
+
+    def set_quadrature(self, quadrature):
+        """Set the :py:class:`Quadrature` subclass instance used for computing
+        inner products and evaluating brakets.
+
+        :param quadrature: The new :py:class:`Quadrature` subclass instance.
+        """
+        self._QE = quadrature
+
+
+    def get_quadrature(self):
+        """Return the :py:class:`Quadrature` subclass instance used computing
+        inner rpoducts and evaluating brakets.
+
+        :return: The current :py:class:`Quadrature` subclass instance.
+        """
+        return self._QE

@@ -9,7 +9,7 @@ values and the matrix elements of an arbitrary operator.
 @license: Modified BSD License
 """
 
-from numpy import zeros, ones, complexfloating, sum, cumsum, squeeze, conjugate, dot, outer
+from numpy import zeros, ones, complexfloating, sum, cumsum, squeeze, conjugate, dot, outer, ndarray
 from scipy.linalg import sqrtm, inv, svd, diagsvd
 
 from Quadrature import Quadrature
@@ -26,6 +26,18 @@ class HomogeneousQuadrature(Quadrature):
 
     def __str__(self):
         return "Homogeneous quadrature using a " + str(self._QR)
+
+
+    def get_description(self):
+        r"""Return a description of this quadrature object.
+        A description is a ``dict`` containing all key-value pairs
+        necessary to reconstruct the current instance. A description
+        never contains any data.
+        """
+        d = {}
+        d["type"] = "HomogeneousQuadrature"
+        d["qr"] = self._QR.get_description()
+        return d
 
 
     def transform_nodes(self, Pi, eps, QR=None):
@@ -103,20 +115,24 @@ class HomogeneousQuadrature(Quadrature):
         if operator is None:
             # Operator is None is interpreted as identity transformation
             operator = lambda nodes, entry=None: ones(nodes.shape[1]) if entry[0] == entry[1] else zeros(nodes.shape[1])
-            values = [ operator(nodes, entry=(r,c)) for r in xrange(N) for c in xrange(N) ]
+            values = tuple([ operator(nodes, entry=(r,c)) for r in xrange(N) for c in xrange(N) ])
         else:
-            values = operator(nodes)
+            values = tuple( operator(nodes) )
+
+        # Recheck what we got
+        assert type(values) is tuple
+        assert len(values) == N**2
 
         # Evaluate only the bases we need:
         bases = [ None for n in xrange(N) ]
 
         for row in rows:
             if bases[row] is None:
-                bases[row] = packet.evaluate_basis_at(nodes, component=row)
+                bases[row] = packet.evaluate_basis_at(nodes, component=row, prefactor=False)
 
         for col in cols:
             if bases[col] is None:
-                bases[col] = packet.evaluate_basis_at(nodes, component=col)
+                bases[col] = packet.evaluate_basis_at(nodes, component=col, prefactor=False)
 
         # Compute the quadrature
         result = []
@@ -162,21 +178,25 @@ class HomogeneousQuadrature(Quadrature):
         N = packet.get_number_components()
         K = [ bs.get_basis_size() for bs in packet.get_basis_shape() ]
 
-        bases = [ packet.evaluate_basis_at(nodes, component=n) for n in xrange(N) ]
+        bases = [ packet.evaluate_basis_at(nodes, component=n, prefactor=False) for n in xrange(N) ]
 
         # The partition scheme of the block vectors and block matrix
         partition = [0] + list(cumsum(K))
 
         # TODO: Make this more efficient, only compute values needed at each (r,c) step.
-        #       For this, 'operator' must support the 'component=(r,c)' option.
+        #       For this, 'operator' must support the 'entry=(r,c)' option.
         if operator is None:
             # Operator is None is interpreted as identity transformation
             operator = lambda nodes, entry=None: ones(nodes.shape[1]) if entry[0] == entry[1] else zeros(nodes.shape[1])
-            values = [ operator(nodes, entry=(r,c)) for r in xrange(N) for c in xrange(N) ]
+            values = tuple([ operator(nodes, entry=(r,c)) for r in xrange(N) for c in xrange(N) ])
         else:
             # TODO: operator should be only f(nodes) but we can not fix this currently
             q, p, Q, P, S = packet.get_parameters()
-            values = operator(q, nodes)
+            values = tuple( operator(nodes, q) )
+
+        # Recheck what we got
+        assert type(values) is tuple
+        assert len(values) == N**2
 
         # Compute the matrix elements
         result = zeros((sum(K),sum(K)), dtype=complexfloating)

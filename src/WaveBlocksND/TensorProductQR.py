@@ -50,6 +50,19 @@ class TensorProductQR(QuadratureRule):
         self._weights = weights.flatten()
 
 
+    def get_description(self):
+        r"""Return a description of this quadrature rule object.
+        A description is a ``dict`` containing all key-value pairs
+        necessary to reconstruct the current instance. A description
+        never contains any data.
+        """
+        d = {}
+        d["type"] = "TensorProductQR"
+        d["dimension"] = self._dimension
+        d["qr_rules"] = [ qr.get_description() for qr in self._qrs ]
+        return d
+
+
     def get_nodes(self, flat=True, split=False):
         r"""Returns the quadrature nodes :math:`\gamma_i`.
 

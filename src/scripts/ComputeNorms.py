@@ -32,8 +32,12 @@ if __name__ == "__main__":
 
         # TODO: Add new algorithms here
 
+        # If not, we test for a homogeneous wavepacket next
+        if iom.has_wavepacket(blockid=blockid):
+            import NormWavepacket
+            NormWavepacket.compute_norm(iom, blockid=blockid)
         # If we have no wavepacket, then we try for a wavefunction
-        if iom.has_wavefunction(blockid=blockid):
+        elif iom.has_wavefunction(blockid=blockid):
             import NormWavefunction
             NormWavefunction.compute_norm(iom, blockid=blockid)
         # If there is also no wavefunction, then there is nothing to compute the norm

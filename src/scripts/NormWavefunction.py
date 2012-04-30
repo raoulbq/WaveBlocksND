@@ -15,8 +15,9 @@ from WaveBlocksND import BasisTransformationWF
 
 def compute_norm(iom, blockid=0):
     """Compute the norm of a wavefunction timeseries.
+
     :param iom: An :py:class:`IOManager` instance providing the simulation data.
-    :keyword blockid: The data block from which the values are read. Default is `0`.
+    :param blockid: The data block from which the values are read. Default is `0`.
     """
     parameters = iom.load_parameters()
 

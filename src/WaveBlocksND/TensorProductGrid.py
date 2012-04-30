@@ -69,7 +69,7 @@ class TensorProductGrid(DenseGrid):
 
         :param axes: The axes for which we want to get the limits.
         :type axes: A single integer or a list of integers. If set
-                    to `None` (default) we return the limits for all axes.
+                    to ``None`` (default) we return the limits for all axes.
         :return: A list of :math:`(min_i, max_i)` ndarrays.
         """
         if axes is None:
@@ -83,7 +83,7 @@ class TensorProductGrid(DenseGrid):
 
         :param axes: The axes for which we want to get the extensions.
         :type axes: A single integer or a list of integers. If set
-                    to `None` (default) we return the extensions for all axes.
+                    to ``None`` (default) we return the extensions for all axes.
         :return: A list of :math:`|max_i-min_i|` values.
         """
         if axes is None:
@@ -97,7 +97,7 @@ class TensorProductGrid(DenseGrid):
 
         :param axes: The axes for which we want to get the meshwidths.
         :type axes: A single integer or a list of integers. If set
-                    to `None` (default) we return the data for all axes.
+                    to ``None`` (default) we return the data for all axes.
         :return: A list of :math:`h_i` values or a single value.
         """
         if axes is None:
@@ -111,12 +111,12 @@ class TensorProductGrid(DenseGrid):
 
         :param axes: The axes for which we want to get the number of nodes.
         :type axes: A single integer or a list of integers. If set
-                    to `None` (default) we return the data for all axes.
-        :param overall: Compute the product :math:`\prod_i N_i` of the
+                    to ``None`` (default) we return the data for all axes.
+        :param overall: Compute the product :math:`\prod_i^D N_i` of the
                         number :math:`N_i` of grid nodes along each axis
                         :math:`i` specified.
-        :type overall: Boolean, default is `True`
-        :return: A list of :math:`h_i` values or a single value.
+        :type overall: Boolean, default is ``False``
+        :return: A list of :math:`N_i` values or a single value :math:`N`.
         """
         if axes is None:
             axes = xrange(self._dimension)
@@ -159,7 +159,7 @@ class TensorProductGrid(DenseGrid):
 
         :param axes: The axes for which we want to get the grid.
         :type axes: A single integer or a list of integers. If set
-                    to `None` (default) we return the data for all axes.
+                    to ``None`` (default) we return the data for all axes.
         :return: A list of ndarrays, each having a shape of :math:`(1,...,N_i,...,1)`.
                  We return a list even if it contains just a single element.
         """
@@ -179,11 +179,11 @@ class TensorProductGrid(DenseGrid):
         :param flat: Whether to return the grid with a `hypercubic`
                      :math:`(D, N_1, ..., N_D)` shape or a `flat`
                      :math:`(D, \prod_i^D N_i)` shape.
-        :type flat: Boolean, default is `True`.
+        :type flat: Boolean, default is ``True``.
         :param split: Whether to return the different components, one for each
                       dimension inside a single ndarray or a list with ndarrays,
                       with one item per dimension.
-        :type split: Boolean, default is `False`.
+        :type split: Boolean, default is ``False``.
         :return: Depends of the optional arguments.
         """
         if self._gridnodes is None:
@@ -200,4 +200,3 @@ class TensorProductGrid(DenseGrid):
                 return self._gridnodes.reshape([self._dimension] + self.get_number_nodes())
             else:
                 return tuple([ self._gridnodes[i,:].reshape(self.get_number_nodes()) for i in xrange(self._dimension) ])
-

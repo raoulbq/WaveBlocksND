@@ -1,5 +1,3 @@
-# TODO: Adapt to WBND
-
 """The WaveBlocks Project
 
 This file contains the abstract base class for general time propagators.
@@ -7,46 +5,59 @@ It defines the interface every subclass must support to implement a
 time propagation algorithm.
 
 @author: R. Bourquin
-@copyright: Copyright (C) 2010, 2011 R. Bourquin
+@copyright: Copyright (C) 2010, 2011, 2012 R. Bourquin
 @license: Modified BSD License
 """
 
 class Propagator(object):
-    """Propagators can numerically simulate the time evolution of quantum states
-    as described by the time-dependent Schroedinger equation.
+    r"""Propagators can numerically simulate the time evolution of quantum states
+    :math:`\psi(x,t)` as described by the time-dependent Schroedinger equation
+
+    .. math:: i \varepsilon^2 \frac{\partial}{\partial t} \psi(x,t) = H \psi(x,t)
+
+    where the semi-classical scaling parameter :math:`\varepsilon > 0` is already included.
+    The Hamiltonian operator :math:`H` is defined as
+
+    .. math:: H = T + V(x) = -\frac{\varepsilon^4}{2} \Delta + V(x)
     """
 
     def __init__(self):
-        """Initialize a new I{Propagator} instance.
-        @raise NotImplementedError: This is an abstract base class.
+        r"""Initialize a new :py:class:`Propagator` instance.
+
+        :raise NotImplementedError: This is an abstract base class.
         """
         raise NotImplementedError("'Propagator' is an abstract base class.")
 
 
     def __str__(self):
-        """Prepare a printable string representing the I{Propagator} instance.
-        @raise NotImplementedError: This is an abstract base class.
+        r"""Prepare a printable string representing the :py:class:`Propagator` instance.
+
+        :raise NotImplementedError: This is an abstract base class.
         """
         raise NotImplementedError("'Propagator' is an abstract base class.")
 
 
     def get_number_components(self):
-        """@return: The number of components of $\Ket{\Psi}$.
-        @raise NotImplementedError: This is an abstract base class.
+        r""":return: The number :math:`N` components of :math:`\psi(x,t)`.
+
+        :raise NotImplementedError: This is an abstract base class.
         """
         raise NotImplementedError("get_number_components(...)")
 
 
     def get_potential(self):
-        """@return: The embedded I{MatrixPotential} instance.
-        @raise NotImplementedError: This is an abstract base class.
+        r"""Returns the potential :math:`V(x)` used for time propagation.
+
+        :return: A :py:class:`MatrixPotential` subclass instance.
         """
-        raise NotImplementedError("get_potential(...)")
+        return self._potential
 
 
     def propagate(self):
-        """Given the wavefunction $\Psi$ at time $t$, calculate the new $\Psi$
-        at time $t + \tau$. We do exactly one timestep $\tau$ here.
-        @raise NotImplementedError: This is an abstract base class.
+        r"""Given the wavefunction :math:`\psi` at time :math:`t`, calculate
+        the new :math:\psi` at time :math:`t + \tau`. We do exactly one timestep
+        of size :math:`\tau` here.
+
+        :raise NotImplementedError: This is an abstract base class.
         """
         raise NotImplementedError("propagate(...)")

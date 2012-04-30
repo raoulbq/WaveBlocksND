@@ -27,10 +27,13 @@ Basic numerics
    waveblocks_classes/Grid
    waveblocks_classes/DenseGrid
    waveblocks_classes/TensorProductGrid
+   waveblocks_classes/GridWrapper
 
    waveblocks_classes/QuadratureRule
    waveblocks_classes/GaussHermiteQR
    waveblocks_classes/TensorProductQR
+
+   waveblocks_classes/MatrixExponential
 
    waveblocks_classes/Utils
 
@@ -44,6 +47,7 @@ Basic quantum mechanics
 
    waveblocks_classes/MatrixPotential
    waveblocks_classes/MatrixPotential1S
+   waveblocks_classes/MatrixPotential2S
 
    waveblocks_classes/PotentialFactory
 
@@ -88,6 +92,8 @@ Time propagation
 
    waveblocks_classes/Propagator
    waveblocks_classes/FourierPropagator
+   waveblocks_classes/HagedornPropagator
+
 
 Simulation result storage I/O
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

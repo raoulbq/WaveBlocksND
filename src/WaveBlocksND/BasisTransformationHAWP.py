@@ -9,7 +9,7 @@ of the potential.
 @license: Modified BSD License
 """
 
-from numpy import dot, transpose, conjugate
+from numpy import dot, transpose, conjugate, vsplit
 
 from BasisTransformation import BasisTransformation
 from GridWrapper import GridWrapper
@@ -75,18 +75,16 @@ class BasisTransformationHAWP(BasisTransformation):
 
         # Basically an ugly hack to overcome some shortcomings of the
         # matrix function and of the data layout.
-        def f(dummy, x):
-            # x is given as (D, |QR|) array
-            G = GridWrapper(x)
-            z = self._potential.evaluate_eigenvectors_at(G)
-            # result must be a N**2 list of (|QR|,) arrays
+        # TODO: Fix and remove
+        def f(x, dummy):
+            # x is given as (D,|QR|) array
+            z = self._potential.evaluate_eigenvectors_at(x)
+            # returned is a N list of (N,|QR|) arrays
+            # we need a N**2 list of (|QR|,) arrays
             N = wavepacket.get_number_components()
-
             result = []
-
-            for col in xrange(N):
-                for row in xrange(N):
-                    result.append( z[col][row,:] )
+            for nu in z:
+                result.extend(vsplit(nu, N))
 
             return result
 
@@ -119,18 +117,16 @@ class BasisTransformationHAWP(BasisTransformation):
 
         # Basically an ugly hack to overcome some shortcomings of the
         # matrix function and of the data layout.
-        def f(dummy, x):
-            # x is given as (D, |QR|) array
-            G = GridWrapper(x)
-            z = self._potential.evaluate_eigenvectors_at(G)
-            # result must be a N**2 list of (|QR|,) arrays
+        # TODO: Fix and remove
+        def f(x, dummy):
+            # x is given as (D,|QR|) array
+            z = self._potential.evaluate_eigenvectors_at(x)
+            # returned is a N list of (N,|QR|) arrays
+            # we need a N**2 list of (|QR|,) arrays
             N = wavepacket.get_number_components()
-
             result = []
-
-            for col in xrange(N):
-                for row in xrange(N):
-                    result.append( z[col][row,:] )
+            for nu in z:
+                result.extend(vsplit(nu, N))
 
             return result
 

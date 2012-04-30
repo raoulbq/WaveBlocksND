@@ -63,7 +63,8 @@ class FourierPropagator(Propagator):
         # Exponential '\exp(-i/eps^2*dt*V)' used in the Strang splitting.
         # TODO: Think about the interface 'calculate_exponential'
         self._potential.calculate_exponential(-0.5j * para["dt"] / para["eps"]**2)
-        self._VE = self._potential.evaluate_exponential_at(self._grid)
+        VE = self._potential.evaluate_exponential_at(self._grid)
+        self._VE = tuple([ ve.reshape(self._grid.get_number_nodes()) for ve in VE ])
 
 
     # TODO: Consider removig this, duplicate
@@ -73,14 +74,6 @@ class FourierPropagator(Propagator):
         :return: The number :math:`N`.
         """
         return self._potential.get_number_components()
-
-
-    def get_potential(self):
-        r"""Get the potential :math:`V(x)` used for time propagation.
-
-        :return: The :py:class:`MatrixPotential` instance.
-        """
-        return self._potential
 
 
     def get_wavefunction(self):
@@ -94,11 +87,12 @@ class FourierPropagator(Propagator):
     def get_operators(self):
         r"""Get the kinetic and potential operators :math:`T(\Omega)` and :math:`V(\Gamma)`.
 
-        :return: A tuple `(T, V)` containing two ndarrays.
+        :return: A tuple :math:`(T, V)` containing two ``ndarrays``.
         """
         # TODO: What kind of object exactly do we want to return?
         T = self._KO.evaluate_at()
         V = self._potential.evaluate_at(self._grid)
+        V = tuple([ v.reshape(self._grid.get_number_nodes()) for v in V ])
         return (T, V)
 
 

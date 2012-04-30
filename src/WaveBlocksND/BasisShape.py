@@ -23,6 +23,14 @@ class BasisShape(object):
         raise NotImplementedError("'BasisShape' is an abstract interface.")
 
 
+    def __hash__(self):
+        r"""
+        Implement a custom hash function for basis shapes.
+        This is important for storing wavepackets.
+        """
+        raise NotImplementedError("No custom hash function defined.")
+
+
     def __contains__(self, k):
         r"""
         Checks if a given multi-index :math:`k` is part of the basis set :math:`\mathcal{K}`.
@@ -68,6 +76,15 @@ class BasisShape(object):
             return self._basissize
         else:
             return self._basissize_ext
+
+
+    def get_description(self):
+        r"""Return a description of this basis shape object.
+        A description is a ``dict`` containing all key-value pairs
+        necessary to reconstruct the current basis shape. A description
+        never contains any data.
+        """
+        raise NotImplementedError("'BasisShape' is an abstract interface.")
 
 
     def get_node_iterator(self, mode="lex"):

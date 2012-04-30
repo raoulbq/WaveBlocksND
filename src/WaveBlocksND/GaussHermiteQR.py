@@ -55,6 +55,19 @@ class GaussHermiteQR(QuadratureRule):
         return "Gauss-Hermite quadrature rule of order " + str(self._order) + "."
 
 
+    def get_description(self):
+        r"""Return a description of this quadrature rule object.
+        A description is a ``dict`` containing all key-value pairs
+        necessary to reconstruct the current instance. A description
+        never contains any data.
+        """
+        d = {}
+        d["type"] = "GaussHermiteQR"
+        d["dimension"] = self._dimension
+        d["order"] = self._order
+        return d
+
+
     def get_nodes(self):
         r"""Returns the quadrature nodes :math:`\gamma_i`.
 

@@ -1,4 +1,4 @@
-"""The WaveBlocks Project
+r"""The WaveBlocks Project
 
 This file contains the abstract base class for the representation of matrix-valued
 potentials :math:`V(x)` in an arbitrary number :math:`D` of space dimensions, i.e.
@@ -17,22 +17,23 @@ __all__ = ["MatrixPotential"]
 
 
 class MatrixPotential(object):
-    """This class represents a potential :math:`V(x)` with :math:`x \in \mathbb{R}^D`.
+    r"""This class represents a potential :math:`V(x)` with :math:`x \in \mathbb{R}^D`.
     The potential is given as an analytic expression. Some calculations with the
-    potential are supported. For example calculation of eigenvalues :amth:`\lambda_i(x)`
+    potential are supported. For example calculation of eigenvalues :math:`\lambda_i(x)`
     and eigenvectors :math:`\nu_i(x)` and numerical evaluation on a grid :math:`\Gamma`.
     """
 
     def __init__(self):
-        """Create a new :py:class:`MatrixPotential` instance for a given potential
+        r"""Create a new :py:class:`MatrixPotential` instance for a given potential
         matrix :math:`V(x)`.
+
         :raise NotImplementedError: This is an abstract base class.
         """
         raise NotImplementedError("'MatrixPotential' is an abstract base class.")
 
 
     def get_dimension(self):
-        """Return the dimension :math:`D` of the potential :math:`V(x)`.
+        r"""Return the dimension :math:`D` of the potential :math:`V(x)`.
         The dimension is equal to the number of free variables :math:`x_i`
         where :math:`x := (x_1, x_2, ..., x_D)`.
         """
@@ -40,14 +41,14 @@ class MatrixPotential(object):
 
 
     def get_number_components(self):
-        """Return the number :math:`N` of components the potential :math:`V(x)`
+        r"""Return the number :math:`N` of components the potential :math:`V(x)`
         supports. This is equivalent to the number of energy levels :math:`\lambda_i(x)`.
         """
         return self._number_components
 
 
     def evaluate_at(self, grid, entry=None):
-        """Evaluate the potential :math:`V(x)` elementwise on a grid :math:`\Gamma`.
+        r"""Evaluate the potential :math:`V(x)` elementwise on a grid :math:`\Gamma`.
 
         :param grid: The grid containing the nodes :math:`\gamma_i` we want
                      to evaluate the potential at.
@@ -59,14 +60,15 @@ class MatrixPotential(object):
 
 
     def calculate_eigenvalues(self):
-        """Calculate the eigenvalue :math:`\lambda_0(x)` of the potential :math:`V(x)`.
+        r"""Calculate the eigenvalue :math:`\lambda_0(x)` of the potential :math:`V(x)`.
+
         :raise NotImplementedError: This is an abstract base class.
         """
         raise NotImplementedError("calculate_eigenvalues(...)")
 
 
     def evaluate_eigenvalues_at(self, grid, entry=None):
-        """Evaluate the eigenvalues :math:`\Lambda(x)` elementwise on a grid :math:`\Gamma`.
+        r"""Evaluate the eigenvalues :math:`\Lambda(x)` elementwise on a grid :math:`\Gamma`.
 
         :param grid: The grid containing the nodes :math:`\gamma_i` we want
                      to evaluate the eigenvalues at.
@@ -78,14 +80,15 @@ class MatrixPotential(object):
 
 
     def calculate_eigenvectors(self):
-        """Calculate the eigenvectors :math:`\nu_i(x)` of the potential :math:`V(x)`.
+        r"""Calculate the eigenvectors :math:`\nu_i(x)` of the potential :math:`V(x)`.
+
         :raise NotImplementedError: This is an abstract base class.
         """
         raise NotImplementedError("calculate_eigenvectors(...)")
 
 
     def evaluate_eigenvectors_at(self, grid, entry=None):
-        """Evaluate the eigenvectors :math:`\nu_i(x)` elementwise on a grid :math:`\Gamma`.
+        r"""Evaluate the eigenvectors :math:`\nu_i(x)` elementwise on a grid :math:`\Gamma`.
 
         :param grid: The grid containing the nodes :math:`\gamma_i` we want
                      to evaluate the eigenvectors at.
@@ -97,7 +100,7 @@ class MatrixPotential(object):
 
 
     def calculate_exponential(self, factor=1):
-        """Calculate the matrix exponential :math:`\exp(\alpha V)`.
+        r"""Calculate the matrix exponential :math:`\exp(\alpha V)`.
 
         :param factor: The prefactor :math:`\alpha` in the exponential.
         :raise NotImplementedError: This is an abstract base class.
@@ -106,7 +109,7 @@ class MatrixPotential(object):
 
 
     def evaluate_exponential_at(self, grid):
-        """Evaluate the exponential of the potential matrix :math:`V(x)` on a grid :math:`\Gamma`.
+        r"""Evaluate the exponential of the potential matrix :math:`V(x)` on a grid :math:`\Gamma`.
 
         :param grid: The grid containing the nodes :math:`\gamma_i` we want
                      to evaluate the exponential at.

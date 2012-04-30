@@ -8,7 +8,7 @@ This file contains the class which represents a homogeneous Hagedorn wavepacket.
 """
 
 from functools import partial
-from numpy import zeros, complexfloating, array, sum, transpose, arange, vstack, eye, prod
+from numpy import zeros, complexfloating, array, sum, transpose, arange, vstack, eye, prod, atleast_2d
 from scipy import pi, sqrt, exp, conj, dot
 from scipy.linalg import norm, inv, det
 
@@ -59,6 +59,9 @@ class HagedornWavepacket(HagedornWavepacketBase):
         # The parameter set Pi
         self._Pis = [q, p, Q, P, S]
 
+        # No quadrature set
+        self._QE = None
+
 
     def __str__(self):
         r""":return: A string describing the Hagedorn wavepacket :math:`\Psi`.
@@ -66,6 +69,22 @@ class HagedornWavepacket(HagedornWavepacketBase):
         s = ("Homogeneous Hagedorn wavepacket with "+str(self._number_components)
              +" component(s) in "+str(self._dimension)+" space dimension(s)\n")
         return s
+
+
+    def get_description(self):
+        r"""Return a description of this wavepacket object.
+        A description is a ``dict`` containing all key-value pairs
+        necessary to reconstruct the current instance. A description
+        never contains any data.
+        """
+        d = {}
+        d["type"] = "HagedornWavepacket"
+        d["dimension"] = self._dimension
+        d["ncomponents"] = self._number_components
+        d["eps"] = self._eps
+        if self._QE is not None:
+            d["quadrature"] = self._QE.get_description()
+        return d
 
 
     def clone(self, keepid=False):
@@ -107,8 +126,7 @@ class HagedornWavepacket(HagedornWavepacketBase):
         :param Pi: The Hagedorn parameter set :math:`\Pi = (q, p, Q, P, S)` in this order.
         :param component: Dummy parameter for API compatibility with the inhomogeneous packets.
         """
-        # TODO: Use atleast_2d(...) for arrays
-        self._Pis = Pi[:]
+        self._Pis = [ atleast_2d(array(item, dtype=complexfloating)) for item in Pi ]
 
 
     def evaluate_basis_at(self, grid, component, prefactor=False):
