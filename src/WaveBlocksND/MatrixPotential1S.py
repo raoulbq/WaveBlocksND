@@ -329,7 +329,6 @@ class MatrixPotential1S(MatrixPotential):
                  :math:`\nabla^2 V(\Gamma)`.
         """
         grid = self._grid_wrap(grid)
-        nodes = grid.get_nodes(split=True)
 
         # TODO: Relate this to the _taylor_eigen_{s,n} data
         V = self.evaluate_eigenvalues_at(grid, entry=(diagonal_component,diagonal_component))

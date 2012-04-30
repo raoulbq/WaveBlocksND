@@ -12,7 +12,6 @@ of the potential.
 from numpy import dot, transpose, conjugate, vsplit
 
 from BasisTransformation import BasisTransformation
-from GridWrapper import GridWrapper
 
 
 __all__ = ["BasisTransformationHAWP"]

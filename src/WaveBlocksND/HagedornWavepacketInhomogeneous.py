@@ -8,9 +8,9 @@ This file contains the class which represents an inhomogeneous Hagedorn wavepack
 """
 
 from functools import partial
-from numpy import zeros, complexfloating, array, sum, transpose, arange, eye, vstack, prod
+from numpy import zeros, complexfloating, array, sum, transpose, arange, eye, vstack, prod, atleast_2d
 from scipy import pi, sqrt, exp, conj, dot
-from scipy.linalg import norm, inv, det
+from scipy.linalg import inv, det
 
 from HagedornWavepacketBase import HagedornWavepacketBase
 from HyperCubicShape import HyperCubicShape

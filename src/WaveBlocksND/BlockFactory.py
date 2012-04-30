@@ -7,8 +7,6 @@ This file contains a the block factory.
 @license: Modified BSD License
 """
 
-import sympy
-
 __all__ = ["BlockFactory"]
 
 
@@ -77,7 +75,7 @@ class BlockFactory(object):
                 print("Warning: no quadrature specified!")
 
         else:
-            raise ValueError("Unknown wavepacket type "+str(wb_type))
+            raise ValueError("Unknown wavepacket type "+str(wp_type))
 
         return WP
 
@@ -101,7 +99,7 @@ class BlockFactory(object):
             QE = InhomogeneousQuadrature(QR)
 
         else:
-            raise ValueError("Unknown basis shape type "+str(bs_type))
+            raise ValueError("Unknown basis shape type "+str(qe_type))
 
         return QE
 
