@@ -65,11 +65,12 @@ class ObservablesHAWP(Observables):
 
         # Prepare storage for new coefficients
         K = wavepacket.get_basis_shape(component=component)
-        size = K.get_basis_size(extended=True)
+        Ke = K.extend()
+        size = Ke.get_basis_size()
         cnew = zeros((size,D), dtype=complexfloating)
 
         # We implement the less efficient gather type stencil here
-        for i in K.get_node_iterator(extended=True):
+        for i in Ke.get_node_iterator():
             # Central phi_i coefficient
             if i in K:
                 ccur = coeffs[K[i]]
@@ -91,7 +92,7 @@ class ObservablesHAWP(Observables):
                 cfw[d] = coeffs[K[nb]] * sqrt(i[d] + 1.0)
 
             # Compute parts and assemble
-            cnew[K[i],:] = squeeze(sqrt(eps**2/2.0) * (dot(Pbar, cfw) + dot(P, cbw)) + p * ccur)
+            cnew[Ke[i],:] = squeeze(sqrt(eps**2/2.0) * (dot(Pbar, cfw) + dot(P, cbw)) + p * ccur)
 
         return (K, cnew)
 

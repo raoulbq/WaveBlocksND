@@ -37,23 +37,8 @@ class HyperCubicShape(BasisShape):
         # And the inverse mapping
         self._lima_inv = {v:k for k, v in self._lima.iteritems()}
 
-        # The linear mapping k -> index for the extended basis
-        iil = self._get_index_iterator_lex(extended=True)
-        # Only store new nodes and DO NOT renumber the nodes of non-extended lattice
-        self._lima_ext = {}
-        index = max(self._lima.values()) + 1
-
-        for k in iil:
-            if not k in self._lima:
-                self._lima_ext[k] = index
-                index += 1
-        # And the inverse mapping
-        self._lima_ext_inv = {v:k for k, v in self._lima_ext.iteritems()}
-
         # The basis size
         self._basissize = len(self._lima)
-        # The extended basis size
-        self._basissize_ext = self._basissize + len(self._lima_ext)
 
 
     def __hash__(self):
@@ -68,15 +53,12 @@ class HyperCubicShape(BasisShape):
         r"""Make map lookups.
         """
         if type(k) is tuple:
+            assert len(k) == self._dimension
             if k in self._lima:
                 return self._lima[k]
-            elif self.contains(k, extended=True):
-                return self._lima_ext[k]
         elif type(k) is int:
             if k in self._lima_inv:
                 return self._lima_inv[k]
-            elif k in self._lima_ext_inv:
-                return self._lima_ext_inv[k]
         else:
             raise IndexError("Wrong index type")
 
@@ -88,35 +70,29 @@ class HyperCubicShape(BasisShape):
         :param k: The multi-index we want to test.
         :type k: tuple
         """
-        # This checks only the non-extended basis!
-        # For checking the extended basis set use the 'contains(...)' method.
+        assert len(tuple(k)) == self._dimension
         return tuple(k) in self._lima
 
 
     def __iter__(self):
-        r"""Implements iteration over the multi-indices :math:`k` of the non-extended
-        basis set :math:`\mathcal{K}`.
+        r"""Implements iteration over the multi-indices :math:`k`
+        of the basis set :math:`\mathcal{K}`.
 
         Note: The order of iteration is NOT fixed. If you need a special
-        iteration scheme, use :py:method:`get_node_iterator`. Also the iteration
-        is over the non-extended basis set only.
+        iteration scheme, use :py:method:`get_node_iterator`.
         """
         # TODO: Better remove this as it may cause unexpected behaviour?
         return iter(self._lima)
 
 
-    def contains(self, k, extended=False):
+    def contains(self, k):
         r"""
         Checks if a given multi-index :math:`k` is part of the basis set :math:`\mathcal{K}`.
 
         :param k: The multi-index we want to test.
         :type k: tuple
         """
-        if not extended:
-            return tuple(k) in self._lima
-        else:
-            l = tuple(k)
-            return (l in self._lima or l in self._lima_ext)
+        return tuple(k) in self._lima
 
 
     def get_description(self):
@@ -131,15 +107,19 @@ class HyperCubicShape(BasisShape):
         return d
 
 
-    def _get_index_iterator_lex(self, extended=False):
+    def extend(self):
+        r"""Extend the basis shape such that (at least) all neighbours of all
+        boundary nodes are included in the extended basis shape.
+        """
+        extended_limits = [ l+1 for l in self._limits ]
+        return HyperCubicShape(extended_limits)
+
+
+    def _get_index_iterator_lex(self):
         r"""
         """
         # Upper bounds in each dimension
-        if not extended:
-            bounds = self._limits[::-1]
-        else:
-            bounds = self._limits[::-1]
-            bounds = [ b+1 for b in bounds ]
+        bounds = self._limits[::-1]
 
         def index_iterator_lex(bounds):
             # Initialize a counter
@@ -193,7 +173,7 @@ class HyperCubicShape(BasisShape):
         return index_iterator_chain(direction)
 
 
-    def get_node_iterator(self, mode="lex", direction=None, extended=False):
+    def get_node_iterator(self, mode="lex", direction=None):
         r"""
         Returns an iterator to iterate over all basis elements :math:`k`.
 
@@ -204,17 +184,14 @@ class HyperCubicShape(BasisShape):
         :param direction: If iterating in `chainmode` this specifies the direction
                           the chains go.
         :type direction: integer.
-        :param extended: Do we want to iterate over the extended basis shape. Default
-                         is `False`. Note that this has no effect in `chainmode`.
-        :type extended: bool
         """
         if mode == "lex":
-            return self._get_index_iterator_lex(extended=extended)
+            return self._get_index_iterator_lex()
         elif mode == "chain":
             if direction < self._dimension:
                 return self._get_index_iterator_chain(direction=direction)
             else:
-                raise ValueError("Can not build iterator for this direction.")
+                raise ValueError("Can not build chain iterator for this direction.")
         # TODO: Consider boundary node only iterator
         else:
             raise ValueError("Unknown iterator mode: "+str(mode)+".")
@@ -227,7 +204,7 @@ class HyperCubicShape(BasisShape):
         return tuple(self._limits)
 
 
-    def get_neighbours(self, k, selection=None, direction=None, extended=False):
+    def get_neighbours(self, k, selection=None, direction=None):
         r"""
         Returns a list of all multi-indices that are neighbours of a given
         multi-index :math:`k`. A direct neighbour is defined as
@@ -243,6 +220,8 @@ class HyperCubicShape(BasisShape):
         :type direction: int
         :return: A list containing the pairs :math:`(d, k^\prime)`.
         """
+        assert len(tuple(k)) == self._dimension
+
         # First build a list of potential neighbours
         I = eye(self._dimension, dtype=integer)
         ki = vstack(k)
@@ -265,11 +244,11 @@ class HyperCubicShape(BasisShape):
 
             # TODO: Try to simplify these nested if blocks
             if selection in ("backward", "all", None):
-                if self.contains(nbw, extended=extended):
+                if nbw in self:
                     nbh.append((d, nbw))
 
             if selection in ("forward", "all", None):
-                if self.contains(nfw, extended=extended):
+                if nfw in self:
                     nbh.append((d, nfw))
 
         return nbh

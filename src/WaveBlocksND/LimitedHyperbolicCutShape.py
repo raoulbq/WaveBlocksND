@@ -11,31 +11,34 @@ basis shape which is a special type of sparse basis set.
 from numpy import eye, vstack, integer
 
 from BasisShape import BasisShape
+from HyperbolicCutShape import HyperbolicCutShape
 
 
-class HyperbolicCutShape(BasisShape):
+class LimitedHyperbolicCutShape(BasisShape):
     r"""This class implements the hyperbolic cut basis shape which
     is a special type of sparse basis set. A basis shape is essentially
     all information and operations related to the set :math:`\mathcal{K}`
     of multi-indices :math:`k`. The hyperbolic cut shape in :math:`D` dimensions
-    and with `sparsity` :math:`K` is defined as the set
+    with `sparsity` :math:`S` and limits :math:`K = (K_0,\ldots,K_{D-1})`
+    is defined as the set
 
     .. math::
-        \mathcal{K}(D, K) := \{ (k_0, \ldots, k_{D-1}) |
-                                k_d \geq 0 \forall d \in [0,\ldots,D-1]
-                                \land \prod_{d=0}^{D-1}(1+k_d) \leq K \}
+        \mathcal{K}(D, S, K) := \{ (k_0, \ldots, k_{D-1}) |
+                                   0 \leq k_d < K_d \forall d \in [0,\ldots,D-1]
+                                   \land \prod_{d=0}^{D-1}(1+k_d) \leq S \}
     """
 
-    def __init__(self, D, K):
+    def __init__(self, D, K, limits):
         r"""
         """
-        # TODO: Do we really want to have limits here?
-
         # The dimension of K
         self._dimension = D
 
         # The sparsity parameter
         self._sparsity = K
+
+        # The limits
+        self._limits = tuple(limits)
 
         # The linear mapping k -> index for the basis
         iil = self._get_index_iterator_lex()
@@ -52,7 +55,7 @@ class HyperbolicCutShape(BasisShape):
         cut basis shapes :math:`\mathcal{K}` the basis is fully specified by its
         dimension :math:`D` and the sparsity parameter :math:`K`.
         """
-        return hash(("HyperbolicCutShape", self._dimension, self._sparsity))
+        return hash(("LimitedHyperbolicCutShape", self._dimension, self._sparsity, self._limits))
 
 
     def __getitem__(self, k):
@@ -108,35 +111,46 @@ class HyperbolicCutShape(BasisShape):
         never contains any data.
         """
         d = {}
-        d["type"] = "HyperbolicCutShape"
+        d["type"] = "LimitedHyperbolicCutShape"
         d["dimension"] = self._dimension
         d["K"] = self._sparsity
+        d["limits"] = self._limits
         return d
 
 
-    def extend(self):
+    def extend(self, tight=True):
         r"""Extend the basis shape such that (at least) all neighbours of all
         boundary nodes are included in the extended basis shape.
+
+        :param tight: Whether to cut off the long tails.
+        :param: Boolean, default is ``False``
         """
         D = self._dimension
         K = self._sparsity
         if D > 1:
             # This formula is more narrow than: K = 2**(D-1) * (K+1)
             # but works only for D >= 2
-            extended_sparsity = 2**(D-1) * K
+            new_sparsity = 2**(D-1) * K
         else:
             # Special casing K = 2**(D-1) * (K+1) for D = 1
-            extended_sparsity = K + 1
-        return HyperbolicCutShape(D, extended_sparsity)
+            new_sparsity = K + 1
+
+        if tight is True:
+            new_limits = tuple([ l+1 for l in self._limits ])
+            return LimitedHyperbolicCutShape(D, new_sparsity, new_limits)
+        else:
+            return HyperbolicCutShape(D, new_sparsity)
 
 
     def _get_index_iterator_lex(self):
         r"""
         """
         # The hyperbolic cut parameter
-        Kmax = self._sparsity
+        sparsity = self._sparsity
+        # Upper bounds in each dimension
+        bounds = self._limits[::-1]
 
-        def index_iterator_lex(Kmax):
+        def index_iterator_lex(S, bounds):
             # Initialize a counter
             z = [0 for i in xrange(self._dimension + 1)]
 
@@ -150,17 +164,22 @@ class HyperbolicCutShape(BasisShape):
                 # Reset overflows
                 for d in xrange(self._dimension):
                     K = reduce(lambda x,y: x*(y+1), z[:-1], 1)
-                    if K > Kmax:
+                    if z[d] >= bounds[d] or K > S:
                         z[d] = 0
                         z[d+1] += 1
 
-        return index_iterator_lex(Kmax)
+        return index_iterator_lex(sparsity, bounds)
 
 
     def _get_index_iterator_chain(self, direction=0):
         r"""
         """
-        def index_iterator_chain(Kmax, d):
+        # The hyperbolic cut parameter
+        sparsity = self._sparsity
+        # Upper bounds in each dimension
+        bounds = self._limits[::-1]
+
+        def index_iterator_chain(S, bounds, d):
             D = self._dimension
             # The counter
             z = [ 0 for i in range(D + 1) ]
@@ -177,11 +196,11 @@ class HyperbolicCutShape(BasisShape):
                 # Reset overflows
                 for i in xrange(D-d-1, D):
                     K = reduce(lambda x,y: x*(y+1), z[(D-d-1):-1], 1)
-                    if K > Kmax:
+                    if z[i] > bounds[i]-1 or K > S:
                         z[i] = 0
                         z[i+1] += 1
 
-        return index_iterator_chain(self._sparsity, direction)
+        return index_iterator_chain(sparsity, bounds, direction)
 
 
     def get_node_iterator(self, mode="lex", direction=None):
@@ -209,11 +228,11 @@ class HyperbolicCutShape(BasisShape):
 
 
     def get_limits(self):
-        r"""Returns the upper limit :math:`K` which is the same for all directions :math:`d`.
+        r"""Returns the upper limit :math:`K_d` for all directions :math:`d`.
 
         :return: A tuple of the maximum of the multi-index in each direction.
         """
-        return tuple(self._dimension * [self._sparsity-1])
+        return tuple(self._limits)
 
 
     def get_neighbours(self, k, selection=None, direction=None):

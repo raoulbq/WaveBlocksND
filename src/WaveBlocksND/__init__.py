@@ -42,6 +42,7 @@ from IOManager import IOManager
 from BasisShape import BasisShape
 from HyperCubicShape import HyperCubicShape
 from HyperbolicCutShape import HyperbolicCutShape
+from LimitedHyperbolicCutShape import LimitedHyperbolicCutShape
 
 # Wavepackets
 from Wavepacket import Wavepacket

@@ -222,7 +222,7 @@ def load_wavepacket_coefficients(self, timestep=None, get_hashes=False, componen
     data = []
     for i in xrange(len(self._srf[pathd].keys())):
         if timestep is not None:
-            size = self._srf[pathbsi][timestep,i]
+            size = self._srf[pathbsi][index,i]
             data.append( self._srf[pathd+"c_"+str(i)][index,:size] )
         else:
             data.append( self._srf[pathd+"c_"+str(i)][index,...] )
