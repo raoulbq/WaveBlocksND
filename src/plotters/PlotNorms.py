@@ -112,6 +112,22 @@ def plot_norms(data, index=0):
     close(fig)
 
 
+    fig = figure()
+    ax = fig.gca()
+
+    ax.semilogy(timegrid, abs(norms[-1][0] - norms[-1]), label=r"$\|\Psi\|_0 - \|\Psi\|_t$")
+
+    ax.grid(True)
+    ax.set_title(r"Drift of $\| \Psi \|$")
+    legend(loc="outer right")
+    ax.set_xlabel(r"Time $t$")
+    ax.set_ylabel(r"$\|\Psi\|_0 - \|\Psi\|_t$")
+    fig.savefig("norms_drift_block"+str(index)+"_log"+GD.output_format)
+    close(fig)
+
+
+
+
 if __name__ == "__main__":
     iom = IOManager()
 

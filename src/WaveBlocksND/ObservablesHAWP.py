@@ -69,32 +69,24 @@ class ObservablesHAWP(Observables):
         size = Ke.get_basis_size()
         cnew = zeros((size,D), dtype=complexfloating)
 
-        # We implement the less efficient gather type stencil here
-        for i in Ke.get_node_iterator():
+        # We implement the more efficient scatter type stencil here
+        for k in K.get_node_iterator():
             # Central phi_i coefficient
-            if i in K:
-                ccur = coeffs[K[i]]
-            else:
-                ccur = 0.0j
+            cnew[Ke[k],:] += squeeze(coeffs[K[k]] * p)
 
             # Backward neighbours phi_{i - e_d}
-            cbw = zeros((D,1), dtype=complexfloating)
-            nbw = K.get_neighbours(i, selection="backward")
+            nbw = K.get_neighbours(k, selection="backward")
 
             for d, nb in nbw:
-                cbw[d] = coeffs[K[nb]] * sqrt(i[d])
+                cnew[Ke[nb],:] += sqrt(eps**2/2.0) * sqrt(k[d]) * coeffs[K[k]] * Pbar[:,d]
 
             # Forward neighbours phi_{i + e_d}
-            cfw = zeros((D,1), dtype=complexfloating)
-            nfw = K.get_neighbours(i, selection="forward")
+            nfw = K.get_neighbours(k, selection="forward")
 
             for d, nb in nfw:
-                cfw[d] = coeffs[K[nb]] * sqrt(i[d] + 1.0)
+                cnew[Ke[nb],:] += sqrt(eps**2/2.0) * sqrt(k[d]+1.0) * coeffs[K[k]] * P[:,d]
 
-            # Compute parts and assemble
-            cnew[Ke[i],:] = squeeze(sqrt(eps**2/2.0) * (dot(Pbar, cfw) + dot(P, cbw)) + p * ccur)
-
-        return (K, cnew)
+        return (Ke, cnew)
 
 
     def kinetic_energy(self, wavepacket, component=None, summed=False):

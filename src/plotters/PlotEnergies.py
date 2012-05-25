@@ -122,6 +122,7 @@ def plot_energies(data, index=0):
 
 
 
+
 if __name__ == "__main__":
     iom = IOManager()
 
