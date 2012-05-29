@@ -56,6 +56,8 @@ def add_wavepacket(self, parameters, timeslots=None, blockid=0):
         for i in xrange(N):
             daset_c_i = grp_ci.create_dataset("c_"+str(i), (timeslots, 1), dtype=np.complexfloating, chunks=True, maxshape=(None,None))
 
+    # Mark all steps as invalid
+    daset_tg[...] = -1.0
     # Attach pointer to data instead timegrid
     grp_pi.attrs["pointer"] = 0
     grp_ci.attrs["pointer"] = 0

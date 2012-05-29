@@ -15,6 +15,7 @@ import numpy
 from MatrixPotential import MatrixPotential
 from Grid import Grid
 from GridWrapper import GridWrapper
+import GlobalDefaults
 
 __all__ = ["MatrixPotential2S"]
 
@@ -25,7 +26,7 @@ class MatrixPotential2S(MatrixPotential):
     calculations with the potential are supported.
     """
 
-    def __init__(self, expression, variables):
+    def __init__(self, expression, variables, **kwargs):
         r"""Create a new :py:class:`MatrixPotential2S` instance for a given
         potential matrix :math:`V(x)`.
 
@@ -39,6 +40,12 @@ class MatrixPotential2S(MatrixPotential):
 
         # The dimension of position space.
         self._dimension = len(variables)
+
+        # Try symbolic simplification
+        if kwargs.has_key("try_simplification"):
+            self._try_simplify = kwargs["try_simplification"]
+        else:
+            self._try_simplify = GlobalDefaults.__dict__["try_simplification"]
 
         # This number of energy levels.
         assert expression.is_square
@@ -156,11 +163,12 @@ class MatrixPotential2S(MatrixPotential):
         l2 = (T - sympy.sqrt(T**2 - 4*D)) * sympy.Rational(1,2)
 
         # Symbolic simplification may fail
-        try:
-            l1 = sympy.simplify(l1)
-            l2 = sympy.simplify(l2)
-        except:
-            pass
+        if self._try_simplify:
+            try:
+                l1 = sympy.simplify(l1)
+                l2 = sympy.simplify(l2)
+            except:
+                pass
 
         # The symbolic expressions for the eigenvalues
         self._eigenvalues_s = (l1, l2)
@@ -327,11 +335,13 @@ class MatrixPotential2S(MatrixPotential):
 
         M = sympy.Matrix([[0,0],[0,0]])
 
-        try:
-            D = sympy.simplify(D)
-            t = sympy.simplify(t)
-        except:
-            pass
+        # Symbolic simplification may fail
+        if self._try_simplify:
+            try:
+                D = sympy.simplify(D)
+                t = sympy.simplify(t)
+            except:
+                pass
 
         if sympy.Eq(D,0):
             # special case
@@ -429,7 +439,7 @@ class MatrixPotential2S(MatrixPotential):
 
         for i in indices:
             jacobian = self._jacobian_n[i]
-            J = numpy.zeros((D,N))
+            J = numpy.zeros((D,N), dtype=numpy.complexfloating)
             for index, comp in enumerate(jacobian):
                 J[index, :] = comp(*nodes)
             result.append(J)
@@ -490,7 +500,7 @@ class MatrixPotential2S(MatrixPotential):
 
         for i in indices:
             hessian = self._hessian_n[i]
-            H = numpy.zeros((N,D,D))
+            H = numpy.zeros((N,D,D), dtype=numpy.complexfloating)
 
             for row in xrange(D):
                 for col in xrange(D):
@@ -613,19 +623,25 @@ class MatrixPotential2S(MatrixPotential):
         # Symbolic expression for the quadratic Taylor expansion term
         xmq = sympy.Matrix([ (xi-qi) for xi,qi in zip(self._all_variables, qs) ])
         quadratic = sympy.Matrix([[V]]) + J.T*xmq + sympy.Rational(1,2)*xmq.T*H*xmq
-        try:
-            quadratic = quadratic.applyfunc(sympy.simplify)
-        except:
-            pass
+
+        # Symbolic simplification may fail
+        if self._try_simplify:
+            try:
+                quadratic = quadratic.applyfunc(sympy.simplify)
+            except:
+                pass
 
         # Symbolic expression for the Taylor expansion remainder term
         U = sympy.diag( *self._number_components*[quadratic[0,0]] )
-        W = self._potential_s - U
+        remainder = self._potential_s - U
 
-        try:
-            remainder = W.applyfunc(sympy.simplify)
-        except:
-            remainder = W
+        # Symbolic simplification may fail
+        if self._try_simplify:
+            try:
+                remainder = remainder.applyfunc(sympy.simplify)
+            except:
+                pass
+
         self._remainder_eigen_s[diagonal_component] = remainder
 
         # Construct functions to evaluate the approximation at point q at the given nodes
@@ -674,12 +690,15 @@ class MatrixPotential2S(MatrixPotential):
 
         # Symbolic expression for the Taylor expansion remainder term
         U = sympy.diag( *quadratics )
-        W = self._potential_s - U
+        remainder = self._potential_s - U
 
-        try:
-            remainder = W.applyfunc(sympy.simplify)
-        except:
-            remainder = W
+        # Symbolic simplification may fail
+        if self._try_simplify:
+            try:
+                remainder = remainder.applyfunc(sympy.simplify)
+            except:
+                pass
+
         self._remainder_eigen_ih_s = remainder
 
         # Construct functions to evaluate the approximation at point q at the given nodes
@@ -743,7 +762,7 @@ class MatrixPotential2S(MatrixPotential):
 
             # Test for potential beeing constant
             if numpy.atleast_1d(values).shape == (1,):
-                values = values * numpy.ones(grid.get_number_nodes(), dtype=numpy.floating)
+                values = values * numpy.ones(grid.get_number_nodes(), dtype=numpy.complexfloating)
 
             # Put the result in correct shape (1, #gridnodes)
             result = values.reshape((1,N))
@@ -754,7 +773,7 @@ class MatrixPotential2S(MatrixPotential):
 
                 # Test for potential beeing constant
                 if numpy.atleast_1d(values).shape == (1,):
-                    values = values * numpy.ones(grid.get_number_nodes(), dtype=numpy.floating)
+                    values = values * numpy.ones(grid.get_number_nodes(), dtype=numpy.complexfloating)
 
                 # Put the result in correct shape (1, #gridnodes)
                 result.append(values.reshape((1,N)))

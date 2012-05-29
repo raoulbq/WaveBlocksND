@@ -31,6 +31,8 @@ def add_wavefunction(self, parameters, timeslots=None, blockid=0):
         daset_psi = grp_wf.create_dataset("Psi", [timeslots, parameters["ncomponents"]] + list(parameters["grid_number_nodes"]), dtype=np.complexfloating)
         daset_psi_tg = grp_wf.create_dataset("timegrid", (timeslots,), dtype=np.integer)
 
+    # Mark all steps as invalid
+    daset_tg[...] = -1.0
     daset_psi_tg.attrs["pointer"] = 0
 
 

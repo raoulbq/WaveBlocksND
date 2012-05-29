@@ -31,6 +31,8 @@ def add_norm(self, parameters, timeslots=None, blockid=0):
         daset_n = grp_no.create_dataset("norm", (timeslots, parameters["ncomponents"]), dtype=np.floating)
         daset_tg = grp_no.create_dataset("timegrid", (timeslots,), dtype=np.integer)
 
+    # Mark all steps as invalid
+    daset_tg[...] = -1.0
     daset_tg.attrs["pointer"] = 0
 
 

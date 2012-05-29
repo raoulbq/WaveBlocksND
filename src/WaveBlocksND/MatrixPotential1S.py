@@ -15,6 +15,7 @@ import numpy
 from MatrixPotential import MatrixPotential
 from Grid import Grid
 from GridWrapper import GridWrapper
+import GlobalDefaults
 
 __all__ = ["MatrixPotential1S"]
 
@@ -25,7 +26,7 @@ class MatrixPotential1S(MatrixPotential):
     calculations with the potential are supported.
     """
 
-    def __init__(self, expression, variables):
+    def __init__(self, expression, variables, **kwargs):
         r"""Create a new :py:class:`MatrixPotential1S` instance for a given
         potential matrix :math:`V(x)`.
 
@@ -42,6 +43,12 @@ class MatrixPotential1S(MatrixPotential):
 
         # The dimension of position space.
         self._dimension = len(variables)
+
+        # Try symbolic simplification
+        if kwargs.has_key("try_simplification"):
+            self._try_simplify = kwargs["try_simplification"]
+        else:
+            self._try_simplify = GlobalDefaults.__dict__["try_simplification"]
 
         # The the potential, symbolic expressions and evaluatable functions
         assert expression.shape == (1,1)
@@ -252,7 +259,7 @@ class MatrixPotential1S(MatrixPotential):
         D = self._dimension
         N = grid.get_number_nodes(overall=True)
 
-        J = numpy.zeros((D,N))
+        J = numpy.zeros((D,N), dtype=numpy.complexfloating)
 
         for row in xrange(D):
             J[row, :] = self._jacobian_n[row](*nodes)
@@ -289,7 +296,7 @@ class MatrixPotential1S(MatrixPotential):
         D = self._dimension
         N = grid.get_number_nodes(overall=True)
 
-        H = numpy.zeros((N,D,D))
+        H = numpy.zeros((N,D,D), dtype=numpy.complexfloating)
 
         for row in xrange(D):
             for col in xrange(D):
@@ -363,17 +370,24 @@ class MatrixPotential1S(MatrixPotential):
         # Symbolic expression for the quadratic Taylor expansion term
         xmq = sympy.Matrix([ (xi-qi) for xi,qi in zip(self._all_variables, qs) ])
         quadratic = V + J.T*xmq + sympy.Rational(1,2)*xmq.T*H*xmq
-        try:
-            quadratic = quadratic.applyfunc(sympy.simplify)
-        except:
-            pass
+
+        # Symbolic simplification may fail
+        if self._try_simplify:
+            try:
+                quadratic = quadratic.applyfunc(sympy.simplify)
+            except:
+                pass
 
         # Symbolic expression for the Taylor expansion remainder term
         remainder = self._potential_s - quadratic
-        try:
-            remainder = remainder.applyfunc(sympy.simplify)
-        except:
-            pass
+
+        # Symbolic simplification may fail
+        if self._try_simplify:
+            try:
+                remainder = remainder.applyfunc(sympy.simplify)
+            except:
+                pass
+
         self._remainder_s = remainder
 
         # Construct functions to evaluate the approximation at point q at the given nodes

@@ -42,6 +42,8 @@ def add_energy(self, parameters, timeslots=None, blockid=0, total=False):
             daset_to = grp_en.create_dataset("total", (timeslots, 1), dtype=np.floating)
             daset_to.attrs["pointer"] = 0
 
+    # Mark all steps as invalid
+    daset_tg[...] = -1.0
     daset_tg.attrs["pointer"] = 0
 
 

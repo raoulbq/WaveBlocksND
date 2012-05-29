@@ -26,7 +26,7 @@ class MatrixPotentialMS(MatrixPotential):
     for 3 or more energy levels.
     """
 
-    def __init__(self, expression, variables):
+    def __init__(self, expression, variables, **kwargs):
         """Create a new :py:class:`MatrixPotentialMS` instance for a given
         potential matrix :math:`V(x)`.
 
