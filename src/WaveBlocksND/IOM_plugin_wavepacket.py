@@ -15,15 +15,9 @@ import numpy as np
 def add_wavepacket(self, parameters, timeslots=None, blockid=0):
     r"""Add storage for the homogeneous wavepackets.
 
-    :param parameters: An :py:class:`ParameterProvider` instance with at least the keys ``dimension``, ``basis_size`` and ``ncomponents``.
+    :param parameters: An :py:class:`ParameterProvider` instance with at
+                       least the keys ``dimension`` and ``ncomponents``.
     """
-    # If we run with an adaptive basis size, then we must make the data tensor size maximal
-    # TODO: Ugly, improve:
-    if parameters.has_key("max_basis_size"):
-        bs = parameters["max_basis_size"]
-    else:
-        bs = np.max(parameters["basis_size"])
-
     N = parameters["ncomponents"]
     D = parameters["dimension"]
 
@@ -48,7 +42,7 @@ def add_wavepacket(self, parameters, timeslots=None, blockid=0):
         daset_P = grp_pi.create_dataset("P", (0, D, D), dtype=np.complexfloating, chunks=True, maxshape=(None,D,D))
         daset_S = grp_pi.create_dataset("S", (0, 1, 1), dtype=np.complexfloating, chunks=True, maxshape=(None,1,1))
         for i in xrange(N):
-            daset_c_i = grp_ci.create_dataset("c_"+str(i), (0, bs), dtype=np.complexfloating, chunks=True, maxshape=(None,bs))
+            daset_c_i = grp_ci.create_dataset("c_"+str(i), (0, 1), dtype=np.complexfloating, chunks=True, maxshape=(None,None))
     else:
         # User specified how much space is necessary.
         daset_tg = grp_wp.create_dataset("timegrid", (timeslots,), dtype=np.integer)
@@ -60,7 +54,7 @@ def add_wavepacket(self, parameters, timeslots=None, blockid=0):
         daset_P = grp_pi.create_dataset("P", (timeslots, D, D), dtype=np.complexfloating)
         daset_S = grp_pi.create_dataset("S", (timeslots, 1, 1), dtype=np.complexfloating)
         for i in xrange(N):
-            daset_c_i = grp_ci.create_dataset("c_"+str(i), (timeslots, bs), dtype=np.complexfloating)
+            daset_c_i = grp_ci.create_dataset("c_"+str(i), (timeslots, 1), dtype=np.complexfloating, chunks=True, maxshape=(None,None))
 
     # Attach pointer to data instead timegrid
     grp_pi.attrs["pointer"] = 0
@@ -137,6 +131,9 @@ def save_wavepacket_coefficients(self, coefficients, basisshapes, timestep=None,
     for index, (bs,ci) in enumerate(zip(basisshapes, coefficients)):
         self.must_resize(pathd+"c_"+str(index), timeslot)
         size = bs.get_basis_size()
+        # Do we have to resize due to changed number of coefficients
+        if self._srf[pathd+"c_"+str(index)].shape[1] < size:
+            self._srf[pathd+"c_"+str(index)].resize(size, axis=1)
         self._srf[pathbsi][timeslot,index] = size
         self._srf[pathbs][timeslot,index] = hash(bs)
         self._srf[pathd+"c_"+str(index)][timeslot,:size] = np.squeeze(ci)
