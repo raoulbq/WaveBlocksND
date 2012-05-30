@@ -64,4 +64,21 @@ def cont_sqrt(data, reference=None):
     else:
         # Return a 2-tuple ( cont_f(x), new_reference )
         phi = continuate(angle(data), reference=reference)
-        return (sqrt(abs(data))*exp(1.0j*phi/2)[0], phi)
+        return (sqrt(abs(data))*exp(1.0j*phi/2), phi)
+
+
+class ContinuousSqrt(object):
+    r"""Class for computing continuous square roots. All stuff about
+    referencing is hidden from the user.
+    """
+
+    def __init__(self, reference=0.0j):
+        self._reference = reference
+
+    def clone(self):
+        return ContinuousSqrt(reference=self._reference)
+
+    def __call__(self, radicand):
+        root, ref = cont_sqrt(radicand, reference=self._reference)
+        self._reference = ref[0]
+        return root

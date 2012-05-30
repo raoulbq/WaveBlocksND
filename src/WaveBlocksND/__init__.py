@@ -7,6 +7,9 @@
 
 __version__ = 0.1
 
+# Math
+from ComplexMath import ContinuousSqrt
+
 # Grids
 from Grid import Grid
 from DenseGrid import DenseGrid

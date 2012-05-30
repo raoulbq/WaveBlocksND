@@ -7,7 +7,7 @@ This file contains the basic interface for general wavepackets.
 @license: Modified BSD License
 """
 
-from numpy import vstack, vsplit, cumsum, zeros, array, complexfloating, pi, dot, sum
+from numpy import vstack, vsplit, cumsum, zeros, array, complexfloating, pi, dot, sum, sqrt
 from scipy import exp, sqrt, conjugate
 from scipy.linalg import det, inv, norm
 
@@ -230,16 +230,19 @@ class HagedornWavepacketBase(Wavepacket):
     # the same way for homogeneous and inhomogeneous Hagedorn wavepackets.
 
 
-    def _evaluate_phi0(self, Pi, nodes, prefactor=False):
+    def _evaluate_phi0(self, Pi, nodes, prefactor=False, root=sqrt):
         r"""Evaluate the lowest order basis function :math:`\phi_0` on a
-        grid of nodes.
+        grid :math:`\Gamma` of nodes.
 
         :param Pi: The parameter set :math:`\Pi`.
         :param nodes: The nodes we evaluate :math:`\phi_0` at.
-        :type nodes: An ndarray of shape ``(D, number_nodes)``.
+        :type nodes: An ndarray of shape ``(D, |\Gamma|)``.
         :param prefactor: Whether to include a factor of :math:`\frac{1}{\sqrt{\det(Q)}}`.
         :type prefactor: bool, default is ``False``.
-        :return: An ndarray of shape ``(number_nodes,)``.
+        :param root: The function used to compute the square root in the prefactor.
+                     Defaults to the ``sqrt`` function of ``numpy`` but can be any
+                     callable object and especially an instance of :py:class:`ContinuousSqrt`.
+        :return: An ndarray of shape ``(|\Gamma|)``.
         """
         d = self._dimension
         eps = self._eps
@@ -254,7 +257,7 @@ class HagedornWavepacketBase(Wavepacket):
 
         # TODO: Use continuous sqrt function
         if prefactor is True:
-            prefactor = (pi*eps**2)**(-d*0.25) / sqrt(det(Q))
+            prefactor = (pi*eps**2)**(-d*0.25) / root(det(Q))
         else:
             prefactor = (pi*eps**2)**(-d*0.25)
 
