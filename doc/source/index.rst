@@ -94,6 +94,7 @@ Time propagation
 .. toctree::
    :maxdepth: 1
 
+   waveblocks_classes/KineticOperator
    waveblocks_classes/Propagator
    waveblocks_classes/FourierPropagator
    waveblocks_classes/HagedornPropagator

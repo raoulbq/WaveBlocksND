@@ -45,7 +45,7 @@ def compute_energy(iom, blockid=0):
     #     opT, opV = iom.load_fourieroperators(blockid=blockid)
     # else:
     KO = KineticOperator(grid)
-    KO.calculate_operator(parameters["dt"], parameters["eps"])
+    KO.calculate_operator(parameters["eps"])
     opT = KO
     opV = Potential.evaluate_at(grid)
 

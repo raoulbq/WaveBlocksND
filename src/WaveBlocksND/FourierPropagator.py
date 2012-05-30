@@ -54,14 +54,13 @@ class FourierPropagator(Propagator):
         self._grid = initial_values.get_grid()
 
         # The kinetic operator 'T' defined in momentum space.
-        self._KO = KineticOperator(self._grid)
-        self._KO.calculate_operator(para["dt"], para["eps"])
+        self._KO = KineticOperator(self._grid, para["eps"])
 
-        # Exponential '\exp(-i/eps^2*dt*T)' used in the Strang splitting.
+        # Exponential '\exp(-i/2*eps^2*dt*T)' used in the Strang splitting.
+        self._KO.calculate_exponential(-0.5j * para["dt"] * para["eps"]**2)
         self._TE = self._KO.evaluate_exponential_at()
 
         # Exponential '\exp(-i/eps^2*dt*V)' used in the Strang splitting.
-        # TODO: Think about the interface 'calculate_exponential'
         self._potential.calculate_exponential(-0.5j * para["dt"] / para["eps"]**2)
         VE = self._potential.evaluate_exponential_at(self._grid)
         self._VE = tuple([ ve.reshape(self._grid.get_number_nodes()) for ve in VE ])
@@ -90,6 +89,7 @@ class FourierPropagator(Propagator):
         :return: A tuple :math:`(T, V)` containing two ``ndarrays``.
         """
         # TODO: What kind of object exactly do we want to return?
+        self._KO.calculate_operator()
         T = self._KO.evaluate_at()
         V = self._potential.evaluate_at(self._grid)
         V = tuple([ v.reshape(self._grid.get_number_nodes()) for v in V ])

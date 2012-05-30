@@ -23,15 +23,18 @@ class HagedornWavepacketInhomogeneous(HagedornWavepacketBase):
     :math:`\Psi` with :math:`N` components in :math:`D` space dimensions.
     """
 
-    def __init__(self, parameters):
-        r"""
+    def __init__(self, dimension, ncomponents, eps):
+        r"""Initialize a new in homogeneous Hagedorn wavepacket.
+
+        :param dimension: The space dimension :math:`D` the packet has.
+        :param ncomponents: The number :math:`N` of components the packet has.
+        :param eps: The semi-classical scaling parameter :math:`\varepsilon` of the basis functions.
+        :return: An instance of :py:class:`HagedornWavepacketInhomogeneous`.
         """
-        # TODO: Simpler way to initialize wavepackets. Maybe use a builder?
+        self._dimension = dimension
+        self._number_components = ncomponents
 
-        self._dimension = parameters["dimension"]
-        self._number_components = parameters["ncomponents"]
-
-        self._eps = parameters["eps"]
+        self._eps = eps
 
         # The parameter sets Pi_i
         self._Pis = []
@@ -90,12 +93,12 @@ class HagedornWavepacketInhomogeneous(HagedornWavepacketBase):
 
     def clone(self, keepid=False):
         # Parameters of this packet
-        params = {"dimension":   self._dimension,
-                  "ncomponents": self._number_components,
-                  "eps":         self._eps}
-
+        params = self.get_description()
         # Create a new Packet
-        other = HagedornWavepacketInhomogeneous(params)
+        # TODO: Consider using the block factory
+        other = HagedornWavepacketInhomogeneous(params["dimension"],
+                                                params["ncomponents"],
+                                                params["eps"])
         # If we wish to keep the packet ID
         if keepid is True:
             other.set_id(self.get_id())
@@ -104,6 +107,8 @@ class HagedornWavepacketInhomogeneous(HagedornWavepacketBase):
         other.set_basis_shape(self.get_basis_shape())
         other.set_parameters(self.get_parameters())
         other.set_coefficients(self.get_coefficients())
+        # Quadratures are immutable, no issues with sharing same instance
+        other.set_quadrature(self.get_quadrature())
 
         return other
 

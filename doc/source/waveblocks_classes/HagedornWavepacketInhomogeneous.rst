@@ -15,5 +15,6 @@ Class documentation
 -------------------
 
 .. autoclass:: HagedornWavepacketInhomogeneous
+   :special-members:
    :members:
    :inherited-members:

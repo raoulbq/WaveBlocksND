@@ -1,7 +1,7 @@
-HagedornWavepacket
-==================
+KineticOperator
+===============
 
-About the ``HagedornWavepacket`` class
+About the ``KineticOperator`` class
 --------------------------------------
 
 .. automodule:: WaveBlocksND
@@ -9,12 +9,12 @@ About the ``HagedornWavepacket`` class
 Inheritance diagram
 -------------------
 
-.. inheritance-diagram:: HagedornWavepacket
+.. inheritance-diagram:: KineticOperator
 
 Class documentation
 -------------------
 
-.. autoclass:: HagedornWavepacket
+.. autoclass:: KineticOperator
    :special-members:
    :members:
    :inherited-members:

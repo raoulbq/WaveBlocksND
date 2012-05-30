@@ -54,7 +54,9 @@ class BlockFactory(object):
             from HagedornWavepacket import HagedornWavepacket
 
             # Initialize a packet
-            WP = HagedornWavepacket(description)
+            WP = HagedornWavepacket(description["dimension"],
+                                    description["ncomponents"],
+                                    description["eps"])
 
             # Set parameters
             if description.has_key("Pi"):
