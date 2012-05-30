@@ -39,7 +39,7 @@ class MatrixPotential1S(MatrixPotential):
         self._number_components = 1
 
         # The variables that represents position space. The order matters!
-        self._all_variables = variables
+        self._variables = variables
 
         # The dimension of position space.
         self._dimension = len(variables)
@@ -54,7 +54,7 @@ class MatrixPotential1S(MatrixPotential):
         assert expression.shape == (1,1)
 
         self._potential_s = expression
-        self._potential_n = sympy.lambdify(self._all_variables, self._potential_s[0,0], "numpy")
+        self._potential_n = sympy.lambdify(self._variables, self._potential_s[0,0], "numpy")
 
         # The cached eigenvalues, symbolic expressions and evaluatable functions
         self._eigenvalues_s = None
@@ -196,7 +196,7 @@ class MatrixPotential1S(MatrixPotential):
         :param factor: The prefactor :math:`\alpha` in the exponential.
         """
         self._exponential_s = sympy.exp(factor*self._potential_s[0,0])
-        self._exponential_n = sympy.lambdify(self._all_variables, self._exponential_s, "numpy")
+        self._exponential_n = sympy.lambdify(self._variables, self._exponential_s, "numpy")
 
 
     def evaluate_exponential_at(self, grid, entry=None):
@@ -237,8 +237,8 @@ class MatrixPotential1S(MatrixPotential):
         """
         if self._jacobian_s is None:
             # TODO: Add symbolic simplification
-            self._jacobian_s = self._potential_s.jacobian(self._all_variables).T
-            self._jacobian_n = tuple([ sympy.lambdify(self._all_variables, entry, "numpy") for entry in self._jacobian_s ])
+            self._jacobian_s = self._potential_s.jacobian(self._variables).T
+            self._jacobian_n = tuple([ sympy.lambdify(self._variables, entry, "numpy") for entry in self._jacobian_s ])
 
 
     def evaluate_jacobian_at(self, grid, component=None):
@@ -274,8 +274,8 @@ class MatrixPotential1S(MatrixPotential):
         """
         if self._hessian_s is None:
             # TODO: Add symbolic simplification
-            self._hessian_s = sympy.hessian(self._potential_s[0,0], self._all_variables)
-            self._hessian_n = tuple([ sympy.lambdify(self._all_variables, entry, "numpy") for entry in self._hessian_s ])
+            self._hessian_s = sympy.hessian(self._potential_s[0,0], self._variables)
+            self._hessian_n = tuple([ sympy.lambdify(self._variables, entry, "numpy") for entry in self._hessian_s ])
 
 
     def evaluate_hessian_at(self, grid, component=None):
@@ -359,16 +359,16 @@ class MatrixPotential1S(MatrixPotential):
 
         # Point q where the taylor series is computed
         # This is a column vector q = (q1, ... ,qD)
-        qs = [ sympy.Symbol("q"+str(i)) for i,v in enumerate(self._all_variables) ]
+        qs = [ sympy.Symbol("q"+str(i)) for i,v in enumerate(self._variables) ]
 
-        pairs = [ (xi,qi) for xi,qi in zip(self._all_variables, qs) ]
+        pairs = [ (xi,qi) for xi,qi in zip(self._variables, qs) ]
 
         V = self._eigenvalues_s.subs(pairs)
         J = self._jacobian_s.subs(pairs)
         H = self._hessian_s.subs(pairs)
 
         # Symbolic expression for the quadratic Taylor expansion term
-        xmq = sympy.Matrix([ (xi-qi) for xi,qi in zip(self._all_variables, qs) ])
+        xmq = sympy.Matrix([ (xi-qi) for xi,qi in zip(self._variables, qs) ])
         quadratic = V + J.T*xmq + sympy.Rational(1,2)*xmq.T*H*xmq
 
         # Symbolic simplification may fail
@@ -392,7 +392,7 @@ class MatrixPotential1S(MatrixPotential):
 
         # Construct functions to evaluate the approximation at point q at the given nodes
         # The variable ordering in lambdify is [x1, ..., xD, q1, ...., qD]
-        self._remainder_n = tuple([ sympy.lambdify(self._all_variables + qs, self._remainder_s[0,0], "numpy") ])
+        self._remainder_n = tuple([ sympy.lambdify(list(self._variables) + qs, self._remainder_s[0,0], "numpy") ])
 
 
     def evaluate_local_remainder_at(self, grid, position, diagonal_component=None, entry=None):

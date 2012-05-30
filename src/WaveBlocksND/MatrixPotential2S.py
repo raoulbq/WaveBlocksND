@@ -36,7 +36,7 @@ class MatrixPotential2S(MatrixPotential):
         :type variables: A list of `Sympy` symbols.
         """
         # The variables that represents position space. The order matters!
-        self._all_variables = variables
+        self._variables = variables
 
         # The dimension of position space.
         self._dimension = len(variables)
@@ -55,7 +55,7 @@ class MatrixPotential2S(MatrixPotential):
 
         # The the potential, symbolic expressions and evaluatable functions
         self._potential_s = expression
-        self._potential_n = tuple([ sympy.lambdify(self._all_variables, entry, "numpy") for entry in self._potential_s ])
+        self._potential_n = tuple([ sympy.lambdify(self._variables, entry, "numpy") for entry in self._potential_s ])
 
         # The cached eigenvalues, symbolic expressions and evaluatable functions
         self._eigenvalues_s = None
@@ -174,7 +174,7 @@ class MatrixPotential2S(MatrixPotential):
         self._eigenvalues_s = (l1, l2)
 
         # The numerical functions for the eigenvalues
-        self._eigenvalues_n = tuple([ sympy.lambdify(self._all_variables, item, "numpy") for item in self._eigenvalues_s ])
+        self._eigenvalues_n = tuple([ sympy.lambdify(self._variables, item, "numpy") for item in self._eigenvalues_s ])
 
 
     def evaluate_eigenvalues_at(self, grid, entry=None, as_matrix=False):
@@ -279,7 +279,7 @@ class MatrixPotential2S(MatrixPotential):
 
         # Attention, the components get listed in columns-wise order!
         for vector in self._eigenvectors_s:
-            self._eigenvectors_n.append([ sympy.lambdify(self._all_variables, component, "numpy")
+            self._eigenvectors_n.append([ sympy.lambdify(self._variables, component, "numpy")
                                           for component in vector ])
 
 
@@ -357,7 +357,7 @@ class MatrixPotential2S(MatrixPotential):
             M[1,1] = t * (sympy.cosh(D) - (a-d)/2 * sympy.sinh(D)/D)
 
         self._exponential_s = M
-        self._exponential_n = tuple([ sympy.lambdify(self._all_variables, item, "numpy")
+        self._exponential_n = tuple([ sympy.lambdify(self._variables, item, "numpy")
                                       for item in self._exponential_s ])
 
 
@@ -401,13 +401,13 @@ class MatrixPotential2S(MatrixPotential):
             # TODO: Add symbolic simplification
             for ew in self._eigenvalues_s:
                 tmp = sympy.Matrix([[ew]])
-                self._jacobian_s.append( tmp.jacobian(self._all_variables).T )
+                self._jacobian_s.append( tmp.jacobian(self._variables).T )
 
             self._jacobian_n = []
 
             # Attention, the components get listed in columns-wise order!
             for jacobian in self._jacobian_s:
-                self._jacobian_n.append([ sympy.lambdify(self._all_variables, component, "numpy")
+                self._jacobian_n.append([ sympy.lambdify(self._variables, component, "numpy")
                                           for component in jacobian ])
 
 
@@ -463,12 +463,12 @@ class MatrixPotential2S(MatrixPotential):
             self._hessian_s = []
             # TODO: Add symbolic simplification
             for ew in self._eigenvalues_s:
-                self._hessian_s.append( sympy.hessian(ew, self._all_variables) )
+                self._hessian_s.append( sympy.hessian(ew, self._variables) )
 
             self._hessian_n = []
 
             for hessian in self._hessian_s:
-                self._hessian_n.append([ sympy.lambdify(self._all_variables, entry, "numpy")
+                self._hessian_n.append([ sympy.lambdify(self._variables, entry, "numpy")
                                          for entry in hessian ])
 
 
@@ -613,15 +613,15 @@ class MatrixPotential2S(MatrixPotential):
 
         # Point q where the taylor series is computed
         # This is a column vector q = (q1, ... ,qD)
-        qs = [ sympy.Symbol("q"+str(i)) for i in xrange(len(self._all_variables)) ]
-        pairs = [ (xi,qi) for xi,qi in zip(self._all_variables, qs) ]
+        qs = [ sympy.Symbol("q"+str(i)) for i in xrange(len(self._variables)) ]
+        pairs = [ (xi,qi) for xi,qi in zip(self._variables, qs) ]
 
         V = self._eigenvalues_s[diagonal_component].subs(pairs)
         J = self._jacobian_s[diagonal_component].subs(pairs)
         H = self._hessian_s[diagonal_component].subs(pairs)
 
         # Symbolic expression for the quadratic Taylor expansion term
-        xmq = sympy.Matrix([ (xi-qi) for xi,qi in zip(self._all_variables, qs) ])
+        xmq = sympy.Matrix([ (xi-qi) for xi,qi in zip(self._variables, qs) ])
         quadratic = sympy.Matrix([[V]]) + J.T*xmq + sympy.Rational(1,2)*xmq.T*H*xmq
 
         # Symbolic simplification may fail
@@ -647,7 +647,7 @@ class MatrixPotential2S(MatrixPotential):
         # Construct functions to evaluate the approximation at point q at the given nodes
         # The variable ordering in lambdify is [x1, ..., xD, q1, ...., qD]
         self._remainder_eigen_n[diagonal_component] = tuple([
-            sympy.lambdify(self._all_variables + qs, entry, "numpy") for entry in remainder ])
+            sympy.lambdify(list(self._variables) + qs, entry, "numpy") for entry in remainder ])
 
 
     def _calculate_local_remainder_inhomogeneous(self):
@@ -671,15 +671,15 @@ class MatrixPotential2S(MatrixPotential):
         for index, eigenvalue in enumerate(self._eigenvalues_s):
             # Point q where the taylor series is computed
             # This is a column vector q = (q1, ... ,qD)
-            qs = [ sympy.Symbol("q"+str(i)) for i,v in enumerate(self._all_variables) ]
-            pairs = [ (xi,qi) for xi,qi in zip(self._all_variables, qs) ]
+            qs = [ sympy.Symbol("q"+str(i)) for i,v in enumerate(self._variables) ]
+            pairs = [ (xi,qi) for xi,qi in zip(self._variables, qs) ]
 
             V = self._eigenvalues_s[index].subs(pairs)
             J = self._jacobian_s[index].subs(pairs)
             H = self._hessian_s[index].subs(pairs)
 
             # Symbolic expression for the quadratic Taylor expansion term
-            xmq = sympy.Matrix([ (xi-qi) for xi,qi in zip(self._all_variables, qs) ])
+            xmq = sympy.Matrix([ (xi-qi) for xi,qi in zip(self._variables, qs) ])
             quadratic = sympy.Matrix([[V]]) + J.T*xmq + sympy.Rational(1,2)*xmq.T*H*xmq
             try:
                 quadratic = quadratic.applyfunc(sympy.simplify)
@@ -703,7 +703,7 @@ class MatrixPotential2S(MatrixPotential):
 
         # Construct functions to evaluate the approximation at point q at the given nodes
         self._remainder_eigen_ih_n = tuple([
-            sympy.lambdify(self._all_variables + qs, entry, "numpy") for entry in remainder ])
+            sympy.lambdify(list(self._variables) + qs, entry, "numpy") for entry in remainder ])
 
 
     def calculate_local_remainder(self, diagonal_component=None):

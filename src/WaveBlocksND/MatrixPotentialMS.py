@@ -39,7 +39,7 @@ class MatrixPotentialMS(MatrixPotential):
         self._number_components = expression.shape[0]
 
         # The variables that represents position space. The order matters!
-        self._all_variables = variables
+        self._variables = variables
 
         # The dimension of position space.
         self._dimension = len(variables)
@@ -69,7 +69,7 @@ class MatrixPotentialMS(MatrixPotential):
 
         # The the potential, symbolic expressions and evaluatable functions
         self._potential_s = expression
-        self._potential_n = tuple([ sympy.lambdify(self._all_variables, entry, "numpy") for entry in self._potential_s ])
+        self._potential_n = tuple([ sympy.lambdify(self._variables, entry, "numpy") for entry in self._potential_s ])
 
         # The cached eigenvalues evaluatable functions
         self._eigenvalues_n = None

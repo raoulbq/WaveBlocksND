@@ -10,6 +10,8 @@ subtype of the instance is derived from the potentials' symbolic expression.
 
 import sympy
 
+import GlobalDefaults
+
 __all__ = ["PotentialFactory"]
 
 
@@ -42,7 +44,7 @@ class PotentialFactory(object):
         """
         # The potential reference given in the parameter provider.
         # This may be a string which is the common name of the potential
-        # or a full potential description. In the first case we try
+        # or a full potential description dict. In the first case we try
         # to find the referenced potential in the potential library
         # while in the second one, we can omit this step.
         potential_reference = parameters["potential"]
@@ -81,7 +83,7 @@ class PotentialFactory(object):
 
         # Build the potential matrix with known values substituted for symbolic constants
         final_matrix = []
-        free_symbols = []
+        left_free_symbols = []
 
         for row in potmatrix:
             cur_row = []
@@ -99,10 +101,8 @@ class PotentialFactory(object):
                         # We do have a default value
                         val = default_params[atom.name]
                     else:
-                        # No default value found either! This could be an input
-                        # error in the potential definition but we rather interpret this
-                        # case as a free parameter, for example the first space coordinate x
-                        free_symbols.append(atom)
+                        # No default value found either!
+                        left_free_symbols.append(atom)
                         continue
 
                     # Sympify in case the values was specified as a string
@@ -113,10 +113,11 @@ class PotentialFactory(object):
                 item = item.subs(values)
 
                 # Try to simplify, but may fail
-                try:
-                    item = sympy.simplify(item)
-                except:
-                    pass
+                if GlobalDefaults.__dict__["try_simplification"] is True:
+                    try:
+                        item = sympy.simplify(item)
+                    except:
+                        pass
 
                 # And insert into the final potential matrix
                 cur_row.append(item)
@@ -125,12 +126,12 @@ class PotentialFactory(object):
 
         # Create a real sympy matrix instance
         potential_matrix = sympy.Matrix(final_matrix)
-        # potential_matrix is set now
-
 
         # Check if the matrix is square
         if not potential_matrix.is_square:
             raise ValueError("Potential matrix is not square!")
+
+        # potential_matrix is set now
 
         # Read of the number of components
         if potential_description.has_key("number_components"):
@@ -141,83 +142,42 @@ class PotentialFactory(object):
             nc = nc_given
         else:
             nc = potential_matrix.rows
-        # nc is set now
 
-        # Now it gets really UGLY ... :-(
-
-        # should also check parameters["potential"] !!
+        # N is set now
 
         # Get the variables used for the space axes
         if not potential_description.has_key("variables"):
-            found_free_variables = sorted(set(free_symbols))
-            unused_free_variables = []
-
-            if potential_description.has_key("dimension"):
-                # The dimension is explicitely specified
-                dimension_given = potential_description["dimension"]
-                dimension_found = len(found_free_variables)
-
-                if dimension_found > dimension_given:
-                    raise ValueError("Too many free variables!")
-                elif dimension_found < dimension_given:
-                    # Create additional free variables
-                    unused_free_variables = [ sympy.Dummy("x_"+str(i)) for i in xrange(dimension_found,dimension_given) ]
-
-                assert len(found_free_variables) + len(unused_free_variables) == dimension_given
-                dimension = dimension_given
-            else:
-                dimension = len(found_free_variables)
-
-            free_variables = found_free_variables
-
+            raise ValueError("No variables for potential given!")
         else:
             given_free_variables = set(map(sympy.sympify, potential_description["variables"]))
-            found_free_variables = set(free_symbols)
-            unused_free_variables = []
+            found_free_variables = set(left_free_symbols)
+            # Check consistency
+            if not found_free_variables.issubset(given_free_variables):
+                raise ValueError("Inconsistent use of variables in potential matrix!")
 
-            if potential_description.has_key("dimension"):
-                # The dimension is explicitely specified
-                dimension = potential_description["dimension"]
-                assert dimension == len(given_free_variables)
-            else:
-                dimension = len(given_free_variables)
+            free_variables = tuple(map(sympy.sympify, potential_description["variables"]))
 
-            if len(found_free_variables) > dimension:
-                raise ValueError("Too many free variables!")
-            elif len(found_free_variables) < dimension:
-                assert given_free_variables.issuperset(found_free_variables)
-                unused_free_variables = given_free_variables.difference(found_free_variables)
-
-            free_variables = found_free_variables
-
-        # dimension, free_vars and unused_free_vars set now
-
-        if len(free_variables) == 0 and len(unused_free_variables) == 0:
-            raise ValueError("Could not construct potential, not enough data given!")
+        # The space dimension is just the number of free variables
+        dimension = len(free_variables)
 
         # Debug:
-        print("===================")
-        print("Space dimension is:")
-        print(dimension)
-        print("Free variables are:")
-        print(free_variables)
-        print("Unused variables are:")
-        print(unused_free_variables)
-        print("Potential matrix is:")
-        print(potential_matrix)
-        print("Number of levels:")
-        print(nc)
-
-        # Hack for unique symbols
-        free_symbols = list(set(free_symbols))
+        print("====================================")
+        print("Potential:")
+        print("----------")
+        print(" Space dimension D is: " + str(dimension))
+        print(" Number N of levels:   " + str(nc))
+        print(" Free variables are:   " + str(free_variables))
+        print(" Potential matrix is:")
+        print(str(potential_matrix))
+        print("====================================")
 
         # Create instances of MatrixPotential*
         if nc == 1:
             from MatrixPotential1S import MatrixPotential1S
-            potential = MatrixPotential1S(potential_matrix, free_symbols)
+            potential = MatrixPotential1S(potential_matrix, free_variables)
         elif nc == 2:
             from MatrixPotential2S import MatrixPotential2S
-            potential = MatrixPotential2S(potential_matrix, free_symbols)
+            potential = MatrixPotential2S(potential_matrix, free_variables)
         else:
             #from MatrixPotentialMS import MatrixPotentialMS
             pass
