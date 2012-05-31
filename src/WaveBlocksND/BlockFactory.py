@@ -11,11 +11,21 @@ __all__ = ["BlockFactory"]
 
 
 class BlockFactory(object):
-    """A factory for :py:class:`Wavepacket` instances.
+    """A factory to create instances of various classes
+    based on a simple description ``dict``.
     """
 
     def __init__(self):
-        pass
+
+        # Load different factory methods
+        import GridFactory
+        self.__dict__["create_grid"] = GridFactory.create_grid
+
+        import PotentialFactory
+        self.__dict__["create_potential"] = PotentialFactory.create_potential
+
+        import MatrixExponentialFactory
+        self.__dict__["create_matrixexponential"] = MatrixExponentialFactory.create_matrixexponential
 
 
     # TODO: Consider "local" vs "global" description dicts

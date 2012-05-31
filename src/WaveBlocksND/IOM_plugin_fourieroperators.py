@@ -21,8 +21,8 @@ def add_fourieroperators(self, parameters, blockid=0):
     """
     grp_pr = self._srf[self._prefixb+str(blockid)].create_group("propagation")
     grp_op = grp_pr.create_group("operators")
-    grp_op.create_dataset("opkinetic", list(parameters["grid_number_nodes"]), np.complexfloating)
-    grp_op.create_dataset("oppotential", [parameters["ncomponents"]**2]+list(parameters["grid_number_nodes"]), np.complexfloating)
+    grp_op.create_dataset("opkinetic", list(parameters["number_nodes"]), np.complexfloating)
+    grp_op.create_dataset("oppotential", [parameters["ncomponents"]**2]+list(parameters["number_nodes"]), np.complexfloating)
 
 
 def delete_fourieroperators(self, blockid=0):

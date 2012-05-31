@@ -7,7 +7,6 @@ Compute the kinetic and potential energies of the homogeneous wavepackets.
 @license: Modified BSD License
 """
 
-from WaveBlocksND import PotentialFactory
 from WaveBlocksND import BlockFactory
 from WaveBlocksND import BasisTransformationHAWP
 from WaveBlocksND import ObservablesHAWP
@@ -27,7 +26,7 @@ def compute_energy(iom, blockid=0):
     nrtimesteps = timesteps.shape[0]
 
     # The potential used
-    Potential = PotentialFactory().create_potential(parameters)
+    Potential = BlockFactory().create_potential(parameters)
 
     # Basis transformator
     BT = BasisTransformationHAWP(Potential)

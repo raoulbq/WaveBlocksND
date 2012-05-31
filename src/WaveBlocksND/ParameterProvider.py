@@ -12,7 +12,7 @@ features like fetching undefined values from a global configuration.
 from copy import deepcopy
 
 import GlobalDefaults
-from PotentialFactory import PotentialFactory as PF
+from BlockFactory import BlockFactory
 from TimeManager import TimeManager
 
 __all__ = ["ParameterProvider"]
@@ -81,7 +81,7 @@ class ParameterProvider(object):
 
         if self._params.has_key("potential"):
             # Ugly hack. Should improve handling of potential libraries
-            Potential = PF().create_potential(self)
+            Potential = BlockFactory().create_potential(self)
             # Number of components of $\Psi$
             self._params["ncomponents"] = Potential.get_number_components()
 

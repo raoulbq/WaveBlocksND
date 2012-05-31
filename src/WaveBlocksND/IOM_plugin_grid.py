@@ -14,12 +14,12 @@ def add_grid(self, parameters, blockid=0):
     """Add storage for a tensor product grid.
 
     :param parameters: A :py:class:`ParameterProvider` instance containing
-                       at least the keys `grid_number_nodes` and `dimension`.
+                       at least the keys `number_nodes` and `dimension`.
     :param blockid: The ID of the data block to operate on.
     """
     # TODO: Consider storing axes, extensions etc too
     # TODO: What about grid types other than tensor product grids?
-    self._srf[self._prefixb+str(blockid)].create_dataset("grid", [parameters["dimension"]] + list(parameters["grid_number_nodes"]), np.floating)
+    self._srf[self._prefixb+str(blockid)].create_dataset("grid", [parameters["dimension"]] + list(parameters["number_nodes"]), np.floating)
 
 
 def delete_grid(self, blockid=0):

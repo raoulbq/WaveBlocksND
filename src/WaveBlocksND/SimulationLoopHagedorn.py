@@ -11,7 +11,6 @@ for the homogeneous Hagedorn propagator.
 from SimulationLoop import SimulationLoop
 from IOManager import IOManager
 from TimeManager import TimeManager
-from PotentialFactory import PotentialFactory
 from BlockFactory import BlockFactory
 from BasisTransformationHAWP import BasisTransformationHAWP
 from HagedornPropagator import HagedornPropagator
@@ -56,7 +55,7 @@ class SimulationLoopHagedorn(SimulationLoop):
         :raise ValueError: For invalid or missing input data.
         """
         # The potential instance
-        potential = PotentialFactory().create_potential(self.parameters)
+        potential = BlockFactory().create_potential(self.parameters)
 
         # Project the initial values to the canonical basis
         BT = BasisTransformationHAWP(potential)

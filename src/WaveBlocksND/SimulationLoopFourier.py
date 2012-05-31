@@ -8,8 +8,7 @@ for the Fourier propagator.
 @license: Modified BSD License
 """
 
-from GridFactory import GridFactory
-from PotentialFactory import PotentialFactory
+from BlockFactory import BlockFactory
 from Initializer import Initializer
 from BasisTransformationWF import BasisTransformationWF
 from FourierPropagator import FourierPropagator
@@ -56,10 +55,10 @@ class SimulationLoopFourier(SimulationLoop):
         :raise ValueError: For invalid or missing input data.
         """
         # The potential instance
-        potential = PotentialFactory().create_potential(self.parameters)
+        potential = BlockFactory().create_potential(self.parameters)
 
         # Compute the position space grid points
-        grid = GridFactory().create_grid(self.parameters)
+        grid = BlockFactory().create_grid(self.parameters)
 
         # Construct initial values
         I = Initializer(self.parameters)

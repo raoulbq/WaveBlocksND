@@ -2,7 +2,8 @@
 
 This file contains some ready made potentials in several variables
 and with several separate energy levels. This is a pure data file
-without any code. To load the potentials, use the :py:class:`PotentialFactory`.
+without any code. To load the potentials, use the methods of
+:py:class:`BlockFactory`.
 
 @author: R. Bourquin
 @copyright: Copyright (C) 2010, 2011, 2012 R. Bourquin

@@ -9,7 +9,6 @@ Compute the norms of the homogeneous wavepackets as well as the sum of all norms
 
 from numpy import unique
 
-from WaveBlocksND import PotentialFactory
 from WaveBlocksND import BlockFactory
 from WaveBlocksND import BasisTransformationHAWP
 
@@ -28,7 +27,7 @@ def compute_norm(iom, blockid=0):
     nrtimesteps = timesteps.shape[0]
 
     # The potential used
-    Potential = PotentialFactory().create_potential(parameters)
+    Potential = BlockFactory().create_potential(parameters)
 
     # Basis transformator
     BT = BasisTransformationHAWP(Potential)

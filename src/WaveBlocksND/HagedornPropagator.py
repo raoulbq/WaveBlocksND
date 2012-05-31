@@ -11,7 +11,7 @@ from functools import partial
 from numpy import dot
 
 from Propagator import Propagator
-from MatrixExponentialFactory import MatrixExponentialFactory
+from BlockFactory import BlockFactory
 
 __all__ = ["HagedornPropagator"]
 
@@ -56,7 +56,7 @@ class HagedornPropagator(Propagator):
         self._dt = self._parameters["dt"]
 
         # Decide about the matrix exponential algorithm to use
-        self.__dict__["_matrix_exponential"] = MatrixExponentialFactory().get_matrixexponential(parameters)
+        self.__dict__["_matrix_exponential"] = BlockFactory().create_matrixexponential(parameters)
 
         # Precalculate the potential splittings needed
         self._prepare_potential()

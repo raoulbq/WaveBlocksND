@@ -7,8 +7,7 @@ Calculate the norms of the different wavefunctions as well as the sum of all nor
 @license: Modified BSD License
 """
 
-from WaveBlocksND import PotentialFactory
-from WaveBlocksND import GridFactory
+from WaveBlocksND import BlockFactory
 from WaveBlocksND import WaveFunction
 from WaveBlocksND import BasisTransformationWF
 
@@ -32,10 +31,10 @@ def compute_norm(iom, blockid=0):
     # elif  iom.has_grid(blockid="global"):
     #     grid = iom.load_grid(blockid="global")
     # else:
-    grid = GridFactory().create_grid(parameters)
+    grid = BlockFactory().create_grid(parameters)
 
     # The potential used
-    Potential = PotentialFactory().create_potential(parameters)
+    Potential = BlockFactory().create_potential(parameters)
 
     # Basis transformator
     BT = BasisTransformationWF(Potential)

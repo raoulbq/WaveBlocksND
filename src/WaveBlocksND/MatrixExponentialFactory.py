@@ -10,34 +10,24 @@ matrix exponential routine.
 
 from functools import partial
 
-__all__  =["MatrixExponentialFactory"]
 
+def create_matrixexponential(description):
+    """Returns the requested matrix exponential routine.
 
-class MatrixExponentialFactory:
-    """A factory for matrix exponential routines.
+    :param description: A :py:class:`ParameterProvider` instance containing at least the
+                       key ``matrix_exponential`` and depending on its values more keys.
     """
+    method = description["matrix_exponential"]
 
-    def __init__(self):
-        pass
-
-
-    def get_matrixexponential(self, parameters):
-        """Returns the requested matrix exponential routine.
-
-        :param parameters: A :py:class:`ParameterProvider` instance containing at least the
-                           key ``matrix_exponential`` and depending on its values more keys.
-        """
-        method = parameters["matrix_exponential"]
-
-        if method == "pade":
-            from MatrixExponential import matrix_exp_pade
-            return matrix_exp_pade
-        elif method == "arnoldi":
-            from MatrixExponential import matrix_exp_arnoldi
-            try:
-                arnoldi_steps = min(parameters["basis_size"], parameters["arnoldi_steps"])
-            except:
-                arnoldi_steps = parameters["arnoldi_steps"]
-            return partial(matrix_exp_arnoldi, k=arnoldi_steps)
-        else:
-            raise ValueError("Unknown matrix exponential algorithm")
+    if method == "pade":
+        from MatrixExponential import matrix_exp_pade
+        return matrix_exp_pade
+    elif method == "arnoldi":
+        from MatrixExponential import matrix_exp_arnoldi
+        try:
+            arnoldi_steps = min(description["basis_size"], description["arnoldi_steps"])
+        except:
+            arnoldi_steps = description["arnoldi_steps"]
+        return partial(matrix_exp_arnoldi, k=arnoldi_steps)
+    else:
+        raise ValueError("Unknown matrix exponential algorithm")
