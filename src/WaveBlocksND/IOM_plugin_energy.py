@@ -10,41 +10,56 @@ IOM plugin providing functions for handling energy data.
 import numpy as np
 
 
-def add_energy(self, parameters, timeslots=None, blockid=0, total=False):
+def add_energy(self, parameters, timeslots=None, blockid=0, key=("kin", "pot")):
     """
     :param parameters: A :py:class:`ParameterProvider` instance containing
                        at least the key `ncomponents`.
     :param blockid: The ID of the data block to operate on.
+    :param key: Specify which energies to save. All are independent.
+    :type key: Tuple of valid identifier strings that are ``kin``, ``pot`` and ``tot``.
+               Default is ``("kin", "pot")``.
     """
-    # TODO: refactor, keyword 'total'
-    # Store the potential and kinetic energies
+    # Check that the "observables" group is present
     grp_ob = self._srf[self._prefixb+str(blockid)].require_group("observables")
 
-    # Create the dataset with appropriate parameters
+    # Add a new group for energies
     grp_en = grp_ob.create_group("energies")
 
-    if timeslots is None:
-        # This case is event based storing
-        daset_ek = grp_en.create_dataset("kinetic", (0, parameters["ncomponents"]), dtype=np.floating, chunks=True, maxshape=(None,parameters["ncomponents"]))
-        daset_ep = grp_en.create_dataset("potential", (0, parameters["ncomponents"]), dtype=np.floating, chunks=True, maxshape=(None,parameters["ncomponents"]))
-        daset_tg = grp_en.create_dataset("timegrid", (0,), dtype=np.integer, chunks=True, maxshape=(None,))
+    # Now add all requested data sets
+    # First case is event based storing
+    # In the other the user specified how much space is necessary.
+    if "kin" in key and not "kinetic" in grp_en.keys():
+        if timeslots is None:
+            daset_ek = grp_en.create_dataset("kinetic", (0, parameters["ncomponents"]), dtype=np.floating, chunks=True, maxshape=(None,parameters["ncomponents"]))
+            daset_tgek = grp_en.create_dataset("timegrid_kin", (0,), dtype=np.integer, chunks=True, maxshape=(None,))
+        else:
+            daset_ek = grp_en.create_dataset("kinetic", (timeslots, parameters["ncomponents"]), dtype=np.floating)
+            daset_tgek = grp_en.create_dataset("timegrid_kin", (timeslots,), dtype=np.integer)
+        # Mark all steps as invalid
+        daset_tgek[...] = -1.0
+        daset_tgek.attrs["pointer"] = 0
 
-        if total is True:
+    if "pot" in key and not "potential" in grp_en.keys():
+        if timeslots is None:
+            daset_ep = grp_en.create_dataset("potential", (0, parameters["ncomponents"]), dtype=np.floating, chunks=True, maxshape=(None,parameters["ncomponents"]))
+            daset_tgep = grp_en.create_dataset("timegrid_pot", (0,), dtype=np.integer, chunks=True, maxshape=(None,))
+        else:
+            daset_ep = grp_en.create_dataset("potential", (timeslots, parameters["ncomponents"]), dtype=np.floating)
+            daset_tgep = grp_en.create_dataset("timegrid_pot", (timeslots,), dtype=np.integer)
+        # Mark all steps as invalid
+        daset_tgep[...] = -1.0
+        daset_tgep.attrs["pointer"] = 0
+
+    if "tot" in key and not "total" in grp_en.keys():
+        if timeslots is None:
             daset_to = grp_en.create_dataset("total", (0, 1), dtype=np.floating, chunks=True, maxshape=(None,1))
-            daset_to.attrs["pointer"] = 0
-    else:
-        # User specified how much space is necessary.
-        daset_ek = grp_en.create_dataset("kinetic", (timeslots, parameters["ncomponents"]), dtype=np.floating)
-        daset_ep = grp_en.create_dataset("potential", (timeslots, parameters["ncomponents"]), dtype=np.floating)
-        daset_tg = grp_en.create_dataset("timegrid", (timeslots,), dtype=np.integer)
-
-        if total is True:
+            daset_tget = grp_en.create_dataset("timegrid_tot", (0,), dtype=np.integer, chunks=True, maxshape=(None,))
+        else:
             daset_to = grp_en.create_dataset("total", (timeslots, 1), dtype=np.floating)
-            daset_to.attrs["pointer"] = 0
-
-    # Mark all steps as invalid
-    daset_tg[...] = -1.0
-    daset_tg.attrs["pointer"] = 0
+            daset_tget = grp_en.create_dataset("timegrid_tot", (timeslots,), dtype=np.integer)
+        # Mark all steps as invalid
+        daset_tget[...] = -1.0
+        daset_tget.attrs["pointer"] = 0
 
 
 def delete_energy(self, blockid=0):
@@ -61,108 +76,130 @@ def delete_energy(self, blockid=0):
         pass
 
 
-def has_energy(self, blockid=0):
+def has_energy(self, blockid=0, key=("kin", "pot")):
     """Ask if the specified data block has the desired data tensor.
 
     :param blockid: The ID of the data block to operate on.
+    :param key: Specify which energies to save. All are independent.
+    :type key: Tuple of valid identifier strings that are ``kin``, ``pot`` and ``tot``.
+               Default is ``("kin", "pot")``.
     """
-    return ("observables" in self._srf[self._prefixb+str(blockid)].keys() and
-            "energies" in self._srf[self._prefixb+str(blockid)]["observables"].keys())
+    r = True
+    r &= ("observables" in self._srf[self._prefixb+str(blockid)].keys())
+
+    if r is True:
+        r &= ("energies" in self._srf[self._prefixb+str(blockid)]["observables"].keys())
+
+    if r and "kin" in key:
+        r &= ("kinetic" in self._srf[self._prefixb+str(blockid)]["observables/energies"].keys())
+    if r and "pot" in key:
+        r &= ("potential" in self._srf[self._prefixb+str(blockid)]["observables/energies"].keys())
+    if r and "tot" in key:
+        r &= ("total" in self._srf[self._prefixb+str(blockid)]["observables/energies"].keys())
+
+    return r
 
 
-def save_energy(self, energies, timestep=None, blockid=0):
+def save_energy(self, energies, timestep=None, blockid=0, key=("kin", "pot")):
     """Save the kinetic and potential energies to a file.
 
-    :param energies: A tuple :math:`(E_\text{kin}, E_\text{pot})` containing the energies.
+    :param energies: A tuple containing the energies. The order is important,
+                     it has to match the order in the ``key`` argument. Per default
+                     the order has to be :math:`(E_\text{kin}, E_\text{pot})`.
     :param blockid: The ID of the data block to operate on.
+    :param key: Specify which energies to save. All are independent.
+    :type key: Tuple of valid identifier strings that are ``kin``, ``pot`` and ``tot``.
+               Default is ``("kin", "pot")``.
     """
-    pathtg = "/"+self._prefixb+str(blockid)+"/observables/energies/timegrid"
-    pathd1 = "/"+self._prefixb+str(blockid)+"/observables/energies/kinetic"
-    pathd2 = "/"+self._prefixb+str(blockid)+"/observables/energies/potential"
-    timeslot = self._srf[pathtg].attrs["pointer"]
+    for item, datum in zip(key, energies):
+        if item == "kin":
+            pathtg = "/"+self._prefixb+str(blockid)+"/observables/energies/timegrid_kin"
+            pathd = "/"+self._prefixb+str(blockid)+"/observables/energies/kinetic"
+        elif item == "pot":
+            pathtg = "/"+self._prefixb+str(blockid)+"/observables/energies/timegrid_pot"
+            pathd = "/"+self._prefixb+str(blockid)+"/observables/energies/potential"
+        elif item == "tot":
+            pathtg = "/"+self._prefixb+str(blockid)+"/observables/energies/timegrid_tot"
+            pathd = "/"+self._prefixb+str(blockid)+"/observables/energies/total"
 
-    # TODO: remove np.array
-    ekin = np.real(np.array(energies[0]))
-    epot = np.real(np.array(energies[1]))
+        timeslot = self._srf[pathtg].attrs["pointer"]
 
-    # Write the data
-    self.must_resize(pathd1, timeslot)
-    self.must_resize(pathd2, timeslot)
-    self._srf[pathd1][timeslot,:] = ekin
-    self._srf[pathd2][timeslot,:] = epot
+        # TODO: remove np.array
+        energy = np.real(np.array(datum))
 
-    # Write the timestep to which the stored values belong into the timegrid
-    self.must_resize(pathtg, timeslot)
-    self._srf[pathtg][timeslot] = timestep
+        # Write the data
+        self.must_resize(pathd, timeslot)
+        self._srf[pathd][timeslot,:] = energy
 
-    # Update the pointer
-    self._srf[pathtg].attrs["pointer"] += 1
+        # Write the timestep to which the stored values belong into the timegrid
+        self.must_resize(pathtg, timeslot)
+        self._srf[pathtg][timeslot] = timestep
+
+        # Update the pointer
+        self._srf[pathtg].attrs["pointer"] += 1
 
 
-def save_energy_total(self, total_energy, timestep=None, blockid=0):
-    """Save the total energy to a file.
+def load_energy_timegrid(self, blockid=0, key=("kin", "pot")):
+    """Load the time grid for specified energies.
 
-    :param total_energy: An array containing a time series of the total energy.
     :param blockid: The ID of the data block to operate on.
+    :param key: Specify which energies to save. All are independent.
+    :type key: Tuple of valid identifier strings that are ``kin``, ``pot`` and ``tot``.
+               Default is ``("kin", "pot")``.
     """
-    pathd = "/"+self._prefixb+str(blockid)+"/observables/energies/total"
+    tg = []
+    for item in key:
+        if item == "kin":
+            pathtg = "/"+self._prefixb+str(blockid)+"/observables/energies/timegrid_kin"
+            tg.append(self._srf[pathtg][:])
+        elif item == "pot":
+            pathtg = "/"+self._prefixb+str(blockid)+"/observables/energies/timegrid_pot"
+            tg.append(self._srf[pathtg][:])
+        elif item == "tot":
+            pathtg = "/"+self._prefixb+str(blockid)+"/observables/energies/timegrid_tot"
+            tg.append(self._srf[pathtg][:])
 
-    timeslot = self._srf[pathd].attrs["pointer"]
-
-    #todo: remove np,array
-    etot = np.real(np.array(total_energy))
-
-    # Write the data
-    self.must_resize(pathd, timeslot)
-    self._srf[pathd][timeslot,0] = etot
-
-    # Update the pointer
-    self._srf[pathd].attrs["pointer"] += 1
-
-
-def load_energy_timegrid(self, blockid=0):
-    """
-    :param blockid: The ID of the data block to operate on.
-    """
-    pathtg = "/"+self._prefixb+str(blockid)+"/observables/energies/timegrid"
-    return self._srf[pathtg][:]
-
-
-def load_energy(self, timestep=None, split=False, blockid=0):
-    """
-    :param blockid: The ID of the data block to operate on.
-    """
-    pathtg = "/"+self._prefixb+str(blockid)+"/observables/energies/timegrid"
-    pathd1 = "/"+self._prefixb+str(blockid)+"/observables/energies/kinetic"
-    pathd2 = "/"+self._prefixb+str(blockid)+"/observables/energies/potential"
-
-    if timestep is not None:
-        index = self.find_timestep_index(pathtg, timestep)
-        axis = 0
+    if len(tg) == 1:
+        return tg[0]
     else:
-        index = slice(None)
-        axis = 1
-
-    if split is True:
-        ekin = self.split_data( self._srf[pathd1][index,...], axis)
-        epot = self.split_data( self._srf[pathd2][index,...], axis)
-    else:
-        ekin = self._srf[pathd1][index,...]
-        epot = self._srf[pathd2][index,...]
-
-    return (ekin, epot)
+        return tuple(tg)
 
 
-def load_energy_total(self, timestep=None, blockid=0):
+def load_energy(self, timestep=None, split=False, blockid=0, key=("kin", "pot")):
     """
     :param blockid: The ID of the data block to operate on.
+    :param key: Specify which energies to save. All are independent.
+    :type key: Tuple of valid identifier strings that are ``kin``, ``pot`` and ``tot``.
+               Default is ``("kin", "pot")``.
     """
-    pathtg = "/"+self._prefixb+str(blockid)+"/observables/energies/timegrid"
-    pathd = "/"+self._prefixb+str(blockid)+"/observables/energies/total"
+    result = []
 
-    if timestep is not None:
-        index = self.find_timestep_index(pathtg, timestep)
+    for item in key:
+        if item == "kin":
+            pathd = "/"+self._prefixb+str(blockid)+"/observables/energies/kinetic"
+            pathtg = "/"+self._prefixb+str(blockid)+"/observables/energies/timegrid_ek"
+        elif item == "pot":
+            pathd = "/"+self._prefixb+str(blockid)+"/observables/energies/potential"
+            pathtg = "/"+self._prefixb+str(blockid)+"/observables/energies/timegrid_ep"
+        elif item == "tot":
+            pathd = "/"+self._prefixb+str(blockid)+"/observables/energies/total"
+            pathtg = "/"+self._prefixb+str(blockid)+"/observables/energies/timegrid_et"
+
+        if timestep is not None:
+            index = self.find_timestep_index(pathtg, timestep)
+            axis = 0
+        else:
+            index = slice(None)
+            axis = 1
+
+        if split is True:
+            energy = self.split_data( self._srf[pathd][index,...], axis)
+        else:
+            energy = self._srf[pathd][index,...]
+
+        result.append(energy)
+
+    if len(result) == 1:
+        return result[0]
     else:
-        index = slice(None)
-
-    return self._srf[pathd][index,...]
+        return tuple(result)
