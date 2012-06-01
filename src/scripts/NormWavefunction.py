@@ -12,7 +12,7 @@ from WaveBlocksND import WaveFunction
 from WaveBlocksND import BasisTransformationWF
 
 
-def compute_norm(iom, blockid=0):
+def compute_norm(iom, blockid=0, eigentrafo=True):
     """Compute the norm of a wavefunction timeseries.
 
     :param iom: An :py:class:`IOManager` instance providing the simulation data.
@@ -24,21 +24,16 @@ def compute_norm(iom, blockid=0):
     timesteps = iom.load_wavefunction_timegrid(blockid=blockid)
     nrtimesteps = timesteps.shape[0]
 
-    # Try to load the grid, otherwise construct one from the parameters
-    # TODO: We can only do this iff we are able to construct a grid from the data
-    # if iom.has_grid(blockid=blockid):
-    #     grid = iom.load_grid(blockid=blockid)
-    # elif  iom.has_grid(blockid="global"):
-    #     grid = iom.load_grid(blockid="global")
-    # else:
+    # Construct the grid from the parameters
     grid = BlockFactory().create_grid(parameters)
 
     # The potential used
     Potential = BlockFactory().create_potential(parameters)
 
     # Basis transformator
-    BT = BasisTransformationWF(Potential)
-    BT.set_grid(grid)
+    if eigentrafo is True:
+        BT = BasisTransformationWF(Potential)
+        BT.set_grid(grid)
 
     # And two empty wavefunctions
     WF = WaveFunction(parameters)
@@ -57,7 +52,8 @@ def compute_norm(iom, blockid=0):
         WF.set_values(values)
 
         # Project wavefunction values to eigenbasis
-        BT.transform_to_eigen(WF)
+        if eigentrafo is True:
+            BT.transform_to_eigen(WF)
 
         # Calculate the norm of the wave functions projected into the eigenbasis
         norms = WF.norm()

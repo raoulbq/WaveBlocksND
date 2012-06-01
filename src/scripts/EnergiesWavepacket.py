@@ -12,7 +12,7 @@ from WaveBlocksND import BasisTransformationHAWP
 from WaveBlocksND import ObservablesHAWP
 
 
-def compute_energy(iom, blockid=0):
+def compute_energy(iom, blockid=0, eigentrafo=True):
     """Compute the energies of a wavepacket timeseries.
 
     :param iom: An :py:class:`IOManager` instance providing the simulation data.
@@ -29,7 +29,8 @@ def compute_energy(iom, blockid=0):
     Potential = BlockFactory().create_potential(parameters)
 
     # Basis transformator
-    BT = BasisTransformationHAWP(Potential)
+    if eigentrafo is True:
+        BT = BasisTransformationHAWP(Potential)
 
     # We want to save energies, thus add a data slot to the data file
     iom.add_energy(parameters, timeslots=nrtimesteps, blockid=blockid)
@@ -38,7 +39,8 @@ def compute_energy(iom, blockid=0):
     descr = iom.load_wavepacket_description(blockid=blockid)
     HAWP = BlockFactory().create_wavepacket(descr)
 
-    BT.set_matrix_builder(HAWP.get_quadrature())
+    if eigentrafo is True:
+        BT.set_matrix_builder(HAWP.get_quadrature())
 
     # Basis shapes
     BS_descr = iom.load_wavepacket_basisshapes()
@@ -62,7 +64,8 @@ def compute_energy(iom, blockid=0):
         HAWP.set_coefficients(coeffs)
 
         # Transform to the eigenbasis.
-        BT.transform_to_eigen(HAWP)
+        if eigentrafo is True:
+            BT.transform_to_eigen(HAWP)
 
         # Compute the energies
         O.set_quadrature(HAWP.get_quadrature())
