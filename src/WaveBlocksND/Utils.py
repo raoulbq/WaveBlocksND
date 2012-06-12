@@ -18,6 +18,8 @@ def meshgrid_nd(arrays):
     if not len([ None for a in arrays if a.ndim != 1 ]) == 0:
         raise ValueError("Arrays must be 1-dimensional")
 
+    # TODO: Handle one-element arrays!
+
     # The dimension
     D = len(arrays)
 
