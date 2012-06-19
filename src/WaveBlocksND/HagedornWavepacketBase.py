@@ -252,7 +252,7 @@ class HagedornWavepacketBase(Wavepacket):
 
         # TODO: Use LU instead of inv(...)
         df = nodes - q
-        pr1 = sum(df * dot(P*inv(Q), df), axis=0)
+        pr1 = sum(df * dot(dot(P,inv(Q)), df), axis=0)
         pr2 = sum(p * df, axis=0)
 
         exponent = 1.0j / eps**2 * (0.5 * pr1 + pr2)
