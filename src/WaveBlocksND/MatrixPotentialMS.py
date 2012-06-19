@@ -17,6 +17,7 @@ from scipy import linalg
 from MatrixPotential import MatrixPotential
 from Grid import Grid
 from GridWrapper import GridWrapper
+import GlobalDefaults
 
 __all__ = ["MatrixPotentialMS"]
 
@@ -42,6 +43,13 @@ class MatrixPotentialMS(MatrixPotential):
 
         # The dimension of position space.
         self._dimension = len(variables)
+
+        # Do we want to make eigenvectors continuous
+        # TODO: This is an experimental feature!
+        if kwargs.has_key("continuous_eigenvectors"):
+            self._continuous_eigenvectors = kwargs["continuous_eigenvectors"]
+        else:
+            self._continuous_eigenvectors = GlobalDefaults.__dict__["continuous_eigenvectors"]
 
         # This number of energy levels.
         assert expression.is_square
@@ -243,10 +251,11 @@ class MatrixPotentialMS(MatrixPotential):
 
         # A trick due to G. Hagedorn to get continuous eigenvectors
         # TODO: Not sure if it works in higher dimensions too! (Probably it does not)
-        for i in xrange(1,n):
-            for ev in xrange(0,N):
-                if numpy.dot(tmpev[i,:,ev],tmpev[i-1,:,ev]) < 0:
-                    tmpev[i,:,ev] *= -1
+        if self._continuous_eigenvectors is True:
+            for i in xrange(1,n):
+                for ev in xrange(0,N):
+                    if numpy.dot(tmpev[i,:,ev],tmpev[i-1,:,ev]) < 0:
+                        tmpev[i,:,ev] *= -1
 
         return tuple([ numpy.transpose(tmpev[:,:,index]) for index in xrange(N) ])
 
