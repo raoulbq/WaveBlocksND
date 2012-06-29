@@ -72,6 +72,7 @@ from TimeManager import TimeManager
 from SimulationLoop import SimulationLoop
 from SimulationLoopFourier import SimulationLoopFourier
 from SimulationLoopHagedorn import SimulationLoopHagedorn
+from SimulationLoopHagedornInhomogeneous import SimulationLoopHagedornInhomogeneous
 
 from Observables import Observables
 from ObservablesHAWP import ObservablesHAWP

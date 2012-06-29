@@ -100,18 +100,52 @@ def read_data_inhomogeneous(iom, blockid=0):
     :param iom: An :py:class:`IOManager` instance providing the simulation data.
     :param blockid: The data block from which the values are read.
     """
-    pass
-#     parameters = iom.load_parameters()
-#     timegrid = iom.load_inhomogwavepacket_timegrid(blockid=blockid)
-#     time = timegrid * parameters["dt"]
+    parameters = iom.load_parameters()
+    timegrid = iom.load_inhomogwavepacket_timegrid(blockid=blockid)
+    time = timegrid * parameters["dt"]
 
-#     C = iom.load_inhomogwavepacket_coefficients(blockid=blockid)
+    # The potential used
+    Potential = BlockFactory().create_potential(parameters)
 
-#     coeffs = []
-#     for i in xrange(parameters["ncomponents"]):
-#         coeffs.append(squeeze(C[:,i,:]))
+    # Basis transformator
+    BT = BasisTransformationHAWP(Potential)
 
-#     return time, coeffs
+    # Basis shapes
+    BS_descr = iom.load_wavepacket_basisshapes(blockid=blockid)
+    BS = {}
+    for ahash, descr in BS_descr.iteritems():
+        BS[ahash] = BlockFactory().create_basis_shape(descr)
+
+    # Initialize a Hagedorn wavepacket with the data
+    descr = iom.load_inhomogwavepacket_description(blockid=blockid)
+    HAWP = BlockFactory().create_wavepacket(descr)
+
+    BT.set_matrix_builder(HAWP.get_quadrature())
+
+    # Store the resulting coefficients here
+    CI = [ [] for i in xrange(HAWP.get_number_components()) ]
+
+    # Iterate over all timesteps, this is an *expensive* transformation
+    for i, step in enumerate(timegrid):
+        print(" Computing eigentransformation at timestep "+str(step))
+        # Retrieve simulation data
+        params = iom.load_inhomogwavepacket_parameters(timestep=step, blockid=blockid)
+        hashes, coeffs = iom.load_inhomogwavepacket_coefficients(timestep=step, get_hashes=True, blockid=blockid)
+
+        # Configure the wavepacket
+        HAWP.set_parameters(params)
+        HAWP.set_basis_shape([ BS[int(ha)] for ha in hashes ])
+        HAWP.set_coefficients(coeffs)
+
+        # Transform to the eigenbasis.
+        BT.transform_to_eigen(HAWP)
+
+        for index, item in enumerate(HAWP.get_coefficients()):
+            CI[index].append(item)
+
+    CI = [ transpose(hstack(item)) for item in CI ]
+
+    return time, CI
 
 
 def plot_coefficients(parameters, data, index=0, imgsize=(10,20)):

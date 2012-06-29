@@ -58,18 +58,13 @@ def read_data_inhomogeneous(iom, blockid=0):
     :param iom: An :py:class:`IOManager` instance providing the simulation data.
     :param blockid: The data block from which the values are read.
     """
-    pass
-#     parameters = iom.load_parameters()
-#     timegrid = iom.load_inhomogwavepacket_timegrid(blockid=blockid)
-#     time = timegrid * parameters["dt"]
+    parameters = iom.load_parameters()
+    timegrid = iom.load_inhomogwavepacket_timegrid(blockid=blockid)
+    time = timegrid * parameters["dt"]
 
-#     C = iom.load_inhomogwavepacket_coefficients(blockid=blockid)
+    hashes, coeffs = iom.load_inhomogwavepacket_coefficients(blockid=blockid, get_hashes=True)
 
-#     coeffs = []
-#     for i in xrange(parameters["ncomponents"]):
-#         coeffs.append(squeeze(C[:,i,:]))
-
-#     return time, coeffs
+    return time, coeffs
 
 
 def plot_coefficients(parameters, data, index=0, imgsize=(10,20)):

@@ -32,11 +32,15 @@ if __name__ == "__main__":
 
         # TODO: Add new algorithms here
 
-        # If not, we test for a homogeneous wavepacket next
-        if iom.has_wavepacket(blockid=blockid):
+        # We test for an inhomogeneous wavepacket next
+        if iom.has_inhomogwavepacket(blockid=blockid):
             import EnergiesWavepacket
-            EnergiesWavepacket.compute_energy(iom, blockid=blockid, eigentrafo=False, iseigen=False)
-        # If we have no wavepacket, then we try for a wavefunction
+            EnergiesWavepacket.compute_energy_inhawp(iom, blockid=blockid, eigentrafo=False, iseigen=False)
+        # We test for a homogeneous wavepacket next
+        elif iom.has_wavepacket(blockid=blockid):
+            import EnergiesWavepacket
+            EnergiesWavepacket.compute_energy_hawp(iom, blockid=blockid, eigentrafo=False, iseigen=False)
+        # We have no wavepacket, then we try for a wavefunction
         elif iom.has_wavefunction(blockid=blockid):
             import EnergiesWavefunction
             EnergiesWavefunction.compute_energy(iom, blockid=blockid, eigentrafo=False, iseigen=False)

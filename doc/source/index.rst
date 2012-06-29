@@ -99,6 +99,11 @@ Time propagation
    waveblocks_classes/Propagator
    waveblocks_classes/FourierPropagator
    waveblocks_classes/HagedornPropagator
+   waveblocks_classes/HagedornPropagatorInhomogeneous
+   waveblocks_classes/SimulationLoop
+   waveblocks_classes/SimulationLoopFourier
+   waveblocks_classes/SimulationLoopHagedorn
+   waveblocks_classes/SimulationLoopHagedornInhomogeneous
 
 
 Simulation result storage I/O
@@ -113,6 +118,7 @@ Simulation result storage I/O
    waveblocks_classes/IOM_plugin_wavefunction
    waveblocks_classes/IOM_plugin_fourieroperators
    waveblocks_classes/IOM_plugin_wavepacket
+   waveblocks_classes/IOM_plugin_inhomogwavepacket
    waveblocks_classes/IOM_plugin_norm
    waveblocks_classes/IOM_plugin_energy
 

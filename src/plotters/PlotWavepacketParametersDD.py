@@ -29,8 +29,8 @@ def read_all_datablocks(iom):
     for blockid in iom.get_block_ids():
         if iom.has_wavepacket(blockid=blockid):
             plot_parameters(read_data_homogeneous(iom, blockid=blockid), index=blockid)
-        #elif iom.has_inhomogwavepacket(blockid=blockid):
-        #    plot_parameters(read_data_inhomogeneous(iom, blockid=blockid), index=blockid)
+        elif iom.has_inhomogwavepacket(blockid=blockid):
+            plot_parameters(read_data_inhomogeneous(iom, blockid=blockid), index=blockid)
         else:
             print("Warning: Not plotting wavepacket parameters in block '"+str(blockid)+"'!")
 
@@ -62,21 +62,26 @@ def read_data_inhomogeneous(iom, blockid=0):
     :param blockid: The data block from which the values are read.
     """
     parameters = iom.load_parameters()
-#     timegrid = iom.load_inhomogwavepacket_timegrid(blockid=blockid)
-#     time = timegrid * parameters["dt"]
+    timegrid = iom.load_inhomogwavepacket_timegrid(blockid=blockid)
+    time = timegrid * parameters["dt"]
 
-#     Pi = iom.load_inhomogwavepacket_parameters(blockid=blockid)
+    Pis = iom.load_inhomogwavepacket_parameters(blockid=blockid)
 
-#     # Number of components
-#     N = parameters["ncomponents"]
+    # List with Pi time evolutions
+    Phist = []
+    Qhist = []
+    Shist = []
+    phist = []
+    qhist = []
 
-#     Phist = [ Pi[i][:,0] for i in xrange(N) ]
-#     Qhist = [ Pi[i][:,1] for i in xrange(N) ]
-#     Shist = [ Pi[i][:,2] for i in xrange(N) ]
-#     phist = [ Pi[i][:,3] for i in xrange(N) ]
-#     qhist = [ Pi[i][:,4] for i in xrange(N) ]
+    for q,p,Q,P,S in Pis:
+        qhist.append(squeeze(q))
+        phist.append(squeeze(p))
+        Qhist.append(squeeze(Q))
+        Phist.append(squeeze(P))
+        Shist.append(squeeze(S))
 
-#    return (time, Phist, Qhist, Shist, phist, qhist)
+    return (time, qhist, phist, Qhist, Phist, Shist)
 
 
 def plot_parameters(data, index=0):
