@@ -45,3 +45,6 @@ arnoldi_steps = 20
 # Default values about when to save the results
 write_nth = 0
 save_at = []
+
+# Propagator
+propagator = "Semiclassical"

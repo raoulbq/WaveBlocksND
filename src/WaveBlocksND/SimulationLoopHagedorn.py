@@ -14,6 +14,9 @@ from TimeManager import TimeManager
 from BlockFactory import BlockFactory
 from BasisTransformationHAWP import BasisTransformationHAWP
 from HagedornPropagator import HagedornPropagator
+#from SemiclassicalPropagator import SemiclassicalPropagator
+from SemiclassicalPropagator2 import SemiclassicalPropagator
+from MagnusPropagator import MagnusPropagator
 
 __all__ = ["SimulationLoopHagedorn"]
 
@@ -62,7 +65,11 @@ class SimulationLoopHagedorn(SimulationLoop):
 
         # Finally create and initialize the propagator instace
         # TODO: Attach the "leading_component to the hawp as codata
-        self.propagator = HagedornPropagator(self.parameters, potential)
+        if self.parameters.propagator=='MagnusSplit':
+            self.propagator=MagnusPropagator(self.parameters, potential)
+        else:
+            self.propagator=SemiclassicalPropagator(self.parameters, potential)
+            #self.propagator = HagedornPropagator(self.parameters, potential)
 
         # Create suitable wavepackets
         chi = self.parameters["leading_component"]
