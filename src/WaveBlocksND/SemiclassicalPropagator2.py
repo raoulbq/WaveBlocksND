@@ -3,7 +3,7 @@
 This file contains the Hagedorn propagator class for homogeneous wavepackets.
 
 @author: V. Gradinaru
-@copyright: Copyright (C) 2010, 2011, 2012 R. Bourquin
+@copyright: Copyright (C) 2012 V. Gradinaru, R. Bourquin
 @license: Modified BSD License
 """
 
@@ -13,11 +13,12 @@ from numpy.linalg import inv
 
 from Propagator import Propagator
 from BlockFactory import BlockFactory
+from SplittingParameters import SplittingParameters
 
-__all__ = ["SemiclassicalPropagator"]
+__all__ = ["SemiclassicalPropagator2"]
 
 
-class SemiclassicalPropagator(Propagator):
+class SemiclassicalPropagator2(Propagator, SplittingParameters):
     r"""This class can numerically propagate given initial values :math:`\Psi` in
     a potential :math:`V(x)`. The propagation is done for a given set of homogeneous
     Hagedorn wavepackets neglecting interaction."""
@@ -69,7 +70,8 @@ class SemiclassicalPropagator(Propagator):
 
         # Precalculate the potential splittings needed
         self._prepare_potential()
-        print '=====================SemiclassicalPropagator2====================='
+        self._a, self._b = self.build(parameters["splitting_method"])
+
 
     def __str__(self):
         r"""Prepare a printable string representing the :py:class:`SemiclassicalPropagator` instance."""
@@ -128,8 +130,9 @@ class SemiclassicalPropagator(Propagator):
         self._packets = packetlist[:]
 
 
-    def propkin(self,h,packet):
-        # Do a kinetic step of h
+    def _propkin(self, h, packet):
+        """Do a kinetic step of size h.
+        """
         q, p, Q, P, S = packet.get_parameters()
         Mi = self._Minv
         q = q + h * dot(Mi, p)
@@ -137,15 +140,17 @@ class SemiclassicalPropagator(Propagator):
         S = S + 0.5 * h * dot(p.T, dot(Mi, p))
         packet.set_parameters((q, p, Q, P, S))
 
-    def proppotquad(self,h,packet,leading_chi):
-        # Do a potential step with the local quadratic part
+
+    def _proppotquad(self, h, packet, leading_chi):
+        """Do a potential step of size h with the local quadratic part.
+        """
         q, p, Q, P, S = packet.get_parameters()
         V = self._potential.evaluate_local_quadratic_at(q, diagonal_component=leading_chi)
-        
         p = p - h * V[1]
         P = P - h * dot(V[2], Q)
         S = S - h * V[0]
         packet.set_parameters((q, p, Q, P, S))
+
 
     def propagate(self):
         r"""Given a wavepacket :math:`\Psi` at time :math:`t` compute the propagated
@@ -155,27 +160,20 @@ class SemiclassicalPropagator(Propagator):
         The smiclassical propagations scheme is used. 
         """
         # Cache some parameter values
-        dt = 1.*self._dt
-        from params4split import build, intsplit
-        a,b = build('Y4')
-        #a,b = build('KL6')
-        #a,b = build('KL8')
-
-        
-        #Mi = self._Minv
-        #theta = 1./(2.-2**(1./3.))
-
+        dt = 1.0*self._dt
+        a = self._a
+        b = self._b
 
         # Propagate all packets
         for packet, leading_chi in self._packets:
             eps = packet.get_eps()
-            #compute till 0.5*dt
+
+            # Propagate until 0.5*dt
             h1 = 0.5*dt
-            #
-            nrtmp = int(sqrt(dt)*eps**-0.75)
+            nrtmp = int(sqrt(dt)*eps**(-0.75))
             nrlocalsteps = max(1, 1+nrtmp)
-            intsplit(self.propkin, self.proppotquad,a,b, [0.,h1], nrlocalsteps,packet,(packet,leading_chi))
-            # ------------
+            self.intsplit(self._propkin, self._proppotquad, a,b, [0.0,h1], nrlocalsteps, packet, (packet,leading_chi))
+
             # Do a potential step with the local non-quadratic taylor remainder
             quadrature = packet.get_quadrature()
             F = quadrature.build_matrix(packet, operator=partial(self._potential.evaluate_local_remainder_at, diagonal_component=leading_chi))
@@ -183,8 +181,6 @@ class SemiclassicalPropagator(Propagator):
             coefficients = packet.get_coefficient_vector()
             coefficients = self._matrix_exponential(F, coefficients, dt/eps**2)
             packet.set_coefficient_vector(coefficients)
-            # ------------
-            #compute till dt
-            intsplit(self.propkin, self.proppotquad,a,b, [0.,h1], nrlocalsteps,packet,(packet,leading_chi))
-            # ------------ 
-            
+
+            # Finish current timestep and propagate until dt 
+            self.intsplit(self._propkin, self._proppotquad, a,b, [0.0,h1], nrlocalsteps, packet, (packet,leading_chi))

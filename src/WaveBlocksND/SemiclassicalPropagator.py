@@ -70,8 +70,6 @@ class SemiclassicalPropagator(Propagator):
         # Precalculate the potential splittings needed
         self._prepare_potential()
 
-        print '=====================SemiclassicalPropagator====================='
-
 
     def __str__(self):
         r"""Prepare a printable string representing the :py:class:`SemiclassicalPropagator` instance."""
@@ -138,16 +136,14 @@ class SemiclassicalPropagator(Propagator):
         The smiclassical propagations scheme is used. 
         """
         # Cache some parameter values
-        dt = 1.*self._dt
+        dt = 1.0*self._dt
         Mi = self._Minv
-
-        theta = 1./(2.-2**(1./3.))
-
+        theta = 1.0/(2.0-2**(1.0/3.0))
 
         # Propagate all packets
         for packet, leading_chi in self._packets:
             eps = packet.get_eps()
-            nrtmp = int(sqrt(dt)*eps**-0.75)
+            nrtmp = int(sqrt(dt)*eps**(-0.75))
             nrlocalsteps = max(1, 1+nrtmp)
             dt *= 0.5
             dt /= nrlocalsteps
@@ -163,7 +159,6 @@ class SemiclassicalPropagator(Propagator):
                 # Do a potential step with the local quadratic part
                 q, p, Q, P, S = packet.get_parameters()
                 V = self._potential.evaluate_local_quadratic_at(q, diagonal_component=leading_chi)
-
                 p = p - theta * dt * V[1]
                 P = P - theta * dt * dot(V[2], Q)
                 S = S - theta * dt * V[0]
@@ -180,7 +175,6 @@ class SemiclassicalPropagator(Propagator):
                 # Do a potential step with the local quadratic part 
                 q, p, Q, P, S = packet.get_parameters()
                 V = self._potential.evaluate_local_quadratic_at(q, diagonal_component=leading_chi)
-
                 p = p - (1.-2.*theta) * dt * V[1]
                 P = P - (1.-2.*theta) * dt * dot(V[2], Q)
                 S = S - (1.-2.*theta) * dt * V[0]
@@ -196,7 +190,6 @@ class SemiclassicalPropagator(Propagator):
                 # Do a potential step with the local quadratic part
                 q, p, Q, P, S = packet.get_parameters()
                 V = self._potential.evaluate_local_quadratic_at(q, diagonal_component=leading_chi)
-
                 p = p - theta * dt * V[1]
                 P = P - theta * dt * dot(V[2], Q)
                 S = S - theta * dt * V[0]
@@ -209,8 +202,7 @@ class SemiclassicalPropagator(Propagator):
                 S = S + 0.25 * theta * dt * dot(p.T, dot(Mi, p))
                 packet.set_parameters((q, p, Q, P, S))
 
-            # ------------
-            dt = 1.*self._dt
+            dt = 1.0*self._dt
             # Do a potential step with the local non-quadratic taylor remainder
             quadrature = packet.get_quadrature()
             F = quadrature.build_matrix(packet, operator=partial(self._potential.evaluate_local_remainder_at, diagonal_component=leading_chi))
@@ -218,7 +210,6 @@ class SemiclassicalPropagator(Propagator):
             coefficients = packet.get_coefficient_vector()
             coefficients = self._matrix_exponential(F, coefficients, dt/eps**2)
             packet.set_coefficient_vector(coefficients)
-            # ------------
 
             dt *= 0.5
             dt /= nrlocalsteps
@@ -234,7 +225,6 @@ class SemiclassicalPropagator(Propagator):
                 # Do a potential step with the local quadratic part
                 q, p, Q, P, S = packet.get_parameters()
                 V = self._potential.evaluate_local_quadratic_at(q, diagonal_component=leading_chi)
-
                 p = p - theta * dt * V[1]
                 P = P - theta * dt * dot(V[2], Q)
                 S = S - theta * dt * V[0]
@@ -251,7 +241,6 @@ class SemiclassicalPropagator(Propagator):
                 # Do a potential step with the local quadratic part 
                 q, p, Q, P, S = packet.get_parameters()
                 V = self._potential.evaluate_local_quadratic_at(q, diagonal_component=leading_chi)
-
                 p = p - (1.-2.*theta) * dt * V[1]
                 P = P - (1.-2.*theta) * dt * dot(V[2], Q)
                 S = S - (1.-2.*theta) * dt * V[0]
@@ -267,7 +256,6 @@ class SemiclassicalPropagator(Propagator):
                 # Do a potential step with the local quadratic part
                 q, p, Q, P, S = packet.get_parameters()
                 V = self._potential.evaluate_local_quadratic_at(q, diagonal_component=leading_chi)
-
                 p = p - theta * dt * V[1]
                 P = P - theta * dt * dot(V[2], Q)
                 S = S - theta * dt * V[0]
@@ -279,7 +267,3 @@ class SemiclassicalPropagator(Propagator):
                 Q = Q + 0.5 * theta * dt * dot(Mi, P)
                 S = S + 0.25 * theta * dt * dot(p.T, dot(Mi, p))
                 packet.set_parameters((q, p, Q, P, S))
-
-
-            # ------------ 
-            

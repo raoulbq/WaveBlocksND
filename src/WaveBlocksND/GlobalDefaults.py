@@ -48,3 +48,6 @@ save_at = []
 
 # Propagator
 propagator = "Semiclassical"
+
+#splitting_method = "KL8"  # Magnus
+splitting_method = "Y4"   # Semiclassical2, Magnus2

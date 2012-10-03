@@ -13,10 +13,6 @@ from IOManager import IOManager
 from TimeManager import TimeManager
 from BlockFactory import BlockFactory
 from BasisTransformationHAWP import BasisTransformationHAWP
-from HagedornPropagator import HagedornPropagator
-#from SemiclassicalPropagator import SemiclassicalPropagator
-from SemiclassicalPropagator2 import SemiclassicalPropagator
-from MagnusPropagator import MagnusPropagator
 
 __all__ = ["SimulationLoopHagedorn"]
 
@@ -65,11 +61,24 @@ class SimulationLoopHagedorn(SimulationLoop):
 
         # Finally create and initialize the propagator instace
         # TODO: Attach the "leading_component to the hawp as codata
-        if self.parameters.propagator=='MagnusSplit':
-            self.propagator=MagnusPropagator(self.parameters, potential)
+        # TODO: Clean up this ugly if tree
+        if self.parameters["propagator"] == "magnus_split":
+            from MagnusPropagator import MagnusPropagator
+            self.propagator = MagnusPropagator(self.parameters, potential)
+        elif self.parameters["propagator"] == "magnus_split_2":
+            from MagnusPropagator2 import MagnusPropagator2
+            self.propagator = MagnusPropagator2(self.parameters, potential)
+        elif self.parameters["propagator"] == "semiclassical":
+            from SemiclassicalPropagator import SemiclassicalPropagator
+            self.propagator = SemiclassicalPropagator(self.parameters, potential)
+        elif self.parameters["propagator"] == "semiclassical2":
+            from SemiclassicalPropagator2 import SemiclassicalPropagator2
+            self.propagator = SemiclassicalPropagator2(self.parameters, potential)
+        elif self.parameters["propagator"] == "hagedorn":
+            from HagedornPropagator import HagedornPropagator
+            self.propagator = HagedornPropagator(self.parameters, potential)
         else:
-            self.propagator=SemiclassicalPropagator(self.parameters, potential)
-            #self.propagator = HagedornPropagator(self.parameters, potential)
+            raise NotImplementedError("Unknown propagator type: " + self.parameters["propagator"])
 
         # Create suitable wavepackets
         chi = self.parameters["leading_component"]

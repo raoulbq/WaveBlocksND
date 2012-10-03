@@ -3,7 +3,7 @@
 This file contains the Hagedorn propagator class for homogeneous wavepackets.
 
 @author: V. Gradinaru
-@copyright: Copyright (C) 2010, 2011, 2012 R. Bourquin
+@copyright: Copyright (C) 2012 V. Gradinaru, R. Bourquin
 @license: Modified BSD License
 """
 
@@ -13,11 +13,12 @@ from numpy.linalg import inv
 
 from Propagator import Propagator
 from BlockFactory import BlockFactory
+from SplittingParameters import SplittingParameters
 
-__all__ = ["SemiclassicalPropagator"]
+__all__ = ["MagnusPropagator"]
 
 
-class MagnusPropagator(Propagator):
+class MagnusPropagator(Propagator, SplittingParameters):
     r"""This class can numerically propagate given initial values :math:`\Psi` in
     a potential :math:`V(x)`. The propagation is done for a given set of homogeneous
     Hagedorn wavepackets neglecting interaction."""
@@ -69,7 +70,9 @@ class MagnusPropagator(Propagator):
 
         # Precalculate the potential splittings needed
         self._prepare_potential()
-        print '=====================MagnusPropagator2====================='
+
+        self._a, self._b = self.build(parameters["splitting_method"])
+
 
     def __str__(self):
         r"""Prepare a printable string representing the :py:class:`MagnusPropagator` instance."""
@@ -128,8 +131,9 @@ class MagnusPropagator(Propagator):
         self._packets = packetlist[:]
 
 
-    def propkin(self,h,packet):
-        # Do a kinetic step of h
+    def _propkin(self, h, packet):
+        """Do a kinetic step of size h.
+        """
         q, p, Q, P, S = packet.get_parameters()
         Mi = self._Minv
         q = q + h * dot(Mi, p)
@@ -137,15 +141,17 @@ class MagnusPropagator(Propagator):
         S = S + 0.5 * h * dot(p.T, dot(Mi, p))
         packet.set_parameters((q, p, Q, P, S))
 
-    def proppotquad(self,h,packet,leading_chi):
-        # Do a potential step with the local quadratic part
+
+    def _proppotquad(self, h, packet, leading_chi):
+        """Do a potential step of size h with the local quadratic part.
+        """
         q, p, Q, P, S = packet.get_parameters()
         V = self._potential.evaluate_local_quadratic_at(q, diagonal_component=leading_chi)
-        
         p = p - h * V[1]
         P = P - h * dot(V[2], Q)
         S = S - h * V[0]
         packet.set_parameters((q, p, Q, P, S))
+
 
     def propagate(self):
         r"""Given a wavepacket :math:`\Psi` at time :math:`t` compute the propagated
@@ -155,48 +161,41 @@ class MagnusPropagator(Propagator):
         The smiclassical propagations scheme is used. 
         """
         # Cache some parameter values
-        dt = 1.*self._dt
-        from params4split import build, intsplit
-        #a,b = build('Y4')
-        #a,b = build('KL6')
-        a,b = build('KL8')
-        
+        dt = 1.0*self._dt
+        a = self._a
+        b = self._b
+
         # Propagate all packets
         for packet, leading_chi in self._packets:
             eps = packet.get_eps()
-            # compute till c1*dt
+
+            # Propagate until c1*dt
             h1 = (0.5-sqrt(3.)/6.)*dt
-            
-            nrN1 = max(1, 1 + int((h1**(1./2.))*eps**-(3./8.)))
-            intsplit(self.propkin, self.proppotquad,a,b, [0.,h1], nrN1, packet,(packet,leading_chi))
-            #------------
-            # evaluate the matrix there
-            #V = self.potential.evaluate_local_quadratic_at(self.packet.q)
-            #A1 = (-1.j)*self.packet.matrix(self.potential.evaluate_local_remainder_at)
+            nrN1 = max(1, 1 + int((h1**(1.0/2.0))*eps**-(3.0/8.0)))
+            self.intsplit(self._propkin, self._proppotquad, a,b, [0.0,h1], nrN1, packet, (packet,leading_chi))
+
+            # Build a first matrix here with the current parameters of the wavepacket
             quadrature = packet.get_quadrature()
             A1 = (-1.j)*quadrature.build_matrix(packet, operator=partial(self._potential.evaluate_local_remainder_at, diagonal_component=leading_chi))
-            # compute till c2*dt
-            h2 = dt/sqrt(3.)
-            nrN2 = max(1, 1 + int((h2**(1./2.))*eps**-(3./8.)))
-            intsplit(self.propkin, self.proppotquad,a,b, [0.,h2], nrN2, packet,(packet,leading_chi))
-            # evaluate the matrix there
-            #V = self.potential.evaluate_local_quadratic_at(self.packet.q)
-            #A1 = (-1.j)*self.packet.matrix(self.potential.evaluate_local_remainder_at)
+
+            # Propagate until c2*dt
+            h2 = dt/sqrt(3.0)
+            nrN2 = max(1, 1 + int((h2**(1.0/2.0))*eps**(-3.0/8.0)))
+            self.intsplit(self._propkin, self._proppotquad, a,b, [0.0,h2], nrN2, packet, (packet,leading_chi))
+        
+            # Build a second matrix here with the current parameters of the wavepacket
             quadrature = packet.get_quadrature()
             A2 = (-1.j)*quadrature.build_matrix(packet, operator=partial(self._potential.evaluate_local_remainder_at, diagonal_component=leading_chi))
             
-            # buid the matrix for Magnus of 4th order
-            F = (A1+A2)*(dt/eps**2)*0.5 + (dot(A2,A1)-dot(A1,A2))*((dt/eps**2)**2)*sqrt(3.)/12. 
-            # multiply it
-            # ====================================================================
-            # CAUTION: self.matrix_exponential implements expm(-1j*F*factor) !!!
-            # while the above formula for Magnus thinks about expm(F)
-            # ====================================================================
-            coefficients = packet.get_coefficient_vector()
-            coefficients = self._matrix_exponential(F, coefficients, (1j))
-            packet.set_coefficient_vector(coefficients)
-            # ------------
-            #compute till dt
-            intsplit(self.propkin, self.proppotquad,a,b, [0.,h1], nrN1,packet,(packet,leading_chi))
-            # ------------ 
+            # Combine both and buid the matrix for Magnus of 4th order split
+            F = (A1+A2)*(dt/eps**2)*0.5 + (dot(A2,A1)-dot(A1,A2))*((dt/eps**2)**2)*sqrt(3.0)/12.0 
             
+            # Propagate the coefficients
+            # CAUTION: self.matrix_exponential implements expm(-1j*F*factor) while the above 
+            #          formula for Magnus thinks about expm(F) hence take factor = 1.0j
+            coefficients = packet.get_coefficient_vector()
+            coefficients = self._matrix_exponential(F, coefficients, 1.0j)
+            packet.set_coefficient_vector(coefficients)
+
+            # Finish current timestep and propagate until dt 
+            self.intsplit(self._propkin, self._proppotquad, a,b, [0.0,h1], nrN1, packet, (packet,leading_chi))
