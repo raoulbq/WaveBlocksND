@@ -71,8 +71,7 @@ class MatrixPotentialMS(MatrixPotential):
         # TODO: Consider additional input types for "nodes":
         #       list of numpy ndarrays, list of single python scalars
         if not isinstance(grid, Grid):
-            if not type(grid) is numpy.ndarray:
-                grid = numpy.atleast_2d(grid)
+            grid = numpy.atleast_2d(grid)
             grid = GridWrapper(grid)
         return grid
 
@@ -587,6 +586,7 @@ class MatrixPotentialMS(MatrixPotential):
                  :math:`(1,|\Gamma|)`.
         """
         grid = self._grid_wrap(grid)
+        position = numpy.atleast_2d(position)
         nodes = grid.get_nodes()
         N = self._number_components
 

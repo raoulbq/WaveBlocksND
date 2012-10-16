@@ -46,7 +46,7 @@ class ObservablesHAWP(Observables):
         self._quadrature = quadrature
 
 
-    def apply_gradient(self, wavepacket, component):
+    def apply_gradient(self, wavepacket, component=0):
         r"""Compute the effect of the gradient operator :math:`-i \varepsilon^2 \nabla_x` on the basis
         functions :math:`\phi(x)` of a component :math:`\Phi_i` of the Hagedorn wavepacket :math:`\Psi`.
 

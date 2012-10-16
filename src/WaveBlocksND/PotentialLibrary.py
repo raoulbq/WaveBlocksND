@@ -56,6 +56,11 @@ morse["variables"] = ["x"]
 morse["potential"] = "D * (1 - exp(-a*(x-x0)))**2"
 morse["defaults"] = {"D":3.0, "a":0.3, "x0":0.0}
 
+morse_zero = {}
+morse_zero["variables"] = ["x"]
+morse_zero["potential"] = "l**2 * (exp(-2*(x-x0)) - 2*exp(-(x-x0)))"
+morse_zero["defaults"] = {"l":1.0, "x0":0.0}
+
 # A double well potential
 double_well = {}
 double_well["variables"] = ["x"]

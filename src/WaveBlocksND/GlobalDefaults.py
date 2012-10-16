@@ -14,8 +14,10 @@ path_to_autogen_configs = "autogen_configurations"
 path_to_configs = "configurations"
 path_to_results = "results"
 
+ext_resultdatafile = ".hdf5"
+
 file_metaconfiguration = "metaconfiguration.py"
-file_resultdatafile = "simulation_results.hdf5"
+file_resultdatafile = "simulation_results" + ext_resultdatafile
 file_batchconfiguration = "batchconfiguration.py"
 
 # Left, middle and right delimiter for key->value pairs

@@ -81,8 +81,7 @@ class MatrixPotential1S(MatrixPotential):
         # TODO: Consider additional input types for "nodes":
         #       list of numpy ndarrays, list of single python scalars
         if not isinstance(grid, Grid):
-            if not type(grid) is numpy.ndarray:
-                grid = numpy.atleast_2d(grid)
+            grid = numpy.atleast_2d(grid)
             grid = GridWrapper(grid)
         return grid
 
@@ -408,6 +407,7 @@ class MatrixPotential1S(MatrixPotential):
                  values of :math:`W(\Gamma)`. The array is of shape :math:`(1,|\Gamma|)`.
         """
         grid = self._grid_wrap(grid)
+        position = numpy.atleast_2d(position)
 
         # Evaluate the remainder at the given nodes
         args = grid.get_nodes(split=True) + numpy.vsplit(position, position.shape[0])

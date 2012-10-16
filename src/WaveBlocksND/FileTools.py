@@ -21,7 +21,7 @@ def get_result_dirs(path):
     :param path: The filesystem path under which we search for simulations.
     :return: A list of simulation IDs.
     """
-    dirs = [ os.path.join(path, dir) for dir in os.listdir(path) ]
+    dirs = [ os.path.join(path, adir) for adir in os.listdir(path) if os.path.isdir(adir) ]
     return dirs
 
 
@@ -35,9 +35,9 @@ def get_parameters_file(path):
     """
     parameters_file = None
 
-    for file in os.listdir(path):
-        if file[-3:] == ".py":
-            parameters_file = file
+    for afile in os.listdir(path):
+        if afile.endswith(".py"):
+            parameters_file = afile
             break
 
     if parameters_file is None:
@@ -47,7 +47,7 @@ def get_parameters_file(path):
     return parameters_file
 
 
-def get_results_file(path):
+def get_results_file(path, fileext=GD.ext_resultdatafile):
     r"""Search for a file containing the simulation results under a given path.
     Note that in case there are more than one .hdf5 file under the given path
     we just return the first one found!
@@ -57,10 +57,9 @@ def get_results_file(path):
     """
     results_file = None
 
-    for file in os.listdir(path):
-        # Should we allow extensions .hdf and .h5 too?
-        if file[-5:] == ".hdf5":
-            results_file = file
+    for afile in os.listdir(path):
+        if os.path.isfile(afile) and afile.endswith(fileext):
+            results_file = afile
             break
 
     if results_file is None:
