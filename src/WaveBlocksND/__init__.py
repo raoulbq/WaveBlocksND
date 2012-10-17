@@ -46,6 +46,9 @@ from HagedornWavepacketBase import HagedornWavepacketBase
 from HagedornWavepacket import HagedornWavepacket
 from HagedornWavepacketInhomogeneous import HagedornWavepacketInhomogeneous
 
+from Gradient import Gradient
+from GradientHAWP import GradientHAWP
+
 # Quadrature rules
 from QuadratureRule import QuadratureRule
 from GaussHermiteQR import GaussHermiteQR
