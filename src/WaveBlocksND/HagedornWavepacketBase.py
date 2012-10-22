@@ -7,11 +7,13 @@ This file contains the basic interface for general wavepackets.
 @license: Modified BSD License
 """
 
-from numpy import vstack, vsplit, cumsum, zeros, array, complexfloating, pi, dot, sum
+from numpy import vstack, vsplit, cumsum, zeros, array, complexfloating, pi, dot, sum, atleast_2d
 from scipy import exp, sqrt, conjugate
 from scipy.linalg import det, inv, norm
 
 from Wavepacket import Wavepacket
+from Grid import Grid
+from GridWrapper import GridWrapper
 
 __all__ = ["HagedornWavepacketBase"]
 
@@ -232,6 +234,16 @@ class HagedornWavepacketBase(Wavepacket):
     # the same way for homogeneous and inhomogeneous Hagedorn wavepackets.
 
 
+    def _grid_wrap(self, grid):
+        # TODO: Consider additional input types for "nodes":
+        #       list of numpy ndarrays, list of single python scalars
+        if not isinstance(grid, Grid):
+            grid = atleast_2d(grid)
+            grid = grid.reshape(self._dimension, -1)
+            grid = GridWrapper(grid)
+        return grid
+
+
     def _evaluate_phi0(self, Pi, nodes, prefactor=False, root=sqrt):
         r"""Evaluate the lowest order basis function :math:`\phi_0` on a
         grid :math:`\Gamma` of nodes.
@@ -264,6 +276,211 @@ class HagedornWavepacketBase(Wavepacket):
             prefactor = (pi*eps**2)**(-d*0.25)
 
         return prefactor * exp(exponent)
+
+
+    def evaluate_basis_at(self, grid, component, prefactor=False):
+        r"""Evaluate the basis functions :math:`\phi_k` recursively at the given nodes :math:`\gamma`.
+
+        :param grid: The grid :math:\Gamma` containing the nodes :math:`\gamma`.
+        :type grid: A class having a :py:meth:`get_nodes(...)` method.
+        :param component: The index :math:`i` of a single component :math:`\Phi_i` to evaluate.
+        :param prefactor: Whether to include a factor of :math:`\frac{1}{\sqrt{\det(Q)}}`.
+        :type prefactor: bool, default is ``False``.
+        :return: A two-dimensional ndarray :math:`H` of shape :math:`(|\mathcal{K}_i|, |\Gamma|)` where
+                 the entry :math:`H[\mu(k), i]` is the value of :math:`\phi_k(\gamma_i)`.
+        """
+        D = self._dimension
+
+        bas = self._basis_shapes[component]
+        bs = self._basis_sizes[component]
+
+        # The grid
+        grid = self._grid_wrap(grid)
+        nodes = grid.get_nodes()
+        nn = grid.get_number_nodes(overall=True)
+
+        # Allocate the storage array
+        phi = zeros((bs, nn), dtype=complexfloating)
+
+        # Precompute some constants
+        Pi = self.get_parameters(component=component)
+        q, p, Q, P, S = Pi
+
+        Qinv = inv(Q)
+        Qbar = conjugate(Q)
+        QQ = dot(Qinv, Qbar)
+
+        # Compute the ground state phi_0 via direct evaluation
+        mu0 = bas[tuple(D*[0])]
+        phi[mu0,:] = self._evaluate_phi0(Pi, nodes, prefactor=False)
+
+        # Compute all higher order states phi_k via recursion
+        for d in xrange(D):
+            # Iterator for all valid index vectors k
+            indices = bas.get_node_iterator(mode="chain", direction=d)
+
+            for k in indices:
+                # Current index vector
+                ki = vstack(k)
+
+                # Access predecessors
+                phim = zeros((D, nn), dtype=complexfloating)
+
+                for j, kpj in bas.get_neighbours(k, selection="backward"):
+                    mukpj = bas[kpj]
+                    phim[j,:] = phi[mukpj,:]
+
+                # Compute 3-term recursion
+                p1 = (nodes - q) * phi[bas[k],:]
+                p2 = sqrt(ki) * phim
+
+                t1 = sqrt(2.0/self._eps**2) * dot(Qinv[d,:], p1)
+                t2 = dot(QQ[d,:], p2)
+
+                # Find multi-index where to store the result
+                kped = bas.get_neighbours(k, selection="forward", direction=d)
+
+                # Did we find this k?
+                if len(kped) > 0:
+                    kped = kped[0]
+
+                    # Store computed value
+                    phi[bas[kped[1]],:] = (t1 - t2) / sqrt(ki[d] + 1.0)
+
+        if prefactor is True:
+            phi = phi / self._get_sqrt(component)(det(Q))
+
+        return phi
+
+
+    def slim_recursion(self, grid, component, prefactor=False):
+        r"""Evaluate the Hagedorn wavepacket :math:`\Psi` at the given nodes :math:`\gamma`.
+        This routine is a slim version compared to the full basis evaluation. At every moment
+        we store only the data we really need to compute the next step until we hit the highest
+        order basis functions.
+
+        :param grid: The grid :math:\Gamma` containing the nodes :math:`\gamma`.
+        :type grid: A class having a :py:meth:`get_nodes(...)` method.
+        :param component: The index :math:`i` of a single component :math:`\Phi_i` to evaluate.
+        :param prefactor: Whether to include a factor of :math:`\frac{1}{\sqrt{\det(Q)}}`.
+        :type prefactor: bool, default is ``False``.
+        :return: A list of arrays or a single array containing the values of the :math:`\Phi_i`
+                 at the nodes :math:`\gamma`.
+
+        Note that this function does not include the global phase :math:`\exp(\frac{i S}{\varepsilon^2})`.
+        """
+        D = self._dimension
+
+        # Precompute some constants
+        Pi = self.get_parameters(component=component)
+        q, p, Q, P, S = Pi
+
+        Qinv = inv(Q)
+        Qbar = conjugate(Q)
+        QQ = dot(Qinv, Qbar)
+
+        # The basis shape
+        bas = self._basis_shapes[component]
+        Z = tuple(D*[0])
+
+        # Book keeping
+        todo = []
+        newtodo = [Z]
+        olddelete = []
+        delete = []
+        tmp = {}
+
+        # The grid nodes
+        grid = self._grid_wrap(grid)
+        nn = grid.get_number_nodes(overall=True)
+        nodes = grid.get_nodes()
+
+        # Evaluate phi0
+        tmp[Z] = self._evaluate_phi0(Pi, nodes, prefactor=False)
+        psi = self._coefficients[component][bas[Z], 0] * tmp[Z]
+
+        # Iterate for higher order states
+        while len(newtodo) != 0:
+            # Delete results that never will be used again
+            for d in olddelete:
+                del tmp[d]
+
+            # Exchange queus
+            todo = newtodo
+            newtodo = []
+            olddelete = delete
+            delete = []
+
+            # Compute new results
+            for k in todo:
+                # Center stencil at node k
+                ki = vstack(k)
+
+                # Access predecessors
+                phim = zeros((D, nn), dtype=complexfloating)
+                for j, kpj in bas.get_neighbours(k, selection="backward"):
+                    phim[j,:] = tmp[kpj]
+
+                # Compute the neighbours
+                for d, n in bas.get_neighbours(k, selection="forward"):
+                    if not n in tmp.keys():
+                        # Compute 3-term recursion
+                        p1 = (nodes - q) * tmp[k]
+                        p2 = sqrt(ki) * phim
+
+                        t1 = sqrt(2.0/self._eps**2) * dot(Qinv[d,:], p1)
+                        t2 = dot(QQ[d,:], p2)
+
+                        # Store computed value
+                        tmp[n] = (t1 - t2) / sqrt(ki[d] + 1.0)
+                        # And update the result
+                        psi = psi + self._coefficients[component][bas[n], 0] * tmp[n]
+
+                        newtodo.append(n)
+                delete.append(k)
+
+        if prefactor is True:
+            psi = psi / self._sqrt(det(Q))
+
+        return psi
+
+
+    def evaluate_at(self, grid, component=None, prefactor=False):
+        r"""Evaluate the Hagedorn wavepacket :math:`\Psi` at the given nodes :math:`\gamma`.
+
+        :param grid: The grid :math:\Gamma` containing the nodes :math:`\gamma`.
+        :type grid: A class having a :py:meth:`get_nodes(...)` method.
+        :param component: The index :math:`i` of a single component :math:`\Phi_i` to evaluate.
+                          (Defaults to ``None`` for evaluating all components.)
+        :param prefactor: Whether to include a factor of :math:`\frac{1}{\sqrt{\det(Q)}}`.
+        :type prefactor: bool, default is ``False``.
+        :return: A list of arrays or a single array containing the values of the :math:`\Phi_i` at the nodes :math:`\gamma`.
+        """
+        Pis = self.get_parameters(component=component, aslist=True)
+
+        if component is not None:
+            phase = exp(1.0j * Pis[component][4] / self._eps**2)
+            #basis = self.evaluate_basis_at(grid, component=component, prefactor=prefactor)
+            #values = phase * sum(self._coefficients[component] * basis, axis=0)
+            values = phase * self.slim_recursion(grid, component, prefactor=prefactor)
+
+        else:
+            values = []
+
+            for component in xrange(self._number_components):
+                # Note: This is very inefficient! We may evaluate the same basis functions multiple
+                #       times. But as long as we don't know that the basis shapes are true subsets
+                #       of the largest one, we can not evaluate just all functions in this
+                #       maximal set.
+
+                # TODO: Find more efficient way to do this
+
+                phase = exp(1.0j * Pis[component][4] / self._eps**2)
+                #basis = self.evaluate_basis_at(grid, component=index, prefactor=prefactor)
+                #values.append( phase * sum(self._coefficients[index] * basis, axis=0) )
+                values.append( phase * self.slim_recursion(grid, component, prefactor=prefactor) )
+
+        return values
 
 
     # We can compute the norms the same way for homogeneous and inhomogeneous Hagedorn wavepackets.
