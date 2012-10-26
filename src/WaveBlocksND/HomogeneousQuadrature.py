@@ -75,7 +75,7 @@ class HomogeneousQuadrature(Quadrature):
         return nodes.copy()
 
 
-    def quadrature(self, packet, operator=None, summed=False, component=None, diag_component=None):
+    def quadrature(self, packet, operator=None, summed=False, component=None, diag_component=None, diagonal=False):
         r"""Performs the quadrature of :math:`\langle\Psi|f|\Psi\rangle` for a general
         function :math:`f(x)` with :math:`x \in \mathbb{R}^D`.
 
@@ -86,6 +86,8 @@ class HomogeneousQuadrature(Quadrature):
         :param component: Request only the i-th component of the result. Remember that :math:`i \in [0, N^2-1]`.
         :param diag_component: Request only the i-th component from the diagonal entries, here :math:`i \in [0, N-1]`.
                                Note that ``component`` takes precedence over ``diag_component`` if both are supplied. (Which is discouraged)
+        :param: diagonal: Only return the diagonal elements :math:`\langle\Phi_i|f_{i,i}|\Phi_i\rangle`.
+                          This is useful for diagonal operators :math:`f`.
         :return: The value of the braket :math:`\langle\Psi|f|\Psi\rangle`. This is either a scalar value or
                  a list of :math:`N^2` scalar elements depending on the value of ``summed``.
         """
@@ -154,9 +156,17 @@ class HomogeneousQuadrature(Quadrature):
 
         if summed is True:
             result = sum(result)
-        elif component is not None:
+        elif component is not None or diag_component is not None:
             # Do not return a list for quadrature of specific single components
             result = result[0]
+        elif diagonal is True:
+            # Only keep the diagonal elements
+            res = []
+            i = 1
+            while i <= N**2:
+                res.append(result[i-1])
+                i = i + 2*i
+            result = res
 
         return result
 

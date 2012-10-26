@@ -19,5 +19,5 @@ if [ ! -d $IPATH ]
 fi
 
 # Copy scripts
-cp $SRCPATH/src/scripts/* $IPATH/
-cp $SRCPATH/src/plotters/* $IPATH/
+cp $SRCPATH/src/scripts/*.py $IPATH/
+cp $SRCPATH/src/plotters/*.py $IPATH/
