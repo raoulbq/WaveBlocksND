@@ -7,7 +7,8 @@ This file contains the class which represents an inhomogeneous Hagedorn wavepack
 @license: Modified BSD License
 """
 
-from numpy import zeros, complexfloating, array, eye, atleast_2d
+from numpy import zeros, complexfloating, array, eye, atleast_2d, angle
+from numpy.linalg import det
 
 from HagedornWavepacketBase import HagedornWavepacketBase
 from HyperCubicShape import HyperCubicShape
@@ -65,7 +66,7 @@ class HagedornWavepacketInhomogeneous(HagedornWavepacketBase):
         self._QE = None
 
         # Function for taking continuous roots
-        self._sqrt = [ ContinuousSqrt() for n in xrange(self._number_components) ]
+        self._sqrt = [ ContinuousSqrt(angle(det(self._Pis[n][2]))) for n in xrange(self._number_components) ]
 
 
     def __str__(self):
@@ -122,7 +123,7 @@ class HagedornWavepacketInhomogeneous(HagedornWavepacketBase):
         return other
 
 
-    def get_parameters(self, component=None, aslist=False):
+    def get_parameters(self, component=None, aslist=False, key=("q","p","Q","P","S")):
         r"""Get the Hagedorn parameter set :math:`\Pi_i` of each component :math`\Phi_i`
         of the wavepacket :math:`\Psi`.
 
@@ -133,12 +134,38 @@ class HagedornWavepacketInhomogeneous(HagedornWavepacketBase):
                  The parameters :math:`\Pi_i = (q_i, p_i, Q_i, P_i, S_i)` are always in this order.
         """
         if component is None:
-            return [ Pi[:] for Pi in self._Pis ]
+            components = xrange(self._number_components)
         else:
-            return self._Pis[component][:]
+            components = [component]
+
+        Pilist = []
+        for index in components:
+            tmp = []
+            for k in key:
+                if k == "q":
+                    tmp.append(self._Pis[index][0])
+                elif k == "p":
+                    tmp.append(self._Pis[index][1])
+                elif k == "Q":
+                    tmp.append(self._Pis[index][2])
+                elif k == "P":
+                    tmp.append(self._Pis[index][3])
+                elif k == "S":
+                    tmp.append(self._Pis[index][4])
+                elif k == "adQ":
+                    tmp.append(array(self._get_sqrt(index).get(), dtype=complexfloating))
+                else:
+                    raise KeyError("Invalid parameter key: "+str(key))
+
+            Pilist.append(tmp)
+
+        if component is not None:
+            return Pilist[0]
+
+        return Pilist
 
 
-    def set_parameters(self, Pi, component=None):
+    def set_parameters(self, Pi, component=None, key=("q","p","Q","P","S")):
         r"""Set the Hagedorn parameter set :math:`\Pi_i` of each component :math`\Phi_i`
         of the wavepacket :math:`\Psi`.
 
@@ -147,7 +174,24 @@ class HagedornWavepacketInhomogeneous(HagedornWavepacketBase):
         :param component: The index :math:`i` of the component :math:`\Phi_i` whose parameters :math:`\Pi_i` we want to update.
         """
         if component is None:
-            for index, item in enumerate(Pi):
-                self._Pis[index] = [ atleast_2d(array(jtem, dtype=complexfloating)) for jtem in item ]
+            component = xrange(self._number_components)
         else:
-            self._Pis[component] = [ atleast_2d(array(item, dtype=complexfloating)) for item in Pi ]
+            component = [component]
+            Pi = [Pi]
+
+        for index, pic in zip(component, Pi):
+            for k, item in zip(key, pic):
+                if k == "q":
+                    self._Pis[index][0] = atleast_2d(array(item, dtype=complexfloating))
+                elif k == "p":
+                    self._Pis[index][1] = atleast_2d(array(item, dtype=complexfloating))
+                elif k == "Q":
+                    self._Pis[index][2] = atleast_2d(array(item, dtype=complexfloating))
+                elif k == "P":
+                    self._Pis[index][3] = atleast_2d(array(item, dtype=complexfloating))
+                elif k == "S":
+                    self._Pis[index][4] = atleast_2d(array(item, dtype=complexfloating))
+                elif k == "adQ":
+                    self._get_sqrt(index).set(item)
+                else:
+                    raise KeyError("Invalid parameter key: "+str(key))

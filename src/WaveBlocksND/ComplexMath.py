@@ -82,3 +82,9 @@ class ContinuousSqrt(object):
         root, ref = cont_sqrt(radicand, reference=self._reference)
         self._reference = ref[0]
         return root
+
+    def set(self, newvalue):
+        self._reference = newvalue
+
+    def get(self):
+        return self._reference

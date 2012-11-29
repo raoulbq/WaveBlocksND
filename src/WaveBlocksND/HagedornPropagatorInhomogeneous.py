@@ -8,10 +8,11 @@ This file contains the Hagedorn propagator class for inhomogeneous wavepackets.
 """
 
 from numpy import dot, eye, atleast_2d
-from numpy.linalg import inv
+from numpy.linalg import inv, det
 
 from Propagator import Propagator
 from BlockFactory import BlockFactory
+from ComplexMath import cont_angle
 
 __all__ = ["HagedornPropagatorInhomogeneous"]
 
@@ -129,14 +130,16 @@ class HagedornPropagatorInhomogeneous(Propagator):
             # Unpack, no codata:
             packet = packet[0]
             eps = packet.get_eps()
+            key = ("q", "p", "Q", "P", "S", "adQ")
 
             # Do a kinetic step of dt/2
             for component in xrange(self._number_components):
-                q, p, Q, P, S = packet.get_parameters(component=component)
+                q, p, Q, P, S, adQ = packet.get_parameters(component=component, key=key)
                 q = q + 0.5 * dt * dot(Mi, p)
                 Q = Q + 0.5 * dt * dot(Mi, P)
                 S = S + 0.25 * dt * dot(p.T, dot(Mi, p))
-                packet.set_parameters((q, p, Q, P, S), component=component)
+                adQn = cont_angle(det(Q), reference=adQ)[0]
+                packet.set_parameters((q, p, Q, P, S, adQn), component=component, key=key)
 
             # Do a potential step with the local quadratic part
             for component in xrange(self._number_components):
@@ -158,8 +161,9 @@ class HagedornPropagatorInhomogeneous(Propagator):
 
             # Do a kinetic step of dt/2
             for component in xrange(self._number_components):
-                q, p, Q, P, S = packet.get_parameters(component=component)
+                q, p, Q, P, S, adQ = packet.get_parameters(component=component, key=key)
                 q = q + 0.5 * dt * dot(Mi, p)
                 Q = Q + 0.5 * dt * dot(Mi, P)
                 S = S + 0.25 * dt * dot(p.T, dot(Mi, p))
-                packet.set_parameters((q, p, Q, P, S), component=component)
+                adQn = cont_angle(det(Q), reference=adQ)[0]
+                packet.set_parameters((q, p, Q, P, S, adQn), component=component, key=key)

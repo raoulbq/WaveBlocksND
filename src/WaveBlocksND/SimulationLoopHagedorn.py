@@ -65,15 +65,9 @@ class SimulationLoopHagedorn(SimulationLoop):
         if self.parameters["propagator"] == "magnus_split":
             from MagnusPropagator import MagnusPropagator
             self.propagator = MagnusPropagator(self.parameters, potential)
-        elif self.parameters["propagator"] == "magnus_split_2":
-            from MagnusPropagator2 import MagnusPropagator2
-            self.propagator = MagnusPropagator2(self.parameters, potential)
         elif self.parameters["propagator"] == "semiclassical":
             from SemiclassicalPropagator import SemiclassicalPropagator
             self.propagator = SemiclassicalPropagator(self.parameters, potential)
-        elif self.parameters["propagator"] == "semiclassical2":
-            from SemiclassicalPropagator2 import SemiclassicalPropagator2
-            self.propagator = SemiclassicalPropagator2(self.parameters, potential)
         elif self.parameters["propagator"] == "hagedorn":
             from HagedornPropagator import HagedornPropagator
             self.propagator = HagedornPropagator(self.parameters, potential)
@@ -94,16 +88,17 @@ class SimulationLoopHagedorn(SimulationLoop):
         # Add storage for each packet
         npackets = len(self.parameters["initvals"])
         slots = self._tm.compute_number_saves()
+        key = ("q","p","Q","P","S","adQ")
 
         for i in xrange(npackets):
             bid = self.IOManager.create_block()
-            self.IOManager.add_wavepacket(self.parameters, timeslots=slots, blockid=bid)
+            self.IOManager.add_wavepacket(self.parameters, timeslots=slots, blockid=bid, key=key)
 
         # Write some initial values to disk
         for packet in self.propagator.get_wavepackets():
             self.IOManager.save_wavepacket_description(packet.get_description())
             # Pi
-            self.IOManager.save_wavepacket_parameters(packet.get_parameters(), timestep=0)
+            self.IOManager.save_wavepacket_parameters(packet.get_parameters(key=key), timestep=0, key=key)
             # Basis shapes
             for shape in packet.get_basis_shapes():
                 self.IOManager.save_wavepacket_basisshapes(shape)
@@ -116,6 +111,9 @@ class SimulationLoopHagedorn(SimulationLoop):
         """
         # The number of time steps we will perform.
         nsteps = self._tm.compute_number_timesteps()
+
+        # Which parameter data to save.
+        key=("q","p","Q","P","S","adQ")
 
         # Run the simulation for a given number of timesteps
         for i in xrange(1, nsteps+1):
@@ -131,7 +129,7 @@ class SimulationLoopHagedorn(SimulationLoop):
 
                 for packet in packets:
                     # Pi
-                    self.IOManager.save_wavepacket_parameters(packet.get_parameters(), timestep=i)
+                    self.IOManager.save_wavepacket_parameters(packet.get_parameters(key=key), timestep=i, key=key)
                     # Basis shapes (in case they changed!)
                     for shape in packet.get_basis_shapes():
                         self.IOManager.save_wavepacket_basisshapes(shape)

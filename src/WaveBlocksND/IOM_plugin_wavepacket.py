@@ -12,7 +12,7 @@ import pickle
 import numpy as np
 
 
-def add_wavepacket(self, parameters, timeslots=None, blockid=0):
+def add_wavepacket(self, parameters, timeslots=None, blockid=0, key=("q","p","Q","P","S")):
     r"""Add storage for the homogeneous wavepackets.
 
     :param parameters: An :py:class:`ParameterProvider` instance with at
@@ -20,6 +20,9 @@ def add_wavepacket(self, parameters, timeslots=None, blockid=0):
     :param timeslots: The number of time slots we need. Can be ``None``
                       to get automatically growing datasets.
     :param blockid: The ID of the data block to operate on.
+    :param key: Specify which parameters to save. All are independent.
+    :type key: Tuple of valid identifier strings that are ``q``, ``p``, ``Q``, ``P``, ``S`` and ``adQ``.
+               Default is ``("q", "p", "Q", "P", "S")``.
     """
     N = parameters["ncomponents"]
     D = parameters["dimension"]
@@ -39,11 +42,20 @@ def add_wavepacket(self, parameters, timeslots=None, blockid=0):
         daset_tg = grp_wp.create_dataset("timegrid", (0,), dtype=np.integer, chunks=True, maxshape=(None,))
         daset_bs = grp_wp.create_dataset("basis_shape_hash", (0, N), dtype=np.integer, chunks=True, maxshape=(None,N))
         daset_bsi = grp_wp.create_dataset("basis_size", (0, N), dtype=np.integer, chunks=True, maxshape=(None,N))
-        daset_q = grp_pi.create_dataset("q", (0, D, 1), dtype=np.complexfloating, chunks=True, maxshape=(None,D,1))
-        daset_p = grp_pi.create_dataset("p", (0, D, 1), dtype=np.complexfloating, chunks=True, maxshape=(None,D,1))
-        daset_Q = grp_pi.create_dataset("Q", (0, D, D), dtype=np.complexfloating, chunks=True, maxshape=(None,D,D))
-        daset_P = grp_pi.create_dataset("P", (0, D, D), dtype=np.complexfloating, chunks=True, maxshape=(None,D,D))
-        daset_S = grp_pi.create_dataset("S", (0, 1, 1), dtype=np.complexfloating, chunks=True, maxshape=(None,1,1))
+
+        if "q" in key and not "q" in grp_pi.keys():
+            daset_q = grp_pi.create_dataset("q", (0, D, 1), dtype=np.complexfloating, chunks=True, maxshape=(None,D,1))
+        if "p" in key and not "p" in grp_pi.keys():
+            daset_p = grp_pi.create_dataset("p", (0, D, 1), dtype=np.complexfloating, chunks=True, maxshape=(None,D,1))
+        if "Q" in key and not "Q" in grp_pi.keys():
+            daset_Q = grp_pi.create_dataset("Q", (0, D, D), dtype=np.complexfloating, chunks=True, maxshape=(None,D,D))
+        if "P" in key and not "P" in grp_pi.keys():
+            daset_P = grp_pi.create_dataset("P", (0, D, D), dtype=np.complexfloating, chunks=True, maxshape=(None,D,D))
+        if "S" in key and not "S" in grp_pi.keys():
+            daset_S = grp_pi.create_dataset("S", (0, 1, 1), dtype=np.complexfloating, chunks=True, maxshape=(None,1,1))
+        if "adQ" in key and not "adQ" in grp_pi.keys():
+            daset_adQ = grp_pi.create_dataset("adQ", (0, 1, 1), dtype=np.complexfloating, chunks=True, maxshape=(None,1,1))
+
         for i in xrange(N):
             daset_c_i = grp_ci.create_dataset("c_"+str(i), (0, 1), dtype=np.complexfloating, chunks=True, maxshape=(None,None))
     else:
@@ -51,11 +63,20 @@ def add_wavepacket(self, parameters, timeslots=None, blockid=0):
         daset_tg = grp_wp.create_dataset("timegrid", (timeslots,), dtype=np.integer)
         daset_bs = grp_wp.create_dataset("basis_shape_hash", (timeslots, N), dtype=np.integer)
         daset_bsi = grp_wp.create_dataset("basis_size", (timeslots, N), dtype=np.integer)
-        daset_q = grp_pi.create_dataset("q", (timeslots, D, 1), dtype=np.complexfloating)
-        daset_p = grp_pi.create_dataset("p", (timeslots, D, 1), dtype=np.complexfloating)
-        daset_Q = grp_pi.create_dataset("Q", (timeslots, D, D), dtype=np.complexfloating)
-        daset_P = grp_pi.create_dataset("P", (timeslots, D, D), dtype=np.complexfloating)
-        daset_S = grp_pi.create_dataset("S", (timeslots, 1, 1), dtype=np.complexfloating)
+
+        if "q" in key and not "q" in grp_pi.keys():
+            daset_q = grp_pi.create_dataset("q", (timeslots, D, 1), dtype=np.complexfloating)
+        if "p" in key and not "p" in grp_pi.keys():
+            daset_p = grp_pi.create_dataset("p", (timeslots, D, 1), dtype=np.complexfloating)
+        if "Q" in key and not "Q" in grp_pi.keys():
+            daset_Q = grp_pi.create_dataset("Q", (timeslots, D, D), dtype=np.complexfloating)
+        if "P" in key and not "P" in grp_pi.keys():
+            daset_P = grp_pi.create_dataset("P", (timeslots, D, D), dtype=np.complexfloating)
+        if "S" in key and not "S" in grp_pi.keys():
+            daset_S = grp_pi.create_dataset("S", (timeslots, 1, 1), dtype=np.complexfloating)
+        if "adQ" in key and not "adQ" in grp_pi.keys():
+            daset_adQ = grp_pi.create_dataset("adQ", (timeslots, 1, 1), dtype=np.complexfloating)
+
         for i in xrange(N):
             daset_c_i = grp_ci.create_dataset("c_"+str(i), (timeslots, 1), dtype=np.complexfloating, chunks=True, maxshape=(None,None))
 
@@ -100,20 +121,23 @@ def save_wavepacket_description(self, descr, blockid=0):
         self._srf[pathd].attrs[key] = pickle.dumps(value)
 
 
-def save_wavepacket_parameters(self, parameters, timestep=None, blockid=0):
+def save_wavepacket_parameters(self, parameters, timestep=None, blockid=0, key=("q","p","Q","P","S")):
     r"""Save the parameter set :math:`\Pi` of the Hagedorn wavepacket :math:`\Psi` to a file.
 
     :param parameters: The parameter set of the Hagedorn wavepacket.
-    :type parameters: A ``list`` containing the five ``ndarrays`` like :math:`(q,p,Q,P,S)`
+    :type parameters: A ``list`` containing the (five) ``ndarrays`` like :math:`(q,p,Q,P,S)`
     :param timestep: The timestep at which we save the data.
     :param blockid: The ID of the data block to operate on.
+    :param key: Specify which parameters to save. All are independent.
+    :type key: Tuple of valid identifier strings that are ``q``, ``p``, ``Q``, ``P``, ``S`` and ``adQ``.
+               Default is ``("q", "p", "Q", "P", "S")``.
     """
     pathtg = "/"+self._prefixb+str(blockid)+"/wavepacket/timegrid"
     pathd = "/"+self._prefixb+str(blockid)+"/wavepacket/Pi/"
     timeslot = self._srf[pathd].attrs["pointer"]
 
     # Write the data
-    for key, item in zip(("q","p","Q","P","S"), parameters):
+    for key, item in zip(key, parameters):
         self.must_resize(pathd+key, timeslot)
         self._srf[pathd+key][timeslot,:,:] = item
 
@@ -215,19 +239,22 @@ def load_wavepacket_timegrid(self, blockid=0):
     return self._srf[pathtg][:]
 
 
-def load_wavepacket_parameters(self, timestep=None, blockid=0):
+def load_wavepacket_parameters(self, timestep=None, blockid=0, key=("q","p","Q","P","S")):
     r"""Load the wavepacket parameters.
 
     :param timestep: Load only the data of this timestep.
     :param blockid: The ID of the data block to operate on.
+    :param key: Specify which parameters to load. All are independent.
+    :type key: Tuple of valid identifier strings that are ``q``, ``p``, ``Q``, ``P``, ``S`` and ``adQ``.
+               Default is ``("q", "p", "Q", "P", "S")``.
     """
     pathtg = "/"+self._prefixb+str(blockid)+"/wavepacket/timegrid"
     pathd = "/"+self._prefixb+str(blockid)+"/wavepacket/Pi/"
     if timestep is not None:
         index = self.find_timestep_index(pathtg, timestep)
-        params = tuple([ self._srf[pathd+key][index,:,:] for key in ("q","p","Q","P","S") ])
+        params = tuple([ self._srf[pathd+k][index,:,:] for k in key ])
     else:
-        params = tuple([ self._srf[pathd+key][...,:,:] for key in ("q","p","Q","P","S") ])
+        params = tuple([ self._srf[pathd+k][...,:,:] for k in key ])
 
     return params
 

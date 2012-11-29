@@ -7,7 +7,8 @@ This file contains the class which represents a homogeneous Hagedorn wavepacket.
 @license: Modified BSD License
 """
 
-from numpy import zeros, complexfloating, array, eye, atleast_2d
+from numpy import zeros, complexfloating, array, eye, atleast_2d, angle
+from numpy.linalg import det
 
 from HagedornWavepacketBase import HagedornWavepacketBase
 from HyperCubicShape import HyperCubicShape
@@ -64,7 +65,7 @@ class HagedornWavepacket(HagedornWavepacketBase):
         self._QE = None
 
         # Function for taking continuous roots
-        self._sqrt = ContinuousSqrt()
+        self._sqrt = ContinuousSqrt(reference=angle(det(Q)))
 
 
     def __str__(self):
@@ -121,7 +122,7 @@ class HagedornWavepacket(HagedornWavepacketBase):
         return other
 
 
-    def get_parameters(self, component=None, aslist=False):
+    def get_parameters(self, component=None, aslist=False, key=("q","p","Q","P","S")):
         r"""Get the Hagedorn parameter set :math:`\Pi` of the wavepacket :math:`\Psi`.
 
         :param component: Dummy parameter for API compatibility with the inhomogeneous packets.
@@ -129,15 +130,47 @@ class HagedornWavepacket(HagedornWavepacketBase):
                        with inhomogeneous packets.
         :return: The Hagedorn parameter set :math:`\Pi = (q, p, Q, P, S)` in this order.
         """
+        Pilist = []
+        for k in key:
+            if k == "q":
+                Pilist.append(self._Pis[0])
+            elif k == "p":
+                Pilist.append(self._Pis[1])
+            elif k == "Q":
+                Pilist.append(self._Pis[2])
+            elif k == "P":
+                Pilist.append(self._Pis[3])
+            elif k == "S":
+                Pilist.append(self._Pis[4])
+            elif k == "adQ":
+                Pilist.append(array(self._get_sqrt(component).get(), dtype=complexfloating))
+            else:
+                raise KeyError("Invalid parameter key: "+str(key))
+
         if aslist is True:
-            return self._number_components * [ self._Pis[:] ]
-        return self._Pis[:]
+            return self._number_components * [ Pilist ]
+
+        return Pilist
 
 
-    def set_parameters(self, Pi, component=None):
+    def set_parameters(self, Pi, component=None, key=("q","p","Q","P","S")):
         r"""Set the Hagedorn parameters :math:`\Pi` of the wavepacket :math:`\Psi`.
 
         :param Pi: The Hagedorn parameter set :math:`\Pi = (q, p, Q, P, S)` in this order.
         :param component: Dummy parameter for API compatibility with the inhomogeneous packets.
         """
-        self._Pis = [ atleast_2d(array(item, dtype=complexfloating)) for item in Pi ]
+        for k, item in zip(key, Pi):
+            if k == "q":
+                self._Pis[0] = atleast_2d(array(item, dtype=complexfloating))
+            elif k == "p":
+                self._Pis[1] = atleast_2d(array(item, dtype=complexfloating))
+            elif k == "Q":
+                self._Pis[2] = atleast_2d(array(item, dtype=complexfloating))
+            elif k == "P":
+                self._Pis[3] = atleast_2d(array(item, dtype=complexfloating))
+            elif k == "S":
+                self._Pis[4] = atleast_2d(array(item, dtype=complexfloating))
+            elif k == "adQ":
+                self._get_sqrt(component).set(item)
+            else:
+                raise KeyError("Invalid parameter key: "+str(key))

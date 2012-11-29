@@ -9,11 +9,12 @@ This file contains the Hagedorn propagator class for homogeneous wavepackets.
 
 from functools import partial
 from numpy import dot, eye, atleast_2d, sqrt
-from numpy.linalg import inv
+from numpy.linalg import inv, det
 
 from Propagator import Propagator
 from BlockFactory import BlockFactory
 from SplittingParameters import SplittingParameters
+from ComplexMath import cont_angle
 
 __all__ = ["MagnusPropagator"]
 
@@ -134,12 +135,14 @@ class MagnusPropagator(Propagator, SplittingParameters):
     def _propkin(self, h, packet):
         """Do a kinetic step of size h.
         """
-        q, p, Q, P, S = packet.get_parameters()
         Mi = self._Minv
+        key = ("q", "p", "Q", "P", "S", "adQ")
+        q, p, Q, P, S, adQ = packet.get_parameters(key=key)
         q = q + h * dot(Mi, p)
         Q = Q + h * dot(Mi, P)
         S = S + 0.5 * h * dot(p.T, dot(Mi, p))
-        packet.set_parameters((q, p, Q, P, S))
+        adQn = cont_angle(det(Q), reference=adQ)[0]
+        packet.set_parameters((q, p, Q, P, S, adQn), key=key)
 
 
     def _proppotquad(self, h, packet, leading_chi):
@@ -158,7 +161,7 @@ class MagnusPropagator(Propagator, SplittingParameters):
         wavepacket at time :math:`t + \tau`. We perform exactly one timestep of size
         :math:`\tau` here. This propagation is done for all packets in the list
         :math:`\{\Psi_i\}_i` and neglects any interaction between two packets.
-        The smiclassical propagations scheme is used. 
+        The semiclassical propagations scheme is used.
         """
         # Cache some parameter values
         dt = 1.0*self._dt
@@ -176,26 +179,26 @@ class MagnusPropagator(Propagator, SplittingParameters):
 
             # Build a first matrix here with the current parameters of the wavepacket
             quadrature = packet.get_quadrature()
-            A1 = (-1.j)*quadrature.build_matrix(packet, operator=partial(self._potential.evaluate_local_remainder_at, diagonal_component=leading_chi))
+            A1 = (-1.0j)*quadrature.build_matrix(packet, operator=partial(self._potential.evaluate_local_remainder_at, diagonal_component=leading_chi))
 
             # Propagate until c2*dt
             h2 = dt/sqrt(3.0)
             nrN2 = max(1, 1 + int((h2**(1.0/2.0))*eps**(-3.0/8.0)))
             self.intsplit(self._propkin, self._proppotquad, a,b, [0.0,h2], nrN2, packet, (packet,leading_chi))
-        
+
             # Build a second matrix here with the current parameters of the wavepacket
             quadrature = packet.get_quadrature()
-            A2 = (-1.j)*quadrature.build_matrix(packet, operator=partial(self._potential.evaluate_local_remainder_at, diagonal_component=leading_chi))
-            
-            # Combine both and buid the matrix for Magnus of 4th order split
-            F = (A1+A2)*(dt/eps**2)*0.5 + (dot(A2,A1)-dot(A1,A2))*((dt/eps**2)**2)*sqrt(3.0)/12.0 
-            
+            A2 = (-1.0j)*quadrature.build_matrix(packet, operator=partial(self._potential.evaluate_local_remainder_at, diagonal_component=leading_chi))
+
+            # Combine both and buid the matrix for Magnus of 4-th order split
+            F = (A1+A2)*(dt/eps**2)*0.5 + (dot(A2,A1)-dot(A1,A2))*((dt/eps**2)**2)*sqrt(3.0)/12.0
+
             # Propagate the coefficients
-            # CAUTION: self.matrix_exponential implements expm(-1j*F*factor) while the above 
+            # CAUTION: self.matrix_exponential implements expm(-1j*F*factor) while the above
             #          formula for Magnus thinks about expm(F) hence take factor = 1.0j
             coefficients = packet.get_coefficient_vector()
             coefficients = self._matrix_exponential(F, coefficients, 1.0j)
             packet.set_coefficient_vector(coefficients)
 
-            # Finish current timestep and propagate until dt 
+            # Finish current timestep and propagate until dt
             self.intsplit(self._propkin, self._proppotquad, a,b, [0.0,h1], nrN1, packet, (packet,leading_chi))

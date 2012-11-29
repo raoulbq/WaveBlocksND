@@ -9,10 +9,11 @@ This file contains the Hagedorn propagator class for homogeneous wavepackets.
 
 from functools import partial
 from numpy import dot, eye, atleast_2d
-from numpy.linalg import inv
+from numpy.linalg import inv, det
 
 from Propagator import Propagator
 from BlockFactory import BlockFactory
+from ComplexMath import cont_angle
 
 __all__ = ["HagedornPropagator"]
 
@@ -137,17 +138,19 @@ class HagedornPropagator(Propagator):
         # Cache some parameter values
         dt = self._dt
         Mi = self._Minv
+        key = ("q", "p", "Q", "P", "S", "adQ")
 
         # Propagate all packets
         for packet, leading_chi in self._packets:
             eps = packet.get_eps()
 
             # Do a kinetic step of dt/2
-            q, p, Q, P, S = packet.get_parameters()
+            q, p, Q, P, S, adQ = packet.get_parameters(key=key)
             q = q + 0.5 * dt * dot(Mi, p)
             Q = Q + 0.5 * dt * dot(Mi, P)
             S = S + 0.25 * dt * dot(p.T, dot(Mi, p))
-            packet.set_parameters((q, p, Q, P, S))
+            adQn = cont_angle(det(Q), reference=adQ)[0]
+            packet.set_parameters((q, p, Q, P, S, adQn), key=key)
 
             # Do a potential step with the local quadratic part
             q, p, Q, P, S = packet.get_parameters()
@@ -167,8 +170,9 @@ class HagedornPropagator(Propagator):
             packet.set_coefficient_vector(coefficients)
 
             # Do a kinetic step of dt/2
-            q, p, Q, P, S = packet.get_parameters()
+            q, p, Q, P, S, adQ = packet.get_parameters(key=key)
             q = q + 0.5 * dt * dot(Mi, p)
             Q = Q + 0.5 * dt * dot(Mi, P)
             S = S + 0.25 * dt * dot(p.T, dot(Mi, p))
-            packet.set_parameters((q, p, Q, P, S))
+            adQn = cont_angle(det(Q), reference=adQ)[0]
+            packet.set_parameters((q, p, Q, P, S, adQn), key=key)

@@ -244,7 +244,7 @@ class HagedornWavepacketBase(Wavepacket):
         return grid
 
 
-    def _evaluate_phi0(self, Pi, nodes, prefactor=False, root=sqrt):
+    def _evaluate_phi0(self, component, nodes, prefactor=False):
         r"""Evaluate the lowest order basis function :math:`\phi_0` on a
         grid :math:`\Gamma` of nodes.
 
@@ -260,7 +260,7 @@ class HagedornWavepacketBase(Wavepacket):
         """
         d = self._dimension
         eps = self._eps
-        q, p, Q, P, S = Pi
+        q, p, Q, P, S = self.get_parameters(component=component)
 
         # TODO: Use LU instead of inv(...)
         df = nodes - q
@@ -271,7 +271,7 @@ class HagedornWavepacketBase(Wavepacket):
 
         # The problematic prefactor cancels in inner products
         if prefactor is True:
-            prefactor = (pi*eps**2)**(-d*0.25) / root(det(Q))
+            prefactor = (pi*eps**2)**(-d*0.25) / self._get_sqrt(component)(det(Q))
         else:
             prefactor = (pi*eps**2)**(-d*0.25)
 
@@ -312,7 +312,7 @@ class HagedornWavepacketBase(Wavepacket):
 
         # Compute the ground state phi_0 via direct evaluation
         mu0 = bas[tuple(D*[0])]
-        phi[mu0,:] = self._evaluate_phi0(Pi, nodes, prefactor=False)
+        phi[mu0,:] = self._evaluate_phi0(component, nodes, prefactor=False)
 
         # Compute all higher order states phi_k via recursion
         for d in xrange(D):
@@ -396,7 +396,7 @@ class HagedornWavepacketBase(Wavepacket):
         nodes = grid.get_nodes()
 
         # Evaluate phi0
-        tmp[Z] = self._evaluate_phi0(Pi, nodes, prefactor=False)
+        tmp[Z] = self._evaluate_phi0(component, nodes, prefactor=False)
         psi = self._coefficients[component][bas[Z], 0] * tmp[Z]
 
         # Iterate for higher order states
@@ -440,7 +440,7 @@ class HagedornWavepacketBase(Wavepacket):
                 delete.append(k)
 
         if prefactor is True:
-            psi = psi / self._sqrt(det(Q))
+            psi = psi / self._get_sqrt(component)(det(Q))
 
         return psi
 

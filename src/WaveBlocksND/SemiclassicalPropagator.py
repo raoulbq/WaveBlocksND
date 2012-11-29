@@ -3,21 +3,23 @@
 This file contains the Hagedorn propagator class for homogeneous wavepackets.
 
 @author: V. Gradinaru
-@copyright: Copyright (C) 2010, 2011, 2012 R. Bourquin
+@copyright: Copyright (C) 2012 V. Gradinaru, R. Bourquin
 @license: Modified BSD License
 """
 
 from functools import partial
 from numpy import dot, eye, atleast_2d, sqrt
-from numpy.linalg import inv
+from numpy.linalg import inv, det
 
 from Propagator import Propagator
 from BlockFactory import BlockFactory
+from SplittingParameters import SplittingParameters
+from ComplexMath import cont_angle
 
 __all__ = ["SemiclassicalPropagator"]
 
 
-class SemiclassicalPropagator(Propagator):
+class SemiclassicalPropagator(Propagator, SplittingParameters):
     r"""This class can numerically propagate given initial values :math:`\Psi` in
     a potential :math:`V(x)`. The propagation is done for a given set of homogeneous
     Hagedorn wavepackets neglecting interaction."""
@@ -69,6 +71,7 @@ class SemiclassicalPropagator(Propagator):
 
         # Precalculate the potential splittings needed
         self._prepare_potential()
+        self._a, self._b = self.build(parameters["splitting_method"])
 
 
     def __str__(self):
@@ -128,81 +131,52 @@ class SemiclassicalPropagator(Propagator):
         self._packets = packetlist[:]
 
 
+    def _propkin(self, h, packet):
+        """Do a kinetic step of size h.
+        """
+        Mi = self._Minv
+        key = ("q", "p", "Q", "P", "S", "adQ")
+        q, p, Q, P, S, adQ = packet.get_parameters(key=key)
+        q = q + h * dot(Mi, p)
+        Q = Q + h * dot(Mi, P)
+        S = S + 0.5 * h * dot(p.T, dot(Mi, p))
+        adQn = cont_angle(det(Q), reference=adQ)[0]
+        packet.set_parameters((q, p, Q, P, S, adQn), key=key)
+
+
+    def _proppotquad(self, h, packet, leading_chi):
+        """Do a potential step of size h with the local quadratic part.
+        """
+        q, p, Q, P, S = packet.get_parameters()
+        V = self._potential.evaluate_local_quadratic_at(q, diagonal_component=leading_chi)
+        p = p - h * V[1]
+        P = P - h * dot(V[2], Q)
+        S = S - h * V[0]
+        packet.set_parameters((q, p, Q, P, S))
+
+
     def propagate(self):
         r"""Given a wavepacket :math:`\Psi` at time :math:`t` compute the propagated
         wavepacket at time :math:`t + \tau`. We perform exactly one timestep of size
         :math:`\tau` here. This propagation is done for all packets in the list
         :math:`\{\Psi_i\}_i` and neglects any interaction between two packets.
-        The smiclassical propagations scheme is used. 
+        The semiclassical propagations scheme is used.
         """
         # Cache some parameter values
         dt = 1.0*self._dt
-        Mi = self._Minv
-        theta = 1.0/(2.0-2**(1.0/3.0))
+        a = self._a
+        b = self._b
 
         # Propagate all packets
         for packet, leading_chi in self._packets:
             eps = packet.get_eps()
+
+            # Propagate until 0.5*dt
+            h1 = 0.5*dt
             nrtmp = int(sqrt(dt)*eps**(-0.75))
             nrlocalsteps = max(1, 1+nrtmp)
-            dt *= 0.5
-            dt /= nrlocalsteps
+            self.intsplit(self._propkin, self._proppotquad, a,b, [0.0,h1], nrlocalsteps, packet, (packet,leading_chi))
 
-            for k in xrange(nrlocalsteps):
-                # Do a kinetic step of theta*dt/2
-                q, p, Q, P, S = packet.get_parameters()
-                q = q + 0.5 * theta * dt * dot(Mi, p)
-                Q = Q + 0.5 * theta * dt * dot(Mi, P)
-                S = S + 0.25 * theta * dt * dot(p.T, dot(Mi, p))
-                packet.set_parameters((q, p, Q, P, S))
-
-                # Do a potential step with the local quadratic part
-                q, p, Q, P, S = packet.get_parameters()
-                V = self._potential.evaluate_local_quadratic_at(q, diagonal_component=leading_chi)
-                p = p - theta * dt * V[1]
-                P = P - theta * dt * dot(V[2], Q)
-                S = S - theta * dt * V[0]
-                packet.set_parameters((q, p, Q, P, S))
-                
-                # Do a kinetic step of (1-theta)*dt/2
-                q, p, Q, P, S = packet.get_parameters()
-                q = q + 0.5 * (1.-theta) * dt * dot(Mi, p)
-                Q = Q + 0.5 * (1.-theta) * dt * dot(Mi, P)
-                S = S + 0.25 * (1.-theta) * dt * dot(p.T, dot(Mi, p))
-                packet.set_parameters((q, p, Q, P, S))
-
-                # (1-2*theta)
-                # Do a potential step with the local quadratic part 
-                q, p, Q, P, S = packet.get_parameters()
-                V = self._potential.evaluate_local_quadratic_at(q, diagonal_component=leading_chi)
-                p = p - (1.-2.*theta) * dt * V[1]
-                P = P - (1.-2.*theta) * dt * dot(V[2], Q)
-                S = S - (1.-2.*theta) * dt * V[0]
-                packet.set_parameters((q, p, Q, P, S))
-                
-                # Do a kinetic step of (1-theta)*dt/2
-                q, p, Q, P, S = packet.get_parameters()
-                q = q + 0.5 * (1.-theta) * dt * dot(Mi, p)
-                Q = Q + 0.5 * (1.-theta) * dt * dot(Mi, P)
-                S = S + 0.25 * (1.-theta) * dt * dot(p.T, dot(Mi, p))
-                packet.set_parameters((q, p, Q, P, S))
-
-                # Do a potential step with the local quadratic part
-                q, p, Q, P, S = packet.get_parameters()
-                V = self._potential.evaluate_local_quadratic_at(q, diagonal_component=leading_chi)
-                p = p - theta * dt * V[1]
-                P = P - theta * dt * dot(V[2], Q)
-                S = S - theta * dt * V[0]
-                packet.set_parameters((q, p, Q, P, S))
-
-                # Do a kinetic step of theta*dt/2
-                q, p, Q, P, S = packet.get_parameters()
-                q = q + 0.5 * theta * dt * dot(Mi, p)
-                Q = Q + 0.5 * theta * dt * dot(Mi, P)
-                S = S + 0.25 * theta * dt * dot(p.T, dot(Mi, p))
-                packet.set_parameters((q, p, Q, P, S))
-
-            dt = 1.0*self._dt
             # Do a potential step with the local non-quadratic taylor remainder
             quadrature = packet.get_quadrature()
             F = quadrature.build_matrix(packet, operator=partial(self._potential.evaluate_local_remainder_at, diagonal_component=leading_chi))
@@ -211,59 +185,5 @@ class SemiclassicalPropagator(Propagator):
             coefficients = self._matrix_exponential(F, coefficients, dt/eps**2)
             packet.set_coefficient_vector(coefficients)
 
-            dt *= 0.5
-            dt /= nrlocalsteps
-
-            for k in xrange(nrlocalsteps):
-                # Do a kinetic step of theta*dt/2
-                q, p, Q, P, S = packet.get_parameters()
-                q = q + 0.5 * theta * dt * dot(Mi, p)
-                Q = Q + 0.5 * theta * dt * dot(Mi, P)
-                S = S + 0.25 * theta * dt * dot(p.T, dot(Mi, p))
-                packet.set_parameters((q, p, Q, P, S))
-
-                # Do a potential step with the local quadratic part
-                q, p, Q, P, S = packet.get_parameters()
-                V = self._potential.evaluate_local_quadratic_at(q, diagonal_component=leading_chi)
-                p = p - theta * dt * V[1]
-                P = P - theta * dt * dot(V[2], Q)
-                S = S - theta * dt * V[0]
-                packet.set_parameters((q, p, Q, P, S))
-                
-                # Do a kinetic step of (1-theta)*dt/2
-                q, p, Q, P, S = packet.get_parameters()
-                q = q + 0.5 * (1.-theta) * dt * dot(Mi, p)
-                Q = Q + 0.5 * (1.-theta) * dt * dot(Mi, P)
-                S = S + 0.25 * (1.-theta) * dt * dot(p.T, dot(Mi, p))
-                packet.set_parameters((q, p, Q, P, S))
-
-                # (1-2*theta)
-                # Do a potential step with the local quadratic part 
-                q, p, Q, P, S = packet.get_parameters()
-                V = self._potential.evaluate_local_quadratic_at(q, diagonal_component=leading_chi)
-                p = p - (1.-2.*theta) * dt * V[1]
-                P = P - (1.-2.*theta) * dt * dot(V[2], Q)
-                S = S - (1.-2.*theta) * dt * V[0]
-                packet.set_parameters((q, p, Q, P, S))
-                
-                # Do a kinetic step of (1-theta)*dt/2
-                q, p, Q, P, S = packet.get_parameters()
-                q = q + 0.5 * (1.-theta) * dt * dot(Mi, p)
-                Q = Q + 0.5 * (1.-theta) * dt * dot(Mi, P)
-                S = S + 0.25 * (1.-theta) * dt * dot(p.T, dot(Mi, p))
-                packet.set_parameters((q, p, Q, P, S))
-
-                # Do a potential step with the local quadratic part
-                q, p, Q, P, S = packet.get_parameters()
-                V = self._potential.evaluate_local_quadratic_at(q, diagonal_component=leading_chi)
-                p = p - theta * dt * V[1]
-                P = P - theta * dt * dot(V[2], Q)
-                S = S - theta * dt * V[0]
-                packet.set_parameters((q, p, Q, P, S))
-
-                # Do a kinetic step of theta*dt/2
-                q, p, Q, P, S = packet.get_parameters()
-                q = q + 0.5 * theta * dt * dot(Mi, p)
-                Q = Q + 0.5 * theta * dt * dot(Mi, P)
-                S = S + 0.25 * theta * dt * dot(p.T, dot(Mi, p))
-                packet.set_parameters((q, p, Q, P, S))
+            # Finish current timestep and propagate until dt
+            self.intsplit(self._propkin, self._proppotquad, a,b, [0.0,h1], nrlocalsteps, packet, (packet,leading_chi))
