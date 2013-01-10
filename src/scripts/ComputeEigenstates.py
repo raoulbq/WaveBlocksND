@@ -126,13 +126,15 @@ def compute_eigenstate(params):
     ind = argsort(ew)
 
     # Build the requested energy levels and states
-    if params.has_key("states_indices"):
-        states = params["states_indices"]
+    if params.has_key("eigenstates_indices"):
+        states = params["eigenstates_indices"]
     else:
         # Groundstate only
         states = [0]
 
     BS = HAWP.get_basis_shapes(component=0)
+
+    KEY = ("q","p","Q","P","S","adQ")
 
     print(70*"-")
     for state in states:
@@ -155,11 +157,11 @@ def compute_eigenstate(params):
 
         # Save all the wavepacket data
         bid = IOM.create_block(groupid=gid)
-        IOM.add_wavepacket(params, blockid=bid)
+        IOM.add_wavepacket(params, blockid=bid, key=KEY)
         IOM.save_wavepacket_description(HAWP.get_description(), blockid=bid)
         for shape in HAWP.get_basis_shapes():
             IOM.save_wavepacket_basisshapes(shape, blockid=bid)
-        IOM.save_wavepacket_parameters(HAWP.get_parameters(), timestep=0, blockid=bid)
+        IOM.save_wavepacket_parameters(HAWP.get_parameters(key=KEY), timestep=0, blockid=bid, key=KEY)
         IOM.save_wavepacket_coefficients(HAWP.get_coefficients(), HAWP.get_basis_shapes(), timestep=0, blockid=bid)
 
     IOM.finalize()

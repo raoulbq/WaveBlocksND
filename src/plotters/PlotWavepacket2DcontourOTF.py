@@ -46,11 +46,11 @@ def plot_frames(PP, iom, blockid=0, load=False, limits=None):
     V = BF.create_potential(parameters)
     BT = BasisTransformationHAWP(V)
 
-    wpd = iom.load_wavepacket_description()
+    wpd = iom.load_wavepacket_description(blockid=blockid)
     HAWP = BF.create_wavepacket(wpd)
 
     # Basis shapes
-    BS_descr = iom.load_wavepacket_basisshapes()
+    BS_descr = iom.load_wavepacket_basisshapes(blockid=blockid)
     BS = {}
     for ahash, descr in BS_descr.iteritems():
         BS[ahash] = BF.create_basis_shape(descr)
@@ -62,8 +62,8 @@ def plot_frames(PP, iom, blockid=0, load=False, limits=None):
     for step in timegrid:
         print(" Plotting frame of timestep # " + str(step))
 
-        hi, ci = iom.load_wavepacket_coefficients(timestep=step, get_hashes=True)
-        Pi = iom.load_wavepacket_parameters(timestep=step)
+        hi, ci = iom.load_wavepacket_coefficients(timestep=step, get_hashes=True, blockid=blockid)
+        Pi = iom.load_wavepacket_parameters(timestep=step, blockid=blockid)
 
         HAWP.set_parameters(Pi)
         HAWP.set_basis_shapes([ BS[int(ha)] for ha in hi ])
@@ -81,7 +81,7 @@ def plot_frames(PP, iom, blockid=0, load=False, limits=None):
             #plotcm(z.reshape(G.get_number_nodes()), darken=0.3)
             plotcf2d(u, v, z, darken=0.3, limits=limits)
 
-        savefig("wavepacket_level_"+str(level)+"_timestep_"+(5-len(str(step)))*"0"+str(step)+".png")
+        savefig("wavepacket_block_"+str(blockid)+"_level_"+str(level)+"_timestep_"+(5-len(str(step)))*"0"+str(step)+".png")
         close(fig)
 
     print(" Plotting frames finished")
