@@ -59,6 +59,9 @@ class InhomogeneousQuadrature(Quadrature):
         if QR is None:
             QR = self._QR
 
+        if QR["transform"] is not True:
+            return QR.get_nodes()
+
         # Mix the parameters to compute the affine transformation
         q0, Qs = self.mix_parameters(Pibra, Piket)
 

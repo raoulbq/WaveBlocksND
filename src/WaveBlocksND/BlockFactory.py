@@ -3,9 +3,11 @@
 This file contains a the block factory.
 
 @author: R. Bourquin
-@copyright: Copyright (C) 2012 R. Bourquin
+@copyright: Copyright (C) 2012, 2013 R. Bourquin
 @license: Modified BSD License
 """
+
+from copy import deepcopy
 
 __all__ = ["BlockFactory"]
 
@@ -161,11 +163,17 @@ class BlockFactory(object):
     def create_quadrature_rule(self, description):
         qr_type = description["type"]
 
+        if description.has_key("options"):
+            op = deepcopy(description["options"])
+        else:
+            # Per default, adapt qr to follow dynamics
+            op = {"transform":True}
+
         if qr_type == "GaussHermiteQR":
             from GaussHermiteQR import GaussHermiteQR
             order = description["order"]
             assert type(order) == int
-            QR = GaussHermiteQR(order)
+            QR = GaussHermiteQR(order, options=op)
 
         elif qr_type == "TrapezoidalQR":
             from TrapezoidalQR import TrapezoidalQR
@@ -173,12 +181,12 @@ class BlockFactory(object):
             right = description["right"]
             order = description["order"]
             assert type(order) == int
-            QR = TrapezoidalQR(left, right, order)
+            QR = TrapezoidalQR(left, right, order, options=op)
 
         elif qr_type == "TensorProductQR":
             from TensorProductQR import TensorProductQR
             # Iteratively create all quadrature rules necessary
             qrs = [ self.create_quadrature_rule(desc) for desc in description["qr_rules"] ]
-            QR = TensorProductQR(qrs)
+            QR = TensorProductQR(qrs, options=op)
 
         return QR

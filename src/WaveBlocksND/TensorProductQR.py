@@ -4,10 +4,11 @@ This file contains the class for constructing high dimensional
 quadrature rules from one-dimensional ones by taking tensor products.
 
 @author: R. Bourquin
-@copyright: Copyright (C) 2012 R. Bourquin
+@copyright: Copyright (C) 2012, 2013 R. Bourquin
 @license: Modified BSD License
 """
 
+from copy import deepcopy
 import operator as op
 from numpy import vstack
 
@@ -22,7 +23,7 @@ class TensorProductQR(QuadratureRule):
     quadrature rules from one-dimensional ones by taking tensor products.
     """
 
-    def __init__(self, rules):
+    def __init__(self, rules, options={}):
         r"""
         Initialize a :py:class:`TensorProductQR` instance.
 
@@ -38,6 +39,9 @@ class TensorProductQR(QuadratureRule):
         # The order R of the tensor product quadrature.
         self._order = None
         # TODO: Compute the order from the orders of the input QRs
+
+        # Set the options
+        self._options = options
 
         # The number of nodes in this quadrature rule.
         self._number_nodes = reduce(op.mul, [ rule.get_number_nodes() for rule in rules ])
@@ -69,6 +73,7 @@ class TensorProductQR(QuadratureRule):
         d["type"] = "TensorProductQR"
         d["dimension"] = self._dimension
         d["qr_rules"] = [ qr.get_description() for qr in self._qrs ]
+        d["options"] = deepcopy(self._options)
         return d
 
 

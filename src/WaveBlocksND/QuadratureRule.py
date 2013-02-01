@@ -29,6 +29,15 @@ class QuadratureRule(object):
         raise NotImplementedError("'QuadratureRule' is an abstract interface.")
 
 
+    def __getitem__(self, key):
+        r"""Handle quadrature rule options.
+        """
+        if self._options.has_key(key):
+            return self._options[key]
+        else:
+            return False
+
+
     def get_description(self):
         r"""Return a description of this quadrature rule object.
         A description is a ``dict`` containing all key-value pairs

@@ -7,6 +7,7 @@ This file contains the class for trapezoidal quadrature rules.
 @license: Modified BSD License
 """
 
+from copy import deepcopy
 from numpy import linspace, abs, ones
 
 from QuadratureRule import QuadratureRule
@@ -18,7 +19,7 @@ class TrapezoidalQR(QuadratureRule):
     r"""This class implements a trapezoidal quadrature rule.
     """
 
-    def __init__(self, left, right, number_nodes):
+    def __init__(self, left, right, number_nodes, options={}):
         r"""Initialize a new quadrature rule.
 
         :param number_nodes: The order :math:`R` of the trapezoidal quadrature rule.
@@ -34,6 +35,9 @@ class TrapezoidalQR(QuadratureRule):
         # Qudrature has to have at least a single (node,weight) pair.
         if self._number_nodes < 1:
             raise ValueError("Quadrature rule has to be of order 1 at least.")
+
+        # Set the options
+        self._options = options
 
         self._left = left
         self._right = right
@@ -56,6 +60,7 @@ class TrapezoidalQR(QuadratureRule):
         d["left"] = self._left
         d["right"] = self._right
         d["order"] = self._number_nodes
+        d["options"] = deepcopy(self._options)
         return d
 
 

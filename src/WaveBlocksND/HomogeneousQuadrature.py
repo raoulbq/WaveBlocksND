@@ -56,6 +56,9 @@ class HomogeneousQuadrature(Quadrature):
         if QR is None:
             QR = self._QR
 
+        if QR["transform"] is not True:
+            return QR.get_nodes()
+
         q, p, Q, P, S = Pi
 
         # Compute the affine transformation

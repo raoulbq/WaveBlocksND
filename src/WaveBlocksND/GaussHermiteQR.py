@@ -3,10 +3,11 @@
 This file contains the class for Gauss-Hermite quadrature.
 
 @author: R. Bourquin
-@copyright: Copyright (C) 2010, 2011, 2012 R. Bourquin
+@copyright: Copyright (C) 2010, 2011, 2012, 2013 R. Bourquin
 @license: Modified BSD License
 """
 
+from copy import deepcopy
 from numpy import zeros, floating, real
 from scipy import pi, exp, sqrt
 from scipy.special.orthogonal import h_roots
@@ -20,7 +21,7 @@ class GaussHermiteQR(QuadratureRule):
     r"""This class implements a Gauss-Hermite quadrature rule.
     """
 
-    def __init__(self, order):
+    def __init__(self, order, options={}):
         r"""Initialize a new quadrature rule.
 
         :param order: The order :math:`R` of the Gauss-Hermite quadrature.
@@ -36,6 +37,9 @@ class GaussHermiteQR(QuadratureRule):
         # Qudrature has to have at least a single (node,weight) pair.
         if not self._order > 0:
             raise ValueError("Quadrature rule has to be of order 1 at least.")
+
+        # Set the options
+        self._options = options
 
         nodes, weights = h_roots(self._order)
 
@@ -67,6 +71,7 @@ class GaussHermiteQR(QuadratureRule):
         d["type"] = "GaussHermiteQR"
         d["dimension"] = self._dimension
         d["order"] = self._order
+        d["options"] = deepcopy(self._options)
         return d
 
 
