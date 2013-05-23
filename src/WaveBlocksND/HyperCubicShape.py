@@ -4,7 +4,7 @@ This file contains the class for representing the hypercubic basis shape
 which is the full dense basis set.
 
 @author: R. Bourquin
-@copyright: Copyright (C) 2012 R. Bourquin
+@copyright: Copyright (C) 2012, 2013 R. Bourquin
 @license: Modified BSD License
 """
 
@@ -19,7 +19,7 @@ class HyperCubicShape(BasisShape):
     r"""This class implements the hypercubic basis shape
     which is the full dense basis set.
     A basis shape is essentially all information and operations
-    related to the set :math:`\mathcal{K}` of multi-indices :math:`k`.
+    related to the set :math:`\mathfrak{K}` of multi-indices :math:`k`.
     """
 
     def __init__(self, limits):
@@ -43,9 +43,17 @@ class HyperCubicShape(BasisShape):
         self._basissize = len(self._lima)
 
 
+    def __str__(self):
+        r""":return: A string describing the basis shape :math:`\mathfrak{K}`.
+        """
+        s = ("Hypercubic basis shape of dimension "+str(self._dimension)+
+             " and with limits "+str(self._limits)+".")
+        return s
+
+
     def __hash__(self):
         r"""Compute a unique hash for the basis shape. In the case of hypercubic
-        basis shapes :math:`\mathcal{K}` the basis is fully specified by its
+        basis shapes :math:`\mathfrak{K}` the basis is fully specified by its
         maximal index :math:`K_i` along each direction :math:`i \in [0,\ldots,D-1]`.
         """
         return hash(("HyperCubicShape", self._limits))
@@ -67,7 +75,7 @@ class HyperCubicShape(BasisShape):
 
     def __contains__(self, k):
         r"""
-        Checks if a given multi-index :math:`k` is part of the basis set :math:`\mathcal{K}`.
+        Checks if a given multi-index :math:`k` is part of the basis set :math:`\mathfrak{K}`.
 
         :param k: The multi-index we want to test.
         :type k: tuple
@@ -78,7 +86,7 @@ class HyperCubicShape(BasisShape):
 
     def __iter__(self):
         r"""Implements iteration over the multi-indices :math:`k`
-        of the basis set :math:`\mathcal{K}`.
+        of the basis set :math:`\mathfrak{K}`.
 
         Note: The order of iteration is NOT fixed. If you need a special
         iteration scheme, use :py:meth:`get_node_iterator`.
@@ -89,7 +97,7 @@ class HyperCubicShape(BasisShape):
 
     def contains(self, k):
         r"""
-        Checks if a given multi-index :math:`k` is part of the basis set :math:`\mathcal{K}`.
+        Checks if a given multi-index :math:`k` is part of the basis set :math:`\mathfrak{K}`.
 
         :param k: The multi-index we want to test.
         :type k: tuple

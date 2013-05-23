@@ -18,7 +18,7 @@ class DenseGrid(Grid):
 
     def __init__(self):
         """
-        :raise NotImplementedError: Abstract interface.
+        :raise: :py:class:`NotImplementedError` Abstract interface.
         """
         raise NotImplementedError("'DenseGrid' is an abstract interface.")
 

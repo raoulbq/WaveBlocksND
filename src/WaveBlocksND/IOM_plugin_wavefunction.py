@@ -20,7 +20,7 @@ def add_wavefunction(self, parameters, flat=False, timeslots=None, blockid=0):
     :param flat: A flag indicating if we store wavefunctions :math:`\Psi(\Gamma)`
                  in a hypercubic shape :math:`(N_1, ..., N_D)` or
                  in a flat shape :math:`(D, |\Gamma|)` with :math:`|\Gamma| = \prod_i^D N_i`.
-    :type flat: Boolean, default is `False`.
+    :type flat: Boolean, default is ``False``.
     :param timeslots: The number of time slots we need. Can be ``None``
                       to get automatically growing datasets.
     :param blockid: The ID of the data block to operate on.

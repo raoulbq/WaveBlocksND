@@ -1,7 +1,7 @@
-InhomogeneousQuadrature
+HomogeneousInnerProduct
 =======================
 
-About the ``InhomogeneousQuadrature`` class
+About the ``HomogeneousInnerProduct`` class
 -------------------------------------------
 
 .. automodule:: WaveBlocksND
@@ -9,11 +9,11 @@ About the ``InhomogeneousQuadrature`` class
 Inheritance diagram
 -------------------
 
-.. inheritance-diagram:: InhomogeneousQuadrature
+.. inheritance-diagram:: HomogeneousInnerProduct
 
 Class documentation
 -------------------
 
-.. autoclass:: InhomogeneousQuadrature
+.. autoclass:: HomogeneousInnerProduct
    :members:
    :inherited-members:

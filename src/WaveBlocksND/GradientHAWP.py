@@ -33,7 +33,7 @@ class GradientHAWP(Gradient):
         :type wavepacket: A :py:class:`HagedornWavepacketBase` subclass instance.
         :param component: The index :math:`i` of the component :math:`\Phi_i`.
         :type component: int
-        :return: Extended basis shape :math:`\mathcal{\dot{K}}` and new coefficients :math:`c^\prime`.
+        :return: Extended basis shape :math:`\mathfrak{\dot{K}}` and new coefficients :math:`c^\prime`.
         """
         # TODO: Consider moving this method into the HAWP class?
         D = wavepacket.get_dimension()

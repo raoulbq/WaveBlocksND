@@ -72,7 +72,7 @@ def plot_autocorrelations(data, index=0):
     ax.set_title(r"Autocorrelations of $\Psi$")
     legend(loc="outer right")
     ax.set_xlabel(r"Time $t$")
-    ax.set_ylim([0,1.1*max(autocorrelations[:-1])])
+    ax.set_ylim(0, 1.1)
     fig.savefig("autocorrelations_block"+str(index)+GD.output_format)
     close(fig)
 
@@ -97,7 +97,7 @@ def plot_autocorrelations(data, index=0):
         ax.set_xlabel(r"Time $t$")
 
     legend(loc="outer right")
-    ax.set_ylim([0,1.1*max(autocorrelations[:-1])])
+    ax.set_ylim(0, 1.1)
     ax.set_title(r"Autocorrelations of $\Psi$")
     fig.savefig("autocorrelations_per_component_block"+str(index)+GD.output_format)
     close(fig)

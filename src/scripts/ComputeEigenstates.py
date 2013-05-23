@@ -95,7 +95,7 @@ def compute_eigenstate(params):
 
     # Next compute the matrix M_ij = <phi_i | T + V | phi_j>
     # First the potential part
-    HQ = BF.create_quadrature(params["quadrature"])
+    HQ = BF.create_innerproduct(params["innerproduct"])
 
     opV = lambda x, q: V.evaluate_at(x)
     MV = HQ.build_matrix(HAWP, operator=opV)

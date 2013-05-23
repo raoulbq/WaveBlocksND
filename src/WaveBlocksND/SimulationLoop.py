@@ -19,7 +19,7 @@ class SimulationLoop(object):
 
     def __init__(self, parameters):
         """Create a new simulation loop instance.
-        :raise NotImplementedError: This is an abstract base class.
+        :raise: :py:class:`NotImplementedError` This is an abstract base class.
         """
         raise NotImplementedError("'SimulationLoop' is an abstract base class.")
 
@@ -27,7 +27,7 @@ class SimulationLoop(object):
     def prepare_simulation(self):
         """Set up a propagator for the simulation loop. Set the
         potential and initial values according to the configuration.
-        :raise NotImplementedError: This is an abstract base class.
+        :raise: :py:class:`NotImplementedError` This is an abstract base class.
         """
         raise NotImplementedError("'SimulationLoop' is an abstract base class.")
 
@@ -36,7 +36,7 @@ class SimulationLoop(object):
         """Run the simulation. This method will implement the central loop running
         over all timesteps. Inside of this loop it will call the `propagate` method
         of its propagator and save the simulation results.
-        :raise NotImplementedError: This is an abstract base class.
+        :raise: :py:class:`NotImplementedError` This is an abstract base class.
         """
         raise NotImplementedError("'SimulationLoop' is an abstract base class.")
 
@@ -45,6 +45,6 @@ class SimulationLoop(object):
         """Do the necessary cleanup after a simulation. For example request the
         IOManager to write the data and close the output files. Shut down the
         simulation process.
-        :raise NotImplementedError: This is an abstract base class.
+        :raise: :py:class:`NotImplementedError` This is an abstract base class.
         """
         raise NotImplementedError("'SimulationLoop' is an abstract base class.")

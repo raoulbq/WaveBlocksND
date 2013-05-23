@@ -44,7 +44,7 @@ def compute_energy_hawp(iom, blockid=0, eigentrafo=True, iseigen=True):
     HAWP = BlockFactory().create_wavepacket(descr)
 
     if eigentrafo is True:
-        BT.set_matrix_builder(HAWP.get_quadrature())
+        BT.set_matrix_builder(HAWP.get_innerproduct())
 
     # Basis shapes
     BS_descr = iom.load_wavepacket_basisshapes()
@@ -73,7 +73,7 @@ def compute_energy_hawp(iom, blockid=0, eigentrafo=True, iseigen=True):
             BT.transform_to_eigen(HAWP)
 
         # Compute the energies
-        O.set_quadrature(HAWP.get_quadrature())
+        O.set_innerproduct(HAWP.get_innerproduct())
         ekin = O.kinetic_energy(HAWP)
         if iseigen is True:
             epot = O.potential_energy(HAWP, Potential.evaluate_eigenvalues_at)
@@ -116,7 +116,7 @@ def compute_energy_inhawp(iom, blockid=0, eigentrafo=True, iseigen=True):
     HAWP = BlockFactory().create_wavepacket(descr)
 
     if eigentrafo is True:
-        BT.set_matrix_builder(HAWP.get_quadrature())
+        BT.set_matrix_builder(HAWP.get_innerproduct())
 
     # Basis shapes
     BS_descr = iom.load_inhomogwavepacket_basisshapes()
@@ -145,7 +145,7 @@ def compute_energy_inhawp(iom, blockid=0, eigentrafo=True, iseigen=True):
             BT.transform_to_eigen(HAWP)
 
         # Compute the energies
-        O.set_quadrature(HAWP.get_quadrature())
+        O.set_innerproduct(HAWP.get_innerproduct())
         ekin = O.kinetic_energy(HAWP)
         if iseigen is True:
             epot = O.potential_energy(HAWP, Potential.evaluate_eigenvalues_at)

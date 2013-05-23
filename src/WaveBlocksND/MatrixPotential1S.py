@@ -94,7 +94,7 @@ class MatrixPotential1S(MatrixPotential):
                      to evaluate the potential at.
         :type grid: A :py:class:`Grid` instance. (Numpy arrays are not directly supported yet.)
         :param entry: The indices :math:`(i,j)` of the component :math:`V_{i,j}(x)`
-                      we want to evaluate or `None` to evaluate all entries.
+                      we want to evaluate or ``None`` to evaluate all entries.
                       This has no effect here as we only have a single entry :math:`V_{0,0}`.
         :type entry: A python tuple of two integers.
         :param as_matrix: Dummy parameter which has no effect here.
@@ -139,7 +139,7 @@ class MatrixPotential1S(MatrixPotential):
                      to evaluate the eigenvalue at.
         :type grid: A :py:class:`Grid` instance. (Numpy arrays are not directly supported yet.)
         :param entry: The indices :math:`(i,j)` of the component :math:`\Lambda_{i,j}(x)`
-                      we want to evaluate or `None` to evaluate all entries. If :math:`j = i`
+                      we want to evaluate or ``None`` to evaluate all entries. If :math:`j = i`
                       then we evaluate the eigenvalue :math:`\lambda_i(x)`. This has no
                       effect here as we only have a single entry :math:`\lambda_0`.
         :type entry: A python tuple of two integers.
@@ -172,7 +172,7 @@ class MatrixPotential1S(MatrixPotential):
                      to evaluate the eigenvector at.
         :type grid: A :py:class:`Grid` instance. (Numpy arrays are not directly supported yet.)
         :param entry: The index :math:`i` of the eigenvector :math:`\nu_i(x)`
-                      we want to evaluate or `None` to evaluate all eigenvectors.
+                      we want to evaluate or ``None`` to evaluate all eigenvectors.
                       This has no effect here as we only have a single entry :math:`\nu_0`.
         :type entry: A singly python  integer.
         :return: A list containing the numpy ndarrays, all of shape :math:`(1, |\Gamma|)`.

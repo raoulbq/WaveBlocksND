@@ -21,31 +21,31 @@ class ObservablesHAWP(Observables):
     r"""This class implements observable computation for Hagedorn wavepackets :math:`\Psi`.
     """
 
-    def __init__(self, quadrature=None):
+    def __init__(self, innerproduct=None):
         r"""Initialize a new :py:class:`ObservablesHAWP` instance for observable computation
         of Hagedorn wavepackets.
 
-        :param quadrature: A quadrature for computing the integrals. Quadrature is only used for
-                           the computation of the potential energy :math:`\langle\Psi|V(x)|\Psi\rangle`
-                           but not for the kinetic energy.
-        :type quadrature: A :py:class:`Quadrature` subclass instance.
+        :param innerproduct: An inner product for computing the integrals. The inner product is only used for
+                             the computation of the potential energy :math:`\langle\Psi|V(x)|\Psi\rangle`
+                             but not for the kinetic energy.
+        :type innerproduct: A :py:class:`InnerProduct` subclass instance.
         """
-        # A quadrature to compute the integrals
-        if quadrature is not None:
-            self._quadrature = quadrature
+        # A innerproduct to compute the integrals
+        if innerproduct is not None:
+            self._innerproduct = innerproduct
 
         self._gradient = GradientHAWP()
 
 
-    def set_quadrature(self, quadrature):
-        r"""Set the quadrature.
+    def set_innerproduct(self, innerproduct):
+        r"""Set the innerproduct.
 
-        :param quadrature: A quadrature for computing the integrals. Quadrature is only used for
-                           the computation of the potential energy :math:`\langle\Psi|V(x)|\Psi\rangle`
-                           but not for the kinetic energy.
-        :type quadrature: A :py:class:`Quadrature` subclass instance.
+        :param innerproduct: An innerproduct for computing the integrals. The inner product is only used for
+                             the computation of the potential energy :math:`\langle\Psi|V(x)|\Psi\rangle`
+                             but not for the kinetic energy.
+        :type innerproduct: A :py:class:`InnerProduct` subclass instance.
         """
-        self._quadrature = quadrature
+        self._innerproduct = innerproduct
 
 
     def kinetic_energy(self, wavepacket, component=None, summed=False):
@@ -59,7 +59,7 @@ class ObservablesHAWP(Observables):
                           computation is performed for all :math:`N` components.
         :type component: Integer or ``None``.
         :param summed: Whether to sum up the kinetic energies :math:`E_i` of the individual
-                       components :math:`\Phi_i`. Default is `False`.
+                       components :math:`\Phi_i`. Default is ``False``.
         :type summed: Boolean
         :return: A list with the kinetic energies of the individual components or the
                  overall kinetic energy of the wavepacket. (Depending on the optional arguments.)
@@ -97,7 +97,7 @@ class ObservablesHAWP(Observables):
                           computation is performed for all :math:`N` components.
         :type component: Integer or ``None``.
         :param summed: Whether to sum up the potential energies :math:`E_i` of the individual
-                       components :math:`\Phi_i`. Default is `False`.
+                       components :math:`\Phi_i`. Default is ``False``.
         :type summed: Boolean
         :return: A list with the potential energies of the individual components or the
                  overall potential energy of the wavepacket. (Depending on the optional arguments.)
@@ -110,12 +110,12 @@ class ObservablesHAWP(Observables):
 
         # Compute the brakets for each component
         if component is not None:
-            Q = self._quadrature.quadrature(wavepacket, operator=f, diag_component=component)
+            Q = self._innerproduct.quadrature(wavepacket, operator=f, diag_component=component, eval_at_once=True)
         else:
-            Q = self._quadrature.quadrature(wavepacket, operator=f)
+            Q = self._innerproduct.quadrature(wavepacket, operator=f, eval_at_once=True)
 
         # And don't forget the summation in the matrix multiplication of 'operator' and 'ket'
-        # TODO: Should this go inside the quadrature?
+        # TODO: Should this go inside the innerproduct?
         tmp = map(squeeze, Q)
         epot = [ sum(tmp[i*N:(i+1)*N]) for i in xrange(N) ]
 

@@ -42,12 +42,15 @@ wp0 = {
     "coefficients" : [[ ((0,), 1.0) ],
                       [ ((0,), 0.0) ]
                       ],
-    "quadrature" : {
-        "type" : "HomogeneousQuadrature",
-	'qr': {
-            'type': 'TensorProductQR',
-            'dimension': 1,
-            'qr_rules': [{'dimension': 1, 'order': 68, 'type': 'GaussHermiteQR'}]
+    "innerproduct" : {
+        "type" : "HomogeneousInnerProduct",
+        "delegate" : {
+            "type" : "DirectHomogeneousQuadrature",
+            'qr': {
+                'type': 'TensorProductQR',
+                'dimension': 1,
+                'qr_rules': [{'dimension': 1, 'order': 68, 'type': 'GaussHermiteQR'}]
+            }
         }
     }
 }

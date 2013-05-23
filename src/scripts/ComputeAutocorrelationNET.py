@@ -4,13 +4,14 @@ Compute the autocorrelations of the different wavepackets or wavefunctions.
 This script does not do an eigentransformation of the data.
 
 @author: R. Bourquin
-@copyright: Copyright (C) 2012 R. Bourquin
+@copyright: Copyright (C) 2012, 2013 R. Bourquin
 @license: Modified BSD License
 """
 
 import sys
 
 from WaveBlocksND import IOManager
+from WaveBlocksND import ParameterLoader
 
 
 if __name__ == "__main__":
@@ -22,6 +23,46 @@ if __name__ == "__main__":
         iom.open_file(filename=sys.argv[1])
     except IndexError:
         iom.open_file()
+
+    # Do we have a specifc configuration file holding
+    # the definitions for inner products to use?
+    try:
+        parametersfile = sys.argv[2]
+        PA = ParameterLoader().load_from_file(parametersfile)
+
+    except IndexError:
+        # None given, try to load from simulation file
+        try:
+            PA = iom.load_parameters()
+        except:
+            PA = None
+
+    # See if we have a description for observables and
+    # especially autocorrelation computation
+    if PA is not None:
+        if PA.has_key("observables"):
+            PA = PA["observables"]
+            if PA.has_key("autocorrelation"):
+                PA = PA["autocorrelation"]
+            else:
+                PA = None
+        else:
+            PA = None
+
+    if PA is None:
+        print("Warning: Using (possibly improper) default values for inner product")
+        PA = {}
+        PA["innerproduct"] = {
+            "type" : "InhomogeneousInnerProduct",
+            "delegate" : {
+                "type" : "NSDInhomogeneous",
+                'qr': {
+                    'type': 'GaussLaguerreQR',
+                    'order': 5,
+                    'a': -0.5
+                    }
+                }
+            }
 
     # Iterate over all blocks
     for blockid in iom.get_block_ids():
@@ -36,15 +77,15 @@ if __name__ == "__main__":
         # We test for an inhomogeneous wavepacket next
         if iom.has_inhomogwavepacket(blockid=blockid):
             import AutocorrelationWavepacket
-            AutocorrelationWavepacket.compute_autocorrelation_inhawp(iom, blockid=blockid, eigentrafo=False)
+            AutocorrelationWavepacket.compute_autocorrelation_inhawp(iom, PA, blockid=blockid, eigentrafo=False)
         # We test for a homogeneous wavepacket next
         elif iom.has_wavepacket(blockid=blockid):
             import AutocorrelationWavepacket
-            AutocorrelationWavepacket.compute_autocorrelation_hawp(iom, blockid=blockid, eigentrafo=False)
+            AutocorrelationWavepacket.compute_autocorrelation_hawp(iom, PA, blockid=blockid, eigentrafo=False)
         # We have no wavepacket, then we try for a wavefunction
         elif iom.has_wavefunction(blockid=blockid):
             import AutocorrelationWavefunction
-            AutocorrelationWavefunction.compute_autocorrelation(iom, blockid=blockid, eigentrafo=False)
+            AutocorrelationWavefunction.compute_autocorrelation(iom, PA, blockid=blockid, eigentrafo=False)
         # If there is also no wavefunction, then there is nothing to compute the autocorrelation
         else:
             print("Warning: Not computing any autocorrelations in block '"+str(blockid)+"'!")

@@ -4,7 +4,7 @@ This file contains the class for representing the hyperbolic cut
 basis shape which is a special type of sparse basis set.
 
 @author: R. Bourquin
-@copyright: Copyright (C) 2012 R. Bourquin
+@copyright: Copyright (C) 2012, 2013 R. Bourquin
 @license: Modified BSD License
 """
 
@@ -18,14 +18,14 @@ __all__ = ["HyperbolicCutShape"]
 class HyperbolicCutShape(BasisShape):
     r"""This class implements the hyperbolic cut basis shape which
     is a special type of sparse basis set. A basis shape is essentially
-    all information and operations related to the set :math:`\mathcal{K}`
+    all information and operations related to the set :math:`\mathfrak{K}`
     of multi-indices :math:`k`. The hyperbolic cut shape in :math:`D` dimensions
     and with `sparsity` :math:`K` is defined as the set
 
     .. math::
-        \mathcal{K}(D, K) := \{ (k_0, \ldots, k_{D-1}) |
-                                k_d \geq 0 \forall d \in [0,\ldots,D-1]
-                                \land \prod_{d=0}^{D-1}(1+k_d) \leq K \}
+        \mathfrak{K}(D, K) := \{ (k_0, \ldots, k_{D-1}) |
+                                 k_d \geq 0 \forall d \in [0,\ldots,D-1]
+                                 \land \prod_{d=0}^{D-1}(1+k_d) \leq K \}
     """
 
     def __init__(self, D, K):
@@ -49,9 +49,17 @@ class HyperbolicCutShape(BasisShape):
         self._basissize = len(self._lima)
 
 
+    def __str__(self):
+        r""":return: A string describing the basis shape :math:`\mathfrak{K}`.
+        """
+        s = ("Hyperbolic cut basis shape of dimension "+str(self._dimension)+
+             " and sparsity "+str(self._sparsity)+".")
+        return s
+
+
     def __hash__(self):
         r"""Compute a unique hash for the basis shape. In the case of hyperbolic
-        cut basis shapes :math:`\mathcal{K}` the basis is fully specified by its
+        cut basis shapes :math:`\mathfrak{K}` the basis is fully specified by its
         dimension :math:`D` and the sparsity parameter :math:`K`.
         """
         return hash(("HyperbolicCutShape", self._dimension, self._sparsity))
@@ -73,7 +81,7 @@ class HyperbolicCutShape(BasisShape):
 
     def __contains__(self, k):
         r"""
-        Checks if a given multi-index :math:`k` is part of the basis set :math:`\mathcal{K}`.
+        Checks if a given multi-index :math:`k` is part of the basis set :math:`\mathfrak{K}`.
 
         :param k: The multi-index :math:`k` we want to test.
         :type k: tuple
@@ -84,7 +92,7 @@ class HyperbolicCutShape(BasisShape):
 
     def __iter__(self):
         r"""Implements iteration over the multi-indices :math:`k`
-        of the basis set :math:`\mathcal{K}`.
+        of the basis set :math:`\mathfrak{K}`.
 
         Note: The order of iteration is NOT fixed. If you need a special
         iteration scheme, use :py:meth:`get_node_iterator`.
@@ -95,7 +103,7 @@ class HyperbolicCutShape(BasisShape):
 
     def contains(self, k):
         r"""
-        Checks if a given multi-index :math:`k` is part of the basis set :math:`\mathcal{K}`.
+        Checks if a given multi-index :math:`k` is part of the basis set :math:`\mathfrak{K}`.
 
         :param k: The multi-index :math:`k` we want to test.
         :type k: tuple
@@ -188,7 +196,7 @@ class HyperbolicCutShape(BasisShape):
 
     def get_node_iterator(self, mode="lex", direction=None):
         r"""
-        Returns an iterator to iterate over all basis elements :math:`k \in \mathcal{K}`.
+        Returns an iterator to iterate over all basis elements :math:`k \in \mathfrak{K}`.
 
         :param mode: The mode by which we iterate over the indices. Default is ``lex``
                      for lexicographical order. Supported is also ``chain``, for

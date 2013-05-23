@@ -33,12 +33,15 @@ wp0 = {
     }],
 # Coefficient values computed by 'ComputeGroundstate.py'
     "coefficients" : C,
-    "quadrature" : {
-        "type" : "HomogeneousQuadrature",
-	'qr': {
-            'type': 'TensorProductQR',
-            'dimension': 1,
-            'qr_rules': [{'dimension': 1, 'order': 36, 'type': 'GaussHermiteQR'}]
+    "innerproduct" : {
+        "type" : "HomogeneousInnerProduct",
+        "delegate" : {
+            "type" : "DirectHomogeneousQuadrature",
+            'qr': {
+                'type': 'TensorProductQR',
+                'dimension': 1,
+                'qr_rules': [{'dimension': 1, 'order': 36, 'type': 'GaussHermiteQR'}]
+            }
         }
     }
 }

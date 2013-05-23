@@ -39,7 +39,7 @@ def transform_hawp_to_eigen(iomin, iomout, blockidin=0, blockidout=0):
     iomout.add_wavepacket(descr, timeslots=nrtimesteps, blockid=blockidout)
     iomout.save_wavepacket_description(HAWP.get_description(), blockid=blockidout)
 
-    BT.set_matrix_builder(HAWP.get_quadrature())
+    BT.set_matrix_builder(HAWP.get_innerproduct())
 
     # Basis shapes
     BS_descr = iomin.load_wavepacket_basisshapes()
@@ -103,7 +103,7 @@ def transform_inhawp_to_eigen(iomin, iomout, blockidin=0, blockidout=0):
     iomout.add_inhomogwavepacket(descr, timeslots=nrtimesteps, blockid=blockidout)
     iomout.save_inhomogwavepacket_description(HAWP.get_description(), blockid=blockidout)
 
-    BT.set_matrix_builder(HAWP.get_quadrature())
+    BT.set_matrix_builder(HAWP.get_innerproduct())
 
     # Basis shapes
     BS_descr = iomin.load_inhomogwavepacket_basisshapes()

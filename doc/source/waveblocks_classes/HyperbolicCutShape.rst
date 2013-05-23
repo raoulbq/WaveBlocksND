@@ -15,5 +15,6 @@ Class documentation
 -------------------
 
 .. autoclass:: HyperbolicCutShape
+   :special-members:
    :members:
    :inherited-members:

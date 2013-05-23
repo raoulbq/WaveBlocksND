@@ -38,7 +38,7 @@ class FourierPropagator(Propagator):
                      the semi-classical parameter :math:`\varepsilon` and the
                      time step size :math:`tau`.
 
-        :raise ValueError: If the number of components of :math:`\Psi` does not match the
+        :raise: :py:class:`ValueError` If the number of components of :math:`\Psi` does not match the
                            number of energy surfaces :math:`\lambda_i(x)` of the potential.
         """
         # The embedded 'MatrixPotential' instance representing the potential 'V'.

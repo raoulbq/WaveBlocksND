@@ -1,3 +1,4 @@
+
 algorithm = "hagedorn"
 propagator = "semiclassical"
 splitting_method = "Y4"
@@ -39,12 +40,15 @@ wp0 = {
         "dimension" : 1
     }],
     "coefficients" : [[ ((0,), 1.0) ]],
-    "quadrature" : {
-        "type" : "HomogeneousQuadrature",
-	'qr': {
-            'type': 'TensorProductQR',
-            'dimension': 1,
-            'qr_rules': [{'dimension': 1, 'order': 14, 'type': 'GaussHermiteQR'}]
+    "innerproduct" : {
+        "type" : "HomogeneousInnerProduct",
+        "delegate" : {
+            "type" : "DirectHomogeneousQuadrature",
+            'qr': {
+                'type': 'TensorProductQR',
+                'dimension': 1,
+                'qr_rules': [{'dimension': 1, 'order': 14, 'type': 'GaussHermiteQR'}]
+            }
         }
     }
 }

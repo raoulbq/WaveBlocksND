@@ -15,5 +15,6 @@ Class documentation
 -------------------
 
 .. autoclass:: HyperCubicShape
+   :special-members:
    :members:
    :inherited-members:

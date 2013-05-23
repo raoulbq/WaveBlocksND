@@ -27,7 +27,7 @@ class Propagator(object):
     def __init__(self):
         r"""Initialize a new :py:class:`Propagator` instance.
 
-        :raise NotImplementedError: This is an abstract base class.
+        :raise: :py:class:`NotImplementedError` This is an abstract base class.
         """
         raise NotImplementedError("'Propagator' is an abstract base class.")
 
@@ -35,7 +35,7 @@ class Propagator(object):
     def __str__(self):
         r"""Prepare a printable string representing the :py:class:`Propagator` instance.
 
-        :raise NotImplementedError: This is an abstract base class.
+        :raise: :py:class:`NotImplementedError` This is an abstract base class.
         """
         raise NotImplementedError("'Propagator' is an abstract base class.")
 
@@ -43,7 +43,7 @@ class Propagator(object):
     def get_number_components(self):
         r""":return: The number :math:`N` components of :math:`\psi(x,t)`.
 
-        :raise NotImplementedError: This is an abstract base class.
+        :raise: :py:class:`NotImplementedError` This is an abstract base class.
         """
         raise NotImplementedError("get_number_components(...)")
 
@@ -58,9 +58,9 @@ class Propagator(object):
 
     def propagate(self):
         r"""Given the wavefunction :math:`\psi` at time :math:`t`, calculate
-        the new :math:\psi` at time :math:`t + \tau`. We do exactly one timestep
+        the new :math:`\psi` at time :math:`t + \tau`. We do exactly one timestep
         of size :math:`\tau` here.
 
-        :raise NotImplementedError: This is an abstract base class.
+        :raise: :py:class:`NotImplementedError` This is an abstract base class.
         """
         raise NotImplementedError("propagate(...)")

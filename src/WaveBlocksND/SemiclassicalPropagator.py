@@ -178,8 +178,8 @@ class SemiclassicalPropagator(Propagator, SplittingParameters):
             self.intsplit(self._propkin, self._proppotquad, a,b, [0.0,h1], nrlocalsteps, packet, (packet,leading_chi))
 
             # Do a potential step with the local non-quadratic taylor remainder
-            quadrature = packet.get_quadrature()
-            F = quadrature.build_matrix(packet, operator=partial(self._potential.evaluate_local_remainder_at, diagonal_component=leading_chi))
+            innerproduct = packet.get_innerproduct()
+            F = innerproduct.build_matrix(packet, operator=partial(self._potential.evaluate_local_remainder_at, diagonal_component=leading_chi))
 
             coefficients = packet.get_coefficient_vector()
             coefficients = self._matrix_exponential(F, coefficients, dt/eps**2)

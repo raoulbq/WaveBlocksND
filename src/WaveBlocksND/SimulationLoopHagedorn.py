@@ -51,7 +51,7 @@ class SimulationLoopHagedorn(SimulationLoop):
         r"""Set up a Hagedorn propagator for the simulation loop. Set the
         potential and initial values according to the configuration.
 
-        :raise ValueError: For invalid or missing input data.
+        :raise: :py:class:`ValueError` For invalid or missing input data.
         """
         # The potential instance
         potential = BlockFactory().create_potential(self.parameters)
@@ -80,7 +80,7 @@ class SimulationLoopHagedorn(SimulationLoop):
         for packet_descr in self.parameters["initvals"]:
             packet = BlockFactory().create_wavepacket(packet_descr)
             # Transform to canonical basis
-            BT.set_matrix_builder(packet.get_quadrature())
+            BT.set_matrix_builder(packet.get_innerproduct())
             BT.transform_to_canonical(packet)
             # And hand over
             self.propagator.add_wavepacket((packet, chi))

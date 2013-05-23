@@ -40,7 +40,7 @@ def compute_norm_hawp(iom, blockid=0, eigentrafo=True):
     HAWP = BlockFactory().create_wavepacket(descr)
 
     if eigentrafo is True:
-        BT.set_matrix_builder(HAWP.get_quadrature())
+        BT.set_matrix_builder(HAWP.get_innerproduct())
 
     # Basis shapes
     BS_descr = iom.load_wavepacket_basisshapes()
@@ -104,7 +104,7 @@ def compute_norm_inhawp(iom, blockid=0, eigentrafo=True):
     HAWP = BlockFactory().create_wavepacket(descr)
 
     if eigentrafo is True:
-        BT.set_matrix_builder(HAWP.get_quadrature())
+        BT.set_matrix_builder(HAWP.get_innerproduct())
 
     # Basis shapes
     BS_descr = iom.load_inhomogwavepacket_basisshapes()

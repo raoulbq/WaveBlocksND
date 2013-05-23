@@ -11,4 +11,3 @@ Class documentation
 
 .. automodule:: MatrixExponential
    :members:
-

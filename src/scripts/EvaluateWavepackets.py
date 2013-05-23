@@ -49,7 +49,7 @@ def compute_evaluate_wavepackets(pp, iom, blockid=0, eigentrafo=True):
     # Basis transformator
     if eigentrafo is True:
         BT = BasisTransformationHAWP(Potential)
-        BT.set_matrix_builder(HAWP.get_quadrature())
+        BT.set_matrix_builder(HAWP.get_innerproduct())
 
     # Basis shapes
     BS_descr = iom.load_wavepacket_basisshapes()

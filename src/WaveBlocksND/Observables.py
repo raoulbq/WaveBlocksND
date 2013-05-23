@@ -17,7 +17,7 @@ class Observables(object):
 
     def __init__(self):
         r"""
-        :raise NotImplementedError: Abstract interface.
+        :raise: :py:class:`NotImplementedError` Abstract interface.
         """
         raise NotImplementedError("'Observables' is an abstract interface.")
 
@@ -27,7 +27,7 @@ class Observables(object):
 
         :param ket: The object denoted by :math:`\psi`.
         :param T: The kinetic energy operator :math:`T`.
-        :raise NotImplementedError: Abstract interface.
+        :raise: :py:class:`NotImplementedError` Abstract interface.
         """
         raise NotImplementedError("'Observables' is an abstract interface.")
 
@@ -37,6 +37,6 @@ class Observables(object):
 
         :param ket: The object denoted by :math:`\psi`.
         :param potential: The potential :math:`V(x)`.
-        :raise NotImplementedError: Abstract interface.
+        :raise: :py:class:`NotImplementedError` Abstract interface.
         """
         raise NotImplementedError("'Observables' is an abstract interface.")

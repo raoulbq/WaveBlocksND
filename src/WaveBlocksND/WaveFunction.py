@@ -70,7 +70,7 @@ class WaveFunction(object):
         :param components: The components :math:`i` for which we want to get
                            the wavefunction values :math:`\psi_i`.
         :type components: A single integer or a list of integers. If set to
-                          `None` (default) we return the data for all components.
+                          ``None`` (default) we return the data for all components.
         :param flat: Whether to return the wavefunction with a `hypercubic`
                      :math:`(N, N_1, ..., N_D)` shape or a `flat`
                      :math:`(N, \prod_i^D N_i)` shape.
@@ -90,8 +90,8 @@ class WaveFunction(object):
             # Return as non-flat array
             # Not implemented yet, not needed yet
             pass
-            
-            
+
+
     def set_values(self, values, components=None, flat=None):
         r"""Assign new wavefunction values :math:`\psi_i(\Gamma)` for each component
         :math:`i` of :math:`\Psi` to the current :py:class:`WaveFunction` instance.
@@ -101,7 +101,7 @@ class WaveFunction(object):
         :param components: The components :math:`i` for which we want to set
                            the new wavefunction values :math:`\psi_i`.
         :type components: A single integer or a list of integers. If set to
-                          `None` (default) we set the data for all components.
+                          ``None`` (default) we set the data for all components.
         :param flat: Whether the wavefunction is given in `hypercubic`
                      :math:`(N, N_1, ..., N_D)` shape or a `flat`
                      :math:`(N, \prod_i^D N_i)` shape. Note that this has no effect yet.
@@ -109,7 +109,7 @@ class WaveFunction(object):
 
         Note: This method does NOT copy the input data arrays.
 
-        :raise ValueError: If the list of `values` has the wrong length.
+        :raise: :py:class:`ValueError` If the list of `values` has the wrong length.
         """
         if components is None:
             assert len(values) == self._number_components
@@ -130,10 +130,10 @@ class WaveFunction(object):
         :param values: Allows to use this function for external data, similar to a
                        static function.
         :param summed: Whether to sum up the norms of the individual components.
-        :type summed: Boolean, default is `False`.
+        :type summed: Boolean, default is ``False``.
         :param components: The components :math:`\psi_i` of which the norms are calculated.
         :type components: A single integer or a list of integers. If set to
-                          `None` (default) we compute the norm for all components.
+                          ``None`` (default) we compute the norm for all components.
         :return: The :math:`L^2` norm of :math:`\Psi` or a list of :math:`L^2`
                  norms of the specified components :math:`\psi_i`.
         """
@@ -168,7 +168,7 @@ class WaveFunction(object):
         :param kinetic: The kinetic energy operator :math:`T(\omega)`.
         :type kinetic: A :py:class:`KineticOperator` instance.
         :param summed: Whether to sum up the kinetic energies :math:`E_i` of the individual
-                       components :math:`\psi_i`. Default is `False`.
+                       components :math:`\psi_i`. Default is ``False``.
         :return: A list with the kinetic energies of the individual components
                  or the overall kinetic energy of the wavefunction. (Depending on the optional arguments.)
         """
@@ -202,7 +202,7 @@ class WaveFunction(object):
 
         :param potential: The potential energy operator :math:`V(x)`.
         :param summed: Whether to sum up the potential energies :math:`E_i` of the individual
-                       components :math:`\psi_i`. Default is `False`.
+                       components :math:`\psi_i`. Default is ``False``.
         :return: A list with the potential energies of the individual components
                  or the overall potential energy of the wavefunction. (Depending on the optional arguments.)
         """

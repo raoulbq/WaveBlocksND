@@ -91,12 +91,12 @@ class BlockFactory(object):
                         else:
                             print("Warning: dropped coefficient with index "+str(index))
 
-            # And the quadrature
-            if description.has_key("quadrature"):
-                QE = self.create_quadrature(description["quadrature"])
-                WP.set_quadrature(QE)
+            # And the inner product
+            if description.has_key("innerproduct"):
+                IP = self.create_inner_product(description["innerproduct"])
+                WP.set_innerproduct(IP)
             else:
-                print("Warning: no quadrature specified!")
+                print("Warning: no inner product specified!")
 
         elif wp_type == "HagedornWavepacketInhomogeneous":
             from HagedornWavepacketInhomogeneous import HagedornWavepacketInhomogeneous
@@ -124,11 +124,11 @@ class BlockFactory(object):
                         WP.set_coefficient(component, index, value)
 
             # And the quadrature
-            if description.has_key("quadrature"):
-                QE = self.create_quadrature(description["quadrature"])
-                WP.set_quadrature(QE)
+            if description.has_key("innerproduct"):
+                IP = self.create_inner_product(description["innerproduct"])
+                WP.set_innerproduct(IP)
             else:
-                print("Warning: no quadrature specified!")
+                print("Warning: no inner product specified!")
 
         else:
             raise ValueError("Unknown wavepacket type "+str(wp_type))
@@ -136,26 +136,63 @@ class BlockFactory(object):
         return WP
 
 
+    def create_inner_product(self, description):
+        #
+        try:
+            ip_type = description["type"]
+        except:
+            # Default setting
+            print("Warning: Using fall-back inner product of type 'InhomogeneousInnerProduct'!")
+            # TODO: Maybe change to homogeneous one?
+            ip_type = "InhomogeneousInnerProduct"
+
+        if ip_type == "HomogeneousInnerProduct":
+            from HomogeneousInnerProduct import HomogeneousInnerProduct
+            QE = self.create_quadrature(description["delegate"])
+            IP = HomogeneousInnerProduct(QE)
+
+        elif ip_type == "InhomogeneousInnerProduct":
+            from InhomogeneousInnerProduct import InhomogeneousInnerProduct
+            QE = self.create_quadrature(description["delegate"])
+            IP = InhomogeneousInnerProduct(QE)
+
+        else:
+            raise ValueError("Unknown inner product type "+str(ip_type))
+
+        return IP
+
+
     def create_quadrature(self, description):
+        # NOTE: The difference between Quadrature and InnerProduct here
+        #       is for backward compatibility but will be removed soon.
         try:
             qe_type = description["type"]
         except:
             # Default setting
-            qe_type = "InhomogeneousQuadrature"
+            qe_type = "DirectInhomogeneousQuadrature"
 
         # TODO: Maybe denest QR initialization?
-        if qe_type == "HomogeneousQuadrature":
-            from HomogeneousQuadrature import HomogeneousQuadrature
+        if qe_type == "DirectHomogeneousQuadrature":
+            from DirectHomogeneousQuadrature import DirectHomogeneousQuadrature
             QR = self.create_quadrature_rule(description["qr"])
-            QE = HomogeneousQuadrature(QR)
+            QE = DirectHomogeneousQuadrature(QR)
 
-        elif qe_type == "InhomogeneousQuadrature":
-            from InhomogeneousQuadrature import InhomogeneousQuadrature
+        elif qe_type == "DirectInhomogeneousQuadrature":
+            from DirectInhomogeneousQuadrature import DirectInhomogeneousQuadrature
             QR = self.create_quadrature_rule(description["qr"])
-            QE = InhomogeneousQuadrature(QR)
+            QE = DirectInhomogeneousQuadrature(QR)
+
+        elif qe_type == "NSDInhomogeneous":
+            from NSDInhomogeneous import NSDInhomogeneous
+            QR = self.create_quadrature_rule(description["qr"])
+            QE = NSDInhomogeneous(QR)
+
+        elif qe_type == "SymbolicIntegral":
+            from SymbolicIntegral import SymbolicIntegral
+            QE = SymbolicIntegral()
 
         else:
-            raise ValueError("Unknown basis shape type "+str(qe_type))
+            raise ValueError("Unknown quadrature type "+str(qe_type))
 
         return QE
 
@@ -183,10 +220,20 @@ class BlockFactory(object):
             assert type(order) == int
             QR = TrapezoidalQR(left, right, order, options=op)
 
+        elif qr_type == "GaussLaguerreQR":
+            from GaussLaguerreQR import GaussLaguerreQR
+            order = description["order"]
+            a = description["a"]
+            assert type(order) == int
+            QR = GaussLaguerreQR(order, a=a, options=op)
+
         elif qr_type == "TensorProductQR":
             from TensorProductQR import TensorProductQR
             # Iteratively create all quadrature rules necessary
             qrs = [ self.create_quadrature_rule(desc) for desc in description["qr_rules"] ]
             QR = TensorProductQR(qrs, options=op)
+
+        else:
+            raise ValueError("Unknown quadrature rule type "+str(qr_type))
 
         return QR

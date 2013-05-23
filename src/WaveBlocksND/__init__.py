@@ -1,7 +1,7 @@
 """The WaveBlocks Project
 
 @author: R. Bourquin
-@copyright: Copyright (C) 2010, 2011, 2012 R. Bourquin
+@copyright: Copyright (C) 2010, 2011, 2012, 2013 R. Bourquin
 @license: Modified BSD License
 """
 
@@ -31,6 +31,7 @@ from KineticOperator import KineticOperator
 from Propagator import Propagator
 from FourierPropagator import FourierPropagator
 from HagedornPropagator import HagedornPropagator
+from HagedornPropagatorInhomogeneous import HagedornPropagatorInhomogeneous
 
 from IOManager import IOManager
 
@@ -53,12 +54,21 @@ from GradientHAWP import GradientHAWP
 from QuadratureRule import QuadratureRule
 from TrapezoidalQR import TrapezoidalQR
 from GaussHermiteQR import GaussHermiteQR
+from GaussLaguerreQR import GaussLaguerreQR
 from TensorProductQR import TensorProductQR
 
 # Inner products
+from InnerProduct import InnerProduct
+from HomogeneousInnerProduct import HomogeneousInnerProduct
+from InhomogeneousInnerProduct import InhomogeneousInnerProduct
+
 from Quadrature import Quadrature
-from HomogeneousQuadrature import HomogeneousQuadrature
-from InhomogeneousQuadrature import InhomogeneousQuadrature
+from DirectQuadrature import DirectQuadrature
+from DirectHomogeneousQuadrature import DirectHomogeneousQuadrature
+from DirectInhomogeneousQuadrature import DirectInhomogeneousQuadrature
+
+from SymbolicIntegral import SymbolicIntegral
+from NSDInhomogeneous import NSDInhomogeneous
 
 # Basis transformations
 from BasisTransformation import BasisTransformation

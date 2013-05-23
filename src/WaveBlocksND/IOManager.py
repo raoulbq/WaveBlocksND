@@ -172,7 +172,7 @@ class IOManager(object):
         """Return the number of data blocks in the current file structure.
 
         :param groupid: An optional group ID. If given we count only data blocks which are a
-                        member of this group. If it is `None` (default) we count all data blocks.
+                        member of this group. If it is ``None`` (default) we count all data blocks.
         """
         if groupid is None:
             return self._block_count
@@ -190,8 +190,8 @@ class IOManager(object):
         """Return a list containing the IDs for all blocks in the current file structure.
 
         :param groupid: An optional group ID. If given we return only block IDs for blocks
-                        which are a member of this group. If it is `None` we return all block IDs.
-        :param grouped: If `True` we group the block IDs by their group into lists.
+                        which are a member of this group. If it is ``None`` we return all block IDs.
+        :param grouped: If ``True`` we group the block IDs by their group into lists.
                         This option is only relevant in case the `groupid` is not given.
         """
         if groupid is not None:
@@ -215,7 +215,7 @@ class IOManager(object):
 
 
     def get_group_of_block(self, blockid):
-        """Return the ID of the group a given block belongs to or `None`
+        """Return the ID of the group a given block belongs to or ``None``
         if there is no such data block.
 
         :param blockid: The ID of the given block.

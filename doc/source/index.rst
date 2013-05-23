@@ -70,9 +70,18 @@ Wavepackets
    waveblocks_classes/HagedornWavepacket
    waveblocks_classes/HagedornWavepacketInhomogeneous
 
+   waveblocks_classes/InnerProduct
+   waveblocks_classes/HomogeneousInnerProduct
+   waveblocks_classes/InhomogeneousInnerProduct
+
    waveblocks_classes/Quadrature
-   waveblocks_classes/HomogeneousQuadrature
-   waveblocks_classes/InhomogeneousQuadrature
+
+   waveblocks_classes/DirectQuadrature
+   waveblocks_classes/DirectHomogeneousQuadrature
+   waveblocks_classes/DirectInhomogeneousQuadrature
+
+   waveblocks_classes/SymbolicIntegral
+   waveblocks_classes/NSDInhomogeneous
 
    waveblocks_classes/BasisTransformation
    waveblocks_classes/BasisTransformationWF

@@ -50,11 +50,11 @@ class GridWrapper(Grid):
                      :math:`(D, N_1, ..., N_D)` shape or a `flat`
                      :math:`(D, \prod_i^D N_i)` shape. Note that the
                      hypercubic shape is not implemented!
-        :type flat: Boolean, default is `True`.
+        :type flat: Boolean, default is ``True``.
         :param split: Whether to return the different components, one for each
                       dimension inside a single ndarray or a list with ndarrays,
                       with one item per dimension.
-        :type split: Boolean, default is `False`.
+        :type split: Boolean, default is ``False``.
         :return: Depends of the optional arguments.
         """
         if flat is False:

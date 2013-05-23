@@ -80,14 +80,17 @@ wp0 = {
     ],
     'coefficients' : [[ ((0,0,0), 1.0) ],
                       [ ((0,0,0), 0.0) ]],
-    'quadrature' : {
-        'type' : 'HomogeneousQuadrature',
-	'qr': {
-            'type': 'TensorProductQR',
-            'dimension': 2,
-            'qr_rules': [{'dimension': 1, 'order': 24, 'type': 'GaussHermiteQR'},
-                         {'dimension': 1, 'order': 24, 'type': 'GaussHermiteQR'},
-                         {'dimension': 1, 'order': 24, 'type': 'GaussHermiteQR'}],
+    "innerproduct" : {
+        "type" : "HomogeneousInnerProduct",
+        "delegate" : {
+            "type" : "DirectHomogeneousQuadrature",
+            'qr': {
+                'type': 'TensorProductQR',
+                'dimension': 3,
+                'qr_rules': [{'dimension': 1, 'order': 24, 'type': 'GaussHermiteQR'},
+                             {'dimension': 1, 'order': 24, 'type': 'GaussHermiteQR'},
+                             {'dimension': 1, 'order': 24, 'type': 'GaussHermiteQR'}],
+            }
         }
     }
 }

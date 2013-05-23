@@ -74,20 +74,28 @@ class BasisTransformationHAWP(BasisTransformation):
         # Basically an ugly hack to overcome some shortcomings of the
         # matrix function and of the data layout.
         # TODO: Fix and remove
-        def f(x, dummy):
-            # x is given as (D,|QR|) array
-            z = self._potential.evaluate_eigenvectors_at(x)
-            # returned is a N list of (N,|QR|) arrays
-            # we need a N**2 list of (|QR|,) arrays
-            N = wavepacket.get_number_components()
-            result = []
-            for nu in z:
-                result.extend(vsplit(nu, N))
+        class F():
+            def __init__(self, potential):
+                self._potential = potential
+                self._N = self._potential.get_number_components()
+                self._values = None
 
-            return result
+            def __call__(self, x, dummy, entry):
+                # x is given as (D,|QR|) array
+                if self._values is None:
+                    z = self._potential.evaluate_eigenvectors_at(x)
+                    # returned is a N list of (N,|QR|) arrays
+                    # we need a N**2 list of (|QR|,) arrays
+                    result = []
+                    for nu in z:
+                        result.extend(vsplit(nu, self._N))
+                    self._values = tuple(result)
+                return self._values[entry[0]*self._N+entry[1]]
+
+        f = F(self._potential)
 
         # And now compute the transformation
-        F = transpose(conjugate(self._builder.build_matrix(wavepacket, f)))
+        F = transpose(conjugate(self._builder.build_matrix(wavepacket, operator=f)))
         c = wavepacket.get_coefficient_vector()
         d = dot(F, c)
 
@@ -116,20 +124,28 @@ class BasisTransformationHAWP(BasisTransformation):
         # Basically an ugly hack to overcome some shortcomings of the
         # matrix function and of the data layout.
         # TODO: Fix and remove
-        def f(x, dummy):
-            # x is given as (D,|QR|) array
-            z = self._potential.evaluate_eigenvectors_at(x)
-            # returned is a N list of (N,|QR|) arrays
-            # we need a N**2 list of (|QR|,) arrays
-            N = wavepacket.get_number_components()
-            result = []
-            for nu in z:
-                result.extend(vsplit(nu, N))
+        class F():
+            def __init__(self, potential):
+                self._potential = potential
+                self._N = self._potential.get_number_components()
+                self._values = None
 
-            return result
+            def __call__(self, x, dummy, entry):
+                # x is given as (D,|QR|) array
+                if self._values is None:
+                    z = self._potential.evaluate_eigenvectors_at(x)
+                    # returned is a N list of (N,|QR|) arrays
+                    # we need a N**2 list of (|QR|,) arrays
+                    result = []
+                    for nu in z:
+                        result.extend(vsplit(nu, self._N))
+                    self._values = tuple(result)
+                return self._values[entry[0]*self._N+entry[1]]
+
+        f = F(self._potential)
 
         # And now compute the transformation
-        F = self._builder.build_matrix(wavepacket, f)
+        F = self._builder.build_matrix(wavepacket, operator=f)
         c = wavepacket.get_coefficient_vector()
         d = dot(F, c)
 

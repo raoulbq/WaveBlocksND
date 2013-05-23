@@ -84,7 +84,7 @@ class MatrixPotentialMS(MatrixPotential):
                      to evaluate the potential at.
         :type grid: A :py:class:`Grid` instance. (Numpy arrays are not directly supported yet.)
         :param entry: The indices :math:`(i,j)` of the component :math:`V_{i,j}(x)`
-                      we want to evaluate or `None` to evaluate all entries.
+                      we want to evaluate or ``None`` to evaluate all entries.
         :type entry: A python tuple of two integers.
         :param as_matrix: Dummy parameter which has no effect here.
         :return: A list containing :math:`N^2` numpy ndarrays of shape :math:`(1, |\Gamma|)`.
@@ -139,7 +139,7 @@ class MatrixPotentialMS(MatrixPotential):
                      to evaluate the eigenvalues at.
         :type grid: A :py:class:`Grid` instance. (Numpy arrays are not directly supported yet.)
         :param entry: The indices :math:`(i,j)` of the component :math:`\Lambda_{i,j}(x)`
-                      we want to evaluate or `None` to evaluate all entries. If :math:`j = i`
+                      we want to evaluate or ``None`` to evaluate all entries. If :math:`j = i`
                       then we evaluate the eigenvalue :math:`\lambda_i(x)`.
         :type entry: A python tuple of two integers.
         :param as_matrix: Whether to include the off-diagonal zero entries of

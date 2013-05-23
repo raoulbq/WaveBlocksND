@@ -19,7 +19,7 @@ class Wavepacket(object):
         has :math:`N` components :math:`\Phi_i` with :math:`i \in 1 \ldots N`. Each
         component is defined over :math:`D` dimensional space.
 
-        :raise NotImplementedError: Abstract interface.
+        :raise: :py:class:`NotImplementedError` Abstract interface.
         """
         raise NotImplementedError("'Wavepacket' is an abstract interface.")
 
@@ -27,7 +27,7 @@ class Wavepacket(object):
     def __str__(self):
         r""":return: A string describing the wavepacket.
 
-        :raise NotImplementedError: Abstract interface.
+        :raise: :py:class:`NotImplementedError` Abstract interface.
         """
         raise NotImplementedError("'Wavepacket' is an abstract interface.")
 
@@ -36,7 +36,7 @@ class Wavepacket(object):
         r"""Clone the wavepacket. Return a new copy of the wavepacket and
         make sure that all references between the two wavepackets get broken.
 
-        :raise NotImplementedError: Abstract interface.
+        :raise: :py:class:`NotImplementedError` Abstract interface.
         """
         raise NotImplementedError("'Wavepacket' is an abstract interface.")
 

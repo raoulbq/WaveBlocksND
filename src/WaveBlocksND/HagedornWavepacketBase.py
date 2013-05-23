@@ -58,7 +58,7 @@ class HagedornWavepacketBase(Wavepacket):
 
 
     def get_basis_shapes(self, component=None):
-        r"""Retrieve the basis shapes :math:`\mathcal{K}_i` for each component :math:`i`.
+        r"""Retrieve the basis shapes :math:`\mathfrak{K}_i` for each component :math:`i`.
 
         :param component: The component :math:`i` whose basis shape we request. (Default is
                           ``None`` which means to return the basis shapes for all components.
@@ -72,7 +72,7 @@ class HagedornWavepacketBase(Wavepacket):
 
 
     def set_basis_shapes(self, basis_shape, component=None):
-        r"""Set the basis shape :math:`\mathcal{K}` of a given component or for all components.
+        r"""Set the basis shape :math:`\mathfrak{K}` of a given component or for all components.
 
         :param basis_shape: The basis shape for an individual component or a list with all :math:`N` shapes.
         :type basis_shape: A subclass of :py:class:`BasisShape`.
@@ -110,14 +110,14 @@ class HagedornWavepacketBase(Wavepacket):
 
     def set_coefficient(self, component, index, value):
         r"""Set a single coefficient :math:`c^i_k` of the specified component :math:`\Phi_i`
-        of :math:\Psi`.
+        of :math:`\Psi`.
 
         :param component: The index :math:`i` of the component :math:`\Phi_i` we want to update.
         :type components: int
         :param index: The multi-index :math:`k` of the coefficient :math:`c^i_k` we want to update.
         :type index: A tuple of :math:`D` integers.
         :param value: The new value of the coefficient :math:`c^i_k`.
-        :raise ValueError: For invalid indices :math:`i` or :math:`k`.
+        :raise: :py:ckass:`ValueError` For invalid indices :math:`i` or :math:`k`.
         """
         if component > self._number_components-1 or component < 0:
             raise ValueError("There is no component with index "+str(component)+".")
@@ -131,13 +131,14 @@ class HagedornWavepacketBase(Wavepacket):
 
     def get_coefficient(self, component, index):
         r"""Retrieve a single coefficient :math:`c^i_k` of the specified component :math:`\Phi_i`
-        of :math:\Psi`.
+        of :math:`\Psi`.
 
         :param component: The index :math:`i` of the component :math:`\Phi_i` we want to update.
         :type components: int
         :param index: The multi-index :math:`k` of the coefficient :math:`c^i_k` we want to update.
         :type index: A tuple of :math:`D` integers.
         :return: A single complex number.
+        :raise: :py:ckass:`ValueError` For invalid indices :math:`i` or :math:`k`.
         """
         if component > self._number_components-1 or component < 0:
             raise ValueError("There is no component with index "+str(component)+".")
@@ -159,7 +160,7 @@ class HagedornWavepacketBase(Wavepacket):
         :type values: An ndarray of suitable shape or a list of ndarrays.
         :param component: The index :math:`i` of the component we want to update with new coefficients.
         :type component: int (Default is ``None`` meaning all)
-        :raise ValueError: For invalid component indices :math:`i`.
+        :raise: :py:class:`ValueError` For invalid component indices :math:`i`.
         """
         if component is None:
             if len(values) != self._number_components:
@@ -186,7 +187,8 @@ class HagedornWavepacketBase(Wavepacket):
         :type component: int (Default is ``None`` meaning all)
         :return: A single ndarray with the coefficients of the given component or
                  a list containing the ndarrays for each component. Each ndarray
-                 is two-dimensional with a shape of :math:`(|\mathcal{K}_i|, 1)`.
+                 is two-dimensional with a shape of :math:`(|\mathfrak{K}_i|, 1)`.
+        :raise: :py:class:`ValueError` For invalid component indices :math:`i`.
         """
         if component is None:
             return [ item.copy() for item in self._coefficients ]
@@ -197,13 +199,19 @@ class HagedornWavepacketBase(Wavepacket):
             return self._coefficients[component].copy()
 
 
-    def get_coefficient_vector(self):
+    def get_coefficient_vector(self, component=None):
         r"""Retrieve the coefficients for all components :math:`\Phi_i` simultaneously.
 
+        :param component: The component :math:`i` whose coefficients we request. (Default is
+                          ``None`` which means to return the coefficients for all components.
+        :type component: int
         :return: The coefficients :math:`c^i` of all components
                  :math:`\Phi_i` stacked into a single long column vector.
         """
-        return vstack(self._coefficients)
+        if component is None:
+            return vstack(self._coefficients)
+        else:
+            return self._coefficients[component]
 
 
     def set_coefficient_vector(self, vector):
@@ -252,7 +260,7 @@ class HagedornWavepacketBase(Wavepacket):
         :param nodes: The nodes we evaluate :math:`\phi_0` at.
         :type nodes: An ndarray of shape ``(D, |\Gamma|)``.
         :param prefactor: Whether to include a factor of :math:`\frac{1}{\sqrt{\det(Q)}}`.
-        :type prefactor: bool, default is ``False``.
+        :type prefactor: Boolean, default is ``False``.
         :param root: The function used to compute the square root in the prefactor.
                      Defaults to the ``sqrt`` function of ``numpy`` but can be any
                      callable object and especially an instance of :py:class:`ContinuousSqrt`.
@@ -281,12 +289,12 @@ class HagedornWavepacketBase(Wavepacket):
     def evaluate_basis_at(self, grid, component, prefactor=False):
         r"""Evaluate the basis functions :math:`\phi_k` recursively at the given nodes :math:`\gamma`.
 
-        :param grid: The grid :math:\Gamma` containing the nodes :math:`\gamma`.
+        :param grid: The grid :math:`\Gamma` containing the nodes :math:`\gamma`.
         :type grid: A class having a :py:meth:`get_nodes(...)` method.
         :param component: The index :math:`i` of a single component :math:`\Phi_i` to evaluate.
         :param prefactor: Whether to include a factor of :math:`\frac{1}{\sqrt{\det(Q)}}`.
-        :type prefactor: bool, default is ``False``.
-        :return: A two-dimensional ndarray :math:`H` of shape :math:`(|\mathcal{K}_i|, |\Gamma|)` where
+        :type prefactor: Boolean, default is ``False``.
+        :return: A two-dimensional ndarray :math:`H` of shape :math:`(|\mathfrak{K}_i|, |\Gamma|)` where
                  the entry :math:`H[\mu(k), i]` is the value of :math:`\phi_k(\gamma_i)`.
         """
         D = self._dimension
@@ -359,11 +367,11 @@ class HagedornWavepacketBase(Wavepacket):
         we store only the data we really need to compute the next step until we hit the highest
         order basis functions.
 
-        :param grid: The grid :math:\Gamma` containing the nodes :math:`\gamma`.
+        :param grid: The grid :math:`\Gamma` containing the nodes :math:`\gamma`.
         :type grid: A class having a :py:meth:`get_nodes(...)` method.
         :param component: The index :math:`i` of a single component :math:`\Phi_i` to evaluate.
         :param prefactor: Whether to include a factor of :math:`\frac{1}{\sqrt{\det(Q)}}`.
-        :type prefactor: bool, default is ``False``.
+        :type prefactor: Boolean, default is ``False``.
         :return: A list of arrays or a single array containing the values of the :math:`\Phi_i`
                  at the nodes :math:`\gamma`.
 
@@ -448,12 +456,12 @@ class HagedornWavepacketBase(Wavepacket):
     def evaluate_at(self, grid, component=None, prefactor=False):
         r"""Evaluate the Hagedorn wavepacket :math:`\Psi` at the given nodes :math:`\gamma`.
 
-        :param grid: The grid :math:\Gamma` containing the nodes :math:`\gamma`.
+        :param grid: The grid :math:`\Gamma` containing the nodes :math:`\gamma`.
         :type grid: A class having a :py:meth:`get_nodes(...)` method.
         :param component: The index :math:`i` of a single component :math:`\Phi_i` to evaluate.
                           (Defaults to ``None`` for evaluating all components.)
         :param prefactor: Whether to include a factor of :math:`\frac{1}{\sqrt{\det(Q)}}`.
-        :type prefactor: bool, default is ``False``.
+        :type prefactor: Boolean, default is ``False``.
         :return: A list of arrays or a single array containing the values of the :math:`\Phi_i` at the nodes :math:`\gamma`.
         """
         Pis = self.get_parameters(component=component, aslist=True)
@@ -516,19 +524,19 @@ class HagedornWavepacketBase(Wavepacket):
     # TODO: Rethink if wavepackets should contain a QR
 
 
-    def set_quadrature(self, quadrature):
-        """Set the :py:class:`Quadrature` subclass instance used for computing
+    def set_innerproduct(self, innerproduct):
+        """Set the :py:class:`InnerProduct` subclass instance used for computing
         inner products and evaluating brakets.
 
-        :param quadrature: The new :py:class:`Quadrature` subclass instance.
+        :param innerproduct: The new :py:class:`InnerProduct` subclass instance.
         """
-        self._QE = quadrature
+        self._IP = innerproduct
 
 
-    def get_quadrature(self):
-        """Return the :py:class:`Quadrature` subclass instance used computing
-        inner rpoducts and evaluating brakets.
+    def get_innerproduct(self):
+        """Return the :py:class:`InnerProduct` subclass instance used computing
+        inner products and evaluating brakets.
 
-        :return: The current :py:class:`Quadrature` subclass instance.
+        :return: The current :py:class:`InnerProduct` subclass instance.
         """
-        return self._QE
+        return self._IP

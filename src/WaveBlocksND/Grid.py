@@ -16,7 +16,7 @@ class Grid(object):
 
     def __init__(self):
         """
-        :raise NotImplementedError: Abstract interface.
+        :raise: :py:class:`NotImplementedError` Abstract interface.
         """
         raise NotImplementedError("'Grid' is an abstract interface.")
 

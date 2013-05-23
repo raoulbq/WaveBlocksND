@@ -4,7 +4,7 @@ This file contains the class for representing the hyperbolic cut
 basis shape which is a special type of sparse basis set.
 
 @author: R. Bourquin
-@copyright: Copyright (C) 2012 R. Bourquin
+@copyright: Copyright (C) 2012, 2013 R. Bourquin
 @license: Modified BSD License
 """
 
@@ -19,15 +19,15 @@ __all__ = ["LimitedHyperbolicCutShape"]
 class LimitedHyperbolicCutShape(BasisShape):
     r"""This class implements the hyperbolic cut basis shape which
     is a special type of sparse basis set. A basis shape is essentially
-    all information and operations related to the set :math:`\mathcal{K}`
+    all information and operations related to the set :math:`\mathfrak{K}`
     of multi-indices :math:`k`. The hyperbolic cut shape in :math:`D` dimensions
     with `sparsity` :math:`S` and limits :math:`K = (K_0,\ldots,K_{D-1})`
     is defined as the set
 
     .. math::
-        \mathcal{K}(D, S, K) := \{ (k_0, \ldots, k_{D-1}) |
-                                   0 \leq k_d < K_d \forall d \in [0,\ldots,D-1]
-                                   \land \prod_{d=0}^{D-1}(1+k_d) \leq S \}
+        \mathfrak{K}(D, S, K) := \{ (k_0, \ldots, k_{D-1}) |
+                                    0 \leq k_d < K_d \forall d \in [0,\ldots,D-1]
+                                    \land \prod_{d=0}^{D-1}(1+k_d) \leq S \}
     """
 
     def __init__(self, D, K, limits):
@@ -52,9 +52,17 @@ class LimitedHyperbolicCutShape(BasisShape):
         self._basissize = len(self._lima)
 
 
+    def __str__(self):
+        r""":return: A string describing the basis shape :math:`\mathfrak{K}`.
+        """
+        s = ("Hyperbolic cut basis shape of dimension "+str(self._dimension)+
+             " and sparsity "+str(self._sparsity)+" limited at "+str(self._limits)+".")
+        return s
+
+
     def __hash__(self):
         r"""Compute a unique hash for the basis shape. In the case of hyperbolic
-        cut basis shapes :math:`\mathcal{K}` the basis is fully specified by its
+        cut basis shapes :math:`\mathfrak{K}` the basis is fully specified by its
         dimension :math:`D` and the sparsity parameter :math:`K`.
         """
         return hash(("LimitedHyperbolicCutShape", self._dimension, self._sparsity, self._limits))
@@ -76,7 +84,7 @@ class LimitedHyperbolicCutShape(BasisShape):
 
     def __contains__(self, k):
         r"""
-        Checks if a given multi-index :math:`k` is part of the basis set :math:`\mathcal{K}`.
+        Checks if a given multi-index :math:`k` is part of the basis set :math:`\mathfrak{K}`.
 
         :param k: The multi-index :math:`k` we want to test.
         :type k: tuple
@@ -87,7 +95,7 @@ class LimitedHyperbolicCutShape(BasisShape):
 
     def __iter__(self):
         r"""Implements iteration over the multi-indices :math:`k`
-        of the basis set :math:`\mathcal{K}`.
+        of the basis set :math:`\mathfrak{K}`.
 
         Note: The order of iteration is NOT fixed. If you need a special
         iteration scheme, use :py:meth:`get_node_iterator`.
@@ -98,7 +106,7 @@ class LimitedHyperbolicCutShape(BasisShape):
 
     def contains(self, k):
         r"""
-        Checks if a given multi-index :math:`k` is part of the basis set :math:`\mathcal{K}`.
+        Checks if a given multi-index :math:`k` is part of the basis set :math:`\mathfrak{K}`.
 
         :param k: The multi-index :math:`k` we want to test.
         :type k: tuple
@@ -125,7 +133,7 @@ class LimitedHyperbolicCutShape(BasisShape):
         boundary nodes are included in the extended basis shape.
 
         :param tight: Whether to cut off the long tails.
-        :param: Boolean, default is ``False``
+        :type tight: Boolean, default is ``False``
         """
         D = self._dimension
         K = self._sparsity
@@ -207,7 +215,7 @@ class LimitedHyperbolicCutShape(BasisShape):
 
     def get_node_iterator(self, mode="lex", direction=None):
         r"""
-        Returns an iterator to iterate over all basis elements :math:`k \in \mathcal{K}`.
+        Returns an iterator to iterate over all basis elements :math:`k \in \mathfrak{K}`.
 
         :param mode: The mode by which we iterate over the indices. Default is ``lex``
                      for lexicographical order. Supported is also ``chain``, for

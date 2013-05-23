@@ -81,9 +81,9 @@ class TensorProductQR(QuadratureRule):
         r"""Returns the quadrature nodes :math:`\gamma_i`.
 
         :param flat: Dummy parameter for API compatibility with Grids.
-        :type flat: Boolean, default is `True`.
+        :type flat: Boolean, default is ``True``.
         :param split: Dummy parameter for API compatibility with Grids.
-        :type split: Boolean, default is `False`.
+        :type split: Boolean, default is ``False``.
         :return: An ndarray containing the quadrature nodes :math:`\gamma_i`.
         """
         return self._nodes.copy()

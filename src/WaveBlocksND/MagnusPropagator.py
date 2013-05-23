@@ -178,8 +178,8 @@ class MagnusPropagator(Propagator, SplittingParameters):
             self.intsplit(self._propkin, self._proppotquad, a,b, [0.0,h1], nrN1, packet, (packet,leading_chi))
 
             # Build a first matrix here with the current parameters of the wavepacket
-            quadrature = packet.get_quadrature()
-            A1 = (-1.0j)*quadrature.build_matrix(packet, operator=partial(self._potential.evaluate_local_remainder_at, diagonal_component=leading_chi))
+            innerproduct = packet.get_innerproduct()
+            A1 = (-1.0j)*innerproduct.build_matrix(packet, operator=partial(self._potential.evaluate_local_remainder_at, diagonal_component=leading_chi))
 
             # Propagate until c2*dt
             h2 = dt/sqrt(3.0)
@@ -187,8 +187,8 @@ class MagnusPropagator(Propagator, SplittingParameters):
             self.intsplit(self._propkin, self._proppotquad, a,b, [0.0,h2], nrN2, packet, (packet,leading_chi))
 
             # Build a second matrix here with the current parameters of the wavepacket
-            quadrature = packet.get_quadrature()
-            A2 = (-1.0j)*quadrature.build_matrix(packet, operator=partial(self._potential.evaluate_local_remainder_at, diagonal_component=leading_chi))
+            innerproduct = packet.get_innerproduct()
+            A2 = (-1.0j)*innerproduct.build_matrix(packet, operator=partial(self._potential.evaluate_local_remainder_at, diagonal_component=leading_chi))
 
             # Combine both and buid the matrix for Magnus of 4-th order split
             F = (A1+A2)*(dt/eps**2)*0.5 + (dot(A2,A1)-dot(A1,A2))*((dt/eps**2)**2)*sqrt(3.0)/12.0

@@ -27,7 +27,7 @@ class MatrixPotential(object):
         r"""Create a new :py:class:`MatrixPotential` instance for a given potential
         matrix :math:`V(x)`.
 
-        :raise NotImplementedError: This is an abstract base class.
+        :raise: :py:class:`NotImplementedError` This is an abstract base class.
         """
         raise NotImplementedError("'MatrixPotential' is an abstract base class.")
 
@@ -53,8 +53,8 @@ class MatrixPotential(object):
         :param grid: The grid containing the nodes :math:`\gamma_i` we want
                      to evaluate the potential at.
         :param entry: The indices :math:`(i,j)` of the component :math:`V_{i,j}(x)`
-                      we want to evaluate or `None` to evaluate all entries.
-        :raise NotImplementedError: This is an abstract base class.
+                      we want to evaluate or ``None`` to evaluate all entries.
+        :raise: :py:class:`NotImplementedError` This is an abstract base class.
         """
         raise NotImplementedError("evaluate_at(...)")
 
@@ -62,7 +62,7 @@ class MatrixPotential(object):
     def calculate_eigenvalues(self):
         r"""Calculate the eigenvalue :math:`\lambda_0(x)` of the potential :math:`V(x)`.
 
-        :raise NotImplementedError: This is an abstract base class.
+        :raise: :py:class:`NotImplementedError` This is an abstract base class.
         """
         raise NotImplementedError("calculate_eigenvalues(...)")
 
@@ -73,8 +73,8 @@ class MatrixPotential(object):
         :param grid: The grid containing the nodes :math:`\gamma_i` we want
                      to evaluate the eigenvalues at.
         :param entry: The index :math:`i` of the eigenvalue :math:`\lambda_i(x)`
-                      we want to evaluate or `None` to evaluate all eigenvalues.
-        :raise NotImplementedError: This is an abstract base class.
+                      we want to evaluate or ``None`` to evaluate all eigenvalues.
+        :raise: :py:class:`NotImplementedError` This is an abstract base class.
         """
         raise NotImplementedError("evaluate_eigenvalues_at(...)")
 
@@ -82,7 +82,7 @@ class MatrixPotential(object):
     def calculate_eigenvectors(self):
         r"""Calculate the eigenvectors :math:`\nu_i(x)` of the potential :math:`V(x)`.
 
-        :raise NotImplementedError: This is an abstract base class.
+        :raise: :py:class:`NotImplementedError` This is an abstract base class.
         """
         raise NotImplementedError("calculate_eigenvectors(...)")
 
@@ -93,8 +93,8 @@ class MatrixPotential(object):
         :param grid: The grid containing the nodes :math:`\gamma_i` we want
                      to evaluate the eigenvectors at.
         :param entry: The index :math:`i` of the eigenvector :math:`\nu_i(x)`
-                      we want to evaluate or `None` to evaluate all eigenvectors.
-        :raise NotImplementedError: This is an abstract base class.
+                      we want to evaluate or ``None`` to evaluate all eigenvectors.
+        :raise: :py:class:`NotImplementedError` This is an abstract base class.
         """
         raise NotImplementedError("evaluate_eigenvectors_at(...)")
 
@@ -103,7 +103,7 @@ class MatrixPotential(object):
         r"""Calculate the matrix exponential :math:`\exp(\alpha V)`.
 
         :param factor: The prefactor :math:`\alpha` in the exponential.
-        :raise NotImplementedError: This is an abstract base class.
+        :raise: :py:class:`NotImplementedError` This is an abstract base class.
         """
         raise NotImplementedError("calculate_exponential(...)")
 
@@ -113,6 +113,6 @@ class MatrixPotential(object):
 
         :param grid: The grid containing the nodes :math:`\gamma_i` we want
                      to evaluate the exponential at.
-        :raise NotImplementedError: This is an abstract base class.
+        :raise: :py:class:`NotImplementedError` This is an abstract base class.
         """
         raise NotImplementedError("evaluate_exponential_at(...)")

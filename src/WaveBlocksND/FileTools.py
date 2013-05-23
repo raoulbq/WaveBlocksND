@@ -213,7 +213,7 @@ def sort_by(stringlist, pattern, ldel=GD.kvp_ldel, mdel=GD.kvp_mdel, rdel=GD.kvp
         # Use string in comparison, allows sorting
         tmp = [ s + (s[2],) for s in tmp ]
 
-    # Define a costum order relation
+    # Define a custom order relation
     def compare(x,y):
         if x[-1] > y[-1]:
             return 1

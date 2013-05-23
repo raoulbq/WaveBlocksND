@@ -3,7 +3,7 @@
 Compute the autocorrelations of wavefunctions.
 
 @author: R. Bourquin
-@copyright: Copyright (C) 2012 R. Bourquin
+@copyright: Copyright (C) 2012, 2013 R. Bourquin
 @license: Modified BSD License
 """
 
@@ -15,11 +15,15 @@ from WaveBlocksND import WaveFunction
 from WaveBlocksND import BasisTransformationWF
 
 
-def compute_autocorrelation(iom, blockid=0, eigentrafo=True):
+def compute_autocorrelation(iom, obsconfig=None, blockid=0, eigentrafo=True):
     """Compute the autocorrelation of a wavefunction timeseries.
 
     :param iom: An :py:class:`IOManager` instance providing the simulation data.
-    :param blockid: The data block from which the values are read. Default is `0`.
+    :param obsconfig: Configuration parameters describing f.e. the inner product to use.
+    :type obsconfig: A :py:class:`ParameterProvider` instance.
+                     Value has no effect in this class.
+    :param blockid: The data block from which the values are read.
+    :type blockid: Integer, Default is ``0``
     :param eigentrafo: Whether to make a transformation into the eigenbasis.
     :type eigentrafo: Boolean, default is ``True``.
     """

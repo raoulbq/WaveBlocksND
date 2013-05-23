@@ -15,5 +15,6 @@ Class documentation
 -------------------
 
 .. autoclass:: BasisShape
+   :special-members:
    :members:
    :inherited-members:

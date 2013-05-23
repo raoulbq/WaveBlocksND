@@ -7,7 +7,7 @@ methods. Quadratures are classes that really can compute things
 like inner products (brakets) etc.
 
 @author: R. Bourquin
-@copyright: Copyright (C) 2010, 2011, 2012 R. Bourquin
+@copyright: Copyright (C) 2010, 2011, 2012, 2013 R. Bourquin
 @license: Modified BSD License
 """
 
@@ -20,7 +20,7 @@ class QuadratureRule(object):
 
     def __init__(self):
         r"""General interface for quadrature rules.
-        :raise NotImplementedError: Abstract interface.
+        :raise: :py:class:`NotImplementedError` Abstract interface.
         """
         raise NotImplementedError("'QuadratureRule' is an abstract interface.")
 
@@ -35,7 +35,7 @@ class QuadratureRule(object):
         if self._options.has_key(key):
             return self._options[key]
         else:
-            return False
+            return None
 
 
     def get_description(self):

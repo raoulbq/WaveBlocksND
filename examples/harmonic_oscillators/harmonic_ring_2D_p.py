@@ -45,13 +45,16 @@ wp0 = {
         "dimension" : dimension
     }],
     "coefficients" : [[ ((0,0), 1.0) ]],
-    "quadrature" : {
-        "type" : "HomogeneousQuadrature",
-	'qr': {
-            'type': 'TensorProductQR',
-            'dimension': dimension,
-            'qr_rules': [{'dimension': 1, 'order': 20, 'type': 'GaussHermiteQR'},
-                         {'dimension': 1, 'order': 20, 'type': 'GaussHermiteQR'}],
+    "innerproduct" : {
+        "type" : "HomogeneousInnerProduct",
+        "delegate" : {
+            "type" : "DirectHomogeneousQuadrature",
+            'qr': {
+                'type': 'TensorProductQR',
+                'dimension': dimension,
+                'qr_rules': [{'dimension': 1, 'order': 20, 'type': 'GaussHermiteQR'},
+                             {'dimension': 1, 'order': 20, 'type': 'GaussHermiteQR'}],
+            }
         }
     }
 }
