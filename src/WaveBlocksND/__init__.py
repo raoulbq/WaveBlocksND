@@ -53,6 +53,10 @@ from HagedornWavepacketInhomogeneous import HagedornWavepacketInhomogeneous
 from Gradient import Gradient
 from GradientHAWP import GradientHAWP
 
+#
+from LinearCombinationOfWavepackets import LinearCombinationOfWavepackets
+from LinearCombinationOfHAWPs import LinearCombinationOfHAWPs
+
 # Quadrature rules
 from QuadratureRule import QuadratureRule
 from TrapezoidalQR import TrapezoidalQR
