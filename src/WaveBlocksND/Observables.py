@@ -22,6 +22,15 @@ class Observables(object):
         raise NotImplementedError("'Observables' is an abstract interface.")
 
 
+    def norm(self, ket):
+        r"""Compute the norm :math:`\sqrt{\langle\psi|\psi\rangle}`.
+
+        :param ket: The object denoted by :math:`\psi`.
+        :raise: :py:class:`NotImplementedError` Abstract interface.
+        """
+        raise NotImplementedError("'Observables' is an abstract interface.")
+
+
     def kinetic_energy(self, ket, T):
         r"""Compute the kinetic energy :math:`E_{\text{kin}} := \langle\psi|T|\psi\rangle`.
 

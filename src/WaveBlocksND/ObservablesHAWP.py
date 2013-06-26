@@ -48,6 +48,27 @@ class ObservablesHAWP(Observables):
         self._innerproduct = innerproduct
 
 
+    def norm(self, wavepacket, component=None, summed=False):
+        r"""Calculate the :math:`L^2` norm :math:`\langle\Psi|\Psi\rangle` of the wavepacket :math:`\Psi`.
+
+        Note: this method is just a shortcut and calls the ``norm`` method
+        of the given wavepacket.
+
+        :param wavepacket: The wavepacket :math:`\Psi` of which we compute the norm.
+        :type wavepacket: A :py:class:`HagedornWavepacketBase` subclass instance.
+        :param component: The index :math:`i` of the component :math:`\Phi_i` whose norm is calculated.
+                          The default value is ``None`` which means to compute the norms of all :math:`N` components.
+        :type component: int or ``None``.
+        :param summed: Whether to sum up the norms :math:`\langle\Phi_i|\Phi_i\rangle` of the
+                       individual components :math:`\Phi_i`.
+        :type summed: Boolean, default is ``False``.
+        :type summed: Boolean, default is ``False``.
+        :return: The norm of :math:`\Psi` or the norm of :math:`\Phi_i` or a list with the :math:`N`
+                 norms of all components. Depending on the values of ``component`` and ``summed``.
+        """
+        return wavepacket.norm(component=component, summed=summed)
+
+
     def kinetic_energy(self, wavepacket, component=None, summed=False):
         r"""Compute the kinetic energy :math:`E_{\text{kin}} := \langle\Psi|T|\Psi\rangle`
         of the different components :math:`\Phi_i` of the wavepacket :math:`\Psi`.

@@ -14,6 +14,7 @@ from scipy.linalg import det, inv, norm
 from Wavepacket import Wavepacket
 from Grid import Grid
 from GridWrapper import GridWrapper
+from GradientHAWP import GradientHAWP
 
 __all__ = ["HagedornWavepacketBase"]
 
@@ -516,6 +517,19 @@ class HagedornWavepacketBase(Wavepacket):
                 result = sqrt(result)
 
         return result
+
+
+    # A wavepacket knows how to compute gradients
+    # TODO: Consider moving this inside the general codata framework
+
+
+    def get_gradient_operator(self):
+        r"""Return the :py:class:`Gradient` subclass suitable for
+        computing gradients of this wavepacket.
+
+        :return: A :py:class:`GradientHAWP` instance.
+        """
+        return GradientHAWP()
 
 
     # A wavepacket knows how to compute inner products
