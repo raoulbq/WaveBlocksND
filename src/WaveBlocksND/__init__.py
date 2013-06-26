@@ -69,6 +69,9 @@ from InnerProduct import InnerProduct
 from HomogeneousInnerProduct import HomogeneousInnerProduct
 from InhomogeneousInnerProduct import InhomogeneousInnerProduct
 
+from HomogeneousInnerProductLCWP import HomogeneousInnerProductLCWP
+from InhomogeneousInnerProductLCWP import InhomogeneousInnerProductLCWP
+
 from Quadrature import Quadrature
 from DirectQuadrature import DirectQuadrature
 from DirectHomogeneousQuadrature import DirectHomogeneousQuadrature

@@ -39,6 +39,7 @@ class InnerProduct(object):
         raise NotImplementedError("'InnerProduct' is an abstract interface.")
 
 
+    # TODO: Rename 'quadrature', the delegate can be something other than a classical quadrature.
     def set_quadrature(self, quad):
         r"""Set the :py:class:`Quadrature` subclass instance used for quadrature.
 
@@ -48,6 +49,7 @@ class InnerProduct(object):
         self._quad = quad
 
 
+    # TODO: Rename 'quadrature', the delegate can be something other than a classical quadrature.
     def get_quadrature(self):
         r"""Return the :py:class:`Quadrature` subclass instance
         used for evaluation of this inner product.
