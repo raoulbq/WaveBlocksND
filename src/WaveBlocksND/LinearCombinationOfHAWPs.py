@@ -35,8 +35,6 @@ class LinearCombinationOfHAWPs(LinearCombinationOfWavepackets):
         self._packets = []
         self._number_packets = 0
         self._coefficients = zeros((0,1), dtype=complexfloating)
-        self._overlap_matrix = zeros((0,0), dtype=complexfloating)
-        self._overlap_matrix_valid = True
 
         # TODO: Handle multi-component packets
         assert number_components == 1
@@ -80,7 +78,6 @@ class LinearCombinationOfHAWPs(LinearCombinationOfWavepackets):
         self._packets.append(packet)
         self._number_packets = self._number_packets + 1
         self._coefficients = vstack([self._coefficients, atleast_2d(coefficient)])
-        self._overlap_matrix_valid = False
 
 
     def remove_wavepacket(self, index):
@@ -91,7 +88,6 @@ class LinearCombinationOfHAWPs(LinearCombinationOfWavepackets):
         self._packets.pop(index)
         self._number_packets = self._number_packets - 1
         self._coefficients = delete(self._coefficients, index).reshape((-1,1))
-        self._overlap_matrix = delete(delete(self._overlap_matrix, index, axis=0), index, axis=1)
 
 
     def get_wavepacket(self, index):
@@ -145,54 +141,3 @@ class LinearCombinationOfHAWPs(LinearCombinationOfWavepackets):
                 result = result + vals
 
         return result
-
-
-    def compute_overlap_matrix(self, IP):
-        r"""
-        """
-        M = zeros((self._number_packets, self._number_packets), dtype=complexfloating)
-
-        # TODO: A new quadrature should handle that!
-        for row, pacbra in enumerate(self._packets):
-            for col, packet in enumerate(self._packets):
-                # TODO: Handle multi-component packets
-                M[row, col] = IP.quadrature(pacbra, packet, component=0)
-
-        self._overlap_matrix = M
-        self._overlap_matrix_valid = True
-
-
-    def update_overlap_matrix(self, IP):
-        r"""
-        """
-        nrows, ncols = self._overlap_matrix.shape
-        # Number of new packets since last update
-        nnp = self._number_packets - ncols
-
-        z = zeros((nrows, nnp), dtype=complexfloating)
-        for row, pacbra in enumerate(self._packets[:-nnp]):
-            for col, packet in enumerate(self._packets[-nnp:]):
-                # TODO: Handle multi-component packets
-                z[row, col] = IP.quadrature(pacbra, packet, component=0)
-
-        # TODO: Make this more efficient and compute only upper triangle
-        s = zeros((nnp, nnp), dtype=complexfloating)
-        for row, pacbra in enumerate(self._packets[-nnp:]):
-            for col, packet in enumerate(self._packets[-nnp:]):
-                # TODO: Handle multi-component packets
-                s[row, col] = IP.quadrature(pacbra, packet, component=0)
-
-        M1 = hstack([ self._overlap_matrix, z])
-        M2 = hstack([ conjugate(transpose(z)), s])
-        self._overlap_matrix = vstack([M1, M2])
-        self._overlap_matrix_valid = True
-
-
-    def norm(self):
-        r"""Calculate the :math:`L^2` norm :math:`\langle\Upsilon|\Upsilon\rangle` of the
-        linear combination :math:`\Upsilon`.
-        """
-        if self._overlap_matrix_valid:
-            return dot(conjugate(transpose(self._coefficients)), dot(self._overlap_matrix, self._coefficients))
-        else:
-            raise ValueError("Overlap matrix is not valid.")
