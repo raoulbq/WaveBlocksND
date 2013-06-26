@@ -20,7 +20,7 @@ class LinearCombinationOfHAWPs(LinearCombinationOfWavepackets):
     of general but compatible Hagedorn wavepackets.
     """
 
-    def __init__(self, dimension, number_components):
+    def __init__(self, dimension, number_components, number_packets=0):
         r"""Initialize a new linear combination of Hagedorn wavepackets. This
         object represents :math:`\Upsilon := \sum_{j=0}^{J-1} c_j \Psi_j`.
         All :math:`J` wavepackets :math:`\Psi_j` have the same number :math:`N`
@@ -33,8 +33,8 @@ class LinearCombinationOfHAWPs(LinearCombinationOfWavepackets):
         self._dimension = dimension
         self._number_components = number_components
         self._packets = []
-        self._number_packets = 0
-        self._coefficients = zeros((0,1), dtype=complexfloating)
+        self._number_packets = number_packets
+        self._coefficients = zeros((number_packets,1), dtype=complexfloating)
 
         # TODO: Handle multi-component packets
         assert number_components == 1
@@ -60,6 +60,20 @@ class LinearCombinationOfHAWPs(LinearCombinationOfWavepackets):
         d["dimension"] = self._dimension
         d["ncomponents"] = self._number_components
         return d
+
+
+    def clone(self, keepid=False):
+        # Parameters of this packet
+        params = self.get_description()
+        # Create a new linear combination
+        # TODO: Consider using the block factory
+        other = LinearCombinationOfHAWPs(params["dimension"],
+                                         params["ncomponents"],
+                                         self._number_packets)
+        newpackets = [wp.clone(keepid=keepid) for wp in self.get_wavepackets()]
+        other.set_wavepackets(newpackets)
+        other.set_coefficients(self.get_coefficients())
+        return other
 
 
     def add_wavepacket(self, packet, coefficient=1.0):
@@ -104,6 +118,17 @@ class LinearCombinationOfHAWPs(LinearCombinationOfWavepackets):
         return tuple(self._packets)
 
 
+    def set_wavepackets(self, packetlist):
+        r"""Set the list :math:`\{\Psi_j\}_j` of new wavepackets.
+
+        :param packetlist: A list of new wavepackets :math:`\Psi_j`.
+        """
+        if not len(packetlist) == self._number_packets:
+            raise ValueError("Wrong number of new packets.")
+
+        self._packets = packetlist[:]
+
+
     def get_coefficient(self, index):
         r"""Get the coefficient :math:`c_j` of the wavepacket :math:`\Psi_j`.
 
@@ -116,6 +141,18 @@ class LinearCombinationOfHAWPs(LinearCombinationOfWavepackets):
         r"""Get the vector with all coefficients :math:`c_j` of all wavepackets :math:`\Psi_j`.
         """
         return self._coefficients.copy()
+
+
+    def set_coefficients(self, coefficients):
+        r"""Update all the coefficients :math:`c` of :math:`\Upsilon`.
+
+        :param coefficients: The vector :math:`c`.
+        :type coefficients: An :py:class:`ndarray`
+        """
+        if not coefficients.size == self._number_packets:
+            raise ValueError("Wrong number of new coefficients.")
+
+        self._coefficients = coefficients.copy().reshape((-1,1))
 
 
     def evaluate_at(self, grid, component=None):

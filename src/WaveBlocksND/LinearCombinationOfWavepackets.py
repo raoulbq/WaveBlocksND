@@ -84,6 +84,12 @@ class LinearCombinationOfWavepackets(object):
         raise NotImplementedError("'LinearCombinationOfWavepackets' is an abstract interface.")
 
 
+    def set_wavepackets(self, packetlist):
+        r"""
+        """
+        raise NotImplementedError("'LinearCombinationOfWavepackets' is an abstract interface.")
+
+
     def get_coefficient(self, index):
         r"""
         """
@@ -91,6 +97,12 @@ class LinearCombinationOfWavepackets(object):
 
 
     def get_coefficients(self):
+        r"""
+        """
+        raise NotImplementedError("'LinearCombinationOfWavepackets' is an abstract interface.")
+
+
+    def set_coefficients(self, coefficients):
         r"""
         """
         raise NotImplementedError("'LinearCombinationOfWavepackets' is an abstract interface.")

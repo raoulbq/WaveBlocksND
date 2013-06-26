@@ -78,7 +78,7 @@ class HagedornPropagator(Propagator):
 
 
     def _prepare_potential(self):
-        """Precalculate the potential splittings needed
+        r"""Precalculate the potential splittings needed
         """
         for chi in set([ p[1] for p in self._packets ]):
             self._potential.calculate_local_quadratic(diagonal_component=chi)
@@ -120,7 +120,7 @@ class HagedornPropagator(Propagator):
 
 
     def set_wavepackets(self, packetlist):
-        """Set the list :math:`\{\Psi_i\}_i` of wavepackets that the propagator will propagate.
+        r"""Set the list :math:`\{\Psi_i\}_i` of wavepackets that the propagator will propagate.
 
         :param packetlist: A list of new wavepackets :math:`\Psi_i` and their
                            leading components :math:`\chi_i` to propagate.

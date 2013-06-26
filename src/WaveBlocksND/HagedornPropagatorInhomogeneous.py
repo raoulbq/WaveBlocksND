@@ -107,7 +107,7 @@ class HagedornPropagatorInhomogeneous(Propagator):
 
 
     def set_wavepackets(self, packetlist):
-        """Set the list :math:`\{\Psi_i\}_i` of wavepackets that the propagator will propagate.
+        r"""Set the list :math:`\{\Psi_i\}_i` of wavepackets that the propagator will propagate.
 
         :param packetlist: A list of new wavepackets :math:`\Psi_i` and their codata to propagate.
         :type packetlist: A list of :math:`(\Psi_i,)` tuples.
