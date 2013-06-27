@@ -83,7 +83,10 @@ def plot_frames(PP, iom, blockid=0, view=None, plotphase=True, plotcomponents=Fa
                 ax.set_xlim(view[:2])
                 ax.set_ylim(view[2:])
 
-        fig.suptitle(r"$\Psi$ at time $"+str(step*parameters["dt"])+r"$")
+        if parameters.has_key("dt"):
+            fig.suptitle(r"$\Psi$ at time $"+str(step*parameters["dt"])+r"$")
+        else:
+            fig.suptitle(r"$\Psi$")
         fig.savefig("wavefunction_block"+str(blockid)+"_"+ (7-len(str(step)))*"0"+str(step) +GD.output_format)
         close(fig)
 
