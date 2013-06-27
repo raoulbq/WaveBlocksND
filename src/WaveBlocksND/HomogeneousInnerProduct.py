@@ -21,6 +21,13 @@ class HomogeneousInnerProduct(InnerProduct):
     """
 
     def __init__(self, quad=None):
+        r"""
+        This class computes the homogeneous inner product
+        :math:`\langle\Psi|f|\Psi\rangle`.
+
+        :param ip: The delegate inner product.
+        :type ip: A :py:class:`Quadrature` subclass instance.
+        """
         # Pure convenience to allow setting of quadrature instance in constructor
         if quad is not None:
             self.set_quadrature(quad)

@@ -102,7 +102,7 @@ class LinearCombinationOfWPs(LinearCombinationOfWavepackets):
         :param coefficients: The corresponding coefficient vector :math:`c`, default
                              is a vector of all 1.0.
         """
-        if len(packetlist) != coefficients.size:
+        if coefficients is not None and len(packetlist) != coefficients.size:
             raise ValueError("Differently many packets and coefficients given.")
 
         for packet in packetlist:

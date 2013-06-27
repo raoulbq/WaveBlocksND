@@ -1,6 +1,6 @@
 """The WaveBlocks Project
 
-This file contains code for the delegation of the evaluation ofinner products
+This file contains code for the delegation of the evaluation of inner products
 of two linear combinations of wavepackets. The class defined here can compute
 brakets, inner products and expectation values and the matrix elements of an
 arbitrary operator.
@@ -26,6 +26,9 @@ class HomogeneousInnerProductLCWP(InnerProduct):
         :math:`\Upsilon` with itself, the delegate inner product class used
         for computing :math:`\langle\Psi|f|\Psi^\prime\rangle` has still to
         be of *inhomogeneous* type.
+
+        :param ip: The delegate inner product.
+        :type ip: A :py:class:`InnerProduct` subclass instance.
         """
         # Pure convenience to allow setting of quadrature instance in constructor
         if ip is not None:
@@ -51,12 +54,13 @@ class HomogeneousInnerProductLCWP(InnerProduct):
 
 
     def quadrature(self, lcket, operator=None, component=None):
-        r"""Delegates the evaluation of :math:`\langle\Upsilon|f|\Upsilon^\prime\rangle` for a general
+        r"""Delegates the evaluation of :math:`\langle\Upsilon|f|\Upsilon\rangle` for a general
         function :math:`f(x)` with :math:`x \in \mathbb{R}^D`.
 
-        :param lcket: The wavepacket :math:`\Upsilon^\prime` from the ket with :math:`J^\prime` summands :math:`\Psi_j^\prime`.
-        :param operator: A matrix-valued function :math:`f(x): \mathbb{R}^D \rightarrow \mathbb{R}^{N \times N^\prime}`.
-        :return: A matrix of size :math:`J \times J^\prime`.
+        :param lcket: The linear combination :math:`\Upsilon` with :math:`J` summands :math:`\Psi_j`.
+        :param operator: A matrix-valued function :math:`f(x): \mathbb{R}^D \rightarrow \mathbb{R}^{N \times N}`.
+        :return: The value of :math:`\langle\Upsilon|f|\Upsilon\rangle`.
+        :type: An :py:class:`ndarray`.
         """
         J = lcket.get_number_packets()
         packets = lcket.get_wavepackets()
@@ -82,13 +86,14 @@ class HomogeneousInnerProductLCWP(InnerProduct):
 
 
     def build_matrix(self, lcket, operator=None):
-        r"""Delegates the computation of the matrix elements :math:`\langle\Upsilon|f|\Upsilon^\prime\rangle`
+        r"""Delegates the computation of the matrix elements of :math:`\langle\Upsilon|f|\Upsilon\rangle`
         for a general function :math:`f(x)` with :math:`x \in \mathbb{R}^D`.
-        The matrix is computed without including the coefficients :math:`c_j` and :math:`c_j^\prime`.
+        The matrix is computed without including the coefficients :math:`c_j`.
 
-        :param lcket: The wavepacket :math:`\Upsilon^\prime` from the ket with :math:`J^\prime` summands :math:`\Psi_j^\prime`.
-        :param operator: A matrix-valued function :math:`f(q, x): \mathbb{R} \times \mathbb{R}^D \rightarrow \mathbb{R}^{N \times N^\prime}`.
-        :return: A matrix of size :math:`J \times J^\prime`.
+        :param lcket: The wavepacket :math:`\Upsilon` with :math:`J` summands :math:`\Psi_j`.
+        :param operator: A matrix-valued function :math:`f(q, x): \mathbb{R} \times \mathbb{R}^D \rightarrow \mathbb{R}^{N \times N}`.
+        :return: A matrix of shape :math:`J \times J`.
+        :type: An :py:class:`ndarray`.
         """
         J = lcket.get_number_packets()
         packets = lcket.get_wavepackets()

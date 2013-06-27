@@ -19,6 +19,13 @@ __all__ = ["InhomogeneousInnerProduct"]
 class InhomogeneousInnerProduct(InnerProduct):
 
     def __init__(self, quad=None):
+        r"""
+        This class computes the inhomogeneous inner product
+        :math:`\langle\Psi|f|\Psi^\prime\rangle`.
+
+        :param quad: The delegate inner product.
+        :type quad: A :py:class:`Quadrature` subclass instance.
+        """
         # Pure convenience to allow setting of quadrature instance in constructor
         if quad is not None:
             self.set_quadrature(quad)
