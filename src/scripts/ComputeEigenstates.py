@@ -8,7 +8,7 @@ This file contains the class which represents a homogeneous Hagedorn wavepacket.
 """
 
 import sys
-from numpy import squeeze, ones, zeros_like, complexfloating, argsort, real, conj, sum
+from numpy import complexfloating, squeeze, real, ones, zeros_like, conj, sum, argsort
 from scipy.optimize import fmin
 from scipy.linalg import sqrtm, inv, eigh
 
@@ -48,6 +48,8 @@ def compute_eigenstate(params):
     # Start with an offset because exact 0.0 values can give
     # issues, especially with the Hessian evaluation. This way
     # the minimizer will always stay away from zero a tiny bit.
+    # The current starting point can give issues if the potential
+    # is stationary at the point (2, ..., 2) but that is less likely.
     x0 = 2.0*ones(D)
     q0 = fmin(f, x0, xtol=1e-12)
     q0 = q0.reshape((D,1))
@@ -91,10 +93,10 @@ def compute_eigenstate(params):
     HAWP.set_parameters(Pi)
 
     # Next compute the matrix M_ij = <phi_i | T + V | phi_j>
-    # First the potential part
-    HQ = BF.create_innerproduct(params["innerproduct"])
+    # The potential part
+    HQ = BF.create_inner_product(params["innerproduct"])
 
-    opV = lambda x, q: V.evaluate_at(x)
+    opV = lambda x, q, entry: V.evaluate_at(x, entry=entry)
     MV = HQ.build_matrix(HAWP, operator=opV)
 
     # The kinetic part
@@ -167,7 +169,6 @@ def compute_eigenstate(params):
 
 
 if __name__ == "__main__":
-
 
     # Read the path for the configuration file we use for this simulation.
     try:
