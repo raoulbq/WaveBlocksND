@@ -1,10 +1,10 @@
 """The WaveBlocks Project
 
-Compute some observables like kinetic and potential energy
+Compute some observables like norm, kinetic and potential energy
 of Hagedorn wavepackets.
 
 @author: R. Bourquin
-@copyright: Copyright (C) 2012 R. Bourquin
+@copyright: Copyright (C) 2013 R. Bourquin
 @license: Modified BSD License
 """
 

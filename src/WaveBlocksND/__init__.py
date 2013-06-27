@@ -55,7 +55,8 @@ from GradientHAWP import GradientHAWP
 
 #
 from LinearCombinationOfWavepackets import LinearCombinationOfWavepackets
-from LinearCombinationOfHAWPs import LinearCombinationOfHAWPs
+from LinearCombinationOfWPs import LinearCombinationOfWPs
+#from LinearCombinationOfHAWPs import LinearCombinationOfHAWPs
 
 # Quadrature rules
 from QuadratureRule import QuadratureRule
@@ -100,6 +101,7 @@ from SimulationLoopHagedornInhomogeneous import SimulationLoopHagedornInhomogene
 
 from Observables import Observables
 from ObservablesHAWP import ObservablesHAWP
+from ObservablesLCWP import ObservablesLCWP
 
 # Enable dynamic plugin loading for IOManager
 import sys

@@ -95,6 +95,9 @@ Wavepackets
    waveblocks_classes/BasisTransformationWF
    waveblocks_classes/BasisTransformationHAWP
 
+   waveblocks_classes/LinearCombinationOfWavepackets
+   waveblocks_classes/LinearCombinationOfWPs
+
 
 Observables
 ^^^^^^^^^^^

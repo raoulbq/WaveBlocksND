@@ -50,7 +50,7 @@ class InhomogeneousInnerProductLCWP(InnerProduct):
         return d
 
 
-    def quadrature(self, lcbra, lcket=None, operator=None):
+    def quadrature(self, lcbra, lcket=None, operator=None, component=None):
         r"""Delegates the evaluation of :math:`\langle\Upsilon|f|\Upsilon^\prime\rangle` for a general
         function :math:`f(x)` with :math:`x \in \mathbb{R}^D`.
 

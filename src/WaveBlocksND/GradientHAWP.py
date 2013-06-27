@@ -57,12 +57,14 @@ class GradientHAWP(Gradient):
             cnew[Ke[k],:] += squeeze(coeffs[K[k]] * p)
 
             # Backward neighbours phi_{i - e_d}
+            # Ke instead of K??
             nbw = K.get_neighbours(k, selection="backward")
 
             for d, nb in nbw:
                 cnew[Ke[nb],:] += sqrt(eps**2/2.0) * sqrt(k[d]) * coeffs[K[k]] * Pbar[:,d]
 
             # Forward neighbours phi_{i + e_d}
+            # Ke instead of K??
             nfw = K.get_neighbours(k, selection="forward")
 
             for d, nb in nfw:
