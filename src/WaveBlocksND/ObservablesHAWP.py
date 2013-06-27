@@ -51,7 +51,7 @@ class ObservablesHAWP(Observables):
     def norm(self, wavepacket, component=None, summed=False):
         r"""Calculate the :math:`L^2` norm :math:`\langle\Psi|\Psi\rangle` of the wavepacket :math:`\Psi`.
 
-        Note: this method is just a shortcut and calls the ``norm`` method
+        Note: this method is just a shortcut and calls the :py:meth:`HagedornWavepacketBase.norm` method
         of the given wavepacket.
 
         :param wavepacket: The wavepacket :math:`\Psi` of which we compute the norm.
@@ -112,7 +112,8 @@ class ObservablesHAWP(Observables):
 
         :param wavepacket: The wavepacket :math:`\Psi` of which we compute the potential energy.
         :type wavepacket: A :py:class:`HagedornWavepacketBase` subclass instance.
-        :param potential: The potential :math:`V(x)`.
+        :param potential: The potential :math:`V(x)`. (Actually, not the potential object itself
+                          but one of its ``V.evaluate_*`` methods.)
         :param component: The index :math:`i` of the component :math:`\Phi_i` whose
                           potential energy we want to compute. If set to ``None`` the
                           computation is performed for all :math:`N` components.

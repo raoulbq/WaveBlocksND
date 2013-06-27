@@ -3,7 +3,7 @@
 This file contains the interface for observable computators.
 
 @author: R. Bourquin
-@copyright: Copyright (C) 2012 R. Bourquin
+@copyright: Copyright (C) 2012, 2013 R. Bourquin
 @license: Modified BSD License
 """
 
@@ -23,7 +23,7 @@ class Observables(object):
 
 
     def norm(self, ket):
-        r"""Compute the norm :math:`\sqrt{\langle\psi|\psi\rangle}`.
+        r"""Compute the :math:`L^2` norm :math:`\sqrt{\langle\psi|\psi\rangle}`.
 
         :param ket: The object denoted by :math:`\psi`.
         :raise: :py:class:`NotImplementedError` Abstract interface.
