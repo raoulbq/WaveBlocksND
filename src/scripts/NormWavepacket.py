@@ -3,7 +3,7 @@
 Compute the norms of the homogeneous wavepackets as well as the sum of all norms.
 
 @author: R. Bourquin
-@copyright: Copyright (C) 2010, 2011, 2012 R. Bourquin
+@copyright: Copyright (C) 2010, 2011, 2012, 2013 R. Bourquin
 @license: Modified BSD License
 """
 
@@ -43,7 +43,7 @@ def compute_norm_hawp(iom, blockid=0, eigentrafo=True):
         BT.set_matrix_builder(HAWP.get_innerproduct())
 
     # Basis shapes
-    BS_descr = iom.load_wavepacket_basisshapes()
+    BS_descr = iom.load_wavepacket_basisshapes(blockid=blockid)
     BS = {}
     for ahash, descr in BS_descr.iteritems():
         BS[ahash] = BlockFactory().create_basis_shape(descr)
@@ -107,7 +107,7 @@ def compute_norm_inhawp(iom, blockid=0, eigentrafo=True):
         BT.set_matrix_builder(HAWP.get_innerproduct())
 
     # Basis shapes
-    BS_descr = iom.load_inhomogwavepacket_basisshapes()
+    BS_descr = iom.load_inhomogwavepacket_basisshapes(blockid=blockid)
     BS = {}
     for ahash, descr in BS_descr.iteritems():
         BS[ahash] = BlockFactory().create_basis_shape(descr)

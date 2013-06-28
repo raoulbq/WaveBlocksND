@@ -3,7 +3,7 @@
 Compute the kinetic and potential energies of the homogeneous wavepackets.
 
 @author: R. Bourquin
-@copyright: Copyright (C) 2010, 2011, 2012 R. Bourquin
+@copyright: Copyright (C) 2010, 2011, 2012, 2013 R. Bourquin
 @license: Modified BSD License
 """
 
@@ -47,7 +47,7 @@ def compute_energy_hawp(iom, blockid=0, eigentrafo=True, iseigen=True):
         BT.set_matrix_builder(HAWP.get_innerproduct())
 
     # Basis shapes
-    BS_descr = iom.load_wavepacket_basisshapes()
+    BS_descr = iom.load_wavepacket_basisshapes(blockid=blockid)
     BS = {}
     for ahash, descr in BS_descr.iteritems():
         BS[ahash] = BlockFactory().create_basis_shape(descr)
@@ -119,7 +119,7 @@ def compute_energy_inhawp(iom, blockid=0, eigentrafo=True, iseigen=True):
         BT.set_matrix_builder(HAWP.get_innerproduct())
 
     # Basis shapes
-    BS_descr = iom.load_inhomogwavepacket_basisshapes()
+    BS_descr = iom.load_inhomogwavepacket_basisshapes(blockid=blockid)
     BS = {}
     for ahash, descr in BS_descr.iteritems():
         BS[ahash] = BlockFactory().create_basis_shape(descr)

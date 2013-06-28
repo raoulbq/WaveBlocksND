@@ -3,20 +3,17 @@
 This file contains the class which represents a homogeneous Hagedorn wavepacket.
 
 @author: R. Bourquin
-@copyright: Copyright (C) 2012 R. Bourquin
+@copyright: Copyright (C) 2012, 2013 R. Bourquin
 @license: Modified BSD License
 """
 
 import sys
-from numpy import *
-from scipy import *
-from numpy import squeeze, real, zeros, zeros_like, conj, sum
+from numpy import squeeze, ones, zeros_like, complexfloating, argsort, real, conj, sum
 from scipy.optimize import fmin
 from scipy.linalg import sqrtm, inv, eigh
 
 from WaveBlocksND import BlockFactory
 from WaveBlocksND import ParameterLoader
-from WaveBlocksND import ParameterProvider
 from WaveBlocksND import GradientHAWP
 from WaveBlocksND import IOManager
 

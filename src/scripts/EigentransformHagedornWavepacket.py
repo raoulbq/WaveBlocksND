@@ -3,7 +3,7 @@
 Compute the transformation to the eigen basis for wavepackets.
 
 @author: R. Bourquin
-@copyright: Copyright (C) 2012 R. Bourquin
+@copyright: Copyright (C) 2012, 2013 R. Bourquin
 @license: Modified BSD License
 """
 
@@ -44,7 +44,7 @@ def transform_hawp_to_eigen(iomin, iomout, blockidin=0, blockidout=0):
     BT.set_matrix_builder(HAWP.get_innerproduct())
 
     # Basis shapes
-    BS_descr = iomin.load_wavepacket_basisshapes()
+    BS_descr = iomin.load_wavepacket_basisshapes(blockid=blockidin)
     BS = {}
     for ahash, descr in BS_descr.iteritems():
         BS[ahash] = BlockFactory().create_basis_shape(descr)
@@ -108,7 +108,7 @@ def transform_inhawp_to_eigen(iomin, iomout, blockidin=0, blockidout=0):
     BT.set_matrix_builder(HAWP.get_innerproduct())
 
     # Basis shapes
-    BS_descr = iomin.load_inhomogwavepacket_basisshapes()
+    BS_descr = iomin.load_inhomogwavepacket_basisshapes(blockid=blockidin)
     BS = {}
     for ahash, descr in BS_descr.iteritems():
         BS[ahash] = BlockFactory().create_basis_shape(descr)
