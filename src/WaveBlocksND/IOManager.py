@@ -145,6 +145,7 @@ class IOManager(object):
             return
 
         # Close the file
+        self._srf.flush()
         self._srf.close()
         self._srf = None
         # Reset book keeping data
@@ -287,19 +288,19 @@ class IOManager(object):
         return groupid
 
 
-    def must_resize(self, path, slot, axis=0):
+    def must_resize(self, path, size, axis=0):
         """Check if we must resize a given dataset and if yes, resize it.
         """
         # Ok, it's inefficient but sufficient for now.
-        # todo: Consider resizing in bigger chunks and shrinking at the end if necessary.
+        # TODO: Consider resizing in bigger chunks and shrinking at the end if necessary.
 
         # Current size of the array
         cur_len = self._srf[path].shape[axis]
 
-        # Is it smaller than what we need to store at slot "slot"?
+        # Is the current size smaller than the new "size"?
         # If yes, then resize the array along the given axis.
-        if cur_len-1 < slot:
-            self._srf[path].resize(slot+1, axis=axis)
+        if cur_len-1 < size:
+            self._srf[path].resize(size+1, axis=axis)
 
 
     def find_timestep_index(self, timegridpath, timestep):
@@ -314,7 +315,7 @@ class IOManager(object):
         if index.shape == (0,):
             raise ValueError("No data for given timestep!")
 
-        return index
+        return int(index)
 
 
     def split_data(self, data, axis):

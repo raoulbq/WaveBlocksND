@@ -175,8 +175,7 @@ def save_wavepacket_coefficients(self, coefficients, basisshapes, timestep=None,
         self.must_resize(pathd+"c_"+str(index), timeslot)
         size = bs.get_basis_size()
         # Do we have to resize due to changed number of coefficients
-        if self._srf[pathd+"c_"+str(index)].shape[1] < size:
-            self._srf[pathd+"c_"+str(index)].resize(size, axis=1)
+        self.must_resize(pathd+"c_"+str(index), size-1, axis=1)
         self._srf[pathbsi][timeslot,index] = size
         self._srf[pathbs][timeslot,index] = hash(bs)
         self._srf[pathd+"c_"+str(index)][timeslot,:size] = np.squeeze(ci)
