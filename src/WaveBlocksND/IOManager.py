@@ -32,9 +32,6 @@ class IOManager(object):
         # The current open data file
         self._srf = None
 
-        # The current global simulation parameters
-        self._parameters = None
-
         # Book keeping data
         # TODO: consider storing these values inside the data files
         self._block_ids = None
@@ -85,11 +82,9 @@ class IOManager(object):
         return self.__dict__[key]
 
 
-    def create_file(self, parameters, filename=GlobalDefaults.file_resultdatafile):
-        """Set up a new :py:class`IOManager` instance. The output file is created and opened.
+    def create_file(self, filename=GlobalDefaults.file_resultdatafile):
+        """Set up a new :py:class:`IOManager` instance. The output file is created and opened.
 
-        :param parameters: A :py:class:`ParameterProvider` instance containing the current simulation
-                           parameters. This is only used for determining the size of new data sets.
         :param filename: The filename (optionally with filepath) of the file we try to create.
                          If not given the default value from `GlobalDefaults` is used.
         """
@@ -106,17 +101,12 @@ class IOManager(object):
         self._group_ids = []
         self._group_count = 0
 
-        # Keep a reference to the parameters
-        self._parameters = parameters
-
         # The version of the current file format
         self._srf.attrs["file_version"] = self._hdf_file_version
 
         # Save the simulation parameters
         self.create_group(groupid="global")
         self.create_block(blockid="global", groupid="global")
-        self.add_parameters(blockid="global")
-        self.save_parameters(parameters, blockid="global")
 
 
     def open_file(self, filename=GlobalDefaults.file_resultdatafile):
@@ -148,9 +138,6 @@ class IOManager(object):
         self._group_ids = [ s[len(self._prefixg):] for s in self._srf.keys() if s.startswith(self._prefixg) ]
         self._group_count = len(self._group_ids)
 
-        # Load the simulation parameters from data block 0.
-        self._parameters = self.load_parameters(blockid="global")
-
 
     def finalize(self):
         """Close the open output file and reset the internal information."""
@@ -161,7 +148,6 @@ class IOManager(object):
         self._srf.close()
         self._srf = None
         # Reset book keeping data
-        self._parameters = None
         self._block_ids= None
         self._block_count = None
         self._group_ids = None

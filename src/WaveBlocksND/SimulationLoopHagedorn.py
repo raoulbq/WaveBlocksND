@@ -4,7 +4,7 @@ This file contains the main simulation loop
 for the homogeneous Hagedorn propagator.
 
 @author: R. Bourquin
-@copyright: Copyright (C) 2010, 2011, 2012 R. Bourquin
+@copyright: Copyright (C) 2010, 2011, 2012, 2013 R. Bourquin
 @license: Modified BSD License
 """
 
@@ -44,7 +44,11 @@ class SimulationLoopHagedorn(SimulationLoop):
 
         # Set up serialization of simulation data
         self.IOManager = IOManager()
-        self.IOManager.create_file(self.parameters)
+        self.IOManager.create_file()
+
+        # Save the simulation parameters
+        self.IOManager.add_parameters()
+        self.IOManager.save_parameters(parameters)
 
 
     def prepare_simulation(self):

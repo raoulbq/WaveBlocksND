@@ -3,7 +3,7 @@
 Compute the eigen transformation of some simulation results.
 
 @author: R. Bourquin
-@copyright: Copyright (C) 2012 R. Bourquin
+@copyright: Copyright (C) 2012, 2013 R. Bourquin
 @license: Modified BSD License
 """
 
@@ -28,7 +28,11 @@ if __name__ == "__main__":
 
     # New file for eigen transformed data
     P = iomc.load_parameters()
-    iome.create_file(P, filename=filename[:-5]+"_eigen.hdf5")
+    iome.create_file(filename[:-5]+"_eigen.hdf5")
+
+    # Save the simulation parameters
+    iome.add_parameters()
+    iome.save_parameters(P)
 
     # Iterate over all groups
     for groupid in iomc.get_group_ids():
