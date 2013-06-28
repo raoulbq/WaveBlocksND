@@ -332,6 +332,7 @@ def load_wavepacket_basisshapes(self, the_hash=None, blockid=0):
             descrs[int(ahash[12:])] = descr
         return descrs
     else:
+        the_hash = int(the_hash)
         name = "basis_shape_"+str(the_hash)
         # Chech if we already stored this basis shape
         if name in self._srf[pathd].keys():
@@ -342,3 +343,70 @@ def load_wavepacket_basisshapes(self, the_hash=None, blockid=0):
             return descr
         else:
             raise IndexError("No basis shape with given hash "+str(hash))
+
+
+#
+# The following two methods are only for convenience and are NOT particularly efficient.
+#
+
+
+def load_wavepacket(self, timestep, blockid=0, key=("q","p","Q","P","S")):
+    r"""Load a wavepacket at a given timestep and return a fully configured instance.
+    This method just calls some other ``IOM`` methods in the correct order.
+    It is included only for convenience and are is not particularly efficient.
+
+    :param timestep: The timestep :math:`n` we load the wavepacket.
+    :param key: Specify which parameters to save. All are independent.
+    :type key: Tuple of valid identifier strings that are ``q``, ``p``, ``Q``, ``P``, ``S`` and ``adQ``.
+               Default is ``("q", "p", "Q", "P", "S")``.
+    :param blockid: The ID of the data block to operate on.
+    :return: A :py:class:`HagedornWavepacket` instance.
+    """
+    from BlockFactory import BlockFactory
+    BF = BlockFactory()
+
+    descr = self.load_wavepacket_description(blockid=blockid)
+    HAWP = BF.create_wavepacket(descr)
+
+    # Parameters and coefficients
+    Pi = self.load_wavepacket_parameters(timestep=timestep, blockid=blockid, key=key)
+    hashes, coeffs = self.load_wavepacket_coefficients(timestep=timestep, get_hashes=True, blockid=blockid)
+
+    # Basis shapes
+    Ks = []
+    for ahash in hashes:
+        K_descr = self.load_wavepacket_basisshapes(the_hash=ahash, blockid=blockid)
+        Ks.append(BF.create_basis_shape(K_descr))
+
+    # Configure the wavepacket
+    HAWP.set_parameters(Pi, key=key)
+    HAWP.set_basis_shapes(Ks)
+    HAWP.set_coefficients(coeffs)
+
+    return HAWP
+
+
+def save_wavepacket(self, packet, timestep, blockid=None, key=("q","p","Q","P","S")):
+    r"""Save a wavepacket at a given timestep and read all data to save from the
+    :py:class:`HagedornWavepacket` instance provided. This method just calls some
+    other ``IOM`` methods in the correct order. It is included only for convenience
+    and are is not particularly efficient. We assume the wavepacket is already set
+    up with the correct :py:meth:`add_wavepacket` method call.
+
+    :param packet: The :py:class:`HagedornWavepacket` instance we want to save.
+    :param timestep: The timestep :math:`n` at which we save the wavepacket.
+    :param key: Specify which parameters to save. All are independent.
+    :type key: Tuple of valid identifier strings that are ``q``, ``p``, ``Q``, ``P``, ``S`` and ``adQ``.
+               Default is ``("q", "p", "Q", "P", "S")``.
+    :param blockid: The ID of the data block to operate on.
+    :return: A :py:class:`HagedornWavepacket` instance.
+    """
+    # Description
+    self.save_wavepacket_description(packet.get_description())
+    # Pi
+    self.save_wavepacket_parameters(packet.get_parameters(key=key), timestep=timestep, key=key)
+    # Basis shapes
+    for shape in packet.get_basis_shapes():
+        self.save_wavepacket_basisshapes(shape)
+    # Coefficients
+    self.save_wavepacket_coefficients(packet.get_coefficients(), packet.get_basis_shapes(), timestep=timestep)
