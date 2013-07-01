@@ -9,7 +9,6 @@ linear combinations of general wavepackets.
 """
 
 import pickle
-import hashlib
 import numpy as np
 
 
@@ -44,7 +43,7 @@ def add_lincombwp(self, parameters, timeslots=None, blockid=0):
         # Coefficients
         daset_ci = grp_lc.create_dataset("coefficients", (0, 0), dtype=np.complexfloating, chunks=True, maxshape=(None,None))
         # Packet IDs
-        daset_refs = grp_lc.create_dataset("packet_refs", (0, 0), dtype=np.integer, chunks=True, maxshape=(None,None))
+        daset_refs = grp_lc.create_dataset("packet_refs", (0, 0), dtype=np.dtype((str,32)), chunks=True, maxshape=(None,None))
     else:
         # User specified how much space is necessary.
         daset_tg_c = grp_lc.create_dataset("timegrid_coefficients", (timeslots,), dtype=np.integer)
@@ -53,7 +52,7 @@ def add_lincombwp(self, parameters, timeslots=None, blockid=0):
         # Coefficients
         daset_ci = grp_lc.create_dataset("coefficients", (timeslots, 0), dtype=np.complexfloating, chunks=True, maxshape=(timeslots,None))
         # Packet IDs
-        daset_refs = grp_lc.create_dataset("packet_refs", (timeslots, 0), dtype=np.integer, chunks=True, maxshape=(timeslots,None))
+        daset_refs = grp_lc.create_dataset("packet_refs", (timeslots, 0), dtype=np.dtype((str,32)), chunks=True, maxshape=(timeslots,None))
 
         # Mark all steps as invalid
         daset_tg_c[...] = -1.0
