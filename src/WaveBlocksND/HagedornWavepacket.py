@@ -3,7 +3,7 @@
 This file contains the class which represents a homogeneous Hagedorn wavepacket.
 
 @author: R. Bourquin
-@copyright: Copyright (C) 2010, 2011, 2012 R. Bourquin
+@copyright: Copyright (C) 2010, 2011, 2012, 2013 R. Bourquin
 @license: Modified BSD License
 """
 
@@ -52,11 +52,11 @@ class HagedornWavepacket(HagedornWavepacketBase):
         self._basis_sizes = [ bs.get_basis_size() for bs in self._basis_shapes ]
 
         # Default parameters of harmonic oscillator eigenstates
-        q = zeros((self._dimension, 1))
-        p = zeros((self._dimension, 1))
-        Q = eye(self._dimension)
-        P = 1.0j * eye(self._dimension)
-        S = 0.0
+        q = zeros((self._dimension, 1), dtype=complexfloating)
+        p = zeros((self._dimension, 1), dtype=complexfloating)
+        Q = eye(self._dimension, dtype=complexfloating)
+        P = 1.0j * eye(self._dimension, dtype=complexfloating)
+        S = 0.0j
 
         # The parameter set Pi
         self._Pis = [q, p, Q, P, S]
