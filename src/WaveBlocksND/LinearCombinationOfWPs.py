@@ -8,8 +8,7 @@ of general but compatible wavepackets of any kind.
 @license: Modified BSD License
 """
 
-from numpy import (zeros, ones, complexfloating, atleast_2d, delete,
-                   hstack, vstack, conjugate, transpose, dot)
+from numpy import zeros, ones, complexfloating, atleast_2d, delete, vstack
 
 from LinearCombinationOfWavepackets import LinearCombinationOfWavepackets
 
@@ -34,6 +33,7 @@ class LinearCombinationOfWPs(LinearCombinationOfWavepackets):
         self._dimension = dimension
         self._number_components = number_components
         self._packets = []
+        self._packet_ids = []
         self._number_packets = number_packets
         self._coefficients = zeros((number_packets,1), dtype=complexfloating)
 
@@ -88,9 +88,13 @@ class LinearCombinationOfWPs(LinearCombinationOfWavepackets):
         if not packet.get_number_components() == self._number_components:
             raise ValueError("Number of components does not match.")
         # Note: we do not test that the varepsilon parameter matches.
+        pid = packet.get_id()
+        if pid in self._packet_ids:
+            raise ValueError("Adding packet failed due to duplicate id.")
 
         self._packets.append(packet)
         self._number_packets = self._number_packets + 1
+        self._packet_ids.append(pid)
         self._coefficients = vstack([self._coefficients, atleast_2d(coefficient)])
 
 
@@ -105,18 +109,24 @@ class LinearCombinationOfWPs(LinearCombinationOfWavepackets):
         if coefficients is not None and len(packetlist) != coefficients.size:
             raise ValueError("Differently many packets and coefficients given.")
 
+        pids = []
         for packet in packetlist:
             if not packet.get_dimension() == self._dimension:
                 raise ValueError("Number of dimensions does not match.")
             if not packet.get_number_components() == self._number_components:
                 raise ValueError("Number of components does not match.")
             # Note: we do not test that the varepsilon parameter matches.
+            pid = packet.get_id()
+            pids.append(pid)
+            if pid in self._packet_ids:
+                raise ValueError("Adding packet failed due to duplicate id.")
 
         if coefficients is None:
             coefficients = ones((len(packetlist),1))
 
         self._packets.extend(packetlist)
         self._number_packets = self._number_packets + len(packetlist)
+        self._packet_ids.extend(pids)
         self._coefficients = vstack([self._coefficients, atleast_2d(coefficients).reshape((-1,1))])
 
 
@@ -127,6 +137,7 @@ class LinearCombinationOfWPs(LinearCombinationOfWavepackets):
         """
         self._packets.pop(index)
         self._number_packets = self._number_packets - 1
+        self._packet_ids.pop(index)
         self._coefficients = delete(self._coefficients, index).reshape((-1,1))
 
 
