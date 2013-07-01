@@ -26,6 +26,27 @@ def add_genericwp(self, description, timeslots=None, blockid=0, key=("q","p","Q"
         raise ValueError("Unknown waavepacket type: "+str(packet_type))
 
 
+def delete_genericwp(self, blockid=0):
+    r"""Remove the stored wavepackets.
+
+    :param blockid: The ID of the data block to operate on.
+    """
+    self.delete_wavepacket(blockid=blockid)
+    self.delete_inhomogwavepacket(blockid=blockid)
+
+
+def has_wavepacket(self, blockid=0):
+    r"""Ask if the specified data block has the desired data tensor.
+
+    :param blockid: The ID of the data block to operate on.
+    """
+    has_packet = (
+        self.has_wavepacket(blockid=blockid) or
+        self.has_inhomogwavepacket(blockid=blockid)
+    )
+    return has_packet
+
+
 #
 # The following two methods are NOT particularly efficient.
 #
