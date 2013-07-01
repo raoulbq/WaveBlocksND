@@ -4,7 +4,7 @@ IOM plugin providing functions for handling
 homogeneous Hagedorn wavepacket data.
 
 @author: R. Bourquin
-@copyright: Copyright (C) 2010, 2011, 2012 R. Bourquin
+@copyright: Copyright (C) 2010, 2011, 2012, 2013 R. Bourquin
 @license: Modified BSD License
 """
 
@@ -356,11 +356,11 @@ def save_inhomogwavepacket(self, packet, timestep, blockid=None, key=("q","p","Q
     :return: A :py:class:`HagedornWavepacketInhomogeneous` instance.
     """
     # Description
-    self.save_inhomogwavepacket_description(packet.get_description())
+    self.save_inhomogwavepacket_description(packet.get_description(), blockid=blockid)
     # Pi
-    self.save_inhomogwavepacket_parameters(packet.get_parameters(key=key), timestep=timestep, key=key)
+    self.save_inhomogwavepacket_parameters(packet.get_parameters(key=key), timestep=timestep, blockid=blockid, key=key)
     # Basis shapes
     for shape in packet.get_basis_shapes():
-        self.save_inhomogwavepacket_basisshapes(shape)
+        self.save_inhomogwavepacket_basisshapes(shape, blockid=blockid)
     # Coefficients
-    self.save_inhomogwavepacket_coefficients(packet.get_coefficients(), packet.get_basis_shapes(), timestep=timestep)
+    self.save_inhomogwavepacket_coefficients(packet.get_coefficients(), packet.get_basis_shapes(), timestep=timestep, blockid=blockid)
