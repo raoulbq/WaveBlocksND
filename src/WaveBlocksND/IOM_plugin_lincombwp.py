@@ -288,8 +288,49 @@ def load_lincombwp_wavepackets(self, timestep, packetindex=None, blockid=0):
 
 
 def load_lincombwp(self, timestep, blockid=0):
-    raise NotImplementedError()
+    r"""Load a linear combination at a given timestep and return a fully configured
+    :py:class:`LinearCombinationOfWPs` instance. This method just calls some other
+    :py:class:`IOManager` methods in the correct order. It is included only for
+    convenience and is not particularly efficient.
+
+    :param timestep: The timestep :math:`n` we load the wavepacket.
+    :param blockid: The ID of the data block to operate on.
+    :return: A :py:class:`LinearCombinationOfWPs` instance.
+    """
+    from LinearCombinationOfWPs import LinearCombinationOfWPs
+
+    descr = self.load_lincombwp_description(blockid=blockid)
+
+    J = self.load_lincombwp_size(timestep=timestep, blockid=blockid)
+    if J == 0:
+        return None
+
+    # Load the data
+    c = self.load_lincombwp_coefficients(timestep=timestep, blockid=blockid)
+    psi = self.load_lincombwp_wavepackets(timestep=timestep, blockid=blockid)
+
+    # Assemble the linear combination
+    LC = LinearCombinationOfWPs(descr["dimension"], descr["ncomponents"])
+    LC.add_wavepackets(psi, c)
+
+    return LC
 
 
 def save_lincombwp(self, lincomb, timestep, blockid=None):
-    raise NotImplementedError()
+    r"""Save a linear combination of general wavepackets at a given timestep and read
+    all data to save from the :py:class:`LinearCombinationOfWPs` instance provided. This
+    method just calls some other :py:class:`IOManager` methods in the correct order.
+    It is included only for convenience and is not particularly efficient. We assume
+    the linear combination is already set up with the correct :py:meth:`add_lincombwp`
+    method call.
+
+    :param lincomb: The :py:class:`LinearCombinationOfWPs` instance we want to save.
+    :param timestep: The timestep :math:`n` at which we save the linear combination.
+    :param blockid: The ID of the data block to operate on.
+    """
+    # Description
+    self.save_lincombwp_description(lincomb.get_description(), blockid=blockid)
+    # Wavepackets
+    self.save_lincombwp_wavepackets(lincomb.get_wavepackets(), timestep=timestep, blockid=blockid)
+    # Coefficients
+    self.save_lincombwp_coefficients(lincomb.get_coefficients(), timestep=timestep, blockid=blockid)

@@ -306,8 +306,8 @@ def load_inhomogwavepacket_basisshapes(self, the_hash=None, blockid=0):
 
 def load_inhomogwavepacket(self, timestep, blockid=0, key=("q","p","Q","P","S")):
     r"""Load a wavepacket at a given timestep and return a fully configured instance.
-    This method just calls some other ``IOM`` methods in the correct order.
-    It is included only for convenience and are is not particularly efficient.
+    This method just calls some other :py:class:`IOManager` methods in the correct order.
+    It is included only for convenience and is not particularly efficient.
 
     :param timestep: The timestep :math:`n` we load the wavepacket.
     :param key: Specify which parameters to save. All are independent.
@@ -343,9 +343,9 @@ def load_inhomogwavepacket(self, timestep, blockid=0, key=("q","p","Q","P","S"))
 def save_inhomogwavepacket(self, packet, timestep, blockid=None, key=("q","p","Q","P","S")):
     r"""Save a wavepacket at a given timestep and read all data to save from the
     :py:class:`HagedornWavepacket` instance provided. This method just calls some
-    other ``IOM`` methods in the correct order. It is included only for convenience
-    and are is not particularly efficient. We assume the wavepacket is already set
-    up with the correct :py:meth:`add_inhomogwavepacket` method call.
+    other :py:class:`IOManager` methods in the correct order. It is included only
+    for convenience and is not particularly efficient. We assume the wavepacket is
+    already set up with the correct :py:meth:`add_inhomogwavepacket` method call.
 
     :param packet: The :py:class:`HagedornWavepacketInhomogeneous` instance we want to save.
     :param timestep: The timestep :math:`n` at which we save the wavepacket.
@@ -353,7 +353,6 @@ def save_inhomogwavepacket(self, packet, timestep, blockid=None, key=("q","p","Q
     :type key: Tuple of valid identifier strings that are ``q``, ``p``, ``Q``, ``P``, ``S`` and ``adQ``.
                Default is ``("q", "p", "Q", "P", "S")``.
     :param blockid: The ID of the data block to operate on.
-    :return: A :py:class:`HagedornWavepacketInhomogeneous` instance.
     """
     # Description
     self.save_inhomogwavepacket_description(packet.get_description(), blockid=blockid)
