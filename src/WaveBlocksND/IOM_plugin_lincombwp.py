@@ -158,10 +158,9 @@ def save_lincombwp_wavepackets(self, packetlist, timestep=None, blockid=0):
         if not bid in known_packets:
             bid = self.create_block(blockid=bid, groupid=gid)
             descr = packet.get_description()
-            self.add_wavepacket(descr, blockid=bid)
+            self.add_genericwp(descr, blockid=bid)
 
-        # TODO: Generalise into generic packet saver
-        self.save_wavepacket(packet, timestep=timestep, blockid=bid)
+        self.save_genericwp(packet, timestep=timestep, blockid=bid)
 
         # Book keeping
         self._srf[pathd][timeslot,k] = packet.get_id()
@@ -269,8 +268,7 @@ def load_lincombwp_wavepackets(self, timestep, packetindex=None, blockid=0):
         packets = []
         for ref in refs:
             bid = "LC"+str(blockid)+"WP"+str(ref)
-            # TODO: Generalise into generic packet saver
-            packets.append(self.load_wavepacket(timestep=timestep, blockid=bid))
+            packets.append(self.load_genericwp(timestep=timestep, blockid=bid))
 
         return tuple(packets)
     else:
@@ -278,8 +276,7 @@ def load_lincombwp_wavepackets(self, timestep, packetindex=None, blockid=0):
             raise ValueError("Packet index is invalid.")
 
         bid = "LC"+str(blockid)+"WP"+str(refs[packetindex])
-        # TODO: Generalise into generic packet saver
-        return self.load_wavepacket(timestep=timestep, blockid=bid)
+        return self.load_genericwp(timestep=timestep, blockid=bid)
 
 
 #
