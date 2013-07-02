@@ -3,7 +3,7 @@
 Compute the action of the gradient operator applied to a Hagedorn wavepacket.
 
 @author: R. Bourquin
-@copyright: Copyright (C) 2012 R. Bourquin
+@copyright: Copyright (C) 2012, 2013 R. Bourquin
 @license: Modified BSD License
 """
 
@@ -57,13 +57,13 @@ class GradientHAWP(Gradient):
             cnew[Ke[k],:] += squeeze(coeffs[K[k]] * p)
 
             # Backward neighbours phi_{i - e_d}
-            nbw = K.get_neighbours(k, selection="backward")
+            nbw = Ke.get_neighbours(k, selection="backward")
 
             for d, nb in nbw:
                 cnew[Ke[nb],:] += sqrt(eps**2/2.0) * sqrt(k[d]) * coeffs[K[k]] * Pbar[:,d]
 
             # Forward neighbours phi_{i + e_d}
-            nfw = K.get_neighbours(k, selection="forward")
+            nfw = Ke.get_neighbours(k, selection="forward")
 
             for d, nb in nfw:
                 cnew[Ke[nb],:] += sqrt(eps**2/2.0) * sqrt(k[d]+1.0) * coeffs[K[k]] * P[:,d]
