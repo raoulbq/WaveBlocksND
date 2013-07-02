@@ -9,7 +9,6 @@ linear combinations of general wavepackets.
 """
 
 import pickle
-import hashlib
 import numpy as np
 
 
@@ -44,7 +43,7 @@ def add_lincombwp(self, parameters, timeslots=None, blockid=0):
         # Coefficients
         daset_ci = grp_lc.create_dataset("coefficients", (0, 0), dtype=np.complexfloating, chunks=True, maxshape=(None,None))
         # Packet IDs
-        daset_refs = grp_lc.create_dataset("packet_refs", (0, 0), dtype=np.integer, chunks=True, maxshape=(None,None))
+        daset_refs = grp_lc.create_dataset("packet_refs", (0, 0), dtype=np.dtype((str,32)), chunks=True, maxshape=(None,None))
     else:
         # User specified how much space is necessary.
         daset_tg_c = grp_lc.create_dataset("timegrid_coefficients", (timeslots,), dtype=np.integer)
@@ -53,7 +52,7 @@ def add_lincombwp(self, parameters, timeslots=None, blockid=0):
         # Coefficients
         daset_ci = grp_lc.create_dataset("coefficients", (timeslots, 0), dtype=np.complexfloating, chunks=True, maxshape=(timeslots,None))
         # Packet IDs
-        daset_refs = grp_lc.create_dataset("packet_refs", (timeslots, 0), dtype=np.integer, chunks=True, maxshape=(timeslots,None))
+        daset_refs = grp_lc.create_dataset("packet_refs", (timeslots, 0), dtype=np.dtype((str,32)), chunks=True, maxshape=(timeslots,None))
 
         # Mark all steps as invalid
         daset_tg_c[...] = -1.0
@@ -277,6 +276,50 @@ def load_lincombwp_wavepackets(self, timestep, packetindex=None, blockid=0):
 
         bid = "LC"+str(blockid)+"WP"+str(refs[packetindex])
         return self.load_genericwp(timestep=timestep, blockid=bid)
+
+
+def load_lincombwp_wavepacket_refs(self, timestep=None, blockid=0):
+    r"""Load the references of the wavepackets being part of
+    this linear combination. References can be used as ``blockid``
+    for loading selected wavepackets manually. If for example a
+    ``ref`` obtained through this method is:
+
+    >>> refs = anIom.load_lincombwp_wavepacket_refs(timestep=4)
+    >>> refs
+    array(['673290fd36a0fa80f28973ae31f10378',
+           '075dc9d7d2c558c97608e2fe08a7d53d',
+           '0aed8bf3e21b5894bf89ef894d3f7d0c'],
+           dtype='|S32')
+
+    >>> ref = refs[0]
+    '673290fd36a0fa80f28973ae31f10378'
+
+    the the corresponding block ID is:
+
+    >>> bid = "LC" + str(blockid) + "WP" + ref
+    'LC0WP673290fd36a0fa80f28973ae31f10378'
+
+    with ``blockid`` the block ID where the linear combination
+    was stored. With that ``bid`` we can now for example load
+    data of a selected wavepacket:
+
+    >>> Pi = anIom.load_wavepacket_parameters(timestep=4, blockid=bid)
+
+    in case of a Hagedorn wavepacket.
+
+    :param timestep: Load only the data of this timestep.
+    :param blockid: The ID of the data block to operate on.
+    :return: An ``ndarray`` of strings.
+    """
+    pathtg = "/"+self._prefixb+str(blockid)+"/lincombwp/timegrid_packets"
+    pathd = "/"+self._prefixb+str(blockid)+"/lincombwp/packet_refs"
+
+    if timestep is not None:
+        index = self.find_timestep_index(pathtg, timestep)
+    else:
+        index = slice(None)
+
+    return self._srf[pathd][index,:]
 
 
 #

@@ -7,6 +7,9 @@ This file contains the basic interface for general wavepackets.
 @license: Modified BSD License
 """
 
+import time
+import hashlib
+
 __all__ = ["Wavepacket"]
 
 
@@ -44,8 +47,14 @@ class Wavepacket(object):
     def gen_id(self):
         r"""Generate an (unique) ID per wavepacket instance.
         """
-        # TODO: Better id generating function! Maybe use UUIDs?
-        self._id = id(self)
+        # Generate the packet ID from the currect time as well as
+        # memory location and take the md5 hash. The hash can be
+        # assumed collision free for this usecase. The 'id' part
+        # assures that different instances get different IDs even
+        # in case the timer resolution is too small. The 'time' part
+        # assures that in case one instance gets deleted and another
+        # created at the same location, their IDs still differ.
+        self._id = hashlib.md5(str(id(self))+str(time.time())).hexdigest()
 
 
     def get_id(self):
