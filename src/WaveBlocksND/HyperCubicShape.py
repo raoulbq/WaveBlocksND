@@ -155,7 +155,6 @@ class HyperCubicShape(BasisShape):
     def _get_index_iterator_chain(self, direction=0):
         r"""
         """
-        # TODO: Fix iterator not to return k = (0,...,0) for limits = [1,...,1]
         def index_iterator_chain(d):
             # Number of functions in each dimension
             bounds = self._limits[:]
@@ -165,7 +164,9 @@ class HyperCubicShape(BasisShape):
 
             # Iterate over all valid stencil points
             while not z[-1] > 0:
-                yield tuple(z[:-1])
+                # Otherwise we would yield k = (0,...,0) for limits = [1,...,1]
+                if not z[d] > bounds[d]-2:
+                    yield tuple(z[:-1])
 
                 # Increase index in the dimension we build the chain
                 z[d] += 1
