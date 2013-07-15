@@ -148,10 +148,6 @@ class GaussianIntegral(Quadrature):
         Piket = self._packet.get_parameters(component=col)
         cbra = squeeze(self._pacbra.get_coefficient_vector(component=row))
         cket = squeeze(self._packet.get_coefficient_vector(component=col))
-
-        assert len(cbra) == 1
-        assert len(cket) == 1
-
         result = conjugate(cbra) * cket * self.exact_result(Pibra[:4], Piket[:4], eps)
         phase = exp(1.0j/eps**2 * (Piket[4]-conjugate(Pibra[4])))
         return phase * result
@@ -168,10 +164,6 @@ class GaussianIntegral(Quadrature):
         eps = self._packet.get_eps()
         Pibra = self._pacbra.get_parameters(component=row)
         Piket = self._packet.get_parameters(component=col)
-
-        assert len(cbra) == 1
-        assert len(cket) == 1
-
         result = conjugate(cbra) * cket * self.exact_result(Pibra[:4], Piket[:4], eps)
         phase = exp(1.0j/eps**2 * (Piket[4]-conjugate(Pibra[4])))
         return phase * result
