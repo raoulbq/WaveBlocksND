@@ -56,6 +56,7 @@ from GradientHAWP import GradientHAWP
 #
 from LinearCombinationOfWavepackets import LinearCombinationOfWavepackets
 from LinearCombinationOfWPs import LinearCombinationOfWPs
+from LinearCombinationOfHAWPs import LinearCombinationOfHAWPs
 
 # Quadrature rules
 from QuadratureRule import QuadratureRule
