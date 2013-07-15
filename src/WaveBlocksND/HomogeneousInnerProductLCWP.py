@@ -19,7 +19,7 @@ __all__ = ["HomogeneousInnerProductLCWP"]
 
 class HomogeneousInnerProductLCWP(InnerProduct):
 
-    def __init__(self, ip=None, oracle=None):
+    def __init__(self, delegate=None, oracle=None):
         r"""
         Note that although this class computes the homogeneous inner product
         :math:`\langle\Upsilon|f|\Upsilon\rangle` of a single linear combination
@@ -27,22 +27,19 @@ class HomogeneousInnerProductLCWP(InnerProduct):
         for computing :math:`\langle\Psi|f|\Psi^\prime\rangle` has still to
         be of *inhomogeneous* type.
 
-        :param ip: The delegate inner product.
-        :type ip: A :py:class:`InnerProduct` subclass instance.
+        :param delegate: The delegate inner product.
+        :type delegate: A :py:class:`InnerProduct` subclass instance.
         :param oracle: The sparsity oracle to use. If the variable is ``None``
                        no oracle is used and all integrals are computed.
         """
         # Pure convenience to allow setting of quadrature instance in constructor
-        if ip is not None:
-            self.set_quadrature(ip)
-        else:
-            self._quad = None
+        self.set_delegate(delegate)
 
         self.set_oracle(oracle)
 
 
     def __str__(self):
-        return "Homogeneous inner product of linear combinations computed by " + str(self._quad)
+        return "Homogeneous inner product of linear combinations computed by " + str(self._delegate)
 
 
     def get_description(self):
@@ -53,7 +50,7 @@ class HomogeneousInnerProductLCWP(InnerProduct):
         """
         d = {}
         d["type"] = "HomogeneousInnerProductLCWP"
-        d["delegate"] = self._quad.get_description()
+        d["delegate"] = self._delegate.get_description()
         return d
 
 
@@ -102,14 +99,14 @@ class HomogeneousInnerProductLCWP(InnerProduct):
             for row, pacbra in enumerate(packets):
                 for col, packet in enumerate(packets[:row]):
                     # TODO: Handle multi-component packets
-                    M[row, col] = self._quad.quadrature(pacbra, packet, operator=operator, component=0)
+                    M[row, col] = self._delegate.quadrature(pacbra, packet, operator=operator, component=0)
 
         M = M + conjugate(transpose(M))
 
         # Diagonal Elements
         for d, packet in enumerate(packets):
             # TODO: Handle multi-component packets
-            M[d, d] = self._quad.quadrature(packet, packet, operator=operator, component=0)
+            M[d, d] = self._delegate.quadrature(packet, packet, operator=operator, component=0)
 
         c = lcket.get_coefficients()
 
@@ -142,13 +139,13 @@ class HomogeneousInnerProductLCWP(InnerProduct):
             for row, pacbra in enumerate(packets):
                 for col, packet in enumerate(packets[:row]):
                     # TODO: Handle multi-component packets
-                    M[row, col] = self._quad.quadrature(pacbra, packet, operator=operator, component=0)
+                    M[row, col] = self._delegate.quadrature(pacbra, packet, operator=operator, component=0)
 
         M = M + conjugate(transpose(M))
 
         # Diagonal Elements
         for d, packet in enumerate(packets):
             # TODO: Handle multi-component packets
-            M[d, d] = self._quad.quadrature(packet, packet, operator=operator, component=0)
+            M[d, d] = self._delegate.quadrature(packet, packet, operator=operator, component=0)
 
         return M

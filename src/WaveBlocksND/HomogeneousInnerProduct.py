@@ -20,23 +20,20 @@ class HomogeneousInnerProduct(InnerProduct):
     r"""
     """
 
-    def __init__(self, quad=None):
+    def __init__(self, delegate=None):
         r"""
         This class computes the homogeneous inner product
         :math:`\langle\Psi|f|\Psi\rangle`.
 
-        :param ip: The delegate inner product.
-        :type ip: A :py:class:`Quadrature` subclass instance.
+        :param delegate: The delegate inner product.
+        :type delegate: A :py:class:`Quadrature` subclass instance.
         """
         # Pure convenience to allow setting of quadrature instance in constructor
-        if quad is not None:
-            self.set_quadrature(quad)
-        else:
-            self._quad = None
+        self.set_delegate(delegate)
 
 
     def __str__(self):
-        return "Homogeneous inner product computed by " + str(self._quad)
+        return "Homogeneous inner product computed by " + str(self._delegate)
 
 
     def get_description(self):
@@ -47,7 +44,7 @@ class HomogeneousInnerProduct(InnerProduct):
         """
         d = {}
         d["type"] = "HomogeneousInnerProduct"
-        d["delegate"] = self._quad.get_description()
+        d["delegate"] = self._delegate.get_description()
         return d
 
 
@@ -71,8 +68,8 @@ class HomogeneousInnerProduct(InnerProduct):
         """
         # TODO: Consider adding 'is_diagonal' flag to make computations cheaper if we know the operator is diagonal
 
-        self._quad.initialize_packet(packet)
-        self._quad.initialize_operator(operator, eval_at_once=eval_at_once)
+        self._delegate.initialize_packet(packet)
+        self._delegate.initialize_operator(operator, eval_at_once=eval_at_once)
 
         # Avoid unnecessary computations of other components
         N  = packet.get_number_components()
@@ -86,14 +83,14 @@ class HomogeneousInnerProduct(InnerProduct):
             rows = xrange(N)
             cols = xrange(N)
 
-        self._quad.prepare(rows, cols)
+        self._delegate.prepare(rows, cols)
 
         # Compute the quadrature
         result = []
 
         for row in rows:
             for col in cols:
-                I = self._quad.perform_quadrature(row, col)
+                I = self._delegate.perform_quadrature(row, col)
                 result.append(I)
 
         if summed is True:
@@ -126,22 +123,22 @@ class HomogeneousInnerProduct(InnerProduct):
         """
         # TODO: Consider adding 'is_diagonal' flag to make computations cheaper if we know the operator is diagonal
 
-        self._quad.initialize_packet(packet)
-        self._quad.initialize_operator(operator, matrix=True, eval_at_once=eval_at_once)
+        self._delegate.initialize_packet(packet)
+        self._delegate.initialize_operator(operator, matrix=True, eval_at_once=eval_at_once)
 
         N = packet.get_number_components()
         K = [ bs.get_basis_size() for bs in packet.get_basis_shapes() ]
         # The partition scheme of the block vectors and block matrix
         partition = [0] + list(cumsum(K))
 
-        self._quad.prepare(range(N), range(N))
+        self._delegate.prepare(range(N), range(N))
 
         # Compute the matrix elements
         result = zeros((sum(K),sum(K)), dtype=complexfloating)
 
         for row in xrange(N):
             for col in xrange(N):
-                M = self._quad.perform_build_matrix(row, col)
+                M = self._delegate.perform_build_matrix(row, col)
                 # Put the result into the global storage
                 result[partition[row]:partition[row+1], partition[col]:partition[col+1]] = M
 

@@ -19,7 +19,7 @@ __all__ = ["InhomogeneousInnerProductLCWP"]
 
 class InhomogeneousInnerProductLCWP(InnerProduct):
 
-    def __init__(self, ip=None, oracle=None):
+    def __init__(self, delegate=None, oracle=None):
         r"""
         This class computes the inhomogeneous inner product
         :math:`\langle\Upsilon|f|\Upsilon^\prime\rangle` of two linear combinations
@@ -27,22 +27,19 @@ class InhomogeneousInnerProductLCWP(InnerProduct):
         product class used for computing :math:`\langle\Psi|f|\Psi^\prime\rangle`
         has to be of *inhomogeneous* type.
 
-        :param ip: The delegate inner product.
-        :type ip: A :py:class:`InnerProduct` subclass instance.
+        :param delegate: The delegate inner product.
+        :type delegate: A :py:class:`InnerProduct` subclass instance.
         :param oracle: The sparsity oracle to use. If the variable is ``None``
                        no oracle is used and all integrals are computed.
         """
         # Pure convenience to allow setting of quadrature instance in constructor
-        if ip is not None:
-            self.set_quadrature(ip)
-        else:
-            self._quad = None
+        self.set_delegate(delegate)
 
         self.set_oracle(oracle)
 
 
     def __str__(self):
-        return "Inhomogeneous inner product of linear combinations computed by " + str(self._quad)
+        return "Inhomogeneous inner product of linear combinations computed by " + str(self._delegate)
 
 
     def get_description(self):
@@ -53,7 +50,7 @@ class InhomogeneousInnerProductLCWP(InnerProduct):
         """
         d = {}
         d["type"] = "InhomogeneousInnerProductLCWP"
-        d["delegate"] = self._quad.get_description()
+        d["delegate"] = self._delegate.get_description()
         return d
 
 
@@ -106,7 +103,7 @@ class InhomogeneousInnerProductLCWP(InnerProduct):
             for row, pacbra in enumerate(lcbra.get_wavepackets()):
                 for col, packet in enumerate(lcket.get_wavepackets()):
                     # TODO: Handle multi-component packets
-                    M[row, col] = self._quad.quadrature(pacbra, packet, operator=operator, component=0)
+                    M[row, col] = self._delegate.quadrature(pacbra, packet, operator=operator, component=0)
 
         cbra = lcbra.get_coefficients()
         cket = lcket.get_coefficients()
@@ -144,6 +141,6 @@ class InhomogeneousInnerProductLCWP(InnerProduct):
             for row, pacbra in enumerate(lcbra.get_wavepackets()):
                 for col, packet in enumerate(lcket.get_wavepackets()):
                     # TODO: Handle multi-component packets
-                    M[row, col] = self._quad.quadrature(pacbra, packet, operator=operator, component=0)
+                    M[row, col] = self._delegate.quadrature(pacbra, packet, operator=operator, component=0)
 
         return M
