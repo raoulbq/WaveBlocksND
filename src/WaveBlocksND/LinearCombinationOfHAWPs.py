@@ -40,7 +40,7 @@ class LinearCombinationOfHAWPs(LinearCombinationOfWavepackets):
         self._basis_shapes = {}
 
         # Coefficients of individual packets
-        self._coefficients = zeros((number_packets,0), dtype=complexfloating)
+        self._wp_coefficients = zeros((number_packets,0), dtype=complexfloating)
         self._basis_sizes = []
 
         # Default parameters of harmonic oscillator eigenstates
@@ -63,14 +63,13 @@ class LinearCombinationOfHAWPs(LinearCombinationOfWavepackets):
     def _resize_coefficient_storage(self, newsize):
         r"""
         """
-        curlen, cursize = self._coefficients.shape
+        curlen, cursize = self._wp_coefficients.shape
         diff = newsize - cursize
-        print(diff)
         if diff > 0:
             z = zeros((curlen,diff), dtype=complexfloating)
-            self._coefficients = hstack([self._coefficients, z])
+            self._wp_coefficients = hstack([self._wp_coefficients, z])
         elif diff < 0:
-            self._coefficients[:,:newsize]
+            self._wp_coefficients[:,:newsize]
 
 
     def add_wavepacket(self, packet, coefficient):
@@ -95,7 +94,7 @@ class LinearCombinationOfHAWPs(LinearCombinationOfWavepackets):
         bs = K.get_basis_size()
         c = packet.get_coefficients(component=0)
         self._resize_coefficient_storage(bs)
-        self._coefficients = vstack([self._coefficients, c.reshape((1,-1))])
+        self._wp_coefficients = vstack([self._wp_coefficients, c.reshape((1,-1))])
         # Store the parameter set
         D = self._dimension
         qs, ps, Qs, Ps, Ss = self._Pis
@@ -116,11 +115,10 @@ class LinearCombinationOfHAWPs(LinearCombinationOfWavepackets):
             self.add_wavepacket(packet, coefficients[j])
 
 
-    def remove_wavepacket(self, index):
-        r"""
-        :raise: :py:class:`NotImplementedError` Abstract interface.
-        """
-        raise NotImplementedError("'LinearCombinationOfWavepackets' is an abstract interface.")
+    # def remove_wavepacket(self, index):
+    #     r"""
+    #     """
+    #     raise NotImplementedError()
 
 
     def get_wavepacket(self, packetindex):
@@ -138,7 +136,7 @@ class LinearCombinationOfHAWPs(LinearCombinationOfWavepackets):
         P = self._Pis[3][packetindex,:,:]
         S = self._Pis[4][packetindex,:,:]
         HAWP.set_parameters([q,p,Q,P,S])
-        cj = self._coefficients[packetindex,:]
+        cj = self._wp_coefficients[packetindex,:]
         HAWP.set_coefficients(cj, component=0)
         return HAWP
 
@@ -206,7 +204,7 @@ class LinearCombinationOfHAWPs(LinearCombinationOfWavepackets):
     #     self._basis_sizes = [ bs.get_basis_size() for bs in self._basis_shapes ]
 
 
-    def set_coefficient(self, packetindex, index, value):
+    def set_wavepacket_coefficient(self, packetindex, index, value):
         r"""Set a single coefficient :math:`c^i_k` of the specified component :math:`\Phi_i`
         of :math:`\Psi`.
 
@@ -226,11 +224,11 @@ class LinearCombinationOfHAWPs(LinearCombinationOfWavepackets):
             raise ValueError("There is no basis function with multi-index "+str(index)+".")
 
         # Apply linear order mapping here
-        key = basis_shape[packetindex]
-        self._coefficients[packetindex][key] = value
+        key = basis_shape[index]
+        self._wp_coefficients[packetindex][key] = value
 
 
-    def get_coefficient(self, packetindex, index):
+    def get_wavepacket_coefficient(self, packetindex, index):
         r"""Retrieve a single coefficient :math:`c^i_k` of the specified component :math:`\Phi_i`
         of :math:`\Psi`.
 
@@ -251,83 +249,52 @@ class LinearCombinationOfHAWPs(LinearCombinationOfWavepackets):
 
         # Apply linear order mapping here
         key = basis_shape[index]
-        return self._coefficients[packetindex][key]
+        return self._wp_coefficients[packetindex][key]
 
 
-    # def set_coefficients(self, values, component=None):
-    #     r"""Update all the coefficients :math:`c` of :math:`\Psi` or update
-    #     the coefficients :math:`c^i` of the components :math:`\Phi_i` only.
+    def set_wavepacket_coefficients(self, packetindex, coefficients):
+        r"""Retrieve a single coefficient :math:`c^i_k` of the specified component :math:`\Phi_i`
+        of :math:`\Psi`.
 
-    #     Note: this method copies the data arrays.
+        Warning: make sure the coefficients and basis shapes stay in sync!
 
-    #     :param values: The new values of the coefficients :math:`c^i` of :math:`\Phi_i`.
-    #     :type values: An ndarray of suitable shape or a list of ndarrays.
-    #     :param component: The index :math:`i` of the component we want to update with new coefficients.
-    #     :type component: int (Default is ``None`` meaning all)
-    #     :raise: :py:class:`ValueError` For invalid component indices :math:`i`.
-    #     """
-    #     if component is None:
-    #         if len(values) != self._number_components:
-    #             raise ValueError("Too less or too many data provided.")
-
-    #         for index, value in enumerate(values):
-    #             bs = self._basis_sizes[index]
-    #             self._coefficients[index] = value.copy().reshape((bs,1))
-    #     else:
-    #         if component > self._number_components-1 or component < 0:
-    #             raise ValueError("There is no component with index "+str(component)+".")
-
-    #         bs = self._basis_sizes[component]
-    #         self._coefficients[component] = values.copy().reshape((bs,1))
-
-
-    def get_coefficients(self, packetindex):
-        r"""Returns the coefficients :math:`c^i` for some component :math:`\Phi_i` of
-        :math:`\Psi` or all the coefficients :math:`c` of all components.
-
-        :param component: The index :math:`i` of the component we want to retrieve.
-        :type component: int (Default is ``None`` meaning all)
-        :return: A single ndarray with the coefficients of the given component or
-                 a list containing the ndarrays for each component. Each ndarray
-                 is two-dimensional with a shape of :math:`(|\mathfrak{K}_i|, 1)`.
-        :raise: :py:class:`ValueError` For invalid component indices :math:`i`.
+        :param component: The index :math:`i` of the component :math:`\Phi_i` we want to update.
+        :type components: int
+        :param index: The multi-index :math:`k` of the coefficient :math:`c^i_k` we want to update.
+        :type index: A tuple of :math:`D` integers.
+        :return: A single complex number.
+        :raise: :py:class:`ValueError` For invalid indices :math:`i` or :math:`k`.
         """
-        if packetindex > self._number_packets-1 or packetindex < 0:
-            raise ValueError("There is no packet with index "+str(packetindex)+".")
+        if packetindex is not None:
+            if packetindex > self._number_packets-1 or packetindex < 0:
+                raise ValueError("There is no packet with index "+str(packetindex)+".")
 
-        bs = self._basis_sizes[packetindex]
-        return self._coefficients[packetindex,:bs]
+            bs = self._basis_sizes[packetindex]
+            self._wp_coefficients[packetindex,:bs] = squeeze(coefficients)
+        else:
+            curshape = self._wp_coefficients.shape
+            self._wp_coefficients = coefficients.reshape(curshape)
 
 
-    def get_coefficient_vector(self, packetindex=None):
-        r"""Retrieve the coefficients for all components :math:`\Phi_i` simultaneously.
+    def get_wavepacket_coefficients(self, packetindex=None):
+        r"""Retrieve a single coefficient :math:`c^i_k` of the specified component :math:`\Phi_i`
+        of :math:`\Psi`.
 
-        :param component: The component :math:`i` whose coefficients we request. (Default is
-                          ``None`` which means to return the coefficients for all components.
-        :type component: int
-        :return: The coefficients :math:`c^i` of all components
-                 :math:`\Phi_i` stacked into a single long column vector.
+        :param component: The index :math:`i` of the component :math:`\Phi_i` we want to update.
+        :type components: int
+        :param index: The multi-index :math:`k` of the coefficient :math:`c^i_k` we want to update.
+        :type index: A tuple of :math:`D` integers.
+        :return: A single complex number.
+        :raise: :py:class:`ValueError` For invalid indices :math:`i` or :math:`k`.
         """
-        if packetindex > self._number_packets-1 or packetindex < 0:
-            raise ValueError("There is no packet with index "+str(packetindex)+".")
+        if packetindex is not None:
+            if packetindex > self._number_packets-1 or packetindex < 0:
+                raise ValueError("There is no packet with index "+str(packetindex)+".")
 
-        if packetindex is None:
-            packetindex = slice(None)
-
-        return self._coefficients[packetindex][:]
-
-
-    def set_coefficient_vector(self, packetindex, vector):
-        """Set the coefficients for all components :math:`\Phi_i` simultaneously.
-
-        :param vector: The coefficients of all components as a single long column vector.
-        :type vector: A two-dimensional ndarray of appropriate shape.
-        """
-        if packetindex > self._number_packets-1 or packetindex < 0:
-            raise ValueError("There is no packet with index "+str(packetindex)+".")
-
-        # TODO: Validate the size
-        self._coefficients[packetindex] = squeeze(vector)
+            bs = self._basis_sizes[packetindex]
+            return self._wp_coefficients[packetindex,:bs].copy()
+        else:
+            return self._wp_coefficients.copy()
 
 
     def get_parameters(self, packetindex=None, key=("q","p","Q","P","S")):
@@ -352,8 +319,6 @@ class LinearCombinationOfHAWPs(LinearCombinationOfWavepackets):
                 Pilist.append(self._Pis[3][packetindex])
             elif k == "S":
                 Pilist.append(self._Pis[4][packetindex])
-            #elif k == "adQ":
-            #    Pilist.append(array(self._get_sqrt(component).get(), dtype=complexfloating))
             else:
                 raise KeyError("Invalid parameter key: "+str(key))
 
@@ -366,3 +331,43 @@ class LinearCombinationOfHAWPs(LinearCombinationOfWavepackets):
         :return: The value of :math:`\varepsilon`.
         """
         return self._eps
+
+
+    def get_coefficient(self, packetindex):
+        r"""Get the coefficient :math:`c_j` of the wavepacket :math:`\Psi_j`.
+
+        :param packetindex: The index :math:`0 \leq j < J` of the coefficient to retrieve.
+        :return: The coefficient :math:`c_j`.
+        """
+        return self._lc_coefficients[packetindex]
+
+
+    def set_coefficient(self, packetindex, coefficient):
+        r"""Set the coefficient :math:`c_j` of the wavepacket :math:`\Psi_j`.
+
+        :param packetindex: The index :math:`0 \leq j < J` of the coefficient to retrieve.
+        :param coefficient: The coefficient :math:`c_j`.
+        """
+        self._lc_coefficients[packetindex] = coefficient
+
+
+    def get_coefficients(self):
+        r"""Get the vector with all coefficients :math:`c_j` of all wavepackets :math:`\Psi_j`.
+
+        :return: The vector :math:`c` of all coefficients :math:`c_j`. The vector is of
+                 shape :math:`(J, 1)`.
+        :type: An :py:class:`ndarray`
+        """
+        return self._lc_coefficients.copy()
+
+
+    def set_coefficients(self, coefficients):
+        r"""Update all the coefficients :math:`c` of :math:`\Upsilon`.
+
+        :param coefficients: The vector :math:`c`.
+        :type coefficients: An :py:class:`ndarray`
+        """
+        if not coefficients.size == self._number_packets:
+            raise ValueError("Wrong number of new coefficients.")
+
+        self._lc_coefficients = coefficients.copy().reshape((-1,1))

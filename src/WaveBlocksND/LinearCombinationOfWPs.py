@@ -181,6 +181,15 @@ class LinearCombinationOfWPs(LinearCombinationOfWavepackets):
         return self._coefficients[index]
 
 
+    def set_coefficient(self, index, coefficient):
+        r"""Set the coefficient :math:`c_j` of the wavepacket :math:`\Psi_j`.
+
+        :param index: The index :math:`0 \leq j < J` of the coefficient to retrieve.
+        :param coefficient: The coefficient :math:`c_j`.
+        """
+        self._coefficients[index] = coefficient
+
+
     def get_coefficients(self):
         r"""Get the vector with all coefficients :math:`c_j` of all wavepackets :math:`\Psi_j`.
 

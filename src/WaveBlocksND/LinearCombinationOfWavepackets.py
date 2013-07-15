@@ -112,6 +112,13 @@ class LinearCombinationOfWavepackets(object):
         raise NotImplementedError("'LinearCombinationOfWavepackets' is an abstract interface.")
 
 
+    def set_coefficient(self, index, coefficient):
+        r"""
+        :raise: :py:class:`NotImplementedError` Abstract interface.
+        """
+        raise NotImplementedError("'LinearCombinationOfWavepackets' is an abstract interface.")
+        
+
     def get_coefficients(self):
         r"""
         :raise: :py:class:`NotImplementedError` Abstract interface.
