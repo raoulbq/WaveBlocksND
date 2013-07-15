@@ -83,6 +83,8 @@ from DirectHomogeneousQuadrature import DirectHomogeneousQuadrature
 from DirectInhomogeneousQuadrature import DirectInhomogeneousQuadrature
 
 from SymbolicIntegral import SymbolicIntegral
+from GaussianIntegral import GaussianIntegral
+
 from NSDInhomogeneous import NSDInhomogeneous
 
 from SparsityOracle import SparsityOracle
