@@ -12,11 +12,12 @@ and expectation values and the matrix elements of an arbitrary operator.
 from numpy import zeros, complexfloating, sum, cumsum
 
 from InnerProduct import InnerProduct
+from InnerProductCompatibility import InnerProductCompatibility
 
 __all__ = ["HomogeneousInnerProduct"]
 
 
-class HomogeneousInnerProduct(InnerProduct):
+class HomogeneousInnerProduct(InnerProduct, InnerProductCompatibility):
     r"""
     """
 
@@ -46,6 +47,14 @@ class HomogeneousInnerProduct(InnerProduct):
         d["type"] = "HomogeneousInnerProduct"
         d["delegate"] = self._delegate.get_description()
         return d
+
+
+    def get_kind(self):
+        return ("homogeneous",)
+
+
+    def require_kind(self):
+        return ("homogeneous",)
 
 
     def quadrature(self, packet, operator=None, summed=False, component=None, diag_component=None, diagonal=False, eval_at_once=False):

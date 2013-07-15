@@ -13,11 +13,12 @@ arbitrary operator.
 from numpy import zeros, complexfloating, conjugate, transpose, dot
 
 from InnerProduct import InnerProduct
+from InnerProductCompatibility import InnerProductCompatibility
 
 __all__ = ["InhomogeneousInnerProductLCWP"]
 
 
-class InhomogeneousInnerProductLCWP(InnerProduct):
+class InhomogeneousInnerProductLCWP(InnerProduct, InnerProductCompatibility):
 
     def __init__(self, delegate=None, oracle=None):
         r"""
@@ -52,6 +53,14 @@ class InhomogeneousInnerProductLCWP(InnerProduct):
         d["type"] = "InhomogeneousInnerProductLCWP"
         d["delegate"] = self._delegate.get_description()
         return d
+
+
+    def get_kind(self):
+        return ("homogeneous", "inhomogeneous",)
+
+
+    def require_kind(self):
+        return ("inhomogeneous",)
 
 
     def get_oracle(self):
