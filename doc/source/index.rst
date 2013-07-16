@@ -85,6 +85,9 @@ Wavepackets
 
    waveblocks_classes/LinearCombinationOfWavepackets
    waveblocks_classes/LinearCombinationOfWPs
+   waveblocks_classes/LinearCombinationOfHAWPs
+
+   waveblocks_classes/GradientLinearCombinationHAWP
 
 
 Inner Products

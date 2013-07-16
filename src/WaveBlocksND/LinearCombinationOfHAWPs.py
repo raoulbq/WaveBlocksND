@@ -8,7 +8,7 @@
 """
 
 from numpy import zeros, ones, eye, integer, complexfloating, atleast_2d, concatenate, hstack, vstack, squeeze
-from numpy import pi, dot, einsum, conjugate
+from numpy import pi, dot, einsum, conjugate, delete
 from scipy import exp, sqrt
 from scipy.linalg import det, inv
 
@@ -66,6 +66,16 @@ class LinearCombinationOfHAWPs(LinearCombinationOfWavepackets):
         assert number_components == 1
 
 
+    def __str__(self):
+        r"""
+        :return: A string describing the linear combination of Hagedorn
+                 wavepackets :math:`\Upsilon = \sum_{j=0}^J c_j \Psi_j`.
+        """
+        s = ("Linear combination of "+str(self._number_packets)+" Hagedorn wavepackets, each with "
+            +str(self._number_components)+" component(s) in "+str(self._dimension)+" space dimension(s)\n")
+        return s
+
+
     def _resize_coefficient_storage(self, newsize):
         r"""
         """
@@ -79,8 +89,11 @@ class LinearCombinationOfHAWPs(LinearCombinationOfWavepackets):
 
 
     def add_wavepacket(self, packet, coefficient=1.0):
-        r"""
-        :raise: :py:class:`NotImplementedError` Abstract interface.
+        r"""Add a new wavepacket to the linear combination.
+
+        :param packet: The new Hagedorn wavepacket :math:`\Psi_j` to add.
+        :type packet: A :py:class:`HagedornWavepacket` instance.
+        :param coefficient: The corresponding coefficient :math:`c_j`, default is 1.0.
         """
         if not packet.get_dimension() == self._dimension:
             raise ValueError("Number of dimensions does not match.")
@@ -115,7 +128,12 @@ class LinearCombinationOfHAWPs(LinearCombinationOfWavepackets):
 
 
     def add_wavepackets(self, packetlist, coefficients=None):
-        r"""
+        r"""Add a list of new wavepackets to the linear combination.
+
+        :param packetlist: A list of new Hagedorn wavepackets :math:`\{\Psi_j\}`.
+        :type packetlist: A list of :py:class:`HagedornWavepacket` instances.
+        :param coefficients: The corresponding coefficient vector :math:`c`, default
+                             is a vector of all 1.0.
         """
         if coefficients is None:
             coefficients = ones(len(packetlist))
@@ -124,14 +142,35 @@ class LinearCombinationOfHAWPs(LinearCombinationOfWavepackets):
             self.add_wavepacket(packet, coefficients[j])
 
 
-    # def remove_wavepacket(self, index):
-    #     r"""
-    #     """
-    #     raise NotImplementedError()
+    def remove_wavepacket(self, packetindex):
+        r"""Remove a wavepacket :math:`\Psi_j` from the linear combination.
+
+        :param index: The index :math:`0 \leq j < J` of the packet to remove.
+        """
+        # Note: There are two potential issues:
+        #       * Unused basis shapes are never removed.
+        #       * The wp_coefficients array does not shrink along axis=1
+        # Remove basis shape book keeping
+        self._basis_shapes_hashes.pop(packetindex)
+        self._basis_sizes.pop(packetindex)
+        # Remove wavepacket coefficients
+        self._wp_coefficients = delete(self._wp_coefficients, packetindex, axis=0)
+        # Remove wavepacket parameters
+        self._Pis[0] = delete(self._Pis[0], packetindex, axis=0)
+        self._Pis[1] = delete(self._Pis[1], packetindex, axis=0)
+        self._Pis[2] = delete(self._Pis[2], packetindex, axis=0)
+        self._Pis[3] = delete(self._Pis[3], packetindex, axis=0)
+        self._Pis[4] = delete(self._Pis[4], packetindex, axis=0)
+        # Remove the linear combination coefficients
+        self._lc_coefficients = delete(self._lc_coefficients, packetindex, axis=0)
 
 
     def get_wavepacket(self, packetindex):
-        r"""
+        r"""Get the wavepacket :math:`\Psi_j` from the linear combination.
+
+        :param index: The index :math:`0 \leq j < J` of the packet to retrieve.
+        :return: The wavepacket :math:`\Psi_j`.
+        :type: A :py:class:`HagedornWavepacket` instance.
         """
         if packetindex > self._number_packets-1 or packetindex < 0:
             raise ValueError("There is no packet with index "+str(packetindex)+".")
@@ -152,11 +191,9 @@ class LinearCombinationOfHAWPs(LinearCombinationOfWavepackets):
 
     def get_wavepackets(self):
         r"""
-
-        Be aware of inconsistencies arising if you update the linear
-        combination while using this generator!
+        .. warning:: This method potentially generates a *large* number of wavepacket instances.
         """
-        return (self.get_wavepacket(j) for j in xrange(self._number_packets))
+        return [ self.get_wavepacket(j) for j in xrange(self._number_packets) ]
 
 
     # def set_wavepackets(self, packetlist):
@@ -332,6 +369,29 @@ class LinearCombinationOfHAWPs(LinearCombinationOfWavepackets):
                 raise KeyError("Invalid parameter key: "+str(key))
 
         return Pilist
+
+
+    def set_wavepacket_parameters(self, Pilist, packetindex, key=("q","p","Q","P","S")):
+        r"""Set the Hagedorn parameters :math:`\Pi` of the wavepacket :math:`\Psi_j`.
+
+        :param Pilist: The Hagedorn parameter set :math:`\Pi = (q, p, Q, P, S)` in this order.
+        """
+        if packetindex > self._number_packets-1 or packetindex < 0:
+            raise ValueError("There is no packet with index "+str(packetindex)+".")
+
+        for k, item in zip(key, Pilist):
+            if k == "q":
+                self._Pis[0][packetindex,:] = squeeze(item)
+            elif k == "p":
+                self._Pis[1][packetindex,:] = squeeze(item)
+            elif k == "Q":
+                self._Pis[2][packetindex,:,:] = squeeze(item)
+            elif k == "P":
+                self._Pis[3][packetindex,:,:] = squeeze(item)
+            elif k == "S":
+                self._Pis[4][packetindex,:] = squeeze(item)
+            else:
+                raise KeyError("Invalid parameter key: "+str(key))
 
 
     def get_eps(self):
@@ -537,6 +597,9 @@ class LinearCombinationOfHAWPs(LinearCombinationOfWavepackets):
         :type prefactor: Boolean, default is ``False``.
         :return: A list of arrays or a single array containing the values of the :math:`\Phi_i` at the nodes :math:`\gamma`.
         """
+        if packetindex > self._number_packets-1 or packetindex < 0:
+            raise ValueError("There is no packet with index "+str(packetindex)+".")
+
         eps = self._eps
 
         if packetindex is not None:

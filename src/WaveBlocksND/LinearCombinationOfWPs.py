@@ -99,7 +99,7 @@ class LinearCombinationOfWPs(LinearCombinationOfWavepackets):
 
 
     def add_wavepackets(self, packetlist, coefficients=None):
-        r"""Add a list of new wavepacket to the linear combination.
+        r"""Add a list of new wavepackets to the linear combination.
 
         :param packetlist: A list of new wavepackets :math:`\{\Psi_j\}`.
         :type packetlist: A list of :py:class:`Wavepacket` subclass instances.
