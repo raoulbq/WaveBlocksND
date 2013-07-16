@@ -78,7 +78,7 @@ class LinearCombinationOfHAWPs(LinearCombinationOfWavepackets):
             self._wp_coefficients[:,:newsize]
 
 
-    def add_wavepacket(self, packet, coefficient):
+    def add_wavepacket(self, packet, coefficient=1.0):
         r"""
         :raise: :py:class:`NotImplementedError` Abstract interface.
         """
@@ -114,9 +114,12 @@ class LinearCombinationOfHAWPs(LinearCombinationOfWavepackets):
         self._lc_coefficients = vstack([self._lc_coefficients, atleast_2d(coefficient)])
 
 
-    def add_wavepackets(self, packetlist, coefficients):
+    def add_wavepackets(self, packetlist, coefficients=None):
         r"""
         """
+        if coefficients is None:
+            coefficients = ones(len(packetlist))
+
         for j, packet in enumerate(packetlist):
             self.add_wavepacket(packet, coefficients[j])
 
@@ -140,7 +143,7 @@ class LinearCombinationOfHAWPs(LinearCombinationOfWavepackets):
         p = self._Pis[1][packetindex,:]
         Q = self._Pis[2][packetindex,:,:]
         P = self._Pis[3][packetindex,:,:]
-        S = self._Pis[4][packetindex,:,:]
+        S = self._Pis[4][packetindex,:]
         HAWP.set_parameters([q,p,Q,P,S])
         cj = self._wp_coefficients[packetindex,:]
         HAWP.set_coefficients(cj, component=0)
@@ -153,7 +156,7 @@ class LinearCombinationOfHAWPs(LinearCombinationOfWavepackets):
         Be aware of inconsistencies arising if you update the linear
         combination while using this generator!
         """
-        return (self.get_wavepacket(j) for j in xrange(self._number_wavepackets))
+        return (self.get_wavepacket(j) for j in xrange(self._number_packets))
 
 
     # def set_wavepackets(self, packetlist):
@@ -303,7 +306,7 @@ class LinearCombinationOfHAWPs(LinearCombinationOfWavepackets):
             return self._wp_coefficients.copy()
 
 
-    def get_parameters(self, packetindex=None, key=("q","p","Q","P","S")):
+    def get_wavepacket_parameters(self, packetindex=None, key=("q","p","Q","P","S")):
         r"""Get the Hagedorn parameter set :math:`\Pi` of the wavepacket :math:`\Psi_j`.
 
         :param packetindex: The index :math:`0 \leq j < J` of the packet whose parameter
