@@ -58,6 +58,8 @@ from LinearCombinationOfWavepackets import LinearCombinationOfWavepackets
 from LinearCombinationOfWPs import LinearCombinationOfWPs
 from LinearCombinationOfHAWPs import LinearCombinationOfHAWPs
 
+from GradientLinearCombinationHAWP import GradientLinearCombinationHAWP
+
 # Quadrature rules
 from QuadratureRule import QuadratureRule
 from TrapezoidalQR import TrapezoidalQR
