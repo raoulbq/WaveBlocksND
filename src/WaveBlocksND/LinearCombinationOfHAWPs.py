@@ -539,7 +539,7 @@ class LinearCombinationOfHAWPs(LinearCombinationOfWavepackets):
         if packetindex is not None:
             S = self._Pis[4][packetindex,:]
             phase = exp(1.0j * S / eps**2)
-            values = phase * self.slim_recursion(grid, packetindex, prefactor=prefactor)
+            values = squeeze(self._lc_coefficients[packetindex]) * phase * self.slim_recursion(grid, packetindex, prefactor=prefactor)
         else:
             grid = self._grid_wrap(grid)
             values = zeros((grid.get_number_nodes(overall=True),))
@@ -547,6 +547,5 @@ class LinearCombinationOfHAWPs(LinearCombinationOfWavepackets):
             for j in xrange(self._number_packets):
                 S = self._Pis[4][j,:]
                 phase = exp(1.0j * S / eps**2)
-                values = values + phase * self.slim_recursion(grid, j, prefactor=prefactor)
-
+                values = values + squeeze(self._lc_coefficients[j]) * phase * self.slim_recursion(grid, j, prefactor=prefactor)
         return values
