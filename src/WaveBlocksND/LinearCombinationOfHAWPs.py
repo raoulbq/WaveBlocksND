@@ -8,10 +8,16 @@
 """
 
 from numpy import zeros, ones, eye, integer, complexfloating, atleast_2d, concatenate, hstack, vstack, squeeze
+from numpy import pi, dot, einsum, conjugate
+from scipy import exp, sqrt
+from scipy.linalg import det, inv
 
 
 from LinearCombinationOfWavepackets import LinearCombinationOfWavepackets
 from HagedornWavepacket import HagedornWavepacket
+from Grid import Grid
+from GridWrapper import GridWrapper
+
 
 __all__ = ["LinearCombinationOfHAWPs"]
 
@@ -99,11 +105,11 @@ class LinearCombinationOfHAWPs(LinearCombinationOfWavepackets):
         D = self._dimension
         qs, ps, Qs, Ps, Ss = self._Pis
         q, p, Q, P, S = packet.get_parameters(component=0)
-        concatenate([qs, q.reshape((1,D))], axis=0)
-        concatenate([ps, p.reshape((1,D))], axis=0)
-        concatenate([Qs, Q.reshape((1,D,D))], axis=0)
-        concatenate([Ps, P.reshape((1,D,D))], axis=0)
-        concatenate([Ss, S.reshape((1,1))], axis=0)
+        self._Pis[0] = concatenate([qs, q.reshape((1,D))], axis=0)
+        self._Pis[1] = concatenate([ps, p.reshape((1,D))], axis=0)
+        self._Pis[2] = concatenate([Qs, Q.reshape((1,D,D))], axis=0)
+        self._Pis[3] = concatenate([Ps, P.reshape((1,D,D))], axis=0)
+        self._Pis[4] = concatenate([Ss, S], axis=0)
         # Store the linear combination coefficient
         self._lc_coefficients = vstack([self._lc_coefficients, atleast_2d(coefficient)])
 
@@ -371,3 +377,176 @@ class LinearCombinationOfHAWPs(LinearCombinationOfWavepackets):
             raise ValueError("Wrong number of new coefficients.")
 
         self._lc_coefficients = coefficients.copy().reshape((-1,1))
+
+
+    def _grid_wrap(self, grid):
+        # TODO: Consider additional input types for "nodes":
+        #       list of numpy ndarrays, list of single python scalars
+        if not isinstance(grid, Grid):
+            grid = atleast_2d(grid)
+            grid = grid.reshape(self._dimension, -1)
+            grid = GridWrapper(grid)
+        return grid
+
+
+    def _evaluate_phi0(self, nodes, packetindex, prefactor=False):
+        r"""Evaluate the lowest order basis function :math:`\phi_0` on a
+        grid :math:`\Gamma` of nodes.
+
+        :param Pi: The parameter set :math:`\Pi`.
+        :param nodes: The nodes we evaluate :math:`\phi_0` at.
+        :type nodes: An ndarray of shape ``(D, |\Gamma|)``.
+        :param prefactor: Whether to include a factor of :math:`\frac{1}{\sqrt{\det(Q)}}`.
+        :type prefactor: Boolean, default is ``False``.
+        :param root: The function used to compute the square root in the prefactor.
+                     Defaults to the ``sqrt`` function of ``numpy`` but can be any
+                     callable object and especially an instance of :py:class:`ContinuousSqrt`.
+        :return: An ndarray of shape ``(|\Gamma|)``.
+        """
+        D = self._dimension
+        eps = self._eps
+
+        # The current parameters
+        q = self._Pis[0][packetindex,:].reshape((D,1))
+        p = self._Pis[1][packetindex,:].reshape((D,1))
+        Q = self._Pis[2][packetindex,:,:].reshape((D,D))
+        P = self._Pis[3][packetindex,:,:].reshape((D,D))
+
+        # TODO: Maybe use LU instead of inv(...)
+        df = nodes - q
+        pr1 = einsum("ik,ij,jk->k", df, dot(P,inv(Q)), df)
+        pr2 = einsum("ij,ik", p, df)
+        exponent = 1.0j / eps**2 * (0.5 * pr1 + pr2)
+
+        # The problematic prefactor cancels in inner products
+        if prefactor is True:
+            prefactor = (pi*eps**2)**(-D*0.25) / sqrt(det(Q))
+        else:
+            prefactor = (pi*eps**2)**(-D*0.25)
+
+        return prefactor * exp(exponent)
+
+
+    def slim_recursion(self, grid, packetindex, prefactor=False):
+        r"""Evaluate the Hagedorn wavepacket :math:`\Psi` at the given nodes :math:`\gamma`.
+        This routine is a slim version compared to the full basis evaluation. At every moment
+        we store only the data we really need to compute the next step until we hit the highest
+        order basis functions.
+
+        :param grid: The grid :math:`\Gamma` containing the nodes :math:`\gamma`.
+        :type grid: A class having a :py:meth:`get_nodes(...)` method.
+        :param component: The index :math:`i` of a single component :math:`\Phi_i` to evaluate.
+        :param prefactor: Whether to include a factor of :math:`\frac{1}{\sqrt{\det(Q)}}`.
+        :type prefactor: Boolean, default is ``False``.
+        :return: A list of arrays or a single array containing the values of the :math:`\Phi_i`
+                 at the nodes :math:`\gamma`.
+
+        Note that this function does not include the global phase :math:`\exp(\frac{i S}{\varepsilon^2})`.
+        """
+        D = self._dimension
+
+        # The current parameters
+        q = self._Pis[0][packetindex,:].reshape((D,1))
+        #p = self._Pis[1][packetindex,:].reshape((D,1))
+        Q = self._Pis[2][packetindex,:,:].reshape((D,D))
+        #P = self._Pis[3][packetindex,:,:].reshape((D,D))
+
+        # Precompute some constants
+        Qinv = inv(Q)
+        Qbar = conjugate(Q)
+        QQ = dot(Qinv, Qbar)
+
+        # The basis shape
+        bas = self._basis_shapes[self._basis_shapes_hashes[packetindex]]
+        Z = tuple(D*[0])
+
+        # Book keeping
+        todo = []
+        newtodo = [Z]
+        olddelete = []
+        delete = []
+        tmp = {}
+
+        # The grid nodes
+        grid = self._grid_wrap(grid)
+        nn = grid.get_number_nodes(overall=True)
+        nodes = grid.get_nodes()
+
+        # Evaluate phi0
+        tmp[Z] = self._evaluate_phi0(nodes, packetindex, prefactor=False)
+
+        psi = self._wp_coefficients[packetindex,bas[Z]] * tmp[Z]
+
+        # Iterate for higher order states
+        while len(newtodo) != 0:
+            # Delete results that never will be used again
+            for d in olddelete:
+                del tmp[d]
+
+            # Exchange queus
+            todo = newtodo
+            newtodo = []
+            olddelete = delete
+            delete = []
+
+            # Compute new results
+            for k in todo:
+                # Center stencil at node k
+                ki = vstack(k)
+
+                # Access predecessors
+                phim = zeros((D, nn), dtype=complexfloating)
+                for j, kpj in bas.get_neighbours(k, selection="backward"):
+                    phim[j,:] = tmp[kpj]
+
+                # Compute the neighbours
+                for d, n in bas.get_neighbours(k, selection="forward"):
+                    if not n in tmp.keys():
+                        # Compute 3-term recursion
+                        p1 = (nodes - q) * tmp[k]
+                        p2 = sqrt(ki) * phim
+
+                        t1 = sqrt(2.0/self._eps**2) * dot(Qinv[d,:], p1)
+                        t2 = dot(QQ[d,:], p2)
+
+                        # Store computed value
+                        tmp[n] = (t1 - t2) / sqrt(ki[d] + 1.0)
+                        # And update the result
+                        psi = psi + self._wp_coefficients[packetindex,bas[n]] * tmp[n]
+
+                        newtodo.append(n)
+                delete.append(k)
+
+        if prefactor is True:
+            psi = psi / sqrt(det(Q))
+
+        return psi
+
+
+    def evaluate_at(self, grid, packetindex=None, prefactor=False):
+        r"""Evaluate the Hagedorn wavepacket :math:`\Psi` at the given nodes :math:`\gamma`.
+
+        :param grid: The grid :math:`\Gamma` containing the nodes :math:`\gamma`.
+        :type grid: A class having a :py:meth:`get_nodes(...)` method.
+        :param component: The index :math:`i` of a single component :math:`\Phi_i` to evaluate.
+                          (Defaults to ``None`` for evaluating all components.)
+        :param prefactor: Whether to include a factor of :math:`\frac{1}{\sqrt{\det(Q)}}`.
+        :type prefactor: Boolean, default is ``False``.
+        :return: A list of arrays or a single array containing the values of the :math:`\Phi_i` at the nodes :math:`\gamma`.
+        """
+        eps = self._eps
+
+        if packetindex is not None:
+            S = self._Pis[4][packetindex,:]
+            phase = exp(1.0j * S / eps**2)
+            values = phase * self.slim_recursion(grid, packetindex, prefactor=prefactor)
+        else:
+            grid = self._grid_wrap(grid)
+            values = zeros((grid.get_number_nodes(overall=True),))
+            # Evaluate each packet individually
+            for j in xrange(self._number_packets):
+                S = self._Pis[4][j,:]
+                phase = exp(1.0j * S / eps**2)
+                values = values + phase * self.slim_recursion(grid, j, prefactor=prefactor)
+
+        return values
