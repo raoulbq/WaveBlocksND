@@ -1,6 +1,8 @@
 """The WaveBlocks Project
 
-
+This file contains code to represent linear combinations of compatible
+Hagedorn wavepackets in a more efficient and storage friendly way
+than the general linear combination class.
 
 @author: R. Bourquin
 @copyright: Copyright (C) 2013 R. Bourquin
@@ -12,12 +14,10 @@ from numpy import pi, dot, einsum, conjugate, delete
 from scipy import exp, sqrt
 from scipy.linalg import det, inv
 
-
 from LinearCombinationOfWavepackets import LinearCombinationOfWavepackets
 from HagedornWavepacket import HagedornWavepacket
 from Grid import Grid
 from GridWrapper import GridWrapper
-
 
 __all__ = ["LinearCombinationOfHAWPs"]
 
@@ -74,6 +74,19 @@ class LinearCombinationOfHAWPs(LinearCombinationOfWavepackets):
         s = ("Linear combination of "+str(self._number_packets)+" Hagedorn wavepackets, each with "
             +str(self._number_components)+" component(s) in "+str(self._dimension)+" space dimension(s)\n")
         return s
+
+
+    def get_description(self):
+        r"""Return a description of this linear combination object.
+        A description is a ``dict`` containing all key-value pairs
+        necessary to reconstruct the current instance. A description
+        never contains any data.
+        """
+        d = {}
+        d["type"] = "LinearCombinationOfHAWPs"
+        d["dimension"] = self._dimension
+        d["ncomponents"] = self._number_components
+        return d
 
 
     def _resize_coefficient_storage(self, newsize):
@@ -145,7 +158,7 @@ class LinearCombinationOfHAWPs(LinearCombinationOfWavepackets):
     def remove_wavepacket(self, packetindex):
         r"""Remove a wavepacket :math:`\Psi_j` from the linear combination.
 
-        :param index: The index :math:`0 \leq j < J` of the packet to remove.
+        :param packetindex: The index :math:`0 \leq j < J` of the packet to remove.
         """
         # Note: There are two potential issues:
         #       * Unused basis shapes are never removed.
@@ -190,8 +203,11 @@ class LinearCombinationOfHAWPs(LinearCombinationOfWavepackets):
 
 
     def get_wavepackets(self):
-        r"""
+        r"""Get all the wavepackets :math:`\Psi_j` from the linear combination :math:`\Upsilon`.
+
         .. warning:: This method potentially generates a *large* number of wavepacket instances.
+
+        :return: A list of :py:class:`HagedornWavepacket` instances.
         """
         return [ self.get_wavepacket(j) for j in xrange(self._number_packets) ]
 
@@ -204,7 +220,7 @@ class LinearCombinationOfHAWPs(LinearCombinationOfWavepackets):
 
 
     def get_basis_shapes(self, packetindex=None):
-        r"""Retrieve the basis shapes :math:`\mathfrak{K}_i` for each component :math:`i`.
+        r"""Retrieve the basis shapes :math:`\mathfrak{K}_j` for each packet :math:`\Psi_j`.
 
         :param component: The component :math:`i` whose basis shape we request. (Default is
                           ``None`` which means to return the basis shapes for all components.
@@ -441,6 +457,8 @@ class LinearCombinationOfHAWPs(LinearCombinationOfWavepackets):
 
         self._lc_coefficients = coefficients.copy().reshape((-1,1))
 
+
+    # TODO: Put all evaluation functions into common class
 
     def _grid_wrap(self, grid):
         # TODO: Consider additional input types for "nodes":
