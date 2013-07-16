@@ -8,11 +8,9 @@ between two Gaussian wavepackets.
 @license: Modified BSD License
 """
 
-from numpy import squeeze, conjugate, sqrt, ones, zeros, complexfloating, arange
+from numpy import squeeze, conjugate, ones, zeros, sqrt, dot, transpose, pi
+from numpy.linalg import det, inv
 from scipy import exp
-from scipy.misc import factorial
-from scipy.special import binom
-#from scipy.special.orthogonal import eval_hermite
 
 from Quadrature import Quadrature
 
@@ -49,14 +47,10 @@ class GaussianIntegral(Quadrature):
 
         :param pacbra: The packet that is used for the 'bra' part.
         :param packet: The packet that is used for the 'ket' part.
-        :raises: :py:class:`ValueError` if the dimension of :math:`\Psi` is not 1.
         """
         # Allow to ommit the ket if it is the same as the bra
         if packet is None:
             packet = pacbra
-
-        if not pacbra.get_dimension() == 1:
-            raise ValueError("The 'GaussianIntegral' applies in the 1D case only.")
 
         self._pacbra = pacbra
         self._packet = packet
@@ -100,55 +94,76 @@ class GaussianIntegral(Quadrature):
         pass
 
 
-    def exact_result(self, Pibra, Piket, eps):
+    def exact_result(self, Pibra, Piket, eps, D):
         r"""Compute the overlap integral :math:`\langle \phi_0 | \phi_0 \rangle` of
-        the groundstate :math:`\phi_0` by using the symbolic formula:
+        the groundstate :math:`\phi_0` by using the Gaussian integral formula:
 
         .. math::
-            \langle \phi_0 | \phi_0 \rangle =
-            \sqrt{\frac{-2 i}{Q_2 \overline{P_1} - P_2 \overline{Q_1}}} \cdot
-              \exp \Biggl(
-                \frac{i}{2 \varepsilon^2}
-                \frac{Q_2 \overline{Q_1} \left(p_2-p_1\right)^2 + P_2 \overline{P_1} \left(q_2-q_1\right)^2}
-                      {\left(Q_2 \overline{P_1} - P_2 \overline{Q_1}\right)}
-              \\
-              -\frac{i}{\varepsilon^2}
-              \frac{\left(q_2-q_1\right) \left( Q_2 \overline{P_1} p_2 - P_2 \overline{Q_1} p_1\right)}
-                   {\left(Q_2 \overline{P_1} - P_2 \overline{Q_1}\right)}
-              \Biggr)
+            \int \exp\left(-\frac{1}{2} \underline{x}^{\textnormal{T}} \mathbf{U} \underline{x}
+                           + \underline{v}^{\textnormal{T}} \underline{x}\right) \mathrm{d}x =
+            \sqrt{\det\left(2 \pi \mathbf{U}^{-1}\right)}
+            \exp\left(\frac{1}{2} \underline{v}^{\textnormal{T}} \mathbf{U}^{\textnormal{-T}} \underline{v}\right)
 
         Note that this is an internal method and usually there is no
         reason to call it from outside.
 
-        :param Pibra: The parameter set :math:`\Pi = \{q_1,p_1,Q_1,P_1\}` of the bra :math:`\langle \phi_0 |`.
-        :param Piket: The parameter set :math:`\Pi^\prime = \{q_2,p_2,Q_2,P_2\}` of the ket :math:`| \phi_0 \rangle`.
+        :param Pibra: The parameter set :math:`\Pi_k = (\underline{q_k}, \underline{p_k}, \mathbf{Q_k}, \mathbf{P_k})`
+                      of the bra :math:`\langle \phi_0 |`.
+        :param Piket: The parameter set :math:`\Pi_l = (\underline{q_l}, \underline{p_l}, \mathbf{Q_l}, \mathbf{P_l})`
+                      of the ket :math:`| \phi_0 \rangle`.
         :param eps: The semi-classical scaling parameter :math:`\varepsilon`.
+        :param D: The dimensionality of space.
         :return: The value of the integral :math:`\langle \phi_0 | \phi_0 \rangle`.
         """
-        q1, p1, Q1, P1 = Pibra
-        q2, p2, Q2, P2 = Piket
-        hbar = eps**2
-        X = Q2*conjugate(P1) - P2*conjugate(Q1)
-        I = sqrt(-2.0j/X) * exp( 1.0j/(2*hbar) * (Q2*conjugate(Q1)*(p2 - p1)**2 + P2*conjugate(P1)*(q2 - q1)**2) / X
-                                -1.0j/hbar *     ((q2 - q1)*(Q2*conjugate(P1)*p2 - P2*conjugate(Q1)*p1)) / X
-                               )
-        return I
+        qr, pr, Qr, Pr = Pibra[:4]
+        qc, pc, Qc, Pc = Piket[:4]
+        Gr = dot(Pr, inv(Qr))
+        Gc = dot(Pc, inv(Qc))
+        # exp(conjugate(...) + ...) = exp( (i/eps^2) * (x^T A x  +  b^T x  +  c) )
+        A = 0.5 * (Gc - conjugate(transpose(Gr)))
+        b = (0.5 * (  dot(Gr, qr)
+                    - dot(conjugate(transpose(Gc)), qc)
+                    + dot(transpose(Gr), conjugate(qr))
+                    - dot(conjugate(Gc), conjugate(qc))
+                   )
+             + (pc - conjugate(pr))
+            )
+        b = conjugate(b)
+        c = (0.5 * (  dot(conjugate(transpose(qc)), dot(Gc, qc))
+                    - dot(conjugate(transpose(qr)), dot(conjugate(transpose(Gr)), qr)))
+                 + (dot(conjugate(transpose(qr)),pr) - dot(conjugate(transpose(pc)),qc))
+            )
+        # Include the common factor i/eps**2
+        A = 1.0j/eps**2 * A
+        b = 1.0j/eps**2 * b
+        c = 1.0j/eps**2 * c
+        # Rewrite
+        U = -2.0 * A
+        v = b
+        # Global prefactor
+        pf = (pi*eps**2)**(-D*0.25)
+        return pf**2 * sqrt(det(2.0*pi*inv(U))) * exp(0.5*dot(transpose(v), dot(transpose(inv(U)), v))) * exp(c)
 
 
     def perform_quadrature(self, row, col):
         r"""Evaluates the integral :math:`\langle \Phi_i | \Phi^\prime_j \rangle`
         by an exact Gaussian integral formula.
 
+        .. warning::
+            Note that this method does not check if the wavepackets are pure Gaussians
+            and in case they are not, the values returned will be wrong.
+
         :param row: The index :math:`i` of the component :math:`\Phi_i` of :math:`\Psi`.
         :param row: The index :math:`j` of the component :math:`\Phi^\prime_j` of :math:`\Psi^\prime`.
         :return: A single complex floating point number.
         """
         eps = self._packet.get_eps()
+        D = self._packet.get_dimension()
         Pibra = self._pacbra.get_parameters(component=row)
         Piket = self._packet.get_parameters(component=col)
         cbra = squeeze(self._pacbra.get_coefficient_vector(component=row))
         cket = squeeze(self._packet.get_coefficient_vector(component=col))
-        result = conjugate(cbra) * cket * self.exact_result(Pibra[:4], Piket[:4], eps)
+        result = conjugate(cbra) * cket * self.exact_result(Pibra[:4], Piket[:4], eps, D)
         phase = exp(1.0j/eps**2 * (Piket[4]-conjugate(Pibra[4])))
         return phase * result
 
@@ -157,13 +172,20 @@ class GaussianIntegral(Quadrature):
         r"""Computes the matrix elements :math:`\langle\Phi_i |\Phi^\prime_j\rangle`
         by an exact Gaussian integral formula.
 
+        .. warning::
+            Note that this method does not check if the wavepackets are pure Gaussians
+            and in case they are not, the values returned will be wrong.
+
         :param row: The index :math:`i` of the component :math:`\Phi_i` of :math:`\Psi`.
         :param row: The index :math:`j` of the component :math:`\Phi^\prime_j` of :math:`\Psi^\prime`.
-        :return: A complex valued matrix of shape :math:`|\mathfrak{K}_i| \times |\mathfrak{K}^\prime_j|`.
+        :return: A complex valued matrix of shape :math:`1 \times 1`.
         """
         eps = self._packet.get_eps()
+        D = self._packet.get_dimension()
         Pibra = self._pacbra.get_parameters(component=row)
         Piket = self._packet.get_parameters(component=col)
-        result = conjugate(cbra) * cket * self.exact_result(Pibra[:4], Piket[:4], eps)
+        cbra = squeeze(self._pacbra.get_coefficient_vector(component=row))
+        cket = squeeze(self._packet.get_coefficient_vector(component=col))
+        result = conjugate(cbra) * cket * self.exact_result(Pibra[:4], Piket[:4], eps, D)
         phase = exp(1.0j/eps**2 * (Piket[4]-conjugate(Pibra[4])))
         return phase * result
