@@ -233,6 +233,34 @@ class LinearCombinationOfHAWPs(LinearCombinationOfWavepackets):
             return tuple([self._basis_shapes[self._basis_shapes_hashes[j]] for j in xrange(self._number_packets)])
 
 
+    def get_basis_shapes_hashes(self, packetindex=None):
+        r"""Retrieve the hashes of all basis shapes :math:`\mathfrak{K}_j` for each packet :math:`\Psi_j`.
+
+        :param component: The component :math:`i` whose basis shape we request. (Default is
+                          ``None`` which means to return the basis shapes for all components.
+        :type component: int
+        :return: The basis shape for an individual component or a list with all shapes.
+        """
+        if packetindex is not None:
+            return tuple(self._basis_shapes_hashes[packetindex])
+        else:
+            return tuple(self._basis_shapes_hashes)
+
+
+    def get_basis_sizes(self, packetindex=None):
+        r"""Retrieve the basis sizes :math:`|\mathfrak{K}_j|` for each packet :math:`\Psi_j`.
+
+        :param component: The component :math:`i` whose basis shape we request. (Default is
+                          ``None`` which means to return the basis shapes for all components.
+        :type component: int
+        :return: The basis shape for an individual component or a list with all shapes.
+        """
+        if packetindex is not None:
+            return tuple(self._basis_sizes[packetindex])
+        else:
+            return tuple(self._basis_sizes)
+
+
     # def set_basis_shapes(self, basis_shape, component=None):
     #     r"""Set the basis shape :math:`\mathfrak{K}` of a given component or for all components.
 
