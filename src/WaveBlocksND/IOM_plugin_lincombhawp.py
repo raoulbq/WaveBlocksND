@@ -44,47 +44,39 @@ def add_lincombhawp(self, parameters, timeslots=None, blockid=0, key=("q","p","Q
     # The group for storing the coefficients
     grp_wpci = grp_lc.create_group("wp_coefficients")
 
-    # TODO: Consider merging both cases
+    if timeslots is None:
+        # This case is event based storing.
+        T = 0
+        Ts = None
+    else:
+        # User specified how much space is necessary.
+        T = timeslots
+        Ts = timeslots
 
     # Create the dataset with appropriate parameters
-    if timeslots is None:
-        # This case is event based storing
-        daset_tg_lc = grp_lc.create_dataset("timegrid_lc_coefficients", (0,), dtype=np.integer, chunks=True, maxshape=(None,))
-        daset_tg_wp = grp_lc.create_dataset("timegrid_wp_parameters", (0,), dtype=np.integer, chunks=True, maxshape=(None,))
-        daset_tg_wc = grp_lc.create_dataset("timegrid_wp_coefficients", (0,), dtype=np.integer, chunks=True, maxshape=(None,))
-        daset_lcsize = grp_lc.create_dataset("lincomb_size", (0,), dtype=np.integer, chunks=True, maxshape=(None,))
-        # Linear combination coefficients
-        daset_ci = grp_lc.create_dataset("lc_coefficients", (0, 0), dtype=np.complexfloating, chunks=True, maxshape=(None,None))
-        # Linear combination wavepackets
-        daset_bs = grp_lc.create_dataset("basis_shapes_hashes", (0, 0, N), dtype=np.integer, chunks=True, maxshape=(None,None,N))
-        daset_bsi = grp_lc.create_dataset("basis_sizes", (0, 0, N), dtype=np.integer, chunks=True, maxshape=(None,None,N))
-        # Wavepackets parameters
-        if "q" in key and not "q" in grp_wppi.keys():
-            daset_q = grp_wppi.create_dataset("q", (0, 0, D), dtype=np.complexfloating, chunks=True, maxshape=(None,None,D))
-        if "p" in key and not "p" in grp_wppi.keys():
-            daset_p = grp_wppi.create_dataset("p", (0, 0, D), dtype=np.complexfloating, chunks=True, maxshape=(None,None,D))
-        if "Q" in key and not "Q" in grp_wppi.keys():
-            daset_Q = grp_wppi.create_dataset("Q", (0, 0, D, D), dtype=np.complexfloating, chunks=True, maxshape=(None,None,D,D))
-        if "P" in key and not "P" in grp_wppi.keys():
-            daset_P = grp_wppi.create_dataset("P", (0, 0, D, D), dtype=np.complexfloating, chunks=True, maxshape=(None,None,D,D))
-        if "S" in key and not "S" in grp_wppi.keys():
-            daset_S = grp_wppi.create_dataset("S", (0, 0, 1), dtype=np.complexfloating, chunks=True, maxshape=(None,None,1))
-        # Wavepackets coefficients
-        for i in xrange(N):
-            daset_c_i = grp_wpci.create_dataset("c_"+str(i), (0, 0, 0), dtype=np.complexfloating, chunks=True, maxshape=(None,None,None))
-    # else:
-    #     # User specified how much space is necessary.
-    #     daset_tg_c = grp_lc.create_dataset("timegrid_coefficients", (timeslots,), dtype=np.integer)
-    #     daset_tg_p = grp_lc.create_dataset("timegrid_packets", (timeslots,), dtype=np.integer)
-    #     daset_lcsize = grp_lc.create_dataset("lincomb_size", (timeslots,), dtype=np.integer)
-    #     # Coefficients
-    #     daset_ci = grp_lc.create_dataset("coefficients", (timeslots, 0), dtype=np.complexfloating, chunks=True, maxshape=(timeslots,None))
-    #     # Packet IDs
-    #     daset_refs = grp_lc.create_dataset("packet_refs", (timeslots, 0), dtype=np.dtype((str,32)), chunks=True, maxshape=(timeslots,None))
-
-    #     # Mark all steps as invalid
-    #     daset_tg_c[...] = -1.0
-    #     daset_tg_p[...] = -1.0
+    daset_tg_lc = grp_lc.create_dataset("timegrid_lc_coefficients", (T,), dtype=np.integer, chunks=True, maxshape=(Ts,), fillvalue=-1)
+    daset_tg_wp = grp_lc.create_dataset("timegrid_wp_parameters", (T,), dtype=np.integer, chunks=True, maxshape=(Ts,), fillvalue=-1)
+    daset_tg_wc = grp_lc.create_dataset("timegrid_wp_coefficients", (T,), dtype=np.integer, chunks=True, maxshape=(Ts,), fillvalue=-1)
+    daset_lcsize = grp_lc.create_dataset("lincomb_size", (T,), dtype=np.integer, chunks=True, maxshape=(Ts,))
+    # Linear combination coefficients
+    daset_ci = grp_lc.create_dataset("lc_coefficients", (T, 0), dtype=np.complexfloating, chunks=True, maxshape=(Ts,None))
+    # Linear combination wavepackets
+    daset_bs = grp_lc.create_dataset("basis_shapes_hashes", (T, 0, N), dtype=np.integer, chunks=True, maxshape=(Ts,None,N))
+    daset_bsi = grp_lc.create_dataset("basis_sizes", (T, 0, N), dtype=np.integer, chunks=True, maxshape=(Ts,None,N))
+    # Wavepackets parameters
+    if "q" in key and not "q" in grp_wppi.keys():
+        daset_q = grp_wppi.create_dataset("q", (T, 0, D), dtype=np.complexfloating, chunks=True, maxshape=(Ts,None,D))
+    if "p" in key and not "p" in grp_wppi.keys():
+        daset_p = grp_wppi.create_dataset("p", (T, 0, D), dtype=np.complexfloating, chunks=True, maxshape=(Ts,None,D))
+    if "Q" in key and not "Q" in grp_wppi.keys():
+        daset_Q = grp_wppi.create_dataset("Q", (T, 0, D, D), dtype=np.complexfloating, chunks=True, maxshape=(Ts,None,D,D))
+    if "P" in key and not "P" in grp_wppi.keys():
+        daset_P = grp_wppi.create_dataset("P", (T, 0, D, D), dtype=np.complexfloating, chunks=True, maxshape=(Ts,None,D,D))
+    if "S" in key and not "S" in grp_wppi.keys():
+        daset_S = grp_wppi.create_dataset("S", (T, 0, 1), dtype=np.complexfloating, chunks=True, maxshape=(Ts,None,1))
+    # Wavepackets coefficients
+    for i in xrange(N):
+        daset_c_i = grp_wpci.create_dataset("c_"+str(i), (T, 0, 0), dtype=np.complexfloating, chunks=True, maxshape=(Ts,None,None))
 
     # Attach pointer to timegrid
     daset_tg_lc.attrs["pointer"] = 0
@@ -375,57 +367,42 @@ def load_lincombhawp_wavepacket_parameters(self, timestep=None, blockid=0, key=(
     return params
 
 
-# def load_wavepacket_coefficients(self, timestep=None, get_hashes=False, component=None, blockid=0):
-#     r"""Load the wavepacket coefficients.
+def load_wavepacket_coefficients(self, timestep=None, get_hashes=False, blockid=0):
+    r"""Load the wavepacket coefficients.
 
-#     :param timestep: Load only the data of this timestep.
-#     :param get_hashes: Return the corresponding basis shape hashes.
-#     :param component: Load only data from this component.
-#     :param blockid: The ID of the data block to operate on.
-#     """
-#     pathtg = "/"+self._prefixb+str(blockid)+"/wavepacket/timegrid"
-#     pathbs = "/"+self._prefixb+str(blockid)+"/wavepacket/basis_shape_hash"
-#     pathbsi = "/"+self._prefixb+str(blockid)+"/wavepacket/basis_size"
-#     pathd = "/"+self._prefixb+str(blockid)+"/wavepacket/coefficients/"
+    :param timestep: Load only the data of this timestep.
+    :param get_hashes: Return the corresponding basis shape hashes.
+    :param blockid: The ID of the data block to operate on.
+    """
+    pathtg = "/"+self._prefixb+str(blockid)+"/lincombhawp/timegrid_wp_coefficients"
+    pathlcs = "/"+self._prefixb+str(blockid)+"/lincombhawp/lincomb_size"
+    pathbsh = "/"+self._prefixb+str(blockid)+"/lincombhawp/basis_shapes_hashes"
+    pathbsi = "/"+self._prefixb+str(blockid)+"/lincombhawp/basis_sizes"
+    pathd = "/"+self._prefixb+str(blockid)+"/lincombhawp/wp_coefficients/"
 
-#     if timestep is not None:
-#         index = self.find_timestep_index(pathtg, timestep)
-#     else:
-#         index = slice(None)
+    # TODO: Allow wavepackets with multiple components
+    i = 0
 
-#     # Number components
-#     N = len(self._srf[pathd].keys())
+    if timestep is not None:
+        index = self.find_timestep_index(pathtg, timestep)
+        Js = slice(0, self._srf[pathlcs][index])
+        Ks = slice(0, np.max(self._srf[pathbsi][index,:,0]))
+    else:
+        index = slice(None)
+        Js = slice(None)
+        Ks = slice(None)
 
-#     # Single component requested
-#     if component is not None:
-#         components = [component]
-#     else:
-#         components = xrange(N)
+    # Load the hash data
+    if get_hashes is True:
+        hashes = self._srf[pathbsh][index,Js]
 
-#     # Load the hash data
-#     if get_hashes is True:
-#         hashes = self._srf[pathbs][index,...]
-#         hashes = np.hsplit(hashes, N)
-#         # Only a single wanted
-#         if component is not None:
-#             hashes = hashes[component]
+    # Load the coefficient data
+    data = self._srf[pathd+"c_"+str(i)][index,Js,Ks]
 
-#     # Load the coefficient data
-#     data = []
-#     if timestep is not None:
-#         for i in components:
-#             size = self._srf[pathbsi][index,i]
-#             data.append(self._srf[pathd+"c_"+str(i)][index,:size])
-#     else:
-#         for i in components:
-#             data.append(self._srf[pathd+"c_"+str(i)][index,...])
-
-#     # TODO: Consider unpacking data for single components
-
-#     if get_hashes is True:
-#         return (hashes, data)
-#     else:
-#         return data
+    if get_hashes is True:
+        return (hashes, data)
+    else:
+        return data
 
 
 def load_wavepacket_basisshapes(self, the_hash=None, blockid=0):
