@@ -27,7 +27,7 @@ class LinearCombinationOfHAWPs(LinearCombinationOfWavepackets):
     of compatible Hagedorn wavepackets.
     """
 
-    def __init__(self, dimension, number_components, number_packets=0):
+    def __init__(self, dimension, number_components, eps, number_packets=0):
         r"""Initialize a new linear combination of Hagedorn wavepackets. This
         object represents :math:`\Upsilon := \sum_{j=0}^{J-1} c_j \Psi_j`.
         All :math:`J` wavepackets :math:`\Psi_j` have the same number :math:`N`
@@ -40,6 +40,9 @@ class LinearCombinationOfHAWPs(LinearCombinationOfWavepackets):
         self._dimension = dimension
         self._number_components = number_components
         self._number_packets = number_packets
+
+        # Epsilon
+        self._eps = eps
 
         # Basis shapes
         self._basis_shapes_hashes = []
@@ -86,6 +89,7 @@ class LinearCombinationOfHAWPs(LinearCombinationOfWavepackets):
         d["type"] = "LinearCombinationOfHAWPs"
         d["dimension"] = self._dimension
         d["ncomponents"] = self._number_components
+        d["eps"] = self._eps
         return d
 
 
@@ -103,8 +107,6 @@ class LinearCombinationOfHAWPs(LinearCombinationOfWavepackets):
         # Note: we do not test that the varepsilon parameter matches.
 
         self._number_packets = self._number_packets + 1
-        # Epsilon
-        self._eps = packet.get_eps()
         # Store the shape
         K = packet.get_basis_shapes(component=0)
         self._basis_shapes_hashes.append(hash(K))
@@ -358,8 +360,8 @@ class LinearCombinationOfHAWPs(LinearCombinationOfWavepackets):
             bs = self._basis_sizes[packetindex]
             self._wp_coefficients[packetindex,:bs] = squeeze(coefficients)
         else:
-            curshape = self._wp_coefficients.shape
-            self._wp_coefficients = coefficients.reshape(curshape)
+            J = self._number_packets
+            self._wp_coefficients = coefficients.reshape((J,-1))
 
 
     def get_wavepacket_coefficients(self, packetindex=None):
@@ -416,20 +418,27 @@ class LinearCombinationOfHAWPs(LinearCombinationOfWavepackets):
 
         :param Pilist: The Hagedorn parameter set :math:`\Pi = (q, p, Q, P, S)` in this order.
         """
-        if packetindex > self._number_packets-1 or packetindex < 0:
-            raise ValueError("There is no packet with index "+str(packetindex)+".")
+        if packetindex is not None:
+            if packetindex > self._number_packets-1 or packetindex < 0:
+                raise ValueError("There is no packet with index "+str(packetindex)+".")
+            J = 1
+        else:
+            packetindex = slice(None)
+            J = self._number_packets
+
+        D = self._dimension
 
         for k, item in zip(key, Pilist):
             if k == "q":
-                self._Pis[0][packetindex,:] = squeeze(item)
+                self._Pis[0][packetindex,:] = item.reshape(J,D)
             elif k == "p":
-                self._Pis[1][packetindex,:] = squeeze(item)
+                self._Pis[1][packetindex,:] = item.reshape(J,D)
             elif k == "Q":
-                self._Pis[2][packetindex,:,:] = squeeze(item)
+                self._Pis[2][packetindex,:,:] = item.reshape(J,D,D)
             elif k == "P":
-                self._Pis[3][packetindex,:,:] = squeeze(item)
+                self._Pis[3][packetindex,:,:] = item.reshape(J,D,D)
             elif k == "S":
-                self._Pis[4][packetindex,:] = squeeze(item)
+                self._Pis[4][packetindex,:] = item.reshape(J,1)
             else:
                 raise KeyError("Invalid parameter key: "+str(key))
 
