@@ -56,8 +56,8 @@ def add_lincombhawp(self, parameters, timeslots=None, blockid=0, key=("q","p","Q
         # Linear combination coefficients
         daset_ci = grp_lc.create_dataset("lc_coefficients", (0, 0), dtype=np.complexfloating, chunks=True, maxshape=(None,None))
         # Linear combination wavepackets
-        daset_bs = grp_lc.create_dataset("basis_shapes_hashes", (0, 0, 1), dtype=np.integer, chunks=True, maxshape=(None,None,N))
-        daset_bsi = grp_lc.create_dataset("basis_sizes", (0, 0, 1), dtype=np.integer, chunks=True, maxshape=(None,None,N))
+        daset_bs = grp_lc.create_dataset("basis_shapes_hashes", (0, 0, N), dtype=np.integer, chunks=True, maxshape=(None,None,N))
+        daset_bsi = grp_lc.create_dataset("basis_sizes", (0, 0, N), dtype=np.integer, chunks=True, maxshape=(None,None,N))
         # Wavepackets parameters
         if "q" in key and not "q" in grp_wppi.keys():
             daset_q = grp_wppi.create_dataset("q", (0, 0, D), dtype=np.complexfloating, chunks=True, maxshape=(None,None,D))
@@ -193,71 +193,90 @@ def save_lincombhawp_wavepacket_parameters(self, parameters, timestep, blockid=0
     self._srf[pathd].attrs["pointer"] += 1
 
 
-# def save_lincombhawp_wavepacket_coefficients(self, coefficients, basisshapes, timestep=None, blockid=0):
-#     r"""Save the coefficients of the Hagedorn wavepacket to a file.
-#     Warning: we do only save tha hash of the basis shapes here!
-#     You have to save the basis shape with the corresponding function too.
+def save_lincombhawp_wavepacket_coefficients(self, coefficients, basissizes, basisshapeshashes, timestep=None, blockid=0):
+    r"""Save the coefficients of the Hagedorn wavepacket to a file.
+    Warning: we do only save tha hash of the basis shapes here!
+    You have to save the basis shape with the corresponding function too.
 
-#     :param coefficients: The coefficients of the Hagedorn wavepacket.
-#     :type coefficients: A ``list`` with :math:`N` suitable ``ndarrays``.
-#     :param basisshapes: The corresponding basis shapes of the Hagedorn wavepacket.
-#     :type basisshapes: A ``list`` with :math:`N` :py:class:`BasisShape` subclass instances.
-#     :param timestep: The timestep at which we save the data.
-#     :param blockid: The ID of the data block to operate on.
-#     """
-#     pathtg = "/"+self._prefixb+str(blockid)+"/wavepacket/timegrid"
-#     pathbs = "/"+self._prefixb+str(blockid)+"/wavepacket/basis_shape_hash"
-#     pathbsi = "/"+self._prefixb+str(blockid)+"/wavepacket/basis_size"
-#     pathd = "/"+self._prefixb+str(blockid)+"/wavepacket/coefficients/"
+    :param coefficients: The coefficients of the Hagedorn wavepacket.
+    :type coefficients: A ``list`` with :math:`N` suitable ``ndarrays``.
+    :param basisshapes: The corresponding basis shapes of the Hagedorn wavepacket.
+    :type basisshapes: A ``list`` with :math:`N` :py:class:`BasisShape` subclass instances.
+    :param timestep: The timestep at which we save the data.
+    :param blockid: The ID of the data block to operate on.
+    """
+    pathtg = "/"+self._prefixb+str(blockid)+"/lincombhawp/timegrid_wp_coefficients"
+    pathlcs = "/"+self._prefixb+str(blockid)+"/lincombhawp/lincomb_size"
+    pathbsi = "/"+self._prefixb+str(blockid)+"/lincombhawp/basis_sizes"
+    pathbsh = "/"+self._prefixb+str(blockid)+"/lincombhawp/basis_shapes_hashes"
+    pathd = "/"+self._prefixb+str(blockid)+"/lincombhawp/wp_coefficients/"
 
-#     timeslot = self._srf[pathd].attrs["pointer"]
+    timeslot = self._srf[pathd].attrs["pointer"]
 
-#     # Write the data
-#     self.must_resize(pathbs, timeslot)
-#     self.must_resize(pathbsi, timeslot)
-#     for index, (bs,ci) in enumerate(zip(basisshapes, coefficients)):
-#         self.must_resize(pathd+"c_"+str(index), timeslot)
-#         size = bs.get_basis_size()
-#         # Do we have to resize due to changed number of coefficients
-#         self.must_resize(pathd+"c_"+str(index), size-1, axis=1)
-#         self._srf[pathbsi][timeslot,index] = size
-#         self._srf[pathbs][timeslot,index] = hash(bs)
-#         self._srf[pathd+"c_"+str(index)][timeslot,:size] = np.squeeze(ci)
+    # Write the lincomb size
+    basissizes = np.atleast_1d(basissizes)
+    J = basissizes.shape[0]
 
-#     # Write the timestep to which the stored values belong into the timegrid
-#     self.must_resize(pathtg, timeslot)
-#     self._srf[pathtg][timeslot] = timestep
+    self.must_resize(pathlcs, timeslot)
+    self._srf[pathlcs][timeslot] = J
 
-#     # Update the pointer
-#     self._srf[pathd].attrs["pointer"] += 1
+    # Write all basis sizes
+    self.must_resize(pathbsi, timeslot)
+    self.must_resize(pathbsi, J-1, axis=1)
+    self._srf[pathbsi][timeslot,:J,0] = basissizes
+
+    # Write basis shape hashes
+    basisshapeshashes = np.atleast_1d(basisshapeshashes)
+    self.must_resize(pathbsh, timeslot)
+    self.must_resize(pathbsh, J-1, axis=1)
+    self._srf[pathbsh][timeslot,:J,0] = basisshapeshashes
+
+    # Write the wavepackets coefficients data
+    coefficients = np.atleast_2d(coefficients)
+    j, k = coefficients.shape
+    # TODO: Allow wavepackets with multiple components
+    index = 0
+    pathc = pathd+"c_"+str(index)
+    # Do we have to resize due to changed number of packets or coefficients
+    self.must_resize(pathc, timeslot)
+    self.must_resize(pathc, j-1, axis=1)
+    self.must_resize(pathc, k-1, axis=2)
+    self._srf[pathc][timeslot,:j,:k] = coefficients
+
+    # Write the timestep to which the stored values belong into the timegrid
+    self.must_resize(pathtg, timeslot)
+    self._srf[pathtg][timeslot] = timestep
+
+    # Update the pointer
+    self._srf[pathd].attrs["pointer"] += 1
 
 
-# def save_lincombhawp_wavepacket_basisshapes(self, basisshape, blockid=0):
-#     r"""Save the basis shapes of the Hagedorn wavepacket to a file.
+def save_lincombhawp_wavepacket_basisshapes(self, basisshapes, blockid=0):
+    r"""Save the basis shapes of the linear combination of
+    Hagedorn wavepacket to a file.
 
-#     :param basisshape: The basis shape of the Hagedorn wavepacket.
-#     :param blockid: The ID of the data block to operate on.
-#     """
-#     pathd = "/"+self._prefixb+str(blockid)+"/wavepacket/basisshapes/"
+    :param basisshapes: A list of the basis shapes of the linear combination.
+    :param blockid: The ID of the data block to operate on.
+    """
+    pathd = "/"+self._prefixb+str(blockid)+"/lincombhawp/basisshapes/"
 
-#     ha = hash(basisshape)
-#     name = "basis_shape_"+str(ha)
+    for basisshape in basisshapes:
+        ha = hash(basisshape)
+        name = "basis_shape_"+str(ha)
 
-#     # Chech if we already stored this basis shape
-#     if not name in self._srf[pathd].keys():
-#         # Create new data set
-#         daset = self._srf[pathd].create_dataset("basis_shape_"+str(ha), (1,), dtype=np.integer)
-#         daset[0] = ha
+        # Chech if we already stored this basis shape
+        if not name in self._srf[pathd].keys():
+            # TODO: Consider storing all hashes in one big dataset
+            # Create new data set
+            daset = self._srf[pathd].create_dataset("basis_shape_"+str(ha), (1,), dtype=np.integer)
+            daset[0] = ha
 
-#         # Save the description
-#         descr = basisshape.get_description()
-#         for key, value in descr.iteritems():
-#             # Store all the values as pickled strings because hdf can
-#             # only store strings or ndarrays as attributes.
-#             daset.attrs[key] = pickle.dumps(value)
-
-#         # TODO: Consider to save the mapping. Do we want or need this?
-
+            # Save the description
+            descr = basisshape.get_description()
+            for key, value in descr.iteritems():
+                # Store all the values as pickled strings because hdf can
+                # only store strings or ndarrays as attributes.
+                daset.attrs[key] = pickle.dumps(value)
 
 
 def load_lincombhawp_description(self, blockid=0):
@@ -407,6 +426,39 @@ def load_lincombhawp_wavepacket_parameters(self, timestep=None, blockid=0, key=(
 #         return (hashes, data)
 #     else:
 #         return data
+
+
+def load_wavepacket_basisshapes(self, the_hash=None, blockid=0):
+    r"""Load the basis shapes by hash.
+
+    :param the_hash: The hash of the basis shape whose description we want to load.
+    :param blockid: The ID of the data block to operate on.
+    """
+    pathd = "/"+self._prefixb+str(blockid)+"/lincombhawp/basisshapes/"
+
+    if the_hash is None:
+        # Load and return all descriptions available
+        descrs = {}
+        for ahash in self._srf[pathd].keys():
+            # TODO: What data exactly do we want to return?
+            descr = {}
+            for key, value in self._srf[pathd+ahash].attrs.iteritems():
+                descr[key] = pickle.loads(value)
+            # 'ahash' is "basis_shape_..." and we want only the "..." part
+            descrs[int(ahash[12:])] = descr
+        return descrs
+    else:
+        the_hash = int(the_hash)
+        name = "basis_shape_"+str(the_hash)
+        # Chech if we already stored this basis shape
+        if name in self._srf[pathd].keys():
+            # TODO: What data exactly do we want to return?
+            descr = {}
+            for key, value in self._srf[pathd+name].attrs.iteritems():
+                descr[key] = pickle.loads(value)
+            return descr
+        else:
+            raise IndexError("No basis shape with given hash "+str(hash))
 
 
 #
