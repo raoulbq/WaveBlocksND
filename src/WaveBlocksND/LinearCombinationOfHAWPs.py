@@ -60,7 +60,7 @@ class LinearCombinationOfHAWPs(LinearCombinationOfWavepackets):
         self._Pis = [q, p, Q, P, S]
 
         # Coefficients of linear combination
-        self._lc_coefficients = zeros((number_packets,1), dtype=integer)
+        self._lc_coefficients = zeros((number_packets,1), dtype=complexfloating)
 
         # TODO: Handle multi-component packets
         assert number_components == 1
