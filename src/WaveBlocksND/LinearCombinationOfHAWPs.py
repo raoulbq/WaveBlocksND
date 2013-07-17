@@ -89,18 +89,6 @@ class LinearCombinationOfHAWPs(LinearCombinationOfWavepackets):
         return d
 
 
-    def _resize_coefficient_storage(self, newsize):
-        r"""
-        """
-        curlen, cursize = self._wp_coefficients.shape
-        diff = newsize - cursize
-        if diff > 0:
-            z = zeros((curlen,diff), dtype=complexfloating)
-            self._wp_coefficients = hstack([self._wp_coefficients, z])
-        elif diff < 0:
-            self._wp_coefficients[:,:newsize]
-
-
     def add_wavepacket(self, packet, coefficient=1.0):
         r"""Add a new wavepacket to the linear combination.
 
@@ -124,9 +112,17 @@ class LinearCombinationOfHAWPs(LinearCombinationOfWavepackets):
         self._basis_sizes.append(K.get_basis_size())
         # Store the coefficients
         bs = K.get_basis_size()
-        c = packet.get_coefficients(component=0)
-        self._resize_coefficient_storage(bs)
-        self._wp_coefficients = vstack([self._wp_coefficients, c.reshape((1,-1))])
+        # Resize storage if necessary
+        curlen, cursize = self._wp_coefficients.shape
+        diff = bs - cursize
+        if diff > 0:
+            Z = zeros((curlen,diff), dtype=complexfloating)
+            self._wp_coefficients = hstack([self._wp_coefficients, Z])
+        # Append new coefficients
+        curlen, cursize = self._wp_coefficients.shape
+        c = packet.get_coefficients(component=0).reshape((1,-1))
+        Z = zeros((1,cursize-bs), dtype=complexfloating)
+        self._wp_coefficients = vstack([self._wp_coefficients, hstack([c, Z])])
         # Store the parameter set
         D = self._dimension
         qs, ps, Qs, Ps, Ss = self._Pis
