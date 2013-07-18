@@ -96,13 +96,15 @@ class InhomogeneousInnerProductLCWP(InnerProduct):
 
         M = zeros((Jbra, Jket), dtype=complexfloating)
 
-        for row, pacbra in enumerate(lcbra.get_wavepackets()):
-            for col, packet in enumerate(lcket.get_wavepackets()):
-                if self._obey_oracle:
+        if self._obey_oracle:
+            for row, pacbra in enumerate(lcbra.get_wavepackets()):
+                for col, packet in enumerate(lcket.get_wavepackets()):
                     if self._oracle.is_not_zero(pacbra, packet):
                         # TODO: Handle multi-component packets
                         M[row, col] = self._quad.quadrature(pacbra, packet, operator=operator, component=0)
-                else:
+        else:
+            for row, pacbra in enumerate(lcbra.get_wavepackets()):
+                for col, packet in enumerate(lcket.get_wavepackets()):
                     # TODO: Handle multi-component packets
                     M[row, col] = self._quad.quadrature(pacbra, packet, operator=operator, component=0)
 
@@ -132,13 +134,15 @@ class InhomogeneousInnerProductLCWP(InnerProduct):
 
         M = zeros((Jbra, Jket), dtype=complexfloating)
 
-        for row, pacbra in enumerate(lcbra.get_wavepackets()):
-            for col, packet in enumerate(lcket.get_wavepackets()):
-                if self._obey_oracle:
+        if self._obey_oracle:
+            for row, pacbra in enumerate(lcbra.get_wavepackets()):
+                for col, packet in enumerate(lcket.get_wavepackets()):
                     if self._oracle.is_not_zero(pacbra, packet):
                         # TODO: Handle multi-component packets
                         M[row, col] = self._quad.quadrature(pacbra, packet, operator=operator, component=0)
-                else:
+        else:
+            for row, pacbra in enumerate(lcbra.get_wavepackets()):
+                for col, packet in enumerate(lcket.get_wavepackets()):
                     # TODO: Handle multi-component packets
                     M[row, col] = self._quad.quadrature(pacbra, packet, operator=operator, component=0)
 

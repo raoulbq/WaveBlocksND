@@ -92,13 +92,15 @@ class HomogeneousInnerProductLCWP(InnerProduct):
         M = zeros((J, J), dtype=complexfloating)
 
         # Elements below the diagonal
-        for row, pacbra in enumerate(packets):
-            for col, packet in enumerate(packets[:row]):
-                if self._obey_oracle:
+        if self._obey_oracle:
+            for row, pacbra in enumerate(packets):
+                for col, packet in enumerate(packets[:row]):
                     if self._oracle.is_not_zero(pacbra, packet):
                         # TODO: Handle multi-component packets
                         M[row, col] = self._quad.quadrature(pacbra, packet, operator=operator, component=0)
-                else:
+        else:
+            for row, pacbra in enumerate(packets):
+                for col, packet in enumerate(packets[:row]):
                     # TODO: Handle multi-component packets
                     M[row, col] = self._quad.quadrature(pacbra, packet, operator=operator, component=0)
 
@@ -130,13 +132,15 @@ class HomogeneousInnerProductLCWP(InnerProduct):
         M = zeros((J, J), dtype=complexfloating)
 
         # Elements below the diagonal
-        for row, pacbra in enumerate(packets):
-            for col, packet in enumerate(packets[:row]):
-                if self._obey_oracle:
+        if self._obey_oracle:
+            for row, pacbra in enumerate(packets):
+                for col, packet in enumerate(packets[:row]):
                     if self._oracle.is_not_zero(pacbra, packet):
                         # TODO: Handle multi-component packets
                         M[row, col] = self._quad.quadrature(pacbra, packet, operator=operator, component=0)
-                else:
+        else:
+            for row, pacbra in enumerate(packets):
+                for col, packet in enumerate(packets[:row]):
                     # TODO: Handle multi-component packets
                     M[row, col] = self._quad.quadrature(pacbra, packet, operator=operator, component=0)
 
