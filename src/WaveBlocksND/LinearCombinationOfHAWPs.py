@@ -9,7 +9,7 @@ than the general linear combination class.
 @license: Modified BSD License
 """
 
-from numpy import zeros, ones, eye, integer, complexfloating, atleast_2d, concatenate, hstack, vstack, squeeze
+from numpy import zeros, ones, eye, complexfloating, atleast_2d, concatenate, hstack, vstack, squeeze
 from numpy import pi, dot, einsum, conjugate, delete
 from scipy import exp, sqrt
 from scipy.linalg import det, inv
@@ -405,23 +405,37 @@ class LinearCombinationOfHAWPs(LinearCombinationOfWavepackets):
                       set :math:`Pi` we want.
         :return: The Hagedorn parameter set :math:`\Pi = (q, p, Q, P, S)` in this order.
         """
-        if packetindex is None:
-            packetindex = slice(None)
-
         Pilist = []
-        for k in key:
-            if k == "q":
-                Pilist.append(self._Pis[0][packetindex])
-            elif k == "p":
-                Pilist.append(self._Pis[1][packetindex])
-            elif k == "Q":
-                Pilist.append(self._Pis[2][packetindex])
-            elif k == "P":
-                Pilist.append(self._Pis[3][packetindex])
-            elif k == "S":
-                Pilist.append(self._Pis[4][packetindex])
-            else:
-                raise KeyError("Invalid parameter key: "+str(key))
+        if packetindex is not None:
+            D = self._dimension
+            for k in key:
+                if k == "q":
+                    Pilist.append(self._Pis[0][packetindex].reshape(D,1))
+                elif k == "p":
+                    Pilist.append(self._Pis[1][packetindex].reshape(D,1))
+                elif k == "Q":
+                    Pilist.append(self._Pis[2][packetindex].reshape(D,D))
+                elif k == "P":
+                    Pilist.append(self._Pis[3][packetindex].reshape(D,D))
+                elif k == "S":
+                    Pilist.append(self._Pis[4][packetindex].reshape(1,1))
+                else:
+                    raise KeyError("Invalid parameter key: "+str(key))
+        else:
+            Pilist = []
+            for k in key:
+                if k == "q":
+                    Pilist.append(self._Pis[0].copy())
+                elif k == "p":
+                    Pilist.append(self._Pis[1].copy())
+                elif k == "Q":
+                    Pilist.append(self._Pis[2].copy())
+                elif k == "P":
+                    Pilist.append(self._Pis[3].copy())
+                elif k == "S":
+                    Pilist.append(self._Pis[4].copy())
+                else:
+                    raise KeyError("Invalid parameter key: "+str(key))
 
         return Pilist
 
