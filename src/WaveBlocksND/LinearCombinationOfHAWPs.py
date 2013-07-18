@@ -292,30 +292,6 @@ class LinearCombinationOfHAWPs(LinearCombinationOfWavepackets):
     #     self._basis_sizes = [ bs.get_basis_size() for bs in self._basis_shapes ]
 
 
-    def set_wavepacket_coefficient(self, packetindex, index, value):
-        r"""Set a single coefficient :math:`c^i_k` of the specified component :math:`\Phi_i`
-        of :math:`\Psi`.
-
-        :param component: The index :math:`i` of the component :math:`\Phi_i` we want to update.
-        :type components: int
-        :param index: The multi-index :math:`k` of the coefficient :math:`c^i_k` we want to update.
-        :type index: A tuple of :math:`D` integers.
-        :param value: The new value of the coefficient :math:`c^i_k`.
-        :raise: :py:class:`ValueError` For invalid indices :math:`i` or :math:`k`.
-        """
-        if packetindex > self._number_packets-1 or packetindex < 0:
-            raise ValueError("There is no packet with index "+str(packetindex)+".")
-
-        basis_shape = self._basis_shapes[self._basis_shapes_hashes[packetindex]]
-
-        if not index in basis_shape:
-            raise ValueError("There is no basis function with multi-index "+str(index)+".")
-
-        # Apply linear order mapping here
-        key = basis_shape[index]
-        self._wp_coefficients[packetindex][key] = value
-
-
     def get_wavepacket_coefficient(self, packetindex, index):
         r"""Retrieve a single coefficient :math:`c^i_k` of the specified component :math:`\Phi_i`
         of :math:`\Psi`.
@@ -340,28 +316,28 @@ class LinearCombinationOfHAWPs(LinearCombinationOfWavepackets):
         return self._wp_coefficients[packetindex][key]
 
 
-    def set_wavepacket_coefficients(self, packetindex, coefficients):
-        r"""Retrieve a single coefficient :math:`c^i_k` of the specified component :math:`\Phi_i`
+    def set_wavepacket_coefficient(self, packetindex, index, value):
+        r"""Set a single coefficient :math:`c^i_k` of the specified component :math:`\Phi_i`
         of :math:`\Psi`.
-
-        Warning: make sure the coefficients and basis shapes stay in sync!
 
         :param component: The index :math:`i` of the component :math:`\Phi_i` we want to update.
         :type components: int
         :param index: The multi-index :math:`k` of the coefficient :math:`c^i_k` we want to update.
         :type index: A tuple of :math:`D` integers.
-        :return: A single complex number.
+        :param value: The new value of the coefficient :math:`c^i_k`.
         :raise: :py:class:`ValueError` For invalid indices :math:`i` or :math:`k`.
         """
-        if packetindex is not None:
-            if packetindex > self._number_packets-1 or packetindex < 0:
-                raise ValueError("There is no packet with index "+str(packetindex)+".")
+        if packetindex > self._number_packets-1 or packetindex < 0:
+            raise ValueError("There is no packet with index "+str(packetindex)+".")
 
-            bs = self._basis_sizes[packetindex]
-            self._wp_coefficients[packetindex,:bs] = squeeze(coefficients)
-        else:
-            J = self._number_packets
-            self._wp_coefficients = coefficients.reshape((J,-1))
+        basis_shape = self._basis_shapes[self._basis_shapes_hashes[packetindex]]
+
+        if not index in basis_shape:
+            raise ValueError("There is no basis function with multi-index "+str(index)+".")
+
+        # Apply linear order mapping here
+        key = basis_shape[index]
+        self._wp_coefficients[packetindex][key] = value
 
 
     def get_wavepacket_coefficients(self, packetindex=None):
@@ -383,6 +359,43 @@ class LinearCombinationOfHAWPs(LinearCombinationOfWavepackets):
             return self._wp_coefficients[packetindex,:bs].copy()
         else:
             return self._wp_coefficients.copy()
+
+
+    def set_wavepacket_coefficients(self, coefficients, basisshapes=None, packetindex=None):
+        r"""Retrieve a single coefficient :math:`c^i_k` of the specified component :math:`\Phi_i`
+        of :math:`\Psi`.
+
+        Warning: make sure the coefficients and basis shapes stay in sync!
+
+        :param component: The index :math:`i` of the component :math:`\Phi_i` we want to update.
+        :type components: int
+        :param index: The multi-index :math:`k` of the coefficient :math:`c^i_k` we want to update.
+        :type index: A tuple of :math:`D` integers.
+        :return: A single complex number.
+        :raise: :py:class:`ValueError` For invalid indices :math:`i` or :math:`k`.
+        """
+        if packetindex is not None:
+            if packetindex > self._number_packets-1 or packetindex < 0:
+                raise ValueError("There is no packet with index "+str(packetindex)+".")
+
+            if basisshapes is not None:
+                self._basis_shapes_hashes[packetindex] = hash(basisshapes)
+                self._basis_shapes[hash(basisshapes)] = basisshapes
+                bs = basisshapes.get_basis_size()
+                self._basis_sizes[packetindex] = bs
+            else:
+                bs = self._basis_sizes[packetindex]
+
+            self._wp_coefficients[packetindex,:bs] = squeeze(coefficients)
+        else:
+            J = self._number_packets
+
+            if basisshapes is not None:
+                self._basis_shapes_hashes = [ hash(ashape) for ashape in basisshapes ]
+                self._basis_shapes = { hash(ashape):ashape for ashape in list(set(basisshapes)) }
+                self._basis_sizes = [ K.get_basis_size() for K in basisshapes ]
+
+            self._wp_coefficients = coefficients.reshape((J,-1))
 
 
     def get_wavepacket_parameters(self, packetindex=None, key=("q","p","Q","P","S")):
@@ -413,7 +426,7 @@ class LinearCombinationOfHAWPs(LinearCombinationOfWavepackets):
         return Pilist
 
 
-    def set_wavepacket_parameters(self, Pilist, packetindex, key=("q","p","Q","P","S")):
+    def set_wavepacket_parameters(self, Pilist, packetindex=None, key=("q","p","Q","P","S")):
         r"""Set the Hagedorn parameters :math:`\Pi` of the wavepacket :math:`\Psi_j`.
 
         :param Pilist: The Hagedorn parameter set :math:`\Pi = (q, p, Q, P, S)` in this order.

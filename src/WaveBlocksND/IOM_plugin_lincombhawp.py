@@ -367,7 +367,7 @@ def load_lincombhawp_wavepacket_parameters(self, timestep=None, blockid=0, key=(
     return params
 
 
-def load_wavepacket_coefficients(self, timestep=None, get_hashes=False, blockid=0):
+def load_lincombhawp_wavepacket_coefficients(self, timestep=None, get_hashes=False, blockid=0):
     r"""Load the wavepacket coefficients.
 
     :param timestep: Load only the data of this timestep.
@@ -405,7 +405,7 @@ def load_wavepacket_coefficients(self, timestep=None, get_hashes=False, blockid=
         return data
 
 
-def load_wavepacket_basisshapes(self, the_hash=None, blockid=0):
+def load_lincombhawp_wavepacket_basisshapes(self, the_hash=None, blockid=0):
     r"""Load the basis shapes by hash.
 
     :param the_hash: The hash of the basis shape whose description we want to load.
@@ -443,33 +443,45 @@ def load_wavepacket_basisshapes(self, the_hash=None, blockid=0):
 #
 
 
-# def load_lincombwp(self, timestep, blockid=0):
-#     r"""Load a linear combination at a given timestep and return a fully configured
-#     :py:class:`LinearCombinationOfWPs` instance. This method just calls some other
-#     :py:class:`IOManager` methods in the correct order. It is included only for
-#     convenience and is not particularly efficient.
+def load_lincombhawp(self, timestep, blockid=0, key=("q","p","Q","P","S")):
+    r"""Load a linear combination at a given timestep and return a fully configured
+    :py:class:`LinearCombinationOfHAWPs` instance. This method just calls some other
+    :py:class:`IOManager` methods in the correct order. It is included only for
+    convenience and is not particularly efficient.
 
-#     :param timestep: The timestep :math:`n` we load the wavepacket.
-#     :param blockid: The ID of the data block to operate on.
-#     :return: A :py:class:`LinearCombinationOfWPs` instance.
-#     """
-#     from LinearCombinationOfWPs import LinearCombinationOfWPs
+    :param timestep: The timestep :math:`n` we load the wavepacket.
+    :param blockid: The ID of the data block to operate on.
+    :return: A :py:class:`LinearCombinationOfHAWPs` instance.
+    """
+    from LinearCombinationOfHAWPs import LinearCombinationOfHAWPs
+    from BlockFactory import BlockFactory
+    BF = BlockFactory()
 
-#     descr = self.load_lincombwp_description(blockid=blockid)
+    descr = self.load_lincombhawp_description(blockid=blockid)
 
-#     J = self.load_lincombwp_size(timestep=timestep, blockid=blockid)
-#     if J == 0:
-#         return None
+    # Empty linear combination
+    J = self.load_lincombhawp_size(timestep=timestep, blockid=blockid)
+    if J == 0:
+        return None
 
-#     # Load the data
-#     c = self.load_lincombwp_coefficients(timestep=timestep, blockid=blockid)
-#     psi = self.load_lincombwp_wavepackets(timestep=timestep, blockid=blockid)
+    # A new and empty linear combination
+    LC = LinearCombinationOfHAWPs(descr["dimension"], descr["ncomponents"], descr["eps"], number_packets=J)
+    # Now load and add the data
+    # Basis shapes
+    K_descrs = self.load_lincombhawp_wavepacket_basisshapes(blockid=blockid)
+    K = {ha:BF.create_basis_shape(de) for ha,de in K_descrs.iteritems()}
+    # Coefficients and basis shape hashes
+    hashes, coeffs = self.load_lincombhawp_wavepacket_coefficients(timestep=timestep, get_hashes=True, blockid=blockid)
+    Ks = [ K[ha] for ha in np.squeeze(hashes) ]
+    LC.set_wavepacket_coefficients(coeffs, Ks)
+    # Parameters
+    Pi = self.load_lincombhawp_wavepacket_parameters(timestep=timestep, blockid=blockid, key=key)
+    LC.set_wavepacket_parameters(Pi)
+    # Cj
+    Cj = self.load_lincombhawp_coefficients(timestep=timestep, blockid=blockid)
+    LC.set_coefficients(Cj)
 
-#     # Assemble the linear combination
-#     LC = LinearCombinationOfWPs(descr["dimension"], descr["ncomponents"])
-#     LC.add_wavepackets(psi, c)
-
-#     return LC
+    return LC
 
 
 # def save_lincombwp(self, lincomb, timestep, blockid=0):
