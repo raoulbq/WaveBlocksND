@@ -185,8 +185,8 @@ def save_lincombhawp_wavepacket_parameters(self, parameters, timestep, blockid=0
     self._srf[pathd].attrs["pointer"] += 1
 
 
-def save_lincombhawp_wavepacket_coefficients(self, coefficients, basissizes, basisshapeshashes, timestep=None, blockid=0):
-    r"""Save the coefficients of the Hagedorn wavepacket to a file.
+def save_lincombhawp_wavepacket_coefficients(self, coefficients, basisshapes, timestep=None, blockid=0):
+    r"""Save the coefficients of the Hagedorn wavepacket linear combination to a file.
     Warning: we do only save tha hash of the basis shapes here!
     You have to save the basis shape with the corresponding function too.
 
@@ -206,8 +206,8 @@ def save_lincombhawp_wavepacket_coefficients(self, coefficients, basissizes, bas
     timeslot = self._srf[pathd].attrs["pointer"]
 
     # Write the lincomb size
-    basissizes = np.atleast_1d(basissizes)
-    J = basissizes.shape[0]
+    basissizes = [ K.get_basis_size() for K in basisshapes ]
+    J = len(basissizes)
 
     self.must_resize(pathlcs, timeslot)
     self._srf[pathlcs][timeslot] = J
@@ -215,10 +215,10 @@ def save_lincombhawp_wavepacket_coefficients(self, coefficients, basissizes, bas
     # Write all basis sizes
     self.must_resize(pathbsi, timeslot)
     self.must_resize(pathbsi, J-1, axis=1)
-    self._srf[pathbsi][timeslot,:J,0] = basissizes
+    self._srf[pathbsi][timeslot,:J,0] = np.array(basissizes)
 
     # Write basis shape hashes
-    basisshapeshashes = np.atleast_1d(basisshapeshashes)
+    basisshapeshashes = np.array([ hash(K) for K in basisshapes ])
     self.must_resize(pathbsh, timeslot)
     self.must_resize(pathbsh, J-1, axis=1)
     self._srf[pathbsh][timeslot,:J,0] = basisshapeshashes
@@ -466,10 +466,9 @@ def load_lincombhawp(self, timestep, blockid=0, key=("q","p","Q","P","S")):
 
     # A new and empty linear combination
     LC = LinearCombinationOfHAWPs(descr["dimension"], descr["ncomponents"], descr["eps"], number_packets=J)
-    # Now load and add the data
     # Basis shapes
     K_descrs = self.load_lincombhawp_wavepacket_basisshapes(blockid=blockid)
-    K = {ha:BF.create_basis_shape(de) for ha,de in K_descrs.iteritems()}
+    K = { ha:BF.create_basis_shape(de) for ha,de in K_descrs.iteritems() }
     # Coefficients and basis shape hashes
     hashes, coeffs = self.load_lincombhawp_wavepacket_coefficients(timestep=timestep, get_hashes=True, blockid=blockid)
     Ks = [ K[ha] for ha in np.squeeze(hashes) ]
@@ -484,21 +483,27 @@ def load_lincombhawp(self, timestep, blockid=0, key=("q","p","Q","P","S")):
     return LC
 
 
-# def save_lincombwp(self, lincomb, timestep, blockid=0):
-#     r"""Save a linear combination of general wavepackets at a given timestep and read
-#     all data to save from the :py:class:`LinearCombinationOfWPs` instance provided. This
-#     method just calls some other :py:class:`IOManager` methods in the correct order.
-#     It is included only for convenience and is not particularly efficient. We assume
-#     the linear combination is already set up with the correct :py:meth:`add_lincombwp`
-#     method call.
+def save_lincombhawp(self, lincomb, timestep, blockid=0):
+    r"""Save a linear combination of Hagedorn wavepackets at a given timestep and read
+    all data to save from the :py:class:`LinearCombinationOfHAWPs` instance provided. This
+    method just calls some other :py:class:`IOManager` methods in the correct order.
+    It is included only for convenience and is not particularly efficient. We assume
+    the linear combination is already set up with the correct :py:meth:`add_lincombhawp`
+    method call.
 
-#     :param lincomb: The :py:class:`LinearCombinationOfWPs` instance we want to save.
-#     :param timestep: The timestep :math:`n` at which we save the linear combination.
-#     :param blockid: The ID of the data block to operate on.
-#     """
-#     # Description
-#     self.save_lincombwp_description(lincomb.get_description(), blockid=blockid)
-#     # Wavepackets
-#     self.save_lincombwp_wavepackets(lincomb.get_wavepackets(), timestep=timestep, blockid=blockid)
-#     # Coefficients
-#     self.save_lincombwp_coefficients(lincomb.get_coefficients(), timestep=timestep, blockid=blockid)
+    :param lincomb: The :py:class:`LinearCombinationOfHAWPs` instance we want to save.
+    :param timestep: The timestep :math:`n` at which we save the linear combination.
+    :param blockid: The ID of the data block to operate on.
+    """
+    # Description
+    self.save_lincombhawp_description(lincomb.get_description(), blockid=blockid)
+    # Wavepackets
+    Ks = lincomb.get_basis_shapes()
+    self.save_lincombhawp_wavepacket_basisshapes(Ks, blockid=blockid)
+    Pi = lincomb.get_wavepacket_parameters()
+    self.save_lincombhawp_wavepacket_parameters(Pi, timestep=timestep, blockid=blockid)
+    Ck = lincomb.get_wavepacket_coefficients()
+    self.save_lincombhawp_wavepacket_coefficients(Ck, Ks, timestep=timestep, blockid=blockid)
+    # Coefficients
+    Cj = lincomb.get_coefficients()
+    self.save_lincombhawp_coefficients(Cj, timestep=timestep, blockid=blockid)

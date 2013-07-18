@@ -228,7 +228,7 @@ class LinearCombinationOfHAWPs(LinearCombinationOfWavepackets):
         if packetindex is not None:
             return self._basis_shapes[self._basis_shapes_hashes[packetindex]]
         else:
-            return tuple([self._basis_shapes[self._basis_shapes_hashes[j]] for j in xrange(self._number_packets)])
+            return tuple([self._basis_shapes[ha] for ha in self._basis_shapes_hashes])
 
 
     def get_basis_shapes_hashes(self, packetindex=None):
