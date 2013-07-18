@@ -661,12 +661,12 @@ class LinearCombinationOfHAWPs(LinearCombinationOfWavepackets):
         :type prefactor: Boolean, default is ``False``.
         :return: A list of arrays or a single array containing the values of the :math:`\Phi_i` at the nodes :math:`\gamma`.
         """
-        if packetindex > self._number_packets-1 or packetindex < 0:
-            raise ValueError("There is no packet with index "+str(packetindex)+".")
-
         eps = self._eps
 
         if packetindex is not None:
+            if packetindex > self._number_packets-1 or packetindex < 0:
+                raise ValueError("There is no packet with index "+str(packetindex)+".")
+
             S = self._Pis[4][packetindex,:]
             phase = exp(1.0j * S / eps**2)
             values = squeeze(self._lc_coefficients[packetindex]) * phase * self.slim_recursion(grid, packetindex, prefactor=prefactor)

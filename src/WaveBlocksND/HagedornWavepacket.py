@@ -160,17 +160,18 @@ class HagedornWavepacket(HagedornWavepacketBase):
         :param Pi: The Hagedorn parameter set :math:`\Pi = (q, p, Q, P, S)` in this order.
         :param component: Dummy parameter for API compatibility with the inhomogeneous packets.
         """
+        D = self._dimension
         for k, item in zip(key, Pi):
             if k == "q":
-                self._Pis[0] = atleast_2d(array(item, dtype=complexfloating))
+                self._Pis[0] = atleast_2d(array(item, dtype=complexfloating)).reshape(D,1)
             elif k == "p":
-                self._Pis[1] = atleast_2d(array(item, dtype=complexfloating))
+                self._Pis[1] = atleast_2d(array(item, dtype=complexfloating)).reshape(D,1)
             elif k == "Q":
-                self._Pis[2] = atleast_2d(array(item, dtype=complexfloating))
+                self._Pis[2] = atleast_2d(array(item, dtype=complexfloating)).reshape(D,D)
             elif k == "P":
-                self._Pis[3] = atleast_2d(array(item, dtype=complexfloating))
+                self._Pis[3] = atleast_2d(array(item, dtype=complexfloating)).reshape(D,D)
             elif k == "S":
-                self._Pis[4] = atleast_2d(array(item, dtype=complexfloating))
+                self._Pis[4] = atleast_2d(array(item, dtype=complexfloating)).reshape(1,1)
             elif k == "adQ":
                 self._get_sqrt(component).set(squeeze(item))
             else:

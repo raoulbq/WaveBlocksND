@@ -166,6 +166,7 @@ Simulation result storage I/O
    waveblocks_classes/IOM_plugin_wavepacket
    waveblocks_classes/IOM_plugin_inhomogwavepacket
    waveblocks_classes/IOM_plugin_lincombwp
+   waveblocks_classes/IOM_plugin_lincombhawp
    waveblocks_classes/IOM_plugin_overlaplcwp
    waveblocks_classes/IOM_plugin_norm
    waveblocks_classes/IOM_plugin_energy
