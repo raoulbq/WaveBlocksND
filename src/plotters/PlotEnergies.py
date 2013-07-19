@@ -35,10 +35,15 @@ def read_data(iom, blockid=0):
     :param iom: An :py:class:`IOManager` instance providing the simulation data.
     :param blockid: The data block from which the values are read.
     """
-    parameters = iom.load_parameters()
     timegridk, timegridp = iom.load_energy_timegrid(blockid=blockid)
-    timek = timegridk * parameters["dt"]
-    timep = timegridp * parameters["dt"]
+    have_dt = iom.has_parameters()
+    if have_dt:
+        parameters = iom.load_parameters()
+        timek = timegridk * parameters["dt"]
+        timep = timegridp * parameters["dt"]
+    else:
+        timek = timegridk
+        timep = timegridp
 
     ekin, epot = iom.load_energy(blockid=blockid, split=True)
 
@@ -49,13 +54,18 @@ def read_data(iom, blockid=0):
     ekin.append(ekinsum)
     epot.append(epotsum)
 
-    return (timek, timep, ekin, epot)
+    return (timek, timep, ekin, epot, have_dt)
 
 
 def plot_energies(data, index=0):
     print("Plotting the energies of data block '"+str(index)+"'")
 
-    timegridk, timegridp, ekin, epot = data
+    timegridk, timegridp, ekin, epot, have_dt = data
+
+    if have_dt:
+        xlbl=r"Time $t$"
+    else:
+        xlbl=r"Timesteps $n$"
 
     # Plot the energies
     fig = figure()
@@ -83,7 +93,7 @@ def plot_energies(data, index=0):
     ax.set_xlim(min(min(timegridk),min(timegridp)), max(max(timegridk),max(timegridp)))
     ax.ticklabel_format(style="sci", scilimits=(0,0), axis="y")
     ax.grid(True)
-    ax.set_xlabel(r"Time $t$")
+    ax.set_xlabel(xlbl)
     legend(loc="outer right")
     ax.set_title(r"Energies of the wavepacket $\Psi$")
 
@@ -103,7 +113,7 @@ def plot_energies(data, index=0):
     ax.set_xlim(min(timegridk), max(timegridk))
     ax.ticklabel_format(style="sci", scilimits=(0,0), axis="y")
     ax.grid(True)
-    ax.set_xlabel(r"Time $t$")
+    ax.set_xlabel(xlbl)
     ax.set_ylabel(r"$|E_O^0 - \left( E_k^0 + E_p^0 \right) |$")
     ax.set_title(r"Energy drift of the wavepacket $\Psi$")
 
@@ -118,7 +128,7 @@ def plot_energies(data, index=0):
 
     ax.set_xlim(min(timegridk), max(timegridk))
     ax.grid(True)
-    ax.set_xlabel(r"Time $t$")
+    ax.set_xlabel(xlbl)
     ax.set_ylabel(r"$|E_O^0 - \left( E_k^0 + E_p^0 \right) |$")
     ax.set_title(r"Energy drift of the wavepacket $\Psi$")
 

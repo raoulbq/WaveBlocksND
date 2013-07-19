@@ -35,22 +35,31 @@ def read_data(iom, blockid=0):
     :param iom: An :py:class:`IOManager` instance providing the simulation data.
     :param blockid: The data block from which the values are read.
     """
-    parameters = iom.load_parameters()
     timegrid = iom.load_autocorrelation_timegrid(blockid=blockid)
-    time = timegrid * parameters["dt"]
+    have_dt = iom.has_parameters()
+    if have_dt:
+        parameters = iom.load_parameters()
+        time = timegrid * parameters["dt"]
+    else:
+        time = timegrid
 
     autocorrelations = iom.load_autocorrelation(blockid=blockid, split=True)
 
     autocorrelationsum = reduce(lambda x,y: x+y, autocorrelations)
     autocorrelations.append(autocorrelationsum)
 
-    return (time, autocorrelations)
+    return (time, autocorrelations, have_dt)
 
 
 def plot_autocorrelations(data, index=0):
     print("Plotting the autocorrelations of data block '"+str(index)+"'")
 
-    timegrid, autocorrelations = data
+    timegrid, autocorrelations, have_dt = data
+
+    if have_dt:
+        xlbl=r"Time $t$"
+    else:
+        xlbl=r"Timesteps $n$"
 
     # Plot the autocorrelations
     fig = figure()
@@ -71,7 +80,7 @@ def plot_autocorrelations(data, index=0):
     ax.ticklabel_format(style="sci", scilimits=(0,0), axis="y")
     ax.set_title(r"Autocorrelations of $\Psi$")
     legend(loc="upper right")
-    ax.set_xlabel(r"Time $t$")
+    ax.set_xlabel(xlbl)
     ax.set_ylim(0, 1.1)
     fig.savefig("autocorrelations_block"+str(index)+GD.output_format)
     close(fig)
@@ -94,7 +103,7 @@ def plot_autocorrelations(data, index=0):
         ax.set_xlim(min(timegrid), max(timegrid))
         ax.grid(True)
         ax.ticklabel_format(style="sci", scilimits=(0,0), axis="y")
-        ax.set_xlabel(r"Time $t$")
+        ax.set_xlabel(xlbl)
 
         legend(loc="upper right")
     ax.set_ylim(0, 1.1)

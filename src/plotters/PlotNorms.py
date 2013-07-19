@@ -35,9 +35,13 @@ def read_data(iom, blockid=0):
     :param iom: An :py:class:`IOManager` instance providing the simulation data.
     :param blockid: The data block from which the values are read.
     """
-    parameters = iom.load_parameters()
     timegrid = iom.load_norm_timegrid(blockid=blockid)
-    time = timegrid * parameters["dt"]
+    have_dt = iom.has_parameters()
+    if have_dt:
+        parameters = iom.load_parameters()
+        time = timegrid * parameters["dt"]
+    else:
+        time = timegrid
 
     norms = iom.load_norm(blockid=blockid, split=True)
 
@@ -45,13 +49,18 @@ def read_data(iom, blockid=0):
     normsum = reduce(lambda x,y: x+y, normsum)
     norms.append(sqrt(normsum))
 
-    return (time, norms)
+    return (time, norms, have_dt)
 
 
 def plot_norms(data, index=0):
     print("Plotting the norms of data block '"+str(index)+"'")
 
-    timegrid, norms = data
+    timegrid, norms, have_dt = data
+
+    if have_dt:
+        xlbl=r"Time $t$"
+    else:
+        xlbl=r"Timesteps $n$"
 
     # Plot the norms
     fig = figure()
@@ -70,7 +79,7 @@ def plot_norms(data, index=0):
     ax.ticklabel_format(style="sci", scilimits=(0,0), axis="y")
     ax.set_title(r"Norms of $\Psi$")
     legend(loc="outer right")
-    ax.set_xlabel(r"Time $t$")
+    ax.set_xlabel(xlbl)
     ax.set_ylim([0,1.1*max(norms[:-1])])
     fig.savefig("norms_block"+str(index)+GD.output_format)
     close(fig)
@@ -92,7 +101,7 @@ def plot_norms(data, index=0):
     ax.ticklabel_format(style="sci", scilimits=(0,0), axis="y")
     ax.set_title(r"Squared norms of $\Psi$")
     legend(loc="outer right")
-    ax.set_xlabel(r"Time $t$")
+    ax.set_xlabel(xlbl)
     ax.set_ylim([0,1.1*max(norms[-1]**2)])
     fig.savefig("norms_sqr_block"+str(index)+GD.output_format)
     close(fig)
@@ -109,7 +118,7 @@ def plot_norms(data, index=0):
     ax.ticklabel_format(style="sci", scilimits=(0,0), axis="y")
     ax.set_title(r"Drift of $\| \Psi \|$")
     legend(loc="outer right")
-    ax.set_xlabel(r"Time $t$")
+    ax.set_xlabel(xlbl)
     ax.set_ylabel(r"$\|\Psi\|_0 - \|\Psi\|_t$")
     fig.savefig("norms_drift_block"+str(index)+GD.output_format)
     close(fig)
@@ -124,7 +133,7 @@ def plot_norms(data, index=0):
     ax.grid(True)
     ax.set_title(r"Drift of $\| \Psi \|$")
     legend(loc="outer right")
-    ax.set_xlabel(r"Time $t$")
+    ax.set_xlabel(xlbl)
     ax.set_ylabel(r"$\|\Psi\|_0 - \|\Psi\|_t$")
     fig.savefig("norms_drift_block"+str(index)+"_log"+GD.output_format)
     close(fig)
