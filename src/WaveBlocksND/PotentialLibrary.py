@@ -111,6 +111,18 @@ quadratic_2d["variables"] = ["x", "y"]
 quadratic_2d["potential"] = "1/2 * (sigmax * x**2 + sigmay * y**2)"
 quadratic_2d["defaults"] = {"sigmax":"1/2", "sigmay":"1/2"}
 
+# A simple fourth order anharmonic potential
+quartic_2d = {}
+quartic_2d["variables"] = ["x", "y"]
+quartic_2d["potential"] = "sigmax * x**4 + sigmay * y**4"
+quartic_2d["defaults"] = {"sigmax":"1", "sigmay":"1"}
+
+# A simple fourth order anharmonic potential
+quartic_2d_rotsym = {}
+quartic_2d_rotsym["variables"] = ["x", "y"]
+quartic_2d_rotsym["potential"] = "sigmax**2 * x**4 + 2*sigmax*sigmay * x**2*y**2 + sigmay**2 * y**4"
+quartic_2d_rotsym["defaults"] = {"sigmax":"1", "sigmay":"1"}
+
 # A potential consisting of a cosine wave part in 2D
 cos_osc_2d = {}
 cos_osc_2d["variables"] = ["x", "y"]
@@ -144,8 +156,14 @@ circle_pit_2d["defaults"] = {"sigma":"10", "R":"8"}
 # A potential consisting of a ring like corral
 corral_ring = {}
 corral_ring["variables"] = ["x", "y"]
-corral_ring["potential"] = "sqrt(delta**2 + tanh(sqrt(x**2 + y**2) - R)**2*tanh(sqrt(x**2 + y**2) + R)**2)/2"
-corral_ring["defaults"] = {"delta":"1/32", "R":"3"}
+corral_ring["potential"] = "-sqrt(delta**2 + tanh(sqrt(x**2 + y**2) - R)**2 * tanh(sqrt(x**2 + y**2) + R)**2)/2"
+corral_ring["defaults"] = {"delta":"1", "R":"3"}
+
+# A potential consisting of a ring like valley
+ring_valley = {}
+ring_valley["variables"] = ["x", "y"]
+ring_valley["potential"] = "sqrt(delta**2 + tanh(sqrt(x**2 + y**2) - R)**2 * tanh(sqrt(x**2 + y**2) + R)**2)/2"
+ring_valley["defaults"] = {"delta":"1", "R":"3"}
 
 # A potential consisting of plane with a Gaussian hill
 gauss_hill_2d = {}
