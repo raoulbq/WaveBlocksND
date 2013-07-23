@@ -664,16 +664,43 @@ class LinearCombinationOfHAWPs(LinearCombinationOfWavepackets):
         return psi
 
 
-    def evaluate_at(self, grid, packetindex=None, prefactor=False):
-        r"""Evaluate the Hagedorn wavepacket :math:`\Psi` at the given nodes :math:`\gamma`.
+    def evaluate_basis_at(self, grid, prefactor=False):
+        r"""Evaluate all the individual Hagedorn wavepackets :math:`\Psi_j` of
+        :math:`\Upsilon = \sum_{j=0}^J c_j \Psi_j` at the given nodes :math:`\gamma`.
 
         :param grid: The grid :math:`\Gamma` containing the nodes :math:`\gamma`.
         :type grid: A class having a :py:meth:`get_nodes(...)` method.
-        :param component: The index :math:`i` of a single component :math:`\Phi_i` to evaluate.
-                          (Defaults to ``None`` for evaluating all components.)
-        :param prefactor: Whether to include a factor of :math:`\frac{1}{\sqrt{\det(Q)}}`.
+        :param prefactor: Whether to include a factor of :math:`\frac{1}{\sqrt{\det(Q_j)}}`.
         :type prefactor: Boolean, default is ``False``.
-        :return: A list of arrays or a single array containing the values of the :math:`\Phi_i` at the nodes :math:`\gamma`.
+        :return: A two-dimensional ndarray :math:`H` of shape :math:`(|\Gamma|, J)` where
+                 the entry :math:`H[i, j]` is the value of :math:`\Psi_j(\gamma_i)`.
+        """
+        grid = self._grid_wrap(grid)
+        G = grid.get_number_nodes(overall=True)
+        J = self._number_packets
+        eps = self._eps
+
+        values = zeros((G,J))
+        # Evaluate each packet individually
+        for j in xrange(J):
+            S = self._Pis[4][j,:]
+            phase = exp(1.0j * S / eps**2)
+            values[:,j] = phase * self.slim_recursion(grid, j, prefactor=prefactor)
+
+        return values
+
+
+    def evaluate_at(self, grid, packetindex=None, prefactor=False):
+        r"""Evaluate the linear copmbination :math:`\Upsilon = \sum_{j=0}^J c_j \Psi_j`
+        of Hagedorn wavepackets :math:`\Psi_j` at the given nodes :math:`\gamma`.
+
+        :param grid: The grid :math:`\Gamma` containing the nodes :math:`\gamma`.
+        :type grid: A class having a :py:meth:`get_nodes(...)` method.
+        :param packetindex: The index :math:`j` of a single packet :math:`\Psi_j` to evaluate.
+                            (Defaults to ``None`` for evaluating all wavepackets.)
+        :param prefactor: Whether to include a factor of :math:`\frac{1}{\sqrt{\det(Q_j)}}`.
+        :type prefactor: Boolean, default is ``False``.
+        :return: A list of arrays or a single array containing the values of the :math:`\Psi_j` at the nodes :math:`\gamma`.
         """
         eps = self._eps
 
@@ -692,4 +719,5 @@ class LinearCombinationOfHAWPs(LinearCombinationOfWavepackets):
                 S = self._Pis[4][j,:]
                 phase = exp(1.0j * S / eps**2)
                 values = values + squeeze(self._lc_coefficients[j]) * phase * self.slim_recursion(grid, j, prefactor=prefactor)
+
         return values
