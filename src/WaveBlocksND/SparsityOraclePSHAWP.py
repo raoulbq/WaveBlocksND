@@ -9,7 +9,8 @@ at the phase space distance between both packets.
 @license: Modified BSD License
 """
 
-from numpy import abs, sqrt
+from numpy import array, abs, sqrt, sum, dot
+from numpy.linalg import norm
 
 from SparsityOracle import SparsityOracle
 
@@ -29,14 +30,12 @@ class SparsityOraclePSHAWP(SparsityOracle):
         estimators:
 
         .. math::
-            |q_k - q_l| \leq \alpha |\sigma^q_k + \sigma^q_l|
+            \|q_k - q_l\| \leq \alpha ( \|\sigma^q_k\| + \|\sigma^q_l\| )
 
         and
 
         .. math::
-            |p_k - p_l| \leq \alpha |\sigma^p_k + \sigma^p_l|
-
-        Note that the current implementation is for one-dimensional packets only.
+            \|p_k - p_l\| \leq \alpha ( \|\sigma^p_k\| + \|\sigma^p_l\| )
 
         :param factor: The factor :math:`\alpha` in the phase space distance.
                        The default value of 1.5 should be reasonable in most cases.
@@ -52,23 +51,20 @@ class SparsityOraclePSHAWP(SparsityOracle):
         :param packet: The packet :math:`\Psi_l` that is used for the 'ket' part.
         :return: ``True`` or ``False`` whether the inner product is negligible.
         """
-        # TODO: Generalize the oracle to higher dimensions
-        assert pacbra.get_dimension() == 1
-        assert packet.get_dimension() == 1
-
         qbra, Qbra, pbra, Pbra = pacbra.get_parameters(key=("q", "Q", "p", "P"))
         qket, Qket, pket, Pket = packet.get_parameters(key=("q", "Q", "p", "P"))
 
-        Kbra = pacbra.get_basis_shapes(component=component).get_basis_size() - 1
-        Kket = packet.get_basis_shapes(component=component).get_basis_size() - 1
+        kbra = array(pacbra.get_basis_shapes(component=component).find_largest_index())
+        kket = array(packet.get_basis_shapes(component=component).find_largest_index())
+        # TODO: Can there be a 'wrong' largest index in case there are more than one?
 
         eps = packet.get_eps()
 
-        sigqbra = eps*abs(Qbra)/sqrt(2.0) * sqrt(2*Kbra +1)
-        sigqket = eps*abs(Qket)/sqrt(2.0) * sqrt(2*Kket +1)
+        sigqbra = eps/sqrt(2.0) * sqrt(dot(abs(Qbra)**2, 2*kbra+1))
+        sigqket = eps/sqrt(2.0) * sqrt(dot(abs(Qket)**2, 2*kket+1))
 
-        sigpbra = eps*abs(Pbra)/sqrt(2.0) * sqrt(2*Kbra +1)
-        sigpket = eps*abs(Pket)/sqrt(2.0) * sqrt(2*Kket +1)
+        sigpbra = eps/sqrt(2.0) * sqrt(dot(abs(Pbra)**2, 2*kbra+1))
+        sigpket = eps/sqrt(2.0) * sqrt(dot(abs(Pket)**2, 2*kket+1))
 
-        return (abs(qbra - qket) <= self._factor * (sigqbra+sigqket) and
-                abs(pbra - pket) <= self._factor * (sigpbra+sigpket))
+        return (norm(qbra - qket) <= self._factor * (norm(sigqbra)+norm(sigqket)) and
+                norm(pbra - pket) <= self._factor * (norm(sigpbra)+norm(sigpket)))
