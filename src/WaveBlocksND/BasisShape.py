@@ -7,6 +7,8 @@ This file contains the abstract class for representing basis shapes.
 @license: Modified BSD License
 """
 
+from numpy import array, argmax, sum
+
 __all__ = ["BasisShape"]
 
 
@@ -136,3 +138,15 @@ class BasisShape(object):
         :raise: :py:class:`NotImplementedError` Abstract interface.
         """
         raise NotImplementedError("'BasisShape' is an abstract interface.")
+
+
+    def find_largest_index(self):
+        r"""
+        Find the index :math:`k \in \mathfrak{K}` with maximal distance
+        :math:`\sum_{d=0}^D k_d^2` from the zero index. In case of
+        multiple maxima the method returns the first one found.
+        """
+        indices = array([ node for node in self.get_node_iterator() ])
+        distances = sum(indices**2, axis=1)
+        k = tuple(indices[argmax(distances),:])
+        return k

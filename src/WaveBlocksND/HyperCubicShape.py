@@ -8,7 +8,7 @@ which is the full dense basis set.
 @license: Modified BSD License
 """
 
-from numpy import eye, vstack, integer
+from numpy import array, eye, vstack, integer
 
 from BasisShape import BasisShape
 
@@ -264,3 +264,12 @@ class HyperCubicShape(BasisShape):
                     nbh.append((d, nfw))
 
         return nbh
+
+
+    def find_largest_index(self):
+        r"""
+        Find the index :math:`k \in \mathfrak{K}` with maximal distance
+        :math:`\sum_{d=0}^D k_d^2` from the zero index. In case of
+        multiple maxima the method returns the first one found.
+        """
+        return tuple(array(self._limits) - 1)
