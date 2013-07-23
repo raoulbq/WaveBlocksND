@@ -9,7 +9,7 @@ at the phase space distance between both packets.
 @license: Modified BSD License
 """
 
-from numpy import array, abs, sqrt, sum, dot
+from numpy import array, abs, sqrt, dot
 from numpy.linalg import norm
 
 from SparsityOracle import SparsityOracle
