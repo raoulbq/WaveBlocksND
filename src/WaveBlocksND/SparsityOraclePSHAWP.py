@@ -59,8 +59,8 @@ class SparsityOraclePSHAWP(SparsityOracle):
         qbra, Qbra, pbra, Pbra = pacbra.get_parameters(key=("q", "Q", "p", "P"))
         qket, Qket, pket, Pket = packet.get_parameters(key=("q", "Q", "p", "P"))
 
-        Kbra = pacbra.get_basis_shapes(component=component).get_basis_size()
-        Kket = packet.get_basis_shapes(component=component).get_basis_size()
+        Kbra = pacbra.get_basis_shapes(component=component).get_basis_size() - 1
+        Kket = packet.get_basis_shapes(component=component).get_basis_size() - 1
 
         eps = packet.get_eps()
 
