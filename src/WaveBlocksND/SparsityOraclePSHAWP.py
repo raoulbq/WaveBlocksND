@@ -51,15 +51,25 @@ class SparsityOraclePSHAWP(SparsityOracle):
         :param packet: The packet :math:`\Psi_l` that is used for the 'ket' part.
         :return: ``True`` or ``False`` whether the inner product is negligible.
         """
+        eps = packet.get_eps()
         qbra, Qbra, pbra, Pbra = pacbra.get_parameters(key=("q", "Q", "p", "P"))
         qket, Qket, pket, Pket = packet.get_parameters(key=("q", "Q", "p", "P"))
 
-        kbra = array(pacbra.get_basis_shapes(component=component).find_largest_index())
-        kket = array(packet.get_basis_shapes(component=component).find_largest_index())
+        # First strategy
         # TODO: Can there be a 'wrong' largest index in case there are more than one?
+        #kbra = array(pacbra.get_basis_shapes(component=component).find_largest_index())
+        #kket = array(packet.get_basis_shapes(component=component).find_largest_index())
 
-        eps = packet.get_eps()
+        # Second strategy
+        Kbra = pacbra.get_basis_shapes(component=component)
+        indices = array([ node for node in Kbra.get_node_iterator() ])
+        kbra = indices.max(axis=0)
 
+        Kket = packet.get_basis_shapes(component=component)
+        indices = array([ node for node in Kket.get_node_iterator() ])
+        kket = indices.max(axis=0)
+
+        # Compute second moments
         sigqbra = eps/sqrt(2.0) * sqrt(dot(abs(Qbra)**2, 2*kbra+1))
         sigqket = eps/sqrt(2.0) * sqrt(dot(abs(Qket)**2, 2*kket+1))
 
