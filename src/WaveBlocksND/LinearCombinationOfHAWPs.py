@@ -575,7 +575,7 @@ class LinearCombinationOfHAWPs(LinearCombinationOfWavepackets):
         order basis functions.
 
         :param grid: The grid :math:`\Gamma` containing the nodes :math:`\gamma`.
-        :type grid: A class having a :py:meth:`get_nodes(...)` method.
+        :type grid: A class having a ``get_nodes(...)`` method.
         :param component: The index :math:`i` of a single component :math:`\Phi_i` to evaluate.
         :param prefactor: Whether to include a factor of :math:`\frac{1}{\sqrt{\det(Q)}}`.
         :type prefactor: Boolean, default is ``False``.
@@ -669,7 +669,7 @@ class LinearCombinationOfHAWPs(LinearCombinationOfWavepackets):
         :math:`\Upsilon = \sum_{j=0}^J c_j \Psi_j` at the given nodes :math:`\gamma`.
 
         :param grid: The grid :math:`\Gamma` containing the nodes :math:`\gamma`.
-        :type grid: A class having a :py:meth:`get_nodes(...)` method.
+        :type grid: A class having a ``get_nodes(...)`` method.
         :param prefactor: Whether to include a factor of :math:`\frac{1}{\sqrt{\det(Q_j)}}`.
         :type prefactor: Boolean, default is ``False``.
         :return: A two-dimensional ndarray :math:`H` of shape :math:`(|\Gamma|, J)` where
@@ -695,7 +695,7 @@ class LinearCombinationOfHAWPs(LinearCombinationOfWavepackets):
         of Hagedorn wavepackets :math:`\Psi_j` at the given nodes :math:`\gamma`.
 
         :param grid: The grid :math:`\Gamma` containing the nodes :math:`\gamma`.
-        :type grid: A class having a :py:meth:`get_nodes(...)` method.
+        :type grid: A class having a ``get_nodes(...)`` method.
         :param packetindex: The index :math:`j` of a single packet :math:`\Psi_j` to evaluate.
                             (Defaults to ``None`` for evaluating all wavepackets.)
         :param prefactor: Whether to include a factor of :math:`\frac{1}{\sqrt{\det(Q_j)}}`.

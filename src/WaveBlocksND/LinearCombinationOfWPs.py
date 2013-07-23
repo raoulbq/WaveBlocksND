@@ -217,7 +217,7 @@ class LinearCombinationOfWPs(LinearCombinationOfWavepackets):
         the given nodes :math:`\gamma`.
 
         :param grid: The grid :math:`\Gamma` containing the nodes :math:`\gamma`.
-        :type grid: A class having a :py:meth:`get_nodes` method.
+        :type grid: A class having a ``get_nodes`` method.
         :param component: The index :math:`i` of a single component to evaluate.
                           (Defaults to ``None`` for evaluating all components.)
         :return: A list of arrays or a single array containing the values of the
