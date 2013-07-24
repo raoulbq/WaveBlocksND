@@ -9,7 +9,7 @@ at the phase space distance between both packets.
 @license: Modified BSD License
 """
 
-from numpy import array, abs, sqrt, dot
+from numpy import array, ones, abs, sqrt, dot
 from numpy.linalg import norm
 
 from SparsityOracle import SparsityOracle
@@ -61,13 +61,19 @@ class SparsityOraclePSHAWP(SparsityOracle):
         #kket = array(packet.get_basis_shapes(component=component).find_largest_index())
 
         # Second strategy
-        Kbra = pacbra.get_basis_shapes(component=component)
-        indices = array([ node for node in Kbra.get_node_iterator() ])
-        kbra = indices.max(axis=0)
+        #Kbra = pacbra.get_basis_shapes(component=component)
+        #indices = array([ node for node in Kbra.get_node_iterator() ])
+        #kbra = indices.max(axis=0)
+        #Kket = packet.get_basis_shapes(component=component)
+        #indices = array([ node for node in Kket.get_node_iterator() ])
+        #kket = indices.max(axis=0)
 
-        Kket = packet.get_basis_shapes(component=component)
-        indices = array([ node for node in Kket.get_node_iterator() ])
-        kket = indices.max(axis=0)
+        # Third strategy
+        kbra = array(pacbra.get_basis_shapes(component=component).find_largest_index())
+        kket = array(packet.get_basis_shapes(component=component).find_largest_index())
+        D = pacbra.get_dimension()
+        kbra = norm(kbra) / sqrt(D) * ones(D)
+        kket = norm(kket) / sqrt(D) * ones(D)
 
         # Compute second moments
         sigqbra = eps/sqrt(2.0) * sqrt(dot(abs(Qbra)**2, 2*kbra+1))
