@@ -9,7 +9,7 @@ at the phase space distance between both packets.
 @license: Modified BSD License
 """
 
-from numpy import array, ones, abs, sqrt, dot
+from numpy import array, ones, abs, sqrt, dot, atleast_1d
 from numpy.linalg import norm
 
 from SparsityOracle import SparsityOracle
@@ -41,6 +41,8 @@ class SparsityOraclePSHAWP(SparsityOracle):
                        The default value of 1.5 should be reasonable in most cases.
         """
         self._factor = factor
+        self._bias_bra = False
+        self._bias_ket = False
 
 
     def is_not_zero(self, pacbra, packet, component=0):
@@ -71,6 +73,15 @@ class SparsityOraclePSHAWP(SparsityOracle):
         # Third strategy
         kbra = array(pacbra.get_basis_shapes(component=component).find_largest_index())
         kket = array(packet.get_basis_shapes(component=component).find_largest_index())
+
+        # Bias for small k
+        if self._bias_bra:
+            if norm(kbra) < self._bra_min_k_norm:
+                kbra = self._bra_min_k
+        if self._bias_ket:
+            if norm(kket) < self._ket_min_k_norm:
+                kket = self._ket_min_k
+
         D = pacbra.get_dimension()
         kbra = norm(kbra) / sqrt(D) * ones(D)
         kket = norm(kket) / sqrt(D) * ones(D)
@@ -84,3 +95,17 @@ class SparsityOraclePSHAWP(SparsityOracle):
 
         return (norm(qbra - qket) <= self._factor * (norm(sigqbra)+norm(sigqket)) and
                 norm(pbra - pket) <= self._factor * (norm(sigpbra)+norm(sigpket)))
+
+
+    def bias(self, bramink=None, ketmink=None):
+        r"""Bias the sparsity oracle.
+        """
+        if bramink is not None:
+            self._bra_min_k = bramink
+            self._bra_min_k_norm = norm(atleast_1d(bramink))
+            self._bias_bra = True
+
+        if ketmink is not None:
+            self._ket_min_k = ketmink
+            self._ket_min_k_norm = norm(atleast_1d(ketmink))
+            self._bias_ket = True
