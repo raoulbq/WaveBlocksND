@@ -98,7 +98,14 @@ class SparsityOraclePSHAWP(SparsityOracle):
 
 
     def bias(self, bramink=None, ketmink=None):
-        r"""Bias the sparsity oracle.
+        r"""Bias the sparsity oracle. The oracle tends to underestimate
+        the wavepacket spread for small basis shapes :math:`\mathfrak{K}`
+        and therefore small maximal indices :math:`k \in \mathfrak{K}`.
+        This method allows to set a minimal :math:`k` for both the bra
+        and ket independently.
+
+        :param bramink: Minimal :math:`k` for :math:`\langle \Psi |`
+        :param ketmink: Minimal :math:`k` for :math:`| \Psi \rangle`
         """
         if bramink is not None:
             self._bra_min_k = bramink
