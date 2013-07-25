@@ -172,10 +172,19 @@ gauss_hill_2d["potential"] = "exp(-(sigmax*x**2+sigmay*y**2))"
 gauss_hill_2d["defaults"] = {"sigmax":"1", "sigmay":"1"}
 
 # A threefold morse potential
+# This formula is for real inputs only due to atan2
 morse_threefold = {}
 morse_threefold["variables"] = ["x", "y"]
 morse_threefold["potential"] = "(1 - exp((x**2+y**2) * (-sigma-(1-cos(3*atan2(y,x)))**2/16)))**2"
 morse_threefold["defaults"] = {"sigma":"0.05"}
+
+# A threefold morse potential
+# This formula has a singularity at (0,0)
+morse_threefold_2 = {}
+morse_threefold_2["variables"] = ["x", "y"]
+morse_threefold_2["potential"] = """(1 - exp( (-16*sigma*(x**2+y**2)**3-(x*(x**2-3*y**2)-(x**2+y**2)**(3/2))**2)
+                                              /(16*(x**2 + y**2)**2) ) )**2"""
+morse_threefold_2["defaults"] = {"sigma":"0.05"}
 
 # A 2D tunneling example called the 'Eckart bottleneck potential'
 eckart_bn = {}
