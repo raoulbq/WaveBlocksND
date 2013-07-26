@@ -16,6 +16,8 @@ from DenseGrid import DenseGrid
 from TensorProductGrid import TensorProductGrid
 from GridWrapper import GridWrapper
 
+from PhaseSpaceLattice import PhaseSpaceLattice
+
 # Wavefunctions
 from WaveFunction import WaveFunction
 
