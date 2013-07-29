@@ -165,7 +165,7 @@ class GaussianIntegral(Quadrature):
         cket = squeeze(self._packet.get_coefficient_vector(component=col))
         result = conjugate(cbra) * cket * self.exact_result(Pibra[:4], Piket[:4], eps, D)
         phase = exp(1.0j/eps**2 * (Piket[4]-conjugate(Pibra[4])))
-        return phase * result
+        return squeeze(phase * result)
 
 
     def perform_build_matrix(self, row, col):
