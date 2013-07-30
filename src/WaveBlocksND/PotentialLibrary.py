@@ -192,6 +192,12 @@ eckart_bn["variables"] = ["x", "y"]
 eckart_bn["potential"] = "v0*cosh(a*x)**(-2) + k/2*(1-sigma*exp(-lam*x**2)) * y**2"
 eckart_bn["defaults"] = {"v0":"0.425", "a":"1.3624", "k":"0.06784", "sigma":"0.5", "lam":"0.25"}
 
+# Henon-Heiles 2D
+henon_heiles = {}
+henon_heiles["variables"] = ["x", "y"]
+henon_heiles["potential"] = "1/2*a*(x**2 + y**2) + b*(x**2*y - y**3/3.0)"
+henon_heiles["defaults"] = {"a":"1", "b":"1/2"}
+
 #######################################################################
 # Potentials in three dimensions and with one energy level (D=3, N=1) #
 #######################################################################
