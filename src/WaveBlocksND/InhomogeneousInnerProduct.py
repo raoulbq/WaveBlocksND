@@ -12,29 +12,27 @@ and expectation values and the matrix elements of an arbitrary operator.
 from numpy import zeros, complexfloating, sum, cumsum
 
 from InnerProduct import InnerProduct
+from InnerProductCompatibility import InnerProductCompatibility
 
 __all__ = ["InhomogeneousInnerProduct"]
 
 
-class InhomogeneousInnerProduct(InnerProduct):
+class InhomogeneousInnerProduct(InnerProduct, InnerProductCompatibility):
 
-    def __init__(self, quad=None):
+    def __init__(self, delegate=None):
         r"""
         This class computes the inhomogeneous inner product
         :math:`\langle\Psi|f|\Psi^\prime\rangle`.
 
-        :param quad: The delegate inner product.
-        :type quad: A :py:class:`Quadrature` subclass instance.
+        :param delegate: The delegate inner product.
+        :type delegate: A :py:class:`Quadrature` subclass instance.
         """
         # Pure convenience to allow setting of quadrature instance in constructor
-        if quad is not None:
-            self.set_quadrature(quad)
-        else:
-            self._quad = None
+        self.set_delegate(delegate)
 
 
     def __str__(self):
-        return "Inhomogeneous inner product computed by " + str(self._quad)
+        return "Inhomogeneous inner product computed by " + str(self._delegate)
 
 
     def get_description(self):
@@ -45,8 +43,16 @@ class InhomogeneousInnerProduct(InnerProduct):
         """
         d = {}
         d["type"] = "InhomogeneousInnerProduct"
-        d["delegate"] = self._quad.get_description()
+        d["delegate"] = self._delegate.get_description()
         return d
+
+
+    def get_kind(self):
+        return ("homogeneous", "inhomogeneous",)
+
+
+    def require_kind(self):
+        return ("inhomogeneous",)
 
 
     def quadrature(self, pacbra, packet=None, operator=None, summed=False, component=None, diag_component=None, diagonal=False, eval_at_once=False):
@@ -75,8 +81,8 @@ class InhomogeneousInnerProduct(InnerProduct):
         # TODO: Consider adding 'is_diagonal' flag to make computations cheaper if we know the operator is diagonal
         # TODO: Should raise Exceptions if pacbra and packet are incompatible wrt N, K etc
 
-        self._quad.initialize_packet(pacbra, packet)
-        self._quad.initialize_operator(operator, eval_at_once=eval_at_once)
+        self._delegate.initialize_packet(pacbra, packet)
+        self._delegate.initialize_operator(operator, eval_at_once=eval_at_once)
 
         # Packets can have different number of components
         Nbra = pacbra.get_number_components()
@@ -93,14 +99,14 @@ class InhomogeneousInnerProduct(InnerProduct):
             rows = xrange(Nbra)
             cols = xrange(Nket)
 
-        self._quad.prepare(rows, cols)
+        self._delegate.prepare(rows, cols)
 
         # Compute the quadrature
         result = []
 
         for row in rows:
             for col in cols:
-                I = self._quad.perform_quadrature(row, col)
+                I = self._delegate.perform_quadrature(row, col)
                 result.append(I)
 
         if summed is True:
@@ -139,8 +145,8 @@ class InhomogeneousInnerProduct(InnerProduct):
         # TODO: Consider adding 'is_diagonal' flag to make computations cheaper if we know the operator is diagonal
         # TODO: Should raise Exceptions if pacbra and packet are incompatible wrt N, K etc
 
-        self._quad.initialize_packet(pacbra, packet)
-        self._quad.initialize_operator(operator, matrix=True, eval_at_once=eval_at_once)
+        self._delegate.initialize_packet(pacbra, packet)
+        self._delegate.initialize_operator(operator, matrix=True, eval_at_once=eval_at_once)
 
         # Packets can have different number of components
         Nbra = pacbra.get_number_components()
@@ -152,13 +158,13 @@ class InhomogeneousInnerProduct(InnerProduct):
         partitionb = [0] + list(cumsum(Kbra))
         partitionk = [0] + list(cumsum(Kket))
 
-        self._quad.prepare(range(Nbra), range(Nket))
+        self._delegate.prepare(range(Nbra), range(Nket))
 
         result = zeros((sum(Kbra),sum(Kket)), dtype=complexfloating)
 
         for row in xrange(Nbra):
             for col in xrange(Nket):
-                M = self._quad.perform_build_matrix(row, col)
+                M = self._delegate.perform_build_matrix(row, col)
                 # Put the result into the global storage
                 result[partitionb[row]:partitionb[row+1], partitionk[col]:partitionk[col+1]] = M
 
