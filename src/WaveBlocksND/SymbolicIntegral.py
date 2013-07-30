@@ -80,7 +80,7 @@ class SymbolicIntegral(Quadrature):
                        the operator call syntax.
         :param eval_at_once: Flag to tell whether the operator supports the ``entry=(r,c)`` call syntax.
                              Since we do not support operators at all, it has no effect.
-        :type eval_at_once: Boolean, default is ``False``.):
+        :type eval_at_once: Boolean, default is ``False``.
         """
         # Operator is None is interpreted as identity transformation
         if operator is None:
