@@ -13,20 +13,18 @@ from numpy import zeros, ones, squeeze, conjugate, dot, einsum
 from scipy.linalg import sqrtm, inv #, svd, diagsvd
 
 from DirectQuadrature import DirectQuadrature
+from InnerProductCompatibility import InnerProductCompatibility
 
 __all__ = ["DirectHomogeneousQuadrature"]
 
 
-class DirectHomogeneousQuadrature(DirectQuadrature):
+class DirectHomogeneousQuadrature(DirectQuadrature, InnerProductCompatibility):
     r"""
     """
 
     def __init__(self, QR=None):
         # Pure convenience to allow setting of quadrature rule in constructor
-        if QR is not None:
-            self.set_qr(QR)
-        else:
-            self._QR = None
+        self.set_qr(QR)
 
 
     def __str__(self):
@@ -43,6 +41,10 @@ class DirectHomogeneousQuadrature(DirectQuadrature):
         d["type"] = "DirectHomogeneousQuadrature"
         d["qr"] = self._QR.get_description()
         return d
+
+
+    def get_kind(self):
+        return ("homogeneous",)
 
 
     def initialize_packet(self, packet):

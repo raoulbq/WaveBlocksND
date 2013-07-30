@@ -7,14 +7,16 @@ methods. InnerProducts are classes that really can compute things
 like inner products (brakets) etc.
 
 @author: R. Bourquin
-@copyright: Copyright (C) 2011, 2012 R. Bourquin
+@copyright: Copyright (C) 2011, 2012, 2013 R. Bourquin
 @license: Modified BSD License
 """
+
+from InnerProductCompatibility import InnerProductCompatibility
 
 __all__ = ["InnerProduct"]
 
 
-class InnerProduct(object):
+class InnerProduct(InnerProductCompatibility):
     r"""This class is an abstract interface to inner products in general.
     """
 
@@ -31,7 +33,7 @@ class InnerProduct(object):
 
 
     def get_description(self):
-        r"""Return a description of this quadrature object.
+        r"""Return a description of this inner product object.
         A description is a ``dict`` containing all key-value pairs
         necessary to reconstruct the current instance. A description
         never contains any data.
@@ -39,24 +41,26 @@ class InnerProduct(object):
         raise NotImplementedError("'InnerProduct' is an abstract interface.")
 
 
-    # TODO: Rename 'quadrature', the delegate can be something other than a classical quadrature.
-    def set_quadrature(self, quad):
+    def set_delegate(self, delegate):
         r"""Set the :py:class:`Quadrature` subclass instance used for quadrature.
 
-        :param quad: The new :py:class:`Quadrature` instance.
+        :param delegate: The new :py:class:`Quadrature` instance.
         """
         # TODO: Allow a list of quads, one quad for each component of Psi
-        self._quad = quad
+        if delegate is not None:
+            if self.compatible(self, delegate):
+                self._delegate = delegate
+        else:
+            self._delegate = delegate
 
 
-    # TODO: Rename 'quadrature', the delegate can be something other than a classical quadrature.
-    def get_quadrature(self):
+    def get_delegate(self):
         r"""Return the :py:class:`Quadrature` subclass instance
         used for evaluation of this inner product.
 
         :return: The current instance of the quadrature.
         """
-        return self._quad
+        return self._delegate
 
 
     def quadrature(self):
