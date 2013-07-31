@@ -15,12 +15,11 @@ from scipy.linalg import inv, det
 from scipy import exp
 
 from Quadrature import Quadrature
-from InnerProductCompatibility import InnerProductCompatibility
 
 __all__ = ["GaussianIntegral"]
 
 
-class GaussianIntegral(Quadrature, InnerProductCompatibility):
+class GaussianIntegral(Quadrature):
     r"""
     """
 
@@ -43,10 +42,6 @@ class GaussianIntegral(Quadrature, InnerProductCompatibility):
         d = {}
         d["type"] = "GaussianIntegral"
         return d
-
-
-    def get_kind(self):
-        return ("homogeneous", "inhomogeneous")
 
 
     def initialize_packet(self, pacbra, packet=None):
