@@ -37,9 +37,6 @@ class LinearCombinationOfWPs(LinearCombinationOfWavepackets):
         self._number_packets = number_packets
         self._coefficients = zeros((number_packets,1), dtype=complexfloating)
 
-        # TODO: Handle multi-component packets
-        assert number_components == 1
-
 
     def __str__(self):
         r"""
