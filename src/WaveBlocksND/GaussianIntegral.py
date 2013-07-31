@@ -189,8 +189,6 @@ class GaussianIntegral(Quadrature, InnerProductCompatibility):
         D = self._packet.get_dimension()
         Pibra = self._pacbra.get_parameters(component=row)
         Piket = self._packet.get_parameters(component=col)
-        cbra = squeeze(self._pacbra.get_coefficient_vector(component=row))
-        cket = squeeze(self._packet.get_coefficient_vector(component=col))
-        result = conjugate(cbra) * cket * self.exact_result(Pibra[:4], Piket[:4], eps, D)
+        result = self.exact_result(Pibra[:4], Piket[:4], eps, D)
         phase = exp(1.0j/eps**2 * (Piket[4]-conjugate(Pibra[4])))
         return phase * result
