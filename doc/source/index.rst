@@ -118,6 +118,7 @@ Inner Products
    waveblocks_classes/SparsityOracle.rst
    waveblocks_classes/SparsityOracleTrue.rst
    waveblocks_classes/SparsityOraclePSHAWP.rst
+   waveblocks_classes/SparsityOracleGIHAWP.rst
 
 Observables
 ^^^^^^^^^^^

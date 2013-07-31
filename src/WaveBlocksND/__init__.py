@@ -92,6 +92,7 @@ from NSDInhomogeneous import NSDInhomogeneous
 from SparsityOracle import SparsityOracle
 from SparsityOracleTrue import SparsityOracleTrue
 from SparsityOraclePSHAWP import SparsityOraclePSHAWP
+from SparsityOracleGIHAWP import SparsityOracleGIHAWP
 
 # Basis transformations
 from BasisTransformation import BasisTransformation
