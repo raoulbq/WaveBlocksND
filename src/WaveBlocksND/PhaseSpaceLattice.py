@@ -17,21 +17,25 @@ class PhaseSpaceLattice(object):
     and bounded by an energy delta :math:`\Delta E`.
     """
 
-    def __init__(self, potential, energy, energydelta, eps):
+    def __init__(self, potential, energy, energydelta, eps, D):
         r"""
         Configure a new phase space lattice centered around an energy :math:`E_0`
         and bounded by an energy delta :math:`\Delta E`. The actual lattice points
         are computed by the member function :py:func:`compute_lattice`.
 
         :param potential: The potential :math:`V`.
+        :type potential: Not a :py:class:`MatrixPotential` instance but possible a (partially evaluated)
+                         member method like :py:func:`evaluate_at` or any scalar valued function.
         :param energy: The energy :math:`E_0` around which to center the lattice points.
-        :param energydelta: The factor :math:`\alpha` of the energy delta :math:`\Delta E = \alpha \varepsilon`.
+        :param energydelta: The energy delta :math:`\Delta E`.
         :param eps: The semiclassical scaling parameter :math:`\varepsilon`.
+        :param D: The dimensionality :math:`D` of position space.
         """
         self._potential = potential
         self._eps = eps
         self._energy = energy
         self._energydelta = energydelta
+        self._dimension = D
         self._lattice_computed = False
 
 
@@ -47,7 +51,7 @@ class PhaseSpaceLattice(object):
                         for all dimensions :math:`d \in [0,\ldots,D-1]`.
         :type plimits: A list of pairs of floats.
         """
-        dimension = self._potential.get_dimension()
+        dimension = self._dimension
         latdist = 0.75 * self._eps * sqrt(pi)
 
         qslicers = [ slice(lims[0], lims[1]+latdist, latdist) for lims in qlimits ]
@@ -56,8 +60,7 @@ class PhaseSpaceLattice(object):
         qgrid = array(mgrid[qslicers], dtype=complexfloating).reshape((dimension, -1))
         pgrid = array(mgrid[pslicers], dtype=complexfloating).reshape((dimension, -1))
 
-        # TODO: Handle more general potential surfaces
-        qvals = self._potential.evaluate_at(qgrid, entry=(0,0))
+        qvals = self._potential(qgrid)
         pvals = 0.5 * einsum("ij,ij->j", pgrid, pgrid).reshape(-1,1)
 
         Z = qvals + pvals
