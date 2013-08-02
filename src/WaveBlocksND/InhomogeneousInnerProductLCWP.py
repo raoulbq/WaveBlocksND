@@ -99,18 +99,20 @@ class InhomogeneousInnerProductLCWP(InnerProduct, InnerProductCompatibility):
 
         Jbra = lcbra.get_number_packets()
         Jket = lcket.get_number_packets()
+        pacbras = lcbra.get_wavepackets()
+        packets = lcket.get_wavepackets()
 
         M = zeros((Jbra, Jket), dtype=complexfloating)
 
         if self._obey_oracle:
-            for row, pacbra in enumerate(lcbra.get_wavepackets()):
-                for col, packet in enumerate(lcket.get_wavepackets()):
+            for row, pacbra in enumerate(pacbras):
+                for col, packet in enumerate(packets):
                     if self._oracle.is_not_zero(pacbra, packet):
                         # TODO: Handle multi-component packets
                         M[row, col] = self._quad.quadrature(pacbra, packet, operator=operator, component=0)
         else:
-            for row, pacbra in enumerate(lcbra.get_wavepackets()):
-                for col, packet in enumerate(lcket.get_wavepackets()):
+            for row, pacbra in enumerate(pacbras):
+                for col, packet in enumerate(packets):
                     # TODO: Handle multi-component packets
                     M[row, col] = self._delegate.quadrature(pacbra, packet, operator=operator, component=0)
 
@@ -137,18 +139,20 @@ class InhomogeneousInnerProductLCWP(InnerProduct, InnerProductCompatibility):
 
         Jbra = lcbra.get_number_packets()
         Jket = lcket.get_number_packets()
+        pacbras = lcbra.get_wavepackets()
+        packets = lcket.get_wavepackets()
 
         M = zeros((Jbra, Jket), dtype=complexfloating)
 
         if self._obey_oracle:
-            for row, pacbra in enumerate(lcbra.get_wavepackets()):
-                for col, packet in enumerate(lcket.get_wavepackets()):
+            for row, pacbra in enumerate(pacbras):
+                for col, packet in enumerate(packets):
                     if self._oracle.is_not_zero(pacbra, packet):
                         # TODO: Handle multi-component packets
                         M[row, col] = self._quad.quadrature(pacbra, packet, operator=operator, component=0)
         else:
-            for row, pacbra in enumerate(lcbra.get_wavepackets()):
-                for col, packet in enumerate(lcket.get_wavepackets()):
+            for row, pacbra in enumerate(pacbras):
+                for col, packet in enumerate(packets):
                     # TODO: Handle multi-component packets
                     M[row, col] = self._delegate.quadrature(pacbra, packet, operator=operator, component=0)
 
