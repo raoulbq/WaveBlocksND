@@ -12,16 +12,19 @@ import pickle
 import numpy as np
 
 
-def add_lincombhawp(self, parameters, timeslots=None, lincombsize=None, blockid=0, key=("q","p","Q","P","S")):
+def add_lincombhawp(self, parameters, timeslots=None, lincombsize=None, wavepacketsize=None, blockid=0, key=("q","p","Q","P","S")):
     r"""Add storage for the linear combination of Hagedorn wavepackets.
 
     :param parameters: An :py:class:`ParameterProvider` instance with at
                        least the keys ``dimension`` and ``ncomponents``.
     :param timeslots: The number of time slots we need. Can be ``None``
                       to get automatically growing datasets.
-    :param lincombsize: The size ``J`` of each of the linear combination. If specified
-                        this remains fixed for all timeslots. Can be ``None`` to
-                        get automatically growing datasets.
+    :param lincombsize: The (maximal) size ``J`` of the linear combination of wavepackets. If specified
+                        this remains fixed for all timeslots. Can be set to ``None`` (default)
+                        to get automatically growing datasets.
+    :param wavepacketsize: The (maximal) basis shape size ``K`` of each of the wavepackets. If specified
+                           this remains fixed for all timeslots. Can be set to ``None`` (default)
+                           to get automatically growing datasets.
     :param blockid: The ID of the data block to operate on.
     :param key: Specify which parameters to save. All are independent.
     :type key: Tuple of valid identifier strings that are ``q``, ``p``, ``Q``, ``P``, ``S`` and ``adQ``.
@@ -32,16 +35,6 @@ def add_lincombhawp(self, parameters, timeslots=None, lincombsize=None, blockid=
 
     # TODO: Handle multi-component packets
     assert N == 1
-
-    # The overall group containing all lincombwp data
-    grp_lc = self._srf[self._prefixb+str(blockid)].require_group("lincombhawp")
-
-    # The group for storing the basis shapes
-    grp_wpbs = grp_lc.create_group("basisshapes")
-    # The group for storing the parameter set Pi
-    grp_wppi = grp_lc.create_group("Pi")
-    # The group for storing the coefficients
-    grp_wpci = grp_lc.create_group("wp_coefficients")
 
     if timeslots is None:
         T = 0
@@ -57,6 +50,23 @@ def add_lincombhawp(self, parameters, timeslots=None, lincombsize=None, blockid=
         J = lincombsize
         Js = lincombsize
 
+    if wavepacketsize is None:
+        K = 0
+        Ks = None
+    else:
+        K = wavepacketsize
+        Ks = wavepacketsize
+
+    # The overall group containing all lincombwp data
+    grp_lc = self._srf[self._prefixb+str(blockid)].require_group("lincombhawp")
+
+    # The group for storing the wavepacket basis shapes
+    grp_wpbs = grp_lc.create_group("basisshapes")
+    # The group for storing the wavepacket parameter set Pi
+    grp_wppi = grp_lc.create_group("Pi")
+    # The group for storing the wavepacket coefficients
+    grp_wpci = grp_lc.create_group("wp_coefficients")
+
     # Create the dataset with appropriate parameters
     daset_tg_lc = grp_lc.create_dataset("timegrid_lc_coefficients", (T,), dtype=np.integer, chunks=True, maxshape=(Ts,), fillvalue=-1)
     daset_tg_wp = grp_lc.create_dataset("timegrid_wp_parameters", (T,), dtype=np.integer, chunks=True, maxshape=(Ts,), fillvalue=-1)
@@ -67,7 +77,7 @@ def add_lincombhawp(self, parameters, timeslots=None, lincombsize=None, blockid=
     # Linear combination wavepackets
     daset_bs = grp_lc.create_dataset("basis_shapes_hashes", (T,J,N), dtype=np.integer, chunks=True, maxshape=(Ts,Js,N))
     daset_bsi = grp_lc.create_dataset("basis_sizes", (T,J,N), dtype=np.integer, chunks=True, maxshape=(Ts,Js,N))
-    # Wavepackets parameters
+    # Wavepacket parameters
     if "q" in key and not "q" in grp_wppi.keys():
         daset_q = grp_wppi.create_dataset("q", (T,J,D), dtype=np.complexfloating, chunks=True, maxshape=(Ts,Js,D))
     if "p" in key and not "p" in grp_wppi.keys():
@@ -78,9 +88,9 @@ def add_lincombhawp(self, parameters, timeslots=None, lincombsize=None, blockid=
         daset_P = grp_wppi.create_dataset("P", (T,J,D,D), dtype=np.complexfloating, chunks=True, maxshape=(Ts,Js,D,D))
     if "S" in key and not "S" in grp_wppi.keys():
         daset_S = grp_wppi.create_dataset("S", (T,J,1), dtype=np.complexfloating, chunks=True, maxshape=(Ts,Js,1))
-    # Wavepackets coefficients
+    # Wavepacket coefficients
     for i in xrange(N):
-        daset_c_i = grp_wpci.create_dataset("c_"+str(i), (T,J,0), dtype=np.complexfloating, chunks=True, maxshape=(Ts,Js,None))
+        daset_c_i = grp_wpci.create_dataset("c_"+str(i), (T,J,K), dtype=np.complexfloating, chunks=True, maxshape=(Ts,Js,Ks))
 
     # Attach pointer to timegrid
     daset_tg_lc.attrs["pointer"] = 0

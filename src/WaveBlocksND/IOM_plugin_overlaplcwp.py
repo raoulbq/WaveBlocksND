@@ -29,11 +29,12 @@ def add_overlaplcwp(self, parameters, timeslots=None, matrixsize=None, blockid=0
 
     :param parameters: A :py:class:`ParameterProvider` instance. It can
                        be empty and is not used at the moment.
-    :param timeslots: The number of time slots we need. Can be ``None``
+    :param timeslots: The number of time slots we need. Can be set to ``None``
                       to get automatically growing datasets.
-    :param matrixsize: The size of each of the overlap matrices. If specified
-                       this is fix for all timeslots. Can be ``None`` to
-                       get automatically growing datasets.
+    :param matrixsize: The (maximal) size of each of the overlap matrices. If specified
+                       this remains fixed for all timeslots. Can be set to ``None`` (default)
+                       to get automatically growing datasets.
+    :type matrixsize: Pair of integers or ``None``.
     :param blockid: The ID of the data block to operate on.
     :param key: Specify which overlap matrices to save. All are independent.
     :type key: Tuple of valid identifier strings that are ``ov``, ``ovkin`` and ``ovpot``.
@@ -45,18 +46,20 @@ def add_overlaplcwp(self, parameters, timeslots=None, matrixsize=None, blockid=0
     grp_ov = self._srf[self._prefixb+str(blockid)].create_group("overlaplcwp")
 
     if timeslots is None:
-        nslots = 0
-        sslots = None
+        T = 0
+        Ts = None
     else:
-        nslots = timeslots
-        sslots = timeslots
+        T = timeslots
+        Ts = timeslots
 
     if matrixsize is None:
-        nmatrix = 0
-        smatrix = None
+        Jr = 0
+        Jc = 0
+        Jrs = None
+        Jcs = None
     else:
-        nmatrix = matrixsize
-        smatrix = matrixsize
+        Jr, Jc = matrixsize
+        Jrs, Jcs = matrixsize
 
     for k in key:
         if not k in valid_keys:
@@ -64,9 +67,9 @@ def add_overlaplcwp(self, parameters, timeslots=None, matrixsize=None, blockid=0
 
         name = k[2:]
 
-        daset_tg = grp_ov.create_dataset("timegrid"+name, (nslots,), dtype=np.integer, chunks=True, maxshape=(sslots,), fillvalue=-1)
-        daset_shape = grp_ov.create_dataset("shape"+name, (nslots,2), dtype=np.integer, chunks=True, maxshape=(sslots,2))
-        daset_ov = grp_ov.create_dataset("overlap"+name, (nslots,nmatrix,nmatrix), dtype=np.complexfloating, chunks=True, maxshape=(sslots,smatrix,smatrix))
+        daset_tg = grp_ov.create_dataset("timegrid"+name, (T,), dtype=np.integer, chunks=True, maxshape=(Ts,), fillvalue=-1)
+        daset_shape = grp_ov.create_dataset("shape"+name, (T,2), dtype=np.integer, chunks=True, maxshape=(Ts,2))
+        daset_ov = grp_ov.create_dataset("overlap"+name, (T,Jr,Jc), dtype=np.complexfloating, chunks=True, maxshape=(Ts,Jrs,Jcs))
 
         daset_tg.attrs["pointer"] = 0
 
