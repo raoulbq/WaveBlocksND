@@ -162,15 +162,10 @@ class GaussianIntegral(Quadrature, InnerProductCompatibility):
         :param row: The index :math:`j` of the component :math:`\Phi^\prime_j` of :math:`\Psi^\prime`.
         :return: A single complex floating point number.
         """
-        eps = self._packet.get_eps()
-        D = self._packet.get_dimension()
-        Pibra = self._pacbra.get_parameters(component=row)
-        Piket = self._packet.get_parameters(component=col)
+        I = self.perform_build_matrix(row, col)
         cbra = squeeze(self._pacbra.get_coefficient_vector(component=row))
         cket = squeeze(self._packet.get_coefficient_vector(component=col))
-        result = conjugate(cbra) * cket * self.exact_result(Pibra[:4], Piket[:4], eps, D)
-        phase = exp(1.0j/eps**2 * (Piket[4]-conjugate(Pibra[4])))
-        return squeeze(phase * result)
+        return squeeze(conjugate(cbra) * cket * I)
 
 
     def perform_build_matrix(self, row, col):
