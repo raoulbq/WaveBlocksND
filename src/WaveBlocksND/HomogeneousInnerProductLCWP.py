@@ -92,33 +92,8 @@ class HomogeneousInnerProductLCWP(InnerProduct, InnerProductCompatibility):
         :return: The value of :math:`\langle\Upsilon|f|\Upsilon\rangle`.
         :type: An :py:class:`ndarray`.
         """
-        J = lcket.get_number_packets()
-        packets = lcket.get_wavepackets()
-
-        M = zeros((J, J), dtype=complexfloating)
-
-        # Elements below the diagonal
-        if self._obey_oracle:
-            for row, pacbra in enumerate(packets):
-                for col, packet in enumerate(packets[:row]):
-                    if self._oracle.is_not_zero(pacbra, packet):
-                        # TODO: Handle multi-component packets
-                        M[row, col] = self._quad.quadrature(pacbra, packet, operator=operator, component=0)
-        else:
-            for row, pacbra in enumerate(packets):
-                for col, packet in enumerate(packets[:row]):
-                    # TODO: Handle multi-component packets
-                    M[row, col] = self._delegate.quadrature(pacbra, packet, operator=operator, component=0)
-
-        M = M + conjugate(transpose(M))
-
-        # Diagonal Elements
-        for d, packet in enumerate(packets):
-            # TODO: Handle multi-component packets
-            M[d, d] = self._delegate.quadrature(packet, packet, operator=operator, component=0)
-
+        M = self.build_matrix(lcket, operator=operator)
         c = lcket.get_coefficients()
-
         return dot(conjugate(transpose(c)), dot(M, c))
 
 
