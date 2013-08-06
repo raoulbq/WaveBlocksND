@@ -3,7 +3,7 @@
 IOM plugin providing functions for handling norm data.
 
 @author: R. Bourquin
-@copyright: Copyright (C) 2010, 2011, 2012 R. Bourquin
+@copyright: Copyright (C) 2010, 2011, 2012, 2013 R. Bourquin
 @license: Modified BSD License
 """
 
@@ -15,26 +15,25 @@ def add_norm(self, parameters, timeslots=None, blockid=0):
 
     :param parameters: A :py:class:`ParameterProvider` instance containing
                        at least the key `ncomponents`.
-    :param timeslots: The number of time slots we need. Can be ``None``
+    :param timeslots: The number of time slots we need. Can be set to ``None``
                       to get automatically growing datasets.
     :param blockid: The ID of the data block to operate on.
     """
-    grp_ob = self._srf[self._prefixb+str(blockid)].require_group("observables")
-
-    # Create the dataset with appropriate parameters
-    grp_no = grp_ob.create_group("norm")
+    N = parameters["ncomponents"]
 
     if timeslots is None:
-        # This case is event based storing
-        daset_n = grp_no.create_dataset("norm", (0, parameters["ncomponents"]), dtype=np.floating, chunks=True, maxshape=(None,parameters["ncomponents"]))
-        daset_tg = grp_no.create_dataset("timegrid", (0,), dtype=np.integer, chunks=True, maxshape=(None,))
+        T = 0
+        Ts = None
     else:
-        # User specified how much space is necessary.
-        daset_n = grp_no.create_dataset("norm", (timeslots, parameters["ncomponents"]), dtype=np.floating)
-        daset_tg = grp_no.create_dataset("timegrid", (timeslots,), dtype=np.integer)
+        T = timeslots
+        Ts = timeslots
 
-        # Mark all steps as invalid
-        daset_tg[...] = -1.0
+    # Check that the "observables" group is present
+    grp_ob = self._srf[self._prefixb+str(blockid)].require_group("observables")
+    # Create the dataset with appropriate parameters
+    grp_no = grp_ob.create_group("norm")
+    daset_tg = grp_no.create_dataset("timegrid", (N,), dtype=np.integer, chunks=True, maxshape=(Ts,), fillvalue=-1)
+    daset_n = grp_no.create_dataset("norm", (T,N), dtype=np.floating, chunks=(64,N), maxshape=(Ts,N))
 
     daset_tg.attrs["pointer"] = 0
 

@@ -3,7 +3,7 @@
 IOM plugin providing functions for handling wavefunction data.
 
 @author: R. Bourquin
-@copyright: Copyright (C) 2010, 2011, 2012 R. Bourquin
+@copyright: Copyright (C) 2010, 2011, 2012, 2013 R. Bourquin
 @license: Modified BSD License
 """
 
@@ -21,7 +21,7 @@ def add_wavefunction(self, parameters, flat=False, timeslots=None, blockid=0):
                  in a hypercubic shape :math:`(N_1, ..., N_D)` or
                  in a flat shape :math:`(D, |\Gamma|)` with :math:`|\Gamma| = \prod_i^D N_i`.
     :type flat: Boolean, default is ``False``.
-    :param timeslots: The number of time slots we need. Can be ``None``
+    :param timeslots: The number of time slots we need. Can be set to ``None``
                       to get automatically growing datasets.
     :param blockid: The ID of the data block to operate on.
     """
@@ -33,18 +33,16 @@ def add_wavefunction(self, parameters, flat=False, timeslots=None, blockid=0):
     else:
         datashape = [parameters["ncomponents"]] + list(parameters["number_nodes"])
 
-    # Create the dataset with appropriate parameters
     if timeslots is None:
-        # This case is event based storing
-        daset_psi = grp_wf.create_dataset("Psi", [0]+datashape, dtype=np.complexfloating, chunks=True, maxshape=[None]+datashape)
-        daset_psi_tg = grp_wf.create_dataset("timegrid", [0], dtype=np.integer, chunks=True, maxshape=[None])
+        T = 0
+        Ts = None
     else:
-        # User specified how much space is necessary.
-        daset_psi = grp_wf.create_dataset("Psi", [timeslots]+datashape, dtype=np.complexfloating)
-        daset_psi_tg = grp_wf.create_dataset("timegrid", [timeslots], dtype=np.integer)
+        T = timeslots
+        Ts = timeslots
 
-        # Mark all steps as invalid
-        daset_psi_tg[...] = -1.0
+    # TODO: Improve chunking
+    daset_psi_tg = grp_wf.create_dataset("timegrid", [T], dtype=np.integer, chunks=True, maxshape=[Ts], fillvalue=-1)
+    daset_psi = grp_wf.create_dataset("Psi", [T]+datashape, dtype=np.complexfloating, chunks=True, maxshape=[Ts]+datashape)
 
     daset_psi_tg.attrs["pointer"] = 0
 
