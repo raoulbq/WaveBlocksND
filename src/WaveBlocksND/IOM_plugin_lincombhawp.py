@@ -17,7 +17,7 @@ def add_lincombhawp(self, parameters, timeslots=None, lincombsize=None, wavepack
 
     :param parameters: An :py:class:`ParameterProvider` instance with at
                        least the keys ``dimension`` and ``ncomponents``.
-    :param timeslots: The number of time slots we need. Can be ``None``
+    :param timeslots: The number of time slots we need. Can be set to ``None``
                       to get automatically growing datasets.
     :param lincombsize: The (maximal) size ``J`` of the linear combination of wavepackets. If specified
                         this remains fixed for all timeslots. Can be set to ``None`` (default)
@@ -73,24 +73,24 @@ def add_lincombhawp(self, parameters, timeslots=None, lincombsize=None, wavepack
     daset_tg_wc = grp_lc.create_dataset("timegrid_wp_coefficients", (T,), dtype=np.integer, chunks=True, maxshape=(Ts,), fillvalue=-1)
     daset_lcsize = grp_lc.create_dataset("lincomb_size", (T,), dtype=np.integer, chunks=True, maxshape=(Ts,), fillvalue=J)
     # Linear combination coefficients
-    daset_ci = grp_lc.create_dataset("lc_coefficients", (T,J), dtype=np.complexfloating, chunks=True, maxshape=(Ts,Js))
+    daset_ci = grp_lc.create_dataset("lc_coefficients", (T,J), dtype=np.complexfloating, chunks=(1,32), maxshape=(Ts,Js))
     # Linear combination wavepackets
-    daset_bs = grp_lc.create_dataset("basis_shapes_hashes", (T,J,N), dtype=np.integer, chunks=True, maxshape=(Ts,Js,N))
-    daset_bsi = grp_lc.create_dataset("basis_sizes", (T,J,N), dtype=np.integer, chunks=True, maxshape=(Ts,Js,N))
+    daset_bs = grp_lc.create_dataset("basis_shapes_hashes", (T,J,N), dtype=np.integer, chunks=(1,32,1), maxshape=(Ts,Js,N))
+    daset_bsi = grp_lc.create_dataset("basis_sizes", (T,J,N), dtype=np.integer, chunks=(1,32,1), maxshape=(Ts,Js,N))
     # Wavepacket parameters
     if "q" in key and not "q" in grp_wppi.keys():
-        daset_q = grp_wppi.create_dataset("q", (T,J,D), dtype=np.complexfloating, chunks=True, maxshape=(Ts,Js,D))
+        daset_q = grp_wppi.create_dataset("q", (T,J,D), dtype=np.complexfloating, chunks=(1,32,D), maxshape=(Ts,Js,D))
     if "p" in key and not "p" in grp_wppi.keys():
-        daset_p = grp_wppi.create_dataset("p", (T,J,D), dtype=np.complexfloating, chunks=True, maxshape=(Ts,Js,D))
+        daset_p = grp_wppi.create_dataset("p", (T,J,D), dtype=np.complexfloating, chunks=(1,32,D), maxshape=(Ts,Js,D))
     if "Q" in key and not "Q" in grp_wppi.keys():
-        daset_Q = grp_wppi.create_dataset("Q", (T,J,D,D), dtype=np.complexfloating, chunks=True, maxshape=(Ts,Js,D,D))
+        daset_Q = grp_wppi.create_dataset("Q", (T,J,D,D), dtype=np.complexfloating, chunks=(1,32,D,D), maxshape=(Ts,Js,D,D))
     if "P" in key and not "P" in grp_wppi.keys():
-        daset_P = grp_wppi.create_dataset("P", (T,J,D,D), dtype=np.complexfloating, chunks=True, maxshape=(Ts,Js,D,D))
+        daset_P = grp_wppi.create_dataset("P", (T,J,D,D), dtype=np.complexfloating, chunks=(1,32,D,D), maxshape=(Ts,Js,D,D))
     if "S" in key and not "S" in grp_wppi.keys():
-        daset_S = grp_wppi.create_dataset("S", (T,J,1), dtype=np.complexfloating, chunks=True, maxshape=(Ts,Js,1))
+        daset_S = grp_wppi.create_dataset("S", (T,J,1), dtype=np.complexfloating, chunks=(1,32,1), maxshape=(Ts,Js,1))
     # Wavepacket coefficients
     for i in xrange(N):
-        daset_c_i = grp_wpci.create_dataset("c_"+str(i), (T,J,K), dtype=np.complexfloating, chunks=True, maxshape=(Ts,Js,Ks))
+        daset_c_i = grp_wpci.create_dataset("c_"+str(i), (T,J,K), dtype=np.complexfloating, chunks=(1,32,8), maxshape=(Ts,Js,Ks))
 
     # Attach pointer to timegrid
     daset_tg_lc.attrs["pointer"] = 0
