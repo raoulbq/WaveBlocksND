@@ -20,7 +20,7 @@ def add_parameters(self, blockid="global"):
     # Store the simulation parameters
     # We are only interested in the attributes of this data set
     # as they are used to store the simulation parameters.
-    paset = self._srf[self._prefixb+str(blockid)].create_dataset("simulation_parameters", (1,1))
+    self._srf[self._prefixb+str(blockid)].create_dataset("simulation_parameters", (1,1))
 
 
 def delete_parameters(self, blockid="global"):
