@@ -3,7 +3,7 @@
 IOM plugin providing functions for handling energy data.
 
 @author: R. Bourquin
-@copyright: Copyright (C) 2010, 2011, 2012 R. Bourquin
+@copyright: Copyright (C) 2010, 2011, 2012, 2013 R. Bourquin
 @license: Modified BSD License
 """
 
@@ -14,53 +14,41 @@ def add_energy(self, parameters, timeslots=None, blockid=0, key=("kin", "pot")):
     r"""
     :param parameters: A :py:class:`ParameterProvider` instance containing
                        at least the key `ncomponents`.
-    :param timeslots: The number of time slots we need. Can be ``None``
+    :param timeslots: The number of time slots we need. Can be set to ``None``
                       to get automatically growing datasets.
     :param blockid: The ID of the data block to operate on.
     :param key: Specify which energies to save. All are independent.
     :type key: Tuple of valid identifier strings that are ``kin``, ``pot`` and ``tot``.
                Default is ``("kin", "pot")``.
     """
+    N = parameters["ncomponents"]
+
+    if timeslots is None:
+        T = 0
+        Ts = None
+    else:
+        T = timeslots
+        Ts = timeslots
+
     # Check that the "observables" group is present
     grp_ob = self._srf[self._prefixb+str(blockid)].require_group("observables")
-
     # Add a new group for energies
     grp_en = grp_ob.create_group("energies")
 
-    # Now add all requested data sets
-    # First case is event based storing
-    # In the other the user specified how much space is necessary.
+    # Add all requested data sets
     if "kin" in key and not "kinetic" in grp_en.keys():
-        if timeslots is None:
-            daset_ek = grp_en.create_dataset("kinetic", (0, parameters["ncomponents"]), dtype=np.floating, chunks=True, maxshape=(None,parameters["ncomponents"]))
-            daset_tgek = grp_en.create_dataset("timegrid_kin", (0,), dtype=np.integer, chunks=True, maxshape=(None,))
-        else:
-            daset_ek = grp_en.create_dataset("kinetic", (timeslots, parameters["ncomponents"]), dtype=np.floating)
-            daset_tgek = grp_en.create_dataset("timegrid_kin", (timeslots,), dtype=np.integer)
-            # Mark all steps as invalid
-            daset_tgek[...] = -1.0
+        daset_tgek = grp_en.create_dataset("timegrid_kin", (T,), dtype=np.integer, chunks=True, maxshape=(Ts,), fillvalue=-1)
+        grp_en.create_dataset("kinetic", (T,N), dtype=np.floating, chunks=(64,N), maxshape=(Ts,N))
         daset_tgek.attrs["pointer"] = 0
 
     if "pot" in key and not "potential" in grp_en.keys():
-        if timeslots is None:
-            daset_ep = grp_en.create_dataset("potential", (0, parameters["ncomponents"]), dtype=np.floating, chunks=True, maxshape=(None,parameters["ncomponents"]))
-            daset_tgep = grp_en.create_dataset("timegrid_pot", (0,), dtype=np.integer, chunks=True, maxshape=(None,))
-        else:
-            daset_ep = grp_en.create_dataset("potential", (timeslots, parameters["ncomponents"]), dtype=np.floating)
-            daset_tgep = grp_en.create_dataset("timegrid_pot", (timeslots,), dtype=np.integer)
-            # Mark all steps as invalid
-            daset_tgep[...] = -1.0
+        daset_tgep = grp_en.create_dataset("timegrid_pot", (T,), dtype=np.integer, chunks=True, maxshape=(Ts,), fillvalue=-1)
+        grp_en.create_dataset("potential", (T,N), dtype=np.floating, chunks=(64,N), maxshape=(Ts,N))
         daset_tgep.attrs["pointer"] = 0
 
     if "tot" in key and not "total" in grp_en.keys():
-        if timeslots is None:
-            daset_to = grp_en.create_dataset("total", (0, 1), dtype=np.floating, chunks=True, maxshape=(None,1))
-            daset_tget = grp_en.create_dataset("timegrid_tot", (0,), dtype=np.integer, chunks=True, maxshape=(None,))
-        else:
-            daset_to = grp_en.create_dataset("total", (timeslots, 1), dtype=np.floating)
-            daset_tget = grp_en.create_dataset("timegrid_tot", (timeslots,), dtype=np.integer)
-            # Mark all steps as invalid
-            daset_tget[...] = -1.0
+        daset_tget = grp_en.create_dataset("timegrid_tot", (T,), dtype=np.integer, chunks=True, maxshape=(Ts,), fillvalue=-1)
+        grp_en.create_dataset("total", (T,1), dtype=np.floating, chunks=(64,1), maxshape=(Ts,1))
         daset_tget.attrs["pointer"] = 0
 
 

@@ -12,51 +12,47 @@ import pickle
 import numpy as np
 
 
-def add_lincombwp(self, parameters, timeslots=None, blockid=0):
+def add_lincombwp(self, parameters, timeslots=None, lincombsize=None,blockid=0):
     r"""Add storage for the linear combination of general wavepackets.
 
     :param parameters: An :py:class:`ParameterProvider` instance with at
                        least the key ``ncomponents``.
-    :param timeslots: The number of time slots we need. Can be ``None``
+    :param timeslots: The number of time slots we need. Can be set to ``None``
                       to get automatically growing datasets.
+    :param lincombsize: The (maximal) size ``J`` of the linear combination of wavepackets. If specified
+                        this remains fixed for all timeslots. Can be set to ``None`` (default)
+                        to get automatically growing datasets.
     :param blockid: The ID of the data block to operate on.
     """
     N = parameters["ncomponents"]
     # TODO: Handle multi-component packets
     assert N == 1
 
-    # TODO: Consider an 'assume_constant' option
-    #       None -> False -> lcsize dynamic, int -> lcsize fix
-    # Could maybe avoid many resize operations
+    if timeslots is None:
+        T = 0
+        Ts = None
+    else:
+        T = timeslots
+        Ts = timeslots
+
+    if lincombsize is None:
+        J = 0
+        Js = None
+    else:
+        J = lincombsize
+        Js = lincombsize
 
     # The overall group containing all lincombwp data
     grp_lc = self._srf[self._prefixb+str(blockid)].require_group("lincombwp")
 
-    # TODO: Consider merging both cases
-
     # Create the dataset with appropriate parameters
-    if timeslots is None:
-        # This case is event based storing
-        daset_tg_c = grp_lc.create_dataset("timegrid_coefficients", (0,), dtype=np.integer, chunks=True, maxshape=(None,))
-        daset_tg_p = grp_lc.create_dataset("timegrid_packets", (0,), dtype=np.integer, chunks=True, maxshape=(None,))
-        daset_lcsize = grp_lc.create_dataset("lincomb_size", (0,), dtype=np.integer, chunks=True, maxshape=(None,))
-        # Coefficients
-        daset_ci = grp_lc.create_dataset("coefficients", (0, 0), dtype=np.complexfloating, chunks=True, maxshape=(None,None))
-        # Packet IDs
-        daset_refs = grp_lc.create_dataset("packet_refs", (0, 0), dtype=np.dtype((str,32)), chunks=True, maxshape=(None,None))
-    else:
-        # User specified how much space is necessary.
-        daset_tg_c = grp_lc.create_dataset("timegrid_coefficients", (timeslots,), dtype=np.integer)
-        daset_tg_p = grp_lc.create_dataset("timegrid_packets", (timeslots,), dtype=np.integer)
-        daset_lcsize = grp_lc.create_dataset("lincomb_size", (timeslots,), dtype=np.integer)
-        # Coefficients
-        daset_ci = grp_lc.create_dataset("coefficients", (timeslots, 0), dtype=np.complexfloating, chunks=True, maxshape=(timeslots,None))
-        # Packet IDs
-        daset_refs = grp_lc.create_dataset("packet_refs", (timeslots, 0), dtype=np.dtype((str,32)), chunks=True, maxshape=(timeslots,None))
-
-        # Mark all steps as invalid
-        daset_tg_c[...] = -1.0
-        daset_tg_p[...] = -1.0
+    daset_tg_c = grp_lc.create_dataset("timegrid_coefficients", (T,), dtype=np.integer, chunks=True, maxshape=(Ts,), fillvalue=-1)
+    daset_tg_p = grp_lc.create_dataset("timegrid_packets", (T,), dtype=np.integer, chunks=True, maxshape=(Ts,), fillvalue=-1)
+    grp_lc.create_dataset("lincomb_size", (T,), dtype=np.integer, chunks=True, maxshape=(Ts,))
+    # Coefficients
+    grp_lc.create_dataset("coefficients", (T, J), dtype=np.complexfloating, chunks=(1,32), maxshape=(Ts,Js))
+    # Packet IDs
+    daset_refs = grp_lc.create_dataset("packet_refs", (T, J), dtype=np.dtype((str,32)), chunks=(1,32), maxshape=(Ts,Js))
 
     gid = self.create_group(groupid="wavepacketsLCblock"+str(blockid))
     daset_refs.attrs["packet_gid"] = gid

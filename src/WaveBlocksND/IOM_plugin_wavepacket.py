@@ -17,7 +17,7 @@ def add_wavepacket(self, parameters, timeslots=None, blockid=0, key=("q","p","Q"
 
     :param parameters: An :py:class:`ParameterProvider` instance with at
                        least the keys ``dimension`` and ``ncomponents``.
-    :param timeslots: The number of time slots we need. Can be ``None``
+    :param timeslots: The number of time slots we need. Can be set to ``None``
                       to get automatically growing datasets.
     :param blockid: The ID of the data block to operate on.
     :param key: Specify which parameters to save. All are independent.
@@ -27,61 +27,41 @@ def add_wavepacket(self, parameters, timeslots=None, blockid=0, key=("q","p","Q"
     N = parameters["ncomponents"]
     D = parameters["dimension"]
 
+    if timeslots is None:
+        T = 0
+        Ts = None
+    else:
+        T = timeslots
+        Ts = timeslots
+
     # The overall group containing all wavepacket data
     grp_wp = self._srf[self._prefixb+str(blockid)].require_group("wavepacket")
     # The group for storing the basis shapes
-    grp_bs = grp_wp.create_group("basisshapes")
+    grp_wp.create_group("basisshapes")
     # The group for storing the parameter set Pi
     grp_pi = grp_wp.create_group("Pi")
     # The group for storing the coefficients
     grp_ci = grp_wp.create_group("coefficients")
-
     # Create the dataset with appropriate parameters
-    if timeslots is None:
-        # This case is event based storing
-        daset_tg = grp_wp.create_dataset("timegrid", (0,), dtype=np.integer, chunks=True, maxshape=(None,))
-        daset_bs = grp_wp.create_dataset("basis_shape_hash", (0, N), dtype=np.integer, chunks=True, maxshape=(None,N))
-        daset_bsi = grp_wp.create_dataset("basis_size", (0, N), dtype=np.integer, chunks=True, maxshape=(None,N))
-
-        if "q" in key and not "q" in grp_pi.keys():
-            daset_q = grp_pi.create_dataset("q", (0, D, 1), dtype=np.complexfloating, chunks=True, maxshape=(None,D,1))
-        if "p" in key and not "p" in grp_pi.keys():
-            daset_p = grp_pi.create_dataset("p", (0, D, 1), dtype=np.complexfloating, chunks=True, maxshape=(None,D,1))
-        if "Q" in key and not "Q" in grp_pi.keys():
-            daset_Q = grp_pi.create_dataset("Q", (0, D, D), dtype=np.complexfloating, chunks=True, maxshape=(None,D,D))
-        if "P" in key and not "P" in grp_pi.keys():
-            daset_P = grp_pi.create_dataset("P", (0, D, D), dtype=np.complexfloating, chunks=True, maxshape=(None,D,D))
-        if "S" in key and not "S" in grp_pi.keys():
-            daset_S = grp_pi.create_dataset("S", (0, 1, 1), dtype=np.complexfloating, chunks=True, maxshape=(None,1,1))
-        if "adQ" in key and not "adQ" in grp_pi.keys():
-            daset_adQ = grp_pi.create_dataset("adQ", (0, 1, 1), dtype=np.complexfloating, chunks=True, maxshape=(None,1,1))
-
-        for i in xrange(N):
-            daset_c_i = grp_ci.create_dataset("c_"+str(i), (0, 1), dtype=np.complexfloating, chunks=True, maxshape=(None,None))
-    else:
-        # User specified how much space is necessary.
-        daset_tg = grp_wp.create_dataset("timegrid", (timeslots,), dtype=np.integer)
-        daset_bs = grp_wp.create_dataset("basis_shape_hash", (timeslots, N), dtype=np.integer)
-        daset_bsi = grp_wp.create_dataset("basis_size", (timeslots, N), dtype=np.integer)
-
-        if "q" in key and not "q" in grp_pi.keys():
-            daset_q = grp_pi.create_dataset("q", (timeslots, D, 1), dtype=np.complexfloating)
-        if "p" in key and not "p" in grp_pi.keys():
-            daset_p = grp_pi.create_dataset("p", (timeslots, D, 1), dtype=np.complexfloating)
-        if "Q" in key and not "Q" in grp_pi.keys():
-            daset_Q = grp_pi.create_dataset("Q", (timeslots, D, D), dtype=np.complexfloating)
-        if "P" in key and not "P" in grp_pi.keys():
-            daset_P = grp_pi.create_dataset("P", (timeslots, D, D), dtype=np.complexfloating)
-        if "S" in key and not "S" in grp_pi.keys():
-            daset_S = grp_pi.create_dataset("S", (timeslots, 1, 1), dtype=np.complexfloating)
-        if "adQ" in key and not "adQ" in grp_pi.keys():
-            daset_adQ = grp_pi.create_dataset("adQ", (timeslots, 1, 1), dtype=np.complexfloating)
-
-        for i in xrange(N):
-            daset_c_i = grp_ci.create_dataset("c_"+str(i), (timeslots, 1), dtype=np.complexfloating, chunks=True, maxshape=(None,None))
-
-        # Mark all steps as invalid
-        daset_tg[...] = -1.0
+    grp_wp.create_dataset("timegrid", (T,), dtype=np.integer, chunks=True, maxshape=(Ts,), fillvalue=-1)
+    grp_wp.create_dataset("basis_shape_hash", (T, N), dtype=np.integer, chunks=True, maxshape=(Ts,N))
+    grp_wp.create_dataset("basis_size", (T, N), dtype=np.integer, chunks=True, maxshape=(Ts,N))
+    # Parameters
+    if "q" in key and not "q" in grp_pi.keys():
+        grp_pi.create_dataset("q", (T,D,1), dtype=np.complexfloating, chunks=True, maxshape=(Ts,D,1))
+    if "p" in key and not "p" in grp_pi.keys():
+        grp_pi.create_dataset("p", (T,D,1), dtype=np.complexfloating, chunks=True, maxshape=(Ts,D,1))
+    if "Q" in key and not "Q" in grp_pi.keys():
+        grp_pi.create_dataset("Q", (T,D,D), dtype=np.complexfloating, chunks=True, maxshape=(Ts,D,D))
+    if "P" in key and not "P" in grp_pi.keys():
+        grp_pi.create_dataset("P", (T,D,D), dtype=np.complexfloating, chunks=True, maxshape=(Ts,D,D))
+    if "S" in key and not "S" in grp_pi.keys():
+        grp_pi.create_dataset("S", (T,1,1), dtype=np.complexfloating, chunks=True, maxshape=(Ts,1,1))
+    if "adQ" in key and not "adQ" in grp_pi.keys():
+        grp_pi.create_dataset("adQ", (T,1,1), dtype=np.complexfloating, chunks=True, maxshape=(Ts,1,1))
+    # Coefficients
+    for i in xrange(N):
+        grp_ci.create_dataset("c_"+str(i), (T,1), dtype=np.complexfloating, chunks=(1,8), maxshape=(Ts,None))
 
     # Attach pointer to data instead timegrid
     grp_pi.attrs["pointer"] = 0

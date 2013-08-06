@@ -68,8 +68,8 @@ def add_overlaplcwp(self, parameters, timeslots=None, matrixsize=None, blockid=0
         name = k[2:]
 
         daset_tg = grp_ov.create_dataset("timegrid"+name, (T,), dtype=np.integer, chunks=True, maxshape=(Ts,), fillvalue=-1)
-        daset_shape = grp_ov.create_dataset("shape"+name, (T,2), dtype=np.integer, chunks=True, maxshape=(Ts,2))
-        daset_ov = grp_ov.create_dataset("overlap"+name, (T,Jr,Jc), dtype=np.complexfloating, chunks=True, maxshape=(Ts,Jrs,Jcs))
+        grp_ov.create_dataset("shape"+name, (T,2), dtype=np.integer, chunks=(128,2), maxshape=(Ts,2))
+        grp_ov.create_dataset("overlap"+name, (T,Jr,Jc), dtype=np.complexfloating, chunks=(1,128,128), maxshape=(Ts,Jrs,Jcs))
 
         daset_tg.attrs["pointer"] = 0
 
