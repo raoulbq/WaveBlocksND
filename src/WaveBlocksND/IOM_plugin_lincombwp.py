@@ -48,9 +48,9 @@ def add_lincombwp(self, parameters, timeslots=None, lincombsize=None,blockid=0):
     # Create the dataset with appropriate parameters
     daset_tg_c = grp_lc.create_dataset("timegrid_coefficients", (T,), dtype=np.integer, chunks=True, maxshape=(Ts,), fillvalue=-1)
     daset_tg_p = grp_lc.create_dataset("timegrid_packets", (T,), dtype=np.integer, chunks=True, maxshape=(Ts,), fillvalue=-1)
-    daset_lcsize = grp_lc.create_dataset("lincomb_size", (T,), dtype=np.integer, chunks=True, maxshape=(Ts,))
+    grp_lc.create_dataset("lincomb_size", (T,), dtype=np.integer, chunks=True, maxshape=(Ts,))
     # Coefficients
-    daset_ci = grp_lc.create_dataset("coefficients", (T, J), dtype=np.complexfloating, chunks=(1,32), maxshape=(Ts,Js))
+    grp_lc.create_dataset("coefficients", (T, J), dtype=np.complexfloating, chunks=(1,32), maxshape=(Ts,Js))
     # Packet IDs
     daset_refs = grp_lc.create_dataset("packet_refs", (T, J), dtype=np.dtype((str,32)), chunks=(1,32), maxshape=(Ts,Js))
 

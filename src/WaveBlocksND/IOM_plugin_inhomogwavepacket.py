@@ -36,34 +36,33 @@ def add_inhomogwavepacket(self, parameters, timeslots=None, blockid=0, key=("q",
     # The overall group containing all wavepacket data
     grp_wp = self._srf[self._prefixb+str(blockid)].require_group("wavepacket_inhomog")
     # The group for storing the basis shapes
-    grp_bs = grp_wp.create_group("basisshapes")
+    grp_wp.create_group("basisshapes")
     # The group for storing the parameter set Pi
     grp_pi = grp_wp.create_group("Pi")
     grp_pi.attrs["number_parameters"] = len(key)
     # The group for storing the coefficients
     grp_ci = grp_wp.create_group("coefficients")
-
     # Create the dataset with appropriate parameters
-    daset_tg = grp_wp.create_dataset("timegrid", (T,), dtype=np.integer, chunks=True, maxshape=(None,), fillvalue=-1)
-    daset_bs = grp_wp.create_dataset("basis_shape_hash", (T,N), dtype=np.integer, chunks=True, maxshape=(None,N))
-    daset_bsi = grp_wp.create_dataset("basis_size", (T,N), dtype=np.integer, chunks=True, maxshape=(None,N))
+    grp_wp.create_dataset("timegrid", (T,), dtype=np.integer, chunks=True, maxshape=(None,), fillvalue=-1)
+    grp_wp.create_dataset("basis_shape_hash", (T,N), dtype=np.integer, chunks=True, maxshape=(None,N))
+    grp_wp.create_dataset("basis_size", (T,N), dtype=np.integer, chunks=True, maxshape=(None,N))
     # Parameters
     for i in xrange(N):
         if "q" in key and not "q" in grp_pi.keys():
-            daset_q_i = grp_pi.create_dataset("q_"+str(i), (T,D,1), dtype=np.complexfloating, chunks=True, maxshape=(Ts,D,1))
+            grp_pi.create_dataset("q_"+str(i), (T,D,1), dtype=np.complexfloating, chunks=True, maxshape=(Ts,D,1))
         if "p" in key and not "p" in grp_pi.keys():
-            daset_p_i = grp_pi.create_dataset("p_"+str(i), (T,D,1), dtype=np.complexfloating, chunks=True, maxshape=(Ts,D,1))
+            grp_pi.create_dataset("p_"+str(i), (T,D,1), dtype=np.complexfloating, chunks=True, maxshape=(Ts,D,1))
         if "Q" in key and not "Q" in grp_pi.keys():
-            daset_Q_i = grp_pi.create_dataset("Q_"+str(i), (T,D,D), dtype=np.complexfloating, chunks=True, maxshape=(Ts,D,D))
+            grp_pi.create_dataset("Q_"+str(i), (T,D,D), dtype=np.complexfloating, chunks=True, maxshape=(Ts,D,D))
         if "P" in key and not "P" in grp_pi.keys():
-            daset_P_i = grp_pi.create_dataset("P_"+str(i), (T,D,D), dtype=np.complexfloating, chunks=True, maxshape=(Ts,D,D))
+            grp_pi.create_dataset("P_"+str(i), (T,D,D), dtype=np.complexfloating, chunks=True, maxshape=(Ts,D,D))
         if "S" in key and not "S" in grp_pi.keys():
-            daset_S_i = grp_pi.create_dataset("S_"+str(i), (T,1,1), dtype=np.complexfloating, chunks=True, maxshape=(Ts,1,1))
+            grp_pi.create_dataset("S_"+str(i), (T,1,1), dtype=np.complexfloating, chunks=True, maxshape=(Ts,1,1))
         if "adQ" in key and not "adQ" in grp_pi.keys():
-            daset_adQ_i = grp_pi.create_dataset("adQ_"+str(i), (T,1,1), dtype=np.complexfloating, chunks=True, maxshape=(Ts,1,1))
+            grp_pi.create_dataset("adQ_"+str(i), (T,1,1), dtype=np.complexfloating, chunks=True, maxshape=(Ts,1,1))
     # Coefficients
     for i in xrange(N):
-        daset_c_i = grp_ci.create_dataset("c_"+str(i), (T,1), dtype=np.complexfloating, chunks=(1,8), maxshape=(Ts,None))
+        grp_ci.create_dataset("c_"+str(i), (T,1), dtype=np.complexfloating, chunks=(1,8), maxshape=(Ts,None))
 
     # Attach pointer to data instead timegrid
     grp_pi.attrs["pointer"] = 0

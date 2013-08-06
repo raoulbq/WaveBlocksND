@@ -33,8 +33,7 @@ def add_norm(self, parameters, timeslots=None, blockid=0):
     # Create the dataset with appropriate parameters
     grp_no = grp_ob.create_group("norm")
     daset_tg = grp_no.create_dataset("timegrid", (N,), dtype=np.integer, chunks=True, maxshape=(Ts,), fillvalue=-1)
-    daset_n = grp_no.create_dataset("norm", (T,N), dtype=np.floating, chunks=(64,N), maxshape=(Ts,N))
-
+    grp_no.create_dataset("norm", (T,N), dtype=np.floating, chunks=(64,N), maxshape=(Ts,N))
     daset_tg.attrs["pointer"] = 0
 
 

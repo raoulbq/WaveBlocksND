@@ -42,7 +42,7 @@ def add_wavefunction(self, parameters, flat=False, timeslots=None, blockid=0):
 
     # TODO: Improve chunking
     daset_psi_tg = grp_wf.create_dataset("timegrid", [T], dtype=np.integer, chunks=True, maxshape=[Ts], fillvalue=-1)
-    daset_psi = grp_wf.create_dataset("Psi", [T]+datashape, dtype=np.complexfloating, chunks=True, maxshape=[Ts]+datashape)
+    grp_wf.create_dataset("Psi", [T]+datashape, dtype=np.complexfloating, chunks=True, maxshape=[Ts]+datashape)
 
     daset_psi_tg.attrs["pointer"] = 0
 
