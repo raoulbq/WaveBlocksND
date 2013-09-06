@@ -7,11 +7,11 @@ methods. InnerProducts are classes that really can compute things
 like inner products (brakets) etc.
 
 @author: R. Bourquin
-@copyright: Copyright (C) 2011, 2012 R. Bourquin
+@copyright: Copyright (C) 2011, 2012, 2013 R. Bourquin
 @license: Modified BSD License
 """
 
-__all__ = ["InnerProduct"]
+__all__ = ["InnerProduct", "InnerProductException"]
 
 
 class InnerProduct(object):
@@ -75,3 +75,9 @@ class InnerProduct(object):
         :raise: :py:class:`NotImplementedError` Abstract interface.
         """
         raise NotImplementedError("'InnerProduct' is an abstract interface.")
+
+
+class InnerProductException(Exception):
+    r"""Exception to raise in case an inner product fails for whatever reason.
+    """
+    pass

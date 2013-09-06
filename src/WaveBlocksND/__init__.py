@@ -62,6 +62,7 @@ from TensorProductQR import TensorProductQR
 
 # Inner products
 from InnerProduct import InnerProduct
+from InnerProduct import InnerProductException
 from HomogeneousInnerProduct import HomogeneousInnerProduct
 from InhomogeneousInnerProduct import InhomogeneousInnerProduct
 

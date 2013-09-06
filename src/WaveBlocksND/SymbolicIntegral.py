@@ -9,12 +9,13 @@ constructed explicitely for the inhomogeneous case.
 @license: Modified BSD License
 """
 
-from numpy import squeeze, conjugate, sqrt, ones, zeros, complexfloating, arange
+from numpy import squeeze, conjugate, sqrt, ones, zeros, complexfloating, arange, isnan
 from scipy import exp
 from scipy.misc import factorial
 from scipy.special import binom
 #from scipy.special.orthogonal import eval_hermite
 
+from InnerProduct import InnerProductException
 from Quadrature import Quadrature
 
 __all__ = ["SymbolicIntegral"]
@@ -24,9 +25,10 @@ class SymbolicIntegral(Quadrature):
     r"""
     """
 
-    def __init__(self, *unused, **kunused):
+    def __init__(self, doraise=False, *unused, **kunused):
         r"""
         """
+        self._doraise = doraise
         # Drop any argument, we do not need a qr instance.
 
 
@@ -258,7 +260,7 @@ class SymbolicIntegral(Quadrature):
         self._bk = binom(ik, ij)
         self._bl = binom(il, ij)
 
-        # TODO: Note: formula currently fails for non-inhomogeneous case
+        # Note: formula currently fails for non-inhomogeneous case
         #       because of divisions by zero in the two args below.
         argk = ((1.0j*Q2*(p1-p2) - 1.0j*P2*(q1-q2)) /
                 (sqrt(1.0j*Q2*P1 - 1.0j*Q1*P2) *
@@ -267,6 +269,10 @@ class SymbolicIntegral(Quadrature):
         argl = ((1.0j*conjugate(P1)*(q1-q2) - 1.0j*conjugate(Q1)*(p1-p2)) /
                 (sqrt(1.0j*conjugate(Q2*P1) - 1.0j*conjugate(Q1*P2)) *
                  sqrt(1.0j*conjugate(P1)*Q2 - 1.0j*conjugate(Q1)*P2)))
+
+        # TODO: Better test for failure?
+        if self._doraise and (isnan(squeeze(argk)) or isnan(squeeze(argl))):
+            raise InnerProductException("Symbolic formula failed due to Q_k = Q_l and P_k = P_l.")
 
         # The parameter j varies in the range [0, 1, ..., min(K-1,L-1)]
         # hence we have that k-j can be in [K-1, K-2, ..., K-1-min(K-1,L-1)]
