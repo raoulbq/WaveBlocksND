@@ -23,7 +23,8 @@ class ParameterLoader(object):
 
 
     def _get_configuration_variables(self, _scriptcode):
-        """Clean environment for reading in local parameters.
+        r"""Clean environment for reading in local parameters.
+        
         :param _scriptcode: String with the configuration code to execute.
         """
         # Execute the configuration file, they are plain python files

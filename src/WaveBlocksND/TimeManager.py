@@ -207,7 +207,7 @@ class TimeManager(object):
 
 
     def set_interval(self, interval):
-        r"""Set the inteval for saving results.
+        r"""Set the interval for saving results.
 
         :param interval: The interval at which we save simulation results.
 
@@ -294,7 +294,7 @@ class TimeManager(object):
             # Save every timestep
             return True
         elif self._interval != 0  and  n % self._interval == 0:
-            # Save every k-th timestep specified by the inetrval
+            # Save every k-th timestep specified by the interval
             return True
         elif n in self._savetimes:
             # Save if the n is in the list of timesteps

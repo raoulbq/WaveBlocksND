@@ -4,7 +4,7 @@ This file contains the main simulation loop
 for the inhomogeneous Hagedorn propagator.
 
 @author: R. Bourquin
-@copyright: Copyright (C) 2010, 2011, 2012 R. Bourquin
+@copyright: Copyright (C) 2010, 2011, 2012, 2013 R. Bourquin
 @license: Modified BSD License
 """
 
@@ -45,7 +45,11 @@ class SimulationLoopHagedornInhomogeneous(SimulationLoop):
 
         # Set up serialization of simulation data
         self.IOManager = IOManager()
-        self.IOManager.create_file(self.parameters)
+        self.IOManager.create_file()
+
+        # Save the simulation parameters
+        self.IOManager.add_parameters()
+        self.IOManager.save_parameters(parameters)
 
 
     def prepare_simulation(self):
@@ -60,7 +64,7 @@ class SimulationLoopHagedornInhomogeneous(SimulationLoop):
         # Project the initial values to the canonical basis
         BT = BasisTransformationHAWP(potential)
 
-        # Finally create and initialize the propagator instace
+        # Finally create and initialize the propagator instance
         # TODO: Attach the "leading_component to the hawp as codata
         self.propagator = HagedornPropagatorInhomogeneous(self.parameters, potential)
 

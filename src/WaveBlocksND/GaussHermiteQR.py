@@ -34,7 +34,7 @@ class GaussHermiteQR(QuadratureRule):
         # The order R of the Gauss-Hermite quadrature.
         self._order = order
 
-        # Qudrature has to have at least a single (node,weight) pair.
+        # Quadrature has to have at least a single (node,weight) pair.
         if not self._order > 0:
             raise ValueError("Quadrature rule has to be of order 1 at least.")
 
@@ -95,7 +95,7 @@ class GaussHermiteQR(QuadratureRule):
         r"""Evaluate the Hermite functions recursively up to the order :math:`R` on the given nodes.
 
         :param nodes: The points at which the Hermite functions are evaluated.
-        :return: Returns a twodimensional array :math:`H` where the entry :math:`H[k,i]` is the value
+        :return: Returns a two dimensional array :math:`H` where the entry :math:`H[k,i]` is the value
                  of the :math:`k`-th Hermite function evaluated at the node :math:`\gamma_i`.
         """
         H = zeros((self._order, nodes.size), dtype=floating)

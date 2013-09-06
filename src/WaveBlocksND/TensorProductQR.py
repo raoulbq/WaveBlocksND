@@ -84,7 +84,7 @@ class TensorProductQR(QuadratureRule):
         :type flat: Boolean, default is ``True``.
         :param split: Dummy parameter for API compatibility with Grids.
         :type split: Boolean, default is ``False``.
-        :return: An ndarray containing the quadrature nodes :math:`\gamma_i`.
+        :return: An :py:class:`ndarray` containing the quadrature nodes :math:`\gamma_i`.
         """
         return self._nodes.copy()
 
@@ -92,6 +92,6 @@ class TensorProductQR(QuadratureRule):
     def get_weights(self):
         r"""Returns the quadrature weights :math:`\omega_i`.
 
-        :return: An ndarray containing the quadrature weights :math:`\omega_i`.
+        :return: An :py:class:`ndarray` containing the quadrature weights :math:`\omega_i`.
         """
         return self._weights.copy()

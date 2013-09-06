@@ -4,51 +4,68 @@ Sample wavepackets at the nodes of a given grid and save
 the results back to the given simulation data file.
 
 @author: R. Bourquin
-@copyright: Copyright (C) 2010, 2011, 2012 R. Bourquin
+@copyright: Copyright (C) 2010, 2011, 2012, 2013 R. Bourquin
 @license: Modified BSD License
 """
 
-import sys
+import argparse
 
 from WaveBlocksND import IOManager
 from WaveBlocksND import ParameterLoader
+from WaveBlocksND import GlobalDefaults as GD
 
+parser = argparse.ArgumentParser()
 
-if __name__ == "__main__":
+parser.add_argument("simfile",
+                    type = str,
+                    help = "The simulation data file",
+                    nargs = "?",
+                    default = GD.file_resultdatafile)
 
-    iom = IOManager()
-    PL = ParameterLoader()
+parser.add_argument("-b", "--blockid",
+                    help = "The data block to handle",
+                    nargs = "*",
+                    default = [0])
 
-    # Read file with simulation data
-    try:
-        iom.open_file(filename=sys.argv[1])
-    except IndexError:
-        iom.open_file()
+parser.add_argument("-p", "--params",
+                    help = "An additional configuration parameters file")
 
-    # Read file with parameter data for grid
-    try:
-        PP = PL.load_from_file(sys.argv[2])
-    except IndexError:
-        PP = None
+args = parser.parse_args()
 
-    # Iterate over all blocks
-    for blockid in iom.get_block_ids():
-        print("Evaluating wavepackets in data block '"+str(blockid)+"'")
+# Read file with simulation data
+iom = IOManager()
+iom.open_file(filename=args.simfile)
 
-        if iom.has_wavefunction(blockid=blockid):
-            print("Datablock '"+str(blockid)+"' already contains wavefunction data, silent skip.")
-            continue
+# Read the additional grid parameters
+if args.params:
+    parametersfile = args.params
+    PA = ParameterLoader().load_from_file(parametersfile)
+else:
+    PA = None
 
-        # See if we have an inhomogeneous wavepacket in the current data block
-        if iom.has_inhomogwavepacket(blockid=blockid):
-            import EvaluateWavepacketsInhomog
-            EvaluateWavepacketsInhomog.compute_evaluate_wavepackets(PP, iom, blockid=blockid, eigentrafo=False)
-        # If not, we test for a homogeneous wavepacket next
-        elif iom.has_wavepacket(blockid=blockid):
-            import EvaluateWavepackets
-            EvaluateWavepackets.compute_evaluate_wavepackets(PP, iom, blockid=blockid, eigentrafo=True)
-        # If there is also no wavefunction, then there is nothing to compute the norm
-        else:
-            print("Warning: Not evaluating any wavepackets in block '"+str(blockid)+"'!")
+# Which blocks to handle
+if "all" in args.blockid:
+    blocks_to_handle = iom.get_block_ids()
+else:
+    blocks_to_handle = map(int, args.blockid)
 
-    iom.finalize()
+# Iterate over all blocks
+for blockid in blocks_to_handle:
+    print("Evaluating wavepackets in data block '"+str(blockid)+"'")
+
+    if iom.has_wavefunction(blockid=blockid):
+        print("Datablock '"+str(blockid)+"' already contains wavefunction data, silent skip.")
+        continue
+
+    # NOTE: Add new algorithms here
+
+    if iom.has_wavepacket(blockid=blockid):
+        import EvaluateWavepackets
+        EvaluateWavepackets.compute_evaluate_wavepackets(PA, iom, blockid=blockid, eigentrafo=True)
+    elif iom.has_inhomogwavepacket(blockid=blockid):
+        import EvaluateWavepacketsInhomog
+        EvaluateWavepacketsInhomog.compute_evaluate_wavepackets(PA, iom, blockid=blockid, eigentrafo=True)
+    else:
+        print("Warning: Not evaluating any wavepackets in block '"+str(blockid)+"'!")
+
+iom.finalize()

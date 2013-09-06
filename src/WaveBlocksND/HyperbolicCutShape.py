@@ -66,7 +66,7 @@ class HyperbolicCutShape(BasisShape):
 
 
     def __getitem__(self, k):
-        r"""Make map lookups.
+        r"""Make map look ups.
         """
         if type(k) is tuple or type(k) is list:
             k = tuple(k)
@@ -155,7 +155,7 @@ class HyperbolicCutShape(BasisShape):
                 # Yield the current index vector
                 yield tuple(reversed(z[:-1]))
 
-                # Incremet fastest varying bit
+                # Increment fastest varying bit
                 z[0] += 1
 
                 # Reset overflows

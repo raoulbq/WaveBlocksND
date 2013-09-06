@@ -32,7 +32,7 @@ class TrapezoidalQR(QuadratureRule):
         # The order R of the trapezoidal quadrature rule.
         self._number_nodes = number_nodes
 
-        # Qudrature has to have at least a single (node,weight) pair.
+        # Quadrature has to have at least a single (node,weight) pair.
         if self._number_nodes < 1:
             raise ValueError("Quadrature rule has to be of order 1 at least.")
 

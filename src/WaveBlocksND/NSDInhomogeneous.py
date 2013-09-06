@@ -55,7 +55,7 @@ class NSDInhomogeneous(Quadrature):
         :param pacbra: The packet that is used for the 'bra' part.
         :param packet: The packet that is used for the 'ket' part.
         """
-        # Allow to ommit the ket if it is the same as the bra
+        # Allow to omit the ket if it is the same as the bra
         if packet is None:
             packet = pacbra
 

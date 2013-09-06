@@ -16,11 +16,11 @@ __all__ = ["GridWrapper"]
 
 
 class GridWrapper(Grid):
-    r"""This class constructs a thin layer around an ``ndarray`` and wrappes
+    r"""This class constructs a thin layer around an ``ndarray`` and wraps
     it as :py:class:`Grid` subclass for API compatibility. The array must
     have a shape of :math:`(D, N)` with :math:`N` the overall number of nodes.
 
-    Rather than using this class, one should try to elliminate the
+    Rather than using this class, one should try to eliminate the
     cases where it is used now.
     """
 

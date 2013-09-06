@@ -92,9 +92,27 @@ Wavepackets
    waveblocks_classes/Gradient
    waveblocks_classes/GradientHAWP
 
+   waveblocks_classes/BasisTransformation
+   waveblocks_classes/BasisTransformationWF
+   waveblocks_classes/BasisTransformationHAWP
+
+   waveblocks_classes/LinearCombinationOfWavepackets
+   waveblocks_classes/LinearCombinationOfWPs
+
+
+Inner Products
+^^^^^^^^^^^^^^
+
+.. toctree::
+   :maxdepth: 1
+
    waveblocks_classes/InnerProduct
+
    waveblocks_classes/HomogeneousInnerProduct
    waveblocks_classes/InhomogeneousInnerProduct
+
+   waveblocks_classes/HomogeneousInnerProductLCWP
+   waveblocks_classes/InhomogeneousInnerProductLCWP
 
    waveblocks_classes/Quadrature
 
@@ -105,9 +123,9 @@ Wavepackets
    waveblocks_classes/SymbolicIntegral
    waveblocks_classes/NSDInhomogeneous
 
-   waveblocks_classes/BasisTransformation
-   waveblocks_classes/BasisTransformationWF
-   waveblocks_classes/BasisTransformationHAWP
+   waveblocks_classes/SparsityOracle.rst
+   waveblocks_classes/SparsityOracleTrue.rst
+   waveblocks_classes/SparsityOraclePSHAWP.rst
 
 
 Observables
@@ -118,6 +136,7 @@ Observables
 
    waveblocks_classes/Observables
    waveblocks_classes/ObservablesHAWP
+   waveblocks_classes/ObservablesLCWP
 
 
 Time propagation
@@ -156,6 +175,8 @@ Simulation result storage I/O
    waveblocks_classes/IOM_plugin_fourieroperators
    waveblocks_classes/IOM_plugin_wavepacket
    waveblocks_classes/IOM_plugin_inhomogwavepacket
+   waveblocks_classes/IOM_plugin_lincombwp
+   waveblocks_classes/IOM_plugin_overlaplcwp
    waveblocks_classes/IOM_plugin_norm
    waveblocks_classes/IOM_plugin_energy
 

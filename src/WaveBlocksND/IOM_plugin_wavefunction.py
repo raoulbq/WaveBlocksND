@@ -76,7 +76,7 @@ def save_wavefunction(self, wavefunctionvalues, timestep=None, blockid=0):
     :param timestep: The timestep at which we save the data.
     :param blockid: The ID of the data block to operate on.
     """
-    #@refactor: take wavefunction or wavefunction.get_values() as input?
+    #TODO: take wavefunction or wavefunction.get_values() as input?
     pathtg = "/"+self._prefixb+str(blockid)+"/wavefunction/timegrid"
     pathd = "/"+self._prefixb+str(blockid)+"/wavefunction/Psi"
     timeslot = self._srf[pathtg].attrs["pointer"]

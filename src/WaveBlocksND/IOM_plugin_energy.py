@@ -146,7 +146,7 @@ def load_energy_timegrid(self, blockid=0, key=("kin", "pot")):
     r"""Load the time grid for specified energies.
 
     :param blockid: The ID of the data block to operate on.
-    :param key: Specify which energies to save. All are independent.
+    :param key: Specify which energy timegrids to load. All are independent.
     :type key: Tuple of valid identifier strings that are ``kin``, ``pot`` and ``tot``.
                Default is ``("kin", "pot")``.
     """

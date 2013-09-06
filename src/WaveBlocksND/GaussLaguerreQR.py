@@ -42,7 +42,7 @@ class GaussLaguerreQR(QuadratureRule):
         self._order = order
         self._a = a
 
-        # Qudrature has to have at least a single (node,weight) pair.
+        # Quadrature has to have at least a single (node,weight) pair.
         if not self._order > 0:
             raise ValueError("Quadrature rule has to be of order 1 at least.")
 

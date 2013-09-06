@@ -17,3 +17,5 @@ Class documentation
 .. autoclass:: HomogeneousInnerProduct
    :members:
    :inherited-members:
+
+   .. automethod:: __init__

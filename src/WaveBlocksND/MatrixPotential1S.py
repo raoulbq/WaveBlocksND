@@ -30,7 +30,7 @@ class MatrixPotential1S(MatrixPotential):
         r"""Create a new :py:class:`MatrixPotential1S` instance for a given
         potential matrix :math:`V(x)`.
 
-        :param expression:The mathematical expression representing the potential.
+        :param expression: The mathematical expression representing the potential.
         :type expressiom: A `Sympy` matrix type.
         :param variables: The variables corresponding to the space dimensions.
         :type variables: A list of `Sympy` symbols.
@@ -105,7 +105,7 @@ class MatrixPotential1S(MatrixPotential):
         # Evaluate the potential at the given nodes
         values = self._potential_n(*grid.get_nodes(split=True))
 
-        # Test for potential beeing constant
+        # Test for potential being constant
         if numpy.atleast_1d(values).shape == (1,):
             values = values * numpy.ones(grid.get_number_nodes(), dtype=numpy.complexfloating)
 
@@ -215,7 +215,7 @@ class MatrixPotential1S(MatrixPotential):
         # Evaluate the exponential at the given nodes
         values = self._exponential_n(*grid.get_nodes(split=True))
 
-        # Test for potential beeing constant
+        # Test for potential being constant
         if numpy.atleast_1d(values).shape == (1,):
             values = values * numpy.ones(grid.get_number_nodes(), dtype=numpy.complexfloating)
 
@@ -320,7 +320,7 @@ class MatrixPotential1S(MatrixPotential):
         self.calculate_jacobian()
         self.calculate_hessian()
 
-        # Construct function to evaluate the taylor approximation at point q at the given nodes
+        # Construct function to evaluate the Taylor approximation at point q at the given nodes
         self._taylor_eigen_s = [ (0, self._eigenvalues_s), (1, self._jacobian_s), (2, self._hessian_s) ]
         self._taylor_eigen_n = [ (0, self._eigenvalues_n), (1, self._jacobian_n), (2, self._hessian_n) ]
 
@@ -357,7 +357,7 @@ class MatrixPotential1S(MatrixPotential):
         self.calculate_jacobian()
         self.calculate_hessian()
 
-        # Point q where the taylor series is computed
+        # Point q where the Taylor series is computed
         # This is a column vector q = (q1, ... ,qD)
         qs = [ sympy.Symbol("q"+str(i)) for i,v in enumerate(self._variables) ]
 
@@ -414,7 +414,7 @@ class MatrixPotential1S(MatrixPotential):
         args = grid.get_nodes(split=True) + numpy.vsplit(position, position.shape[0])
         values = self._remainder_n[0](*args)
 
-        # Test for potential beeing constant
+        # Test for potential being constant
         if numpy.atleast_1d(values).shape == (1,):
             values = values * numpy.ones(grid.get_number_nodes(), dtype=numpy.complexfloating)
 

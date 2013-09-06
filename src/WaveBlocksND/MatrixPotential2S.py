@@ -30,7 +30,7 @@ class MatrixPotential2S(MatrixPotential):
         r"""Create a new :py:class:`MatrixPotential2S` instance for a given
         potential matrix :math:`V(x)`.
 
-        :param expression:The mathematical expression representing the potential.
+        :param expression: The mathematical expression representing the potential.
         :type expressiom: A `Sympy` matrix type.
         :param variables: The variables corresponding to the space dimensions.
         :type variables: A list of `Sympy` symbols.
@@ -132,7 +132,7 @@ class MatrixPotential2S(MatrixPotential):
             # Evaluate the potential at the given nodes
             values = self._potential_n[index](*nodes)
 
-            # Test for potential beeing constant
+            # Test for potential being constant
             if numpy.atleast_1d(values).shape == (1,):
                 values = values * numpy.ones(grid.get_number_nodes(), dtype=numpy.complexfloating)
 
@@ -220,7 +220,7 @@ class MatrixPotential2S(MatrixPotential):
             # Evaluate the eigenvalue at the given nodes
             values = self._eigenvalues_n[index]( *nodes )
 
-            # Test for eigenvalue beeing constant
+            # Test for eigenvalue being constant
             if numpy.atleast_1d(values).shape == (1,):
                 values = values * numpy.ones(grid.get_number_nodes(), dtype=numpy.complexfloating)
 
@@ -539,7 +539,7 @@ class MatrixPotential2S(MatrixPotential):
 
             self._taylor_eigen_s[diagonal_component] = []
 
-            # Construct function to evaluate the taylor approximation at point q at the given nodes
+            # Construct function to evaluate the Taylor approximation at point q at the given nodes
             self._taylor_eigen_s[diagonal_component] = [ (0, self._eigenvalues_s[diagonal_component]),
                                                          (1, self._jacobian_s[diagonal_component]),
                                                          (2, self._hessian_s[diagonal_component]) ]
@@ -612,7 +612,7 @@ class MatrixPotential2S(MatrixPotential):
         self.calculate_jacobian()
         self.calculate_hessian()
 
-        # Point q where the taylor series is computed
+        # Point q where the Taylor series is computed
         # This is a column vector q = (q1, ... ,qD)
         qs = [ sympy.Symbol("q"+str(i)) for i in xrange(len(self._variables)) ]
         pairs = [ (xi,qi) for xi,qi in zip(self._variables, qs) ]
@@ -666,11 +666,11 @@ class MatrixPotential2S(MatrixPotential):
         self.calculate_jacobian()
         self.calculate_hessian()
 
-        # Quadratic taylor series for all eigenvalues
+        # Quadratic Taylor series for all eigenvalues
         quadratics = []
 
         for index, eigenvalue in enumerate(self._eigenvalues_s):
-            # Point q where the taylor series is computed
+            # Point q where the Taylor series is computed
             # This is a column vector q = (q1, ... ,qD)
             qs = [ sympy.Symbol("q"+str(i)) for i,v in enumerate(self._variables) ]
             pairs = [ (xi,qi) for xi,qi in zip(self._variables, qs) ]
@@ -763,7 +763,7 @@ class MatrixPotential2S(MatrixPotential):
             (row, col) = entry
             values = functions[row*self._number_components+col](*args)
 
-            # Test for potential beeing constant
+            # Test for potential being constant
             if numpy.atleast_1d(values).shape == (1,):
                 values = values * numpy.ones(grid.get_number_nodes(), dtype=numpy.complexfloating)
 
@@ -774,7 +774,7 @@ class MatrixPotential2S(MatrixPotential):
             for function in functions:
                 values = function(*args)
 
-                # Test for potential beeing constant
+                # Test for potential being constant
                 if numpy.atleast_1d(values).shape == (1,):
                     values = values * numpy.ones(grid.get_number_nodes(), dtype=numpy.complexfloating)
 

@@ -17,3 +17,5 @@ Class documentation
 .. autoclass:: InhomogeneousInnerProduct
    :members:
    :inherited-members:
+
+   .. automethod:: __init__

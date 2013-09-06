@@ -20,7 +20,7 @@ __all__ = ["WaveFunction"]
 
 
 class WaveFunction(object):
-    r"""This class represents a vector valued wavefuncton :math:`\Psi`
+    r"""This class represents a vector valued wavefunction :math:`\Psi`
     as used in the vector valued time-dependent Schroedinger equation. The
     state :math:`\Psi` consists of the components :math:`\psi_0` to
     :math:`\psi_{N-1}`.
@@ -97,7 +97,7 @@ class WaveFunction(object):
         :math:`i` of :math:`\Psi` to the current :py:class:`WaveFunction` instance.
 
         :param values: A list with the new values of all components we want to change.
-        :type values: Each entry of the list has to be an ndarray.
+        :type values: Each entry of the list has to be an :py:class:`ndarray`.
         :param components: The components :math:`i` for which we want to set
                            the new wavefunction values :math:`\psi_i`.
         :type components: A single integer or a list of integers. If set to

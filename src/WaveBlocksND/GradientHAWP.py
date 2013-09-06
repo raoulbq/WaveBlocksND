@@ -36,7 +36,8 @@ class GradientHAWP(Gradient):
         :param as_packet: Whether to return a full packet.
         :type as_packet: Boolean, default is ``False``.
         :return: Extended basis shape :math:`\mathfrak{\dot{K}}` and new coefficients :math:`c^\prime`.
-                 If requested a copy of the original wavepacket is returned with these new values set.
+                 If requested, copies of the original wavepacket are returned with these new values set.
+                 There is one packet for each component of the gradient.
         """
         # TODO: Consider moving this method into the HAWP class?
         D = wavepacket.get_dimension()
@@ -69,9 +70,12 @@ class GradientHAWP(Gradient):
                 cnew[Ke[nb],:] += sqrt(eps**2/2.0) * sqrt(k[d]+1.0) * coeffs[K[k]] * P[:,d]
 
         if as_packet is True:
-            hawp_new = wavepacket.clone()
-            hawp_new.set_basis_shapes(Ke, component=component)
-            hawp_new.set_coefficients(cnew, component=component)
-            return hawp_new
+            new_wps = []
+            for d in xrange(D):
+                hawp_new = wavepacket.clone()
+                hawp_new.set_basis_shapes(Ke, component=component)
+                hawp_new.set_coefficients(cnew[:,d], component=component)
+                new_wps.append(hawp_new)
+            return new_wps
         else:
             return (Ke, cnew)

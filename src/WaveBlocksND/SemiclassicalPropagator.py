@@ -98,7 +98,7 @@ class SemiclassicalPropagator(Propagator, SplittingParameters):
         self._prepare_potential()
 
 
-    # TODO: Consider removig this, duplicate
+    # TODO: Consider removing this, duplicate
     def get_number_components(self):
         r""":return: The number :math:`N` of components :math:`\Phi_i` of :math:`\Psi`.
         """
@@ -160,7 +160,7 @@ class SemiclassicalPropagator(Propagator, SplittingParameters):
         wavepacket at time :math:`t + \tau`. We perform exactly one timestep of size
         :math:`\tau` here. This propagation is done for all packets in the list
         :math:`\{\Psi_i\}_i` and neglects any interaction between two packets.
-        The semiclassical propagations scheme is used.
+        The semiclassical propagation scheme is used.
         """
         # Cache some parameter values
         dt = 1.0*self._dt
@@ -177,7 +177,7 @@ class SemiclassicalPropagator(Propagator, SplittingParameters):
             nrlocalsteps = max(1, 1+nrtmp)
             self.intsplit(self._propkin, self._proppotquad, a,b, [0.0,h1], nrlocalsteps, packet, (packet,leading_chi))
 
-            # Do a potential step with the local non-quadratic taylor remainder
+            # Do a potential step with the local non-quadratic Taylor remainder
             innerproduct = packet.get_innerproduct()
             F = innerproduct.build_matrix(packet, operator=partial(self._potential.evaluate_local_remainder_at, diagonal_component=leading_chi))
 

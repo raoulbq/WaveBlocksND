@@ -14,7 +14,7 @@ def meshgrid_nd(arrays):
     """Like 'meshgrid()' but for arbitrary number of dimensions.
 
     :param arrays: A list of arrays to form the tensor grid.
-                   All arrays have to be 1 oder 0 dimensional.
+                   All arrays have to be 1 or 0 dimensional.
     :return: The full tensor product mesh grid.
     """
     arrays = map(squeeze, arrays)

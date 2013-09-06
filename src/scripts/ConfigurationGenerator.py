@@ -5,12 +5,12 @@ a bunch of simulation configuration given some
 sets of parameters.
 
 @author: R. Bourquin
-@copyright: Copyright (C) 2010, 2011, 2012 R. Bourquin
+@copyright: Copyright (C) 2010, 2011, 2012, 2013 R. Bourquin
 @license: Modified BSD License
 """
 
 from itertools import product
-import sys
+import argparse
 import os
 
 from WaveBlocksND import GlobalDefaults
@@ -25,7 +25,7 @@ def sort_statements(preamble, alist):
     :param alist: The list of statements
     """
 
-    # todo: Rewrite and improve this using reflection
+    # TODO: Rewrite and improve this using reflection
 
     ordered_statements= []
 
@@ -208,24 +208,26 @@ if __name__ == "__main__":
 
     That should be all ...
     """
+    parser = argparse.ArgumentParser()
 
-    if len(sys.argv) >= 2:
-        filepath = sys.argv[1]
-    else:
-        filepath = GlobalDefaults.file_metaconfiguration
+    parser.add_argument("metaconfiguration",
+                        type = str,
+                        help = "The meta-configuration file.",
+                        default = GlobalDefaults.file_metaconfiguration)
 
-    if len(sys.argv) >= 3:
-        configpath = sys.argv[2]
-    else:
-        configpath = GlobalDefaults.path_to_autogen_configs
+    parser.add_argument("-d", "--dest",
+                        type = str,
+                        help = "The destination where to store the configurations generated.",
+                        default = GlobalDefaults.path_to_autogen_configs)
 
-    print("Meta configuration read from: " + filepath)
-    print("Write configurations to: " + configpath)
+    args = parser.parse_args()
+
+    print("Meta configuration read from: " + args.metaconfiguration)
+    print("Write configurations to: " + args.dest)
 
     # Read the configuration file
-    f = open(filepath)
-    content = f.read()
-    f.close()
+    with open(args.metaconfiguration) as f:
+        content = f.read()
 
     # Execute the metaconfiguration file
     # Assuming that it defines the two dicts 'GP' and 'LP' in the toplevel namespace.
@@ -238,4 +240,4 @@ if __name__ == "__main__":
         PA = """ """
 
     # Generate the configuration files
-    generate_configurations(PA, GP, LP, cfpath=configpath)
+    generate_configurations(PA, GP, LP, cfpath=args.dest)

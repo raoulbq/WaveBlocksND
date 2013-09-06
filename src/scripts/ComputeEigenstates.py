@@ -7,7 +7,7 @@ This file contains the class which represents a homogeneous Hagedorn wavepacket.
 @license: Modified BSD License
 """
 
-import sys
+import argparse
 from numpy import complexfloating, squeeze, real, ones, zeros_like, conj, sum, argsort
 from scipy.optimize import fmin
 from scipy.linalg import sqrtm, inv, eigh
@@ -18,29 +18,34 @@ from WaveBlocksND import GradientHAWP
 from WaveBlocksND import IOManager
 
 
-def compute_eigenstate(params):
+def compute_eigenstate(parameters):
     r"""
     Special variables necessary in configuration:
 
     * eigenstate_of_level (default: 0)
     * states_indices (default: [0])
     """
-    D = params["dimension"]
+    D = parameters["dimension"]
 
-    if params.has_key("eigenstate_of_level"):
-        N = params["eigenstate_of_level"]
+    if parameters.has_key("eigenstate_of_level"):
+        N = parameters["eigenstate_of_level"]
     else:
         # Upper-most potential surface
         N = 0
 
     # Create output file now, in case this fails we did not waste computations
     IOM = IOManager()
-    IOM.create_file(params, filename="eigenstates.hdf5")
+    IOM.create_file("eigenstates.hdf5")
+
+    # Save the simulation parameters
+    IOM.add_parameters()
+    IOM.save_parameters(parameters)
+
     gid = IOM.create_group()
 
     BF = BlockFactory()
     # Create the potential
-    V = BF.create_potential(params)
+    V = BF.create_potential(parameters)
     V.calculate_local_quadratic()
 
     # Minimize the potential to find q0
@@ -82,7 +87,7 @@ def compute_eigenstate(params):
     print(70*"-")
 
     # Next find the new coefficients c'
-    HAWP = BF.create_wavepacket(params["hawp_template"])
+    HAWP = BF.create_wavepacket(parameters["hawp_template"])
 
     # Set the parameter values
     Pi = HAWP.get_parameters()
@@ -94,7 +99,7 @@ def compute_eigenstate(params):
 
     # Next compute the matrix M_ij = <phi_i | T + V | phi_j>
     # The potential part
-    HQ = BF.create_inner_product(params["innerproduct"])
+    HQ = BF.create_inner_product(parameters["innerproduct"])
 
     opV = lambda x, q, entry: V.evaluate_at(x, entry=entry)
     MV = HQ.build_matrix(HAWP, operator=opV)
@@ -125,8 +130,8 @@ def compute_eigenstate(params):
     ind = argsort(ew)
 
     # Build the requested energy levels and states
-    if params.has_key("eigenstates_indices"):
-        states = params["eigenstates_indices"]
+    if parameters.has_key("eigenstates_indices"):
+        states = parameters["eigenstates_indices"]
     else:
         # Groundstate only
         states = [0]
@@ -156,7 +161,7 @@ def compute_eigenstate(params):
 
         # Save all the wavepacket data
         bid = IOM.create_block(groupid=gid)
-        IOM.add_wavepacket(params, blockid=bid, key=KEY)
+        IOM.add_wavepacket(parameters, blockid=bid, key=KEY)
         IOM.save_wavepacket_description(HAWP.get_description(), blockid=bid)
         for shape in HAWP.get_basis_shapes():
             IOM.save_wavepacket_basisshapes(shape, blockid=bid)
@@ -170,16 +175,19 @@ def compute_eigenstate(params):
 
 if __name__ == "__main__":
 
-    # Read the path for the configuration file we use for this simulation.
-    try:
-        parametersfile = sys.argv[1]
-    except IndexError:
-        raise ValueError("No configuration file given!")
+    parser = argparse.ArgumentParser()
 
-    print("Using configuration from file: " + parametersfile)
+    parser.add_argument("parametersfile",
+                        type = str,
+                        help = "The configuration parameters file")
+
+    args = parser.parse_args()
+
+    # Read the path for the configuration file we use for this simulation.
+    print("Using configuration from file: " + args.parametersfile)
 
     # Set up the parameter provider singleton
-    PA = ParameterLoader().load_from_file(parametersfile)
+    PA = ParameterLoader().load_from_file(args.parametersfile)
     compute_eigenstate(PA)
 
     print("Eigenstate computation finished")

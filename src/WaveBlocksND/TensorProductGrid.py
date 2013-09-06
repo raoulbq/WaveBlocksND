@@ -21,14 +21,14 @@ class TensorProductGrid(DenseGrid):
     have an arbitrary dimension :math:`D`. The grid nodes are
     enclosed in a hypercubic bounding box. This box can have
     different limits :math:`min_i`, :math:`max_i` along each
-    axis :math:`x_i`. In each of these intervalls we place
+    axis :math:`x_i`. In each of these intervals we place
     :math:`N_i` grid nodes. Note that the point :math:`max_i`
     is not part of the grid. The grid interior is build as the
     tensor product of all the grid nodes along all the axes.
     """
 
     def __init__(self, limits, number_nodes):
-        r"""Construct a tnesor product grid instace.
+        r"""Construct a tensor product grid instance.
 
         :param limits: The grid domain limits along each axis.
         :type limits: A list of two-element tuples.

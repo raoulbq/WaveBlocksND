@@ -21,7 +21,7 @@ def continuate(data, jump=2.0*pi, reference=0.0):
     :param data: An array with the input data.
     :param jump: The basic size of jumps which will be removed. Default is :math:`2 \pi`.
     :param reference: This value allows the specify the starting point for continuation
-                       explicitely. It can be used together with ``data``.
+                       explicitly. It can be used together with ``data``.
     :type reference: A single float number.
     """
     data = hstack([array(reference), array(data)])
@@ -35,7 +35,7 @@ def cont_angle(data, reference=None):
 
     :param data: An array with the input data.
     :param reference: This value allows the specify the starting point for
-                      continuation explicitely. It can be used together with ``data``.
+                      continuation explicitly. It can be used together with ``data``.
     :type reference: A single float number.
     """
     if reference is None:
@@ -55,7 +55,7 @@ def cont_sqrt(data, reference=None):
 
     :param data: An array with the input data.
     :param reference: This value allows the specify the starting point for
-                      continuation explicitely. It can be used together with ``data``.
+                      continuation explicitly. It can be used together with ``data``.
     :type reference: A single float number.
     """
     if reference is None:

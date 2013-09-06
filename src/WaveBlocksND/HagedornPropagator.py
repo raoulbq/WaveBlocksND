@@ -78,7 +78,7 @@ class HagedornPropagator(Propagator):
 
 
     def _prepare_potential(self):
-        """Precalculate the potential splittings needed
+        r"""Precalculate the potential splittings needed
         """
         for chi in set([ p[1] for p in self._packets ]):
             self._potential.calculate_local_quadratic(diagonal_component=chi)
@@ -96,7 +96,7 @@ class HagedornPropagator(Propagator):
         self._prepare_potential()
 
 
-    # TODO: Consider removig this, duplicate
+    # TODO: Consider removing this, duplicate
     def get_number_components(self):
         r""":return: The number :math:`N` of components :math:`\Phi_i` of :math:`\Psi`.
         """
@@ -120,7 +120,7 @@ class HagedornPropagator(Propagator):
 
 
     def set_wavepackets(self, packetlist):
-        """Set the list :math:`\{\Psi_i\}_i` of wavepackets that the propagator will propagate.
+        r"""Set the list :math:`\{\Psi_i\}_i` of wavepackets that the propagator will propagate.
 
         :param packetlist: A list of new wavepackets :math:`\Psi_i` and their
                            leading components :math:`\chi_i` to propagate.
@@ -161,7 +161,7 @@ class HagedornPropagator(Propagator):
             S = S - dt * V[0]
             packet.set_parameters((q, p, Q, P, S))
 
-            # Do a potential step with the local non-quadratic taylor remainder
+            # Do a potential step with the local non-quadratic Taylor remainder
             innerproduct = packet.get_innerproduct()
             F = innerproduct.build_matrix(packet, operator=partial(self._potential.evaluate_local_remainder_at, diagonal_component=leading_chi))
 

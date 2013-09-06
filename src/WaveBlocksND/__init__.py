@@ -53,6 +53,10 @@ from HagedornWavepacketInhomogeneous import HagedornWavepacketInhomogeneous
 from Gradient import Gradient
 from GradientHAWP import GradientHAWP
 
+#
+from LinearCombinationOfWavepackets import LinearCombinationOfWavepackets
+from LinearCombinationOfWPs import LinearCombinationOfWPs
+
 # Quadrature rules
 from QuadratureRule import QuadratureRule
 from TrapezoidalQR import TrapezoidalQR
@@ -66,6 +70,9 @@ from InnerProduct import InnerProductException
 from HomogeneousInnerProduct import HomogeneousInnerProduct
 from InhomogeneousInnerProduct import InhomogeneousInnerProduct
 
+from HomogeneousInnerProductLCWP import HomogeneousInnerProductLCWP
+from InhomogeneousInnerProductLCWP import InhomogeneousInnerProductLCWP
+
 from Quadrature import Quadrature
 from DirectQuadrature import DirectQuadrature
 from DirectHomogeneousQuadrature import DirectHomogeneousQuadrature
@@ -73,6 +80,10 @@ from DirectInhomogeneousQuadrature import DirectInhomogeneousQuadrature
 
 from SymbolicIntegral import SymbolicIntegral
 from NSDInhomogeneous import NSDInhomogeneous
+
+from SparsityOracle import SparsityOracle
+from SparsityOracleTrue import SparsityOracleTrue
+from SparsityOraclePSHAWP import SparsityOraclePSHAWP
 
 # Basis transformations
 from BasisTransformation import BasisTransformation
@@ -94,6 +105,7 @@ from SimulationLoopHagedornInhomogeneous import SimulationLoopHagedornInhomogene
 
 from Observables import Observables
 from ObservablesHAWP import ObservablesHAWP
+from ObservablesLCWP import ObservablesLCWP
 
 # Enable dynamic plugin loading for IOManager
 import sys

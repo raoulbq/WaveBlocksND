@@ -20,7 +20,7 @@ __all__ = ["FourierPropagator"]
 
 class FourierPropagator(Propagator):
     r"""This class can numerically propagate given initial values :math:`\Psi(x_0, t_0)` on
-    a potential hypersurface :math:`V(x)`. The propagation is done with a Strang splitting
+    a potential hyper surface :math:`V(x)`. The propagation is done with a Strang splitting
     of the time propagation operator :math:`\exp(-\frac{i}{\varepsilon^2} \tau H)`.
     """
 
@@ -66,7 +66,7 @@ class FourierPropagator(Propagator):
         self._VE = tuple([ ve.reshape(self._grid.get_number_nodes()) for ve in VE ])
 
 
-    # TODO: Consider removig this, duplicate
+    # TODO: Consider removing this, duplicate
     def get_number_components(self):
         r"""Get the number :math:`N` of components of :math:`\Psi`.
 

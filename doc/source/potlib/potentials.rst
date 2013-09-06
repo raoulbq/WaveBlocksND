@@ -420,6 +420,23 @@ Potential ``cosh_osc_2d``
 
 .. image:: fig/cosh_osc_2d.png
 
+Potential ``eckart_bn``
+^^^^^^^^^^^^^^^^^^^^^^^
+
+* Formula: :math:`V(x) = \frac{k y^{2}}{2} \left(- \sigma e^{- l x^{2}} + 1\right) + \frac{v_{0}}{\cosh^{2}{\left (a x \right )}}`
+
+* Variables: :math:`x`, :math:`y`
+
+* Default values:
+
+  * :math:`v_{0} = 0.425`
+  * :math:`a = 1.3624`
+  * :math:`k = 0.06784`
+  * :math:`\sigma = 0.5`
+  * :math:`l = 0.25`
+
+.. image:: fig/eckart_bn.png
+
 Potential ``gauss_hill_2d``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 

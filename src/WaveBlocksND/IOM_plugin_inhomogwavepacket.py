@@ -4,7 +4,7 @@ IOM plugin providing functions for handling
 homogeneous Hagedorn wavepacket data.
 
 @author: R. Bourquin
-@copyright: Copyright (C) 2010, 2011, 2012 R. Bourquin
+@copyright: Copyright (C) 2010, 2011, 2012, 2013 R. Bourquin
 @license: Modified BSD License
 """
 
@@ -137,7 +137,7 @@ def save_inhomogwavepacket_parameters(self, parameters, timestep=None, blockid=0
 
 def save_inhomogwavepacket_coefficients(self, coefficients, basisshapes, timestep=None, blockid=0):
     r"""Save the coefficients of the Hagedorn wavepacket to a file.
-    Warning: we do only save tha hash of the basis shapes here!
+    Warning: we do only save the hash of the basis shapes here!
     You have to save the basis shape with the corresponding function too.
 
     :param coefficients: The coefficients of the Hagedorn wavepacket.
@@ -183,7 +183,7 @@ def save_inhomogwavepacket_basisshapes(self, basisshape, blockid=0):
     ha = hash(basisshape)
     name = "basis_shape_"+str(ha)
 
-    # Chech if we already stored this basis shape
+    # Check if we already stored this basis shape
     if not name in self._srf[pathd].keys():
         # Create new data set
         daset = self._srf[pathd].create_dataset("basis_shape_"+str(ha), (1,), dtype=np.integer)
@@ -286,8 +286,11 @@ def load_inhomogwavepacket_basisshapes(self, the_hash=None, blockid=0):
             descrs[int(ahash[12:])] = descr
         return descrs
     else:
+        # Be sure the hash is a plain number and not something
+        # else like a numpy array with one element.
+        the_hash = int(the_hash)
         name = "basis_shape_"+str(the_hash)
-        # Chech if we already stored this basis shape
+        # Check if we already stored this basis shape
         if name in self._srf[pathd].keys():
             # TODO: What data exactly do we want to return?
             descr = {}
@@ -296,3 +299,69 @@ def load_inhomogwavepacket_basisshapes(self, the_hash=None, blockid=0):
             return descr
         else:
             raise IndexError("No basis shape with given hash "+str(hash))
+
+
+#
+# The following two methods are only for convenience and are NOT particularly efficient.
+#
+
+
+def load_inhomogwavepacket(self, timestep, blockid=0, key=("q","p","Q","P","S")):
+    r"""Load a wavepacket at a given timestep and return a fully configured instance.
+    This method just calls some other :py:class:`IOManager` methods in the correct order.
+    It is included only for convenience and is not particularly efficient.
+
+    :param timestep: The timestep :math:`n` at which we load the wavepacket.
+    :param key: Specify which parameters to save. All are independent.
+    :type key: Tuple of valid identifier strings that are ``q``, ``p``, ``Q``, ``P``, ``S`` and ``adQ``.
+               Default is ``("q", "p", "Q", "P", "S")``.
+    :param blockid: The ID of the data block to operate on.
+    :return: A :py:class:`HagedornWavepacketInhomogeneous` instance.
+    """
+    from BlockFactory import BlockFactory
+    BF = BlockFactory()
+
+    descr = self.load_inhomogwavepacket_description(blockid=blockid)
+    HAWP = BF.create_wavepacket(descr)
+
+    # Parameters and coefficients
+    Pi = self.load_inhomogwavepacket_parameters(timestep=timestep, blockid=blockid, key=key)
+    hashes, coeffs = self.load_inhomogwavepacket_coefficients(timestep=timestep, get_hashes=True, blockid=blockid)
+
+    # Basis shapes
+    Ks = []
+    for ahash in hashes:
+        K_descr = self.load_inhomogwavepacket_basisshapes(the_hash=ahash, blockid=blockid)
+        Ks.append(BF.create_basis_shape(K_descr))
+
+    # Configure the wavepacket
+    HAWP.set_parameters(Pi, key=key)
+    HAWP.set_basis_shapes(Ks)
+    HAWP.set_coefficients(coeffs)
+
+    return HAWP
+
+
+def save_inhomogwavepacket(self, packet, timestep, blockid=None, key=("q","p","Q","P","S")):
+    r"""Save a wavepacket at a given timestep and read all data to save from the
+    :py:class:`HagedornWavepacketInhomogeneous` instance provided. This method just
+    calls some other :py:class:`IOManager` methods in the correct order. It is included
+    only for convenience and is not particularly efficient. We assume the wavepacket is
+    already set up with the correct :py:meth:`add_inhomogwavepacket` method call.
+
+    :param packet: The :py:class:`HagedornWavepacketInhomogeneous` instance we want to save.
+    :param timestep: The timestep :math:`n` at which we save the wavepacket.
+    :param key: Specify which parameters to save. All are independent.
+    :type key: Tuple of valid identifier strings that are ``q``, ``p``, ``Q``, ``P``, ``S`` and ``adQ``.
+               Default is ``("q", "p", "Q", "P", "S")``.
+    :param blockid: The ID of the data block to operate on.
+    """
+    # Description
+    self.save_inhomogwavepacket_description(packet.get_description(), blockid=blockid)
+    # Pi
+    self.save_inhomogwavepacket_parameters(packet.get_parameters(key=key), timestep=timestep, blockid=blockid, key=key)
+    # Basis shapes
+    for shape in packet.get_basis_shapes():
+        self.save_inhomogwavepacket_basisshapes(shape, blockid=blockid)
+    # Coefficients
+    self.save_inhomogwavepacket_coefficients(packet.get_coefficients(), packet.get_basis_shapes(), timestep=timestep, blockid=blockid)

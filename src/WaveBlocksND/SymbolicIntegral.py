@@ -2,7 +2,7 @@
 
 Use a symbolic exact formula for computing the inner product
 between two semi-classical wavepackets. The formula is
-constructed explicitely for the inhomogeneous case.
+constructed explicitly for the inhomogeneous case.
 
 @author: R. Bourquin
 @copyright: Copyright (C) 2013 R. Bourquin

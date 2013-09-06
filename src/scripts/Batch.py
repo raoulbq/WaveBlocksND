@@ -3,11 +3,11 @@
 Simple script to run several simulations with a given set of parameter files.
 
 @author: R. Bourquin
-@copyright: Copyright (C) 2010, 2011, 2012 R. Bourquin
+@copyright: Copyright (C) 2010, 2011, 2012, 2013 R. Bourquin
 @license: Modified BSD License
 """
 
-import sys
+import argparse
 import os
 from glob import glob
 import subprocess as sp
@@ -16,17 +16,7 @@ import time
 from WaveBlocksND import GlobalDefaults
 
 
-def batch_run(call_prerun, call_simulation, call_for_each, call_postrun, result_files):
-    # Gather cmd line arguments or use defaults if none given
-    if len(sys.argv) >= 3:
-        configpath = sys.argv[2]
-    else:
-        configpath = GlobalDefaults.path_to_configs
-
-    if len(sys.argv) >= 4:
-        resultpath = sys.argv[3]
-    else:
-        resultpath = GlobalDefaults.path_to_results
+def batch_run(call_prerun, call_simulation, call_for_each, call_postrun, result_files, configpath, resultpath):
 
     # The directories involved
     currentdir = os.getcwd()
@@ -130,15 +120,28 @@ def batch_run(call_prerun, call_simulation, call_for_each, call_postrun, result_
 
 if __name__ == "__main__":
 
-    if len(sys.argv) >= 2:
-        batchconfigfile = sys.argv[1]
-    else:
-        batchconfigfile = GlobalDefaults.file_batchconfiguration
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument("-b", "--batchconfiguration",
+                        type = str,
+                        help = "The batch configuration file",
+                        default = GlobalDefaults.file_batchconfiguration)
+
+    parser.add_argument("-c", "--configurations",
+                        type = str,
+                        help = "Path to the 'configuration' directory",
+                        default = GlobalDefaults.path_to_configs)
+
+    parser.add_argument("-r", "--results",
+                        type = str,
+                        help = "Path to the 'results' directory.",
+                        default = GlobalDefaults.path_to_results)
+
+    args = parser.parse_args()
 
     # Read the batch configuration file
-    f = open(batchconfigfile)
-    content = f.read()
-    f.close()
+    with open(args.batchconfiguration) as f:
+        content = f.read()
 
     # Execute the batchconfiguration file
     # Assuming that it defines the four lists with script commands
@@ -152,4 +155,4 @@ if __name__ == "__main__":
     exec(content)
 
     # Really start the scripts
-    batch_run(call_prerun, call_simulation, call_for_each, call_postrun, result_files)
+    batch_run(call_prerun, call_simulation, call_for_each, call_postrun, result_files, args.configurations, args.results)

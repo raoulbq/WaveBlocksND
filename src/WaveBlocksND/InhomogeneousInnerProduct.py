@@ -17,11 +17,20 @@ __all__ = ["InhomogeneousInnerProduct"]
 
 
 class InhomogeneousInnerProduct(InnerProduct):
+    r"""
+    """
 
-    def __init__(self, quad=None):
+    def __init__(self, ip=None):
+        r"""
+        This class computes the inhomogeneous inner product
+        :math:`\langle\Psi|f|\Psi^\prime\rangle`.
+
+        :param ip: The delegate inner product.
+        :type ip: A :py:class:`Quadrature` subclass instance.
+        """
         # Pure convenience to allow setting of quadrature instance in constructor
-        if quad is not None:
-            self.set_quadrature(quad)
+        if ip is not None:
+            self.set_quadrature(ip)
         else:
             self._quad = None
 
@@ -66,7 +75,7 @@ class InhomogeneousInnerProduct(InnerProduct):
             packet = pacbra
 
         # TODO: Consider adding 'is_diagonal' flag to make computations cheaper if we know the operator is diagonal
-        # TODO: Should raise Exceptions if pacbra and packet are incompatible wrt N, K etc
+        # TODO: Should raise Exceptions if pacbra and packet are incompatible w.r.t. N, K etc
 
         self._quad.initialize_packet(pacbra, packet)
         self._quad.initialize_operator(operator, eval_at_once=eval_at_once)
@@ -125,12 +134,12 @@ class InhomogeneousInnerProduct(InnerProduct):
         :type eval_at_once: Boolean, default is ``False``.
         :return: A matrix of size :math:`\sum_i^N |\mathfrak{K}_i| \times \sum_j^{N^\prime} |\mathfrak{K}^\prime_j|`.
         """
-        # Allow to ommit the ket if it is the same as the bra
+        # Allow to omit the ket if it is the same as the bra
         if packet is None:
             packet = pacbra
 
         # TODO: Consider adding 'is_diagonal' flag to make computations cheaper if we know the operator is diagonal
-        # TODO: Should raise Exceptions if pacbra and packet are incompatible wrt N, K etc
+        # TODO: Should raise Exceptions if pacbra and packet are incompatible w.r.t. N, K etc
 
         self._quad.initialize_packet(pacbra, packet)
         self._quad.initialize_operator(operator, matrix=True, eval_at_once=eval_at_once)

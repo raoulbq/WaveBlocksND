@@ -33,7 +33,7 @@ class MatrixPotentialMS(MatrixPotential):
         r"""Create a new :py:class:`MatrixPotentialMS` instance for a given
         potential matrix :math:`V(x)`.
 
-        :param expression:The mathematical expression representing the potential.
+        :param expression: The mathematical expression representing the potential.
         :type expressiom: A `Sympy` matrix type.
         :param variables: The variables corresponding to the space dimensions.
         :type variables: A list of `Sympy` symbols.
@@ -108,7 +108,7 @@ class MatrixPotentialMS(MatrixPotential):
             # Evaluate the potential at the given nodes
             values = self._potential_n[index](*nodes)
 
-            # Test for potential beeing constant
+            # Test for potential being constant
             if numpy.atleast_1d(values).shape == (1,):
                 values = values * numpy.ones(grid.get_number_nodes(), dtype=numpy.complexfloating)
 
@@ -126,7 +126,7 @@ class MatrixPotentialMS(MatrixPotential):
     def calculate_eigenvalues(self):
         r"""Calculate all the eigenvalues :math:`\lambda_i(x)` of the potential :math:`V(x)`.
         We can not do this by symbolic calculations, hence the function has an empty
-        implementation. We compute the eigenvalues by numercial techniques in the corresponding
+        implementation. We compute the eigenvalues by numerical techniques in the corresponding
         `evaluate_eigenvalues_at` function.
         """
         pass
@@ -205,7 +205,7 @@ class MatrixPotentialMS(MatrixPotential):
     def calculate_eigenvectors(self):
         r"""Calculate all the eigenvectors :math:`\nu_i(x)` of the potential :math:`V(x)`.
         We can not do this by symbolic calculations, hence the function has an empty
-        implementation. We compute the eigenvectors by numercial techniques in the corresponding
+        implementation. We compute the eigenvectors by numerical techniques in the corresponding
         `evaluate_eigenvectors_at` function.
         """
         pass

@@ -1,10 +1,10 @@
 """The WaveBlocks Project
 
-Compute some observables like kinetic and potential energy
+Compute some observables like norm, kinetic and potential energy
 of Hagedorn wavepackets.
 
 @author: R. Bourquin
-@copyright: Copyright (C) 2012 R. Bourquin
+@copyright: Copyright (C) 2013 R. Bourquin
 @license: Modified BSD License
 """
 
@@ -46,6 +46,27 @@ class ObservablesHAWP(Observables):
         :type innerproduct: A :py:class:`InnerProduct` subclass instance.
         """
         self._innerproduct = innerproduct
+
+
+    def norm(self, wavepacket, component=None, summed=False):
+        r"""Calculate the :math:`L^2` norm :math:`\langle\Psi|\Psi\rangle` of the wavepacket :math:`\Psi`.
+
+        Note: this method is just a shortcut and calls the :py:meth:`HagedornWavepacketBase.norm` method
+        of the given wavepacket.
+
+        :param wavepacket: The wavepacket :math:`\Psi` of which we compute the norm.
+        :type wavepacket: A :py:class:`HagedornWavepacketBase` subclass instance.
+        :param component: The index :math:`i` of the component :math:`\Phi_i` whose norm is calculated.
+                          The default value is ``None`` which means to compute the norms of all :math:`N` components.
+        :type component: int or ``None``.
+        :param summed: Whether to sum up the norms :math:`\langle\Phi_i|\Phi_i\rangle` of the
+                       individual components :math:`\Phi_i`.
+        :type summed: Boolean, default is ``False``.
+        :type summed: Boolean, default is ``False``.
+        :return: The norm of :math:`\Psi` or the norm of :math:`\Phi_i` or a list with the :math:`N`
+                 norms of all components. Depending on the values of ``component`` and ``summed``.
+        """
+        return wavepacket.norm(component=component, summed=summed)
 
 
     def kinetic_energy(self, wavepacket, component=None, summed=False):
@@ -91,7 +112,8 @@ class ObservablesHAWP(Observables):
 
         :param wavepacket: The wavepacket :math:`\Psi` of which we compute the potential energy.
         :type wavepacket: A :py:class:`HagedornWavepacketBase` subclass instance.
-        :param potential: The potential :math:`V(x)`.
+        :param potential: The potential :math:`V(x)`. (Actually, not the potential object itself
+                          but one of its ``V.evaluate_*`` methods.)
         :param component: The index :math:`i` of the component :math:`\Phi_i` whose
                           potential energy we want to compute. If set to ``None`` the
                           computation is performed for all :math:`N` components.

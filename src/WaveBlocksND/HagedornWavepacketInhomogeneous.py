@@ -3,7 +3,7 @@
 This file contains the class which represents an inhomogeneous Hagedorn wavepacket.
 
 @author: R. Bourquin
-@copyright: Copyright (C) 2010, 2011, 2012 R. Bourquin
+@copyright: Copyright (C) 2010, 2011, 2012, 2013 R. Bourquin
 @license: Modified BSD License
 """
 
@@ -51,11 +51,11 @@ class HagedornWavepacketInhomogeneous(HagedornWavepacketBase):
             self._coefficients.append(zeros((bs.get_basis_size(),1), dtype=complexfloating))
 
             # Default parameters of harmonic oscillator eigenstates
-            q = zeros((self._dimension, 1))
-            p = zeros((self._dimension, 1))
-            Q = eye(self._dimension)
-            P = 1.0j * eye(self._dimension)
-            S = 0.0
+            q = zeros((self._dimension, 1), dtype=complexfloating)
+            p = zeros((self._dimension, 1), dtype=complexfloating)
+            Q = eye(self._dimension, dtype=complexfloating)
+            P = 1.0j * eye(self._dimension, dtype=complexfloating)
+            S = zeros((1, 1), dtype=complexfloating)
 
             self._Pis.append([q, p, Q, P, S])
 
@@ -78,7 +78,7 @@ class HagedornWavepacketInhomogeneous(HagedornWavepacketBase):
 
 
     def _get_sqrt(self, component):
-        r"""Compytibility method
+        r"""Compatibility method
         """
         return self._sqrt[component]
 

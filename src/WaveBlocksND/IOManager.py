@@ -20,7 +20,7 @@ __all__ = ["IOManager"]
 class IOManager(object):
     """An IOManager class that can save various simulation results into data
     files. For storing the data we use the well established HDF5 file format.
-    An IOManager instace abstracts the input and output operations and translates
+    An IOManager instance abstracts the input and output operations and translates
     requests into low-level operations.
     """
 
@@ -31,9 +31,6 @@ class IOManager(object):
 
         # The current open data file
         self._srf = None
-
-        # The current global simulation parameters
-        self._parameters = None
 
         # Book keeping data
         # TODO: consider storing these values inside the data files
@@ -85,11 +82,9 @@ class IOManager(object):
         return self.__dict__[key]
 
 
-    def create_file(self, parameters, filename=GlobalDefaults.file_resultdatafile):
-        """Set up a new :py:class`IOManager` instance. The output file is created and opened.
+    def create_file(self, filename=GlobalDefaults.file_resultdatafile):
+        """Set up a new :py:class:`IOManager` instance. The output file is created and opened.
 
-        :param parameters: A :py:class:`ParameterProvider` instance containing the current simulation
-                           parameters. This is only used for determining the size of new data sets.
         :param filename: The filename (optionally with filepath) of the file we try to create.
                          If not given the default value from `GlobalDefaults` is used.
         """
@@ -106,17 +101,12 @@ class IOManager(object):
         self._group_ids = []
         self._group_count = 0
 
-        # Keep a reference to the parameters
-        self._parameters = parameters
-
         # The version of the current file format
         self._srf.attrs["file_version"] = self._hdf_file_version
 
         # Save the simulation parameters
         self.create_group(groupid="global")
         self.create_block(blockid="global", groupid="global")
-        self.add_parameters(blockid="global")
-        self.save_parameters(parameters, blockid="global")
 
 
     def open_file(self, filename=GlobalDefaults.file_resultdatafile):
@@ -148,9 +138,6 @@ class IOManager(object):
         self._group_ids = [ s[len(self._prefixg):] for s in self._srf.keys() if s.startswith(self._prefixg) ]
         self._group_count = len(self._group_ids)
 
-        # Load the simulation parameters from data block 0.
-        self._parameters = self.load_parameters(blockid="global")
-
 
     def finalize(self):
         """Close the open output file and reset the internal information."""
@@ -158,10 +145,10 @@ class IOManager(object):
             return
 
         # Close the file
+        self._srf.flush()
         self._srf.close()
         self._srf = None
         # Reset book keeping data
-        self._parameters = None
         self._block_ids= None
         self._block_count = None
         self._group_ids = None
@@ -274,7 +261,7 @@ class IOManager(object):
         number of data groups per file.
 
         :param groupid: The ID for the new data group. If not given the group ID will
-                        be choosen automatically. The group ID has to be unique.
+                        be chosen automatically. The group ID has to be unique.
         :return: The group ID of the created group.
         """
         if self._srf is None:
@@ -301,19 +288,19 @@ class IOManager(object):
         return groupid
 
 
-    def must_resize(self, path, slot, axis=0):
+    def must_resize(self, path, size, axis=0):
         """Check if we must resize a given dataset and if yes, resize it.
         """
         # Ok, it's inefficient but sufficient for now.
-        # todo: Consider resizing in bigger chunks and shrinking at the end if necessary.
+        # TODO: Consider resizing in bigger chunks and shrinking at the end if necessary.
 
         # Current size of the array
         cur_len = self._srf[path].shape[axis]
 
-        # Is it smaller than what we need to store at slot "slot"?
+        # Is the current size smaller than the new "size"?
         # If yes, then resize the array along the given axis.
-        if cur_len-1 < slot:
-            self._srf[path].resize(slot+1, axis=axis)
+        if cur_len-1 < size:
+            self._srf[path].resize(size+1, axis=axis)
 
 
     def find_timestep_index(self, timegridpath, timestep):
@@ -328,7 +315,7 @@ class IOManager(object):
         if index.shape == (0,):
             raise ValueError("No data for given timestep!")
 
-        return index
+        return int(index)
 
 
     def split_data(self, data, axis):

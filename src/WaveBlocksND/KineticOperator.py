@@ -80,7 +80,7 @@ class KineticOperator(object):
         used in the Strang splitting.
 
         :param factor: The prefactor :math:`\alpha`. It defaults to 1 but is
-                       ususally set to :math:`-\frac{i}{2} \varepsilon^2 \tau`
+                       usually set to :math:`-\frac{i}{2} \varepsilon^2 \tau`
                        by the caller.
         """
         self._expOpT = exp(factor * self._omega_sqr)

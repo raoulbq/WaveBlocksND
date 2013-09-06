@@ -21,6 +21,5 @@ Class documentation
    .. automethod:: __init__
    .. automethod:: __str__
    .. automethod:: __hash__
-   .. automethod:: __getitem__
    .. automethod:: __iter__
    .. automethod:: __contains__

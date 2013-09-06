@@ -3,7 +3,7 @@
 This file contains various functions for finding and retrieving
 the files that contain parameter settings and simulation results.
 Note: The terms 'path' and 'ID' are used as synonyms here. Each simulation
-ID is just the basename of the path or the configuration file.
+ID is just the base name of the path or the configuration file.
 
 @author: R. Bourquin
 @copyright: Copyright (C) 2010, 2011, 2012, 2013 R. Bourquin
@@ -18,7 +18,7 @@ import GlobalDefaults as GD
 def get_result_dirs(path):
     r"""Lists all simulations (IDs) that can be found under the given path.
 
-    :param path: The filesystem path under which we search for simulations.
+    :param path: The file system path under which we search for simulations.
     :return: A list of simulation IDs.
     """
     dirs = [ os.path.join(path, adir) for adir in os.listdir(path) ]
@@ -33,7 +33,7 @@ def get_parameters_file(path, unpack=True):
     :parameter path: The path under which we search for a configuration file.
     :param unpack: Whether to unpack a single unique result instead of returning it inside a list.
     :type unpack: Boolean, default is ``True``.
-    :return: The path (filename) of the configuration file.
+    :return: The path (file name) of the configuration file.
     """
     parameters_files = []
 
@@ -60,7 +60,7 @@ def get_results_file(path, fileext=GD.ext_resultdatafile, unpack=True):
     :param path: The path under which we search for a output file.
     :param unpack: Whether to unpack a single unique result instead of returning it inside a list.
     :type unpack: Boolean, default is ``True``.
-    :return: The path (filename) of the output file.
+    :return: The path (file name) of the output file.
     """
     results_files = []
 
