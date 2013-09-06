@@ -1,7 +1,7 @@
 Welcome to WaveBlocksND's documentation!
 ========================================
 
-.. image:: _static/waveblocks.png
+.. image:: logo/block_pyramid/waveblocks.png
 
 Reusable building blocks for simulations with semiclassical wavepackets for
 solving the time-dependent Schrödinger equation.
@@ -15,7 +15,20 @@ The source code documentation below is actually up to date.
 .. toctree::
    :maxdepth: 2
 
+   manual/first_glance
+   manual/performing_simulations.rst
+   manual/the_core.rst
    manual/interactive_use.rst
+   manual/extending_waveblocks.rst
+   citation
+
+Potential Library
+=================
+
+.. toctree::
+   :maxdepth: 1
+
+   potlib/potentials.rst
 
 Source code documentation
 =========================

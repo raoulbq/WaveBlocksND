@@ -2,6 +2,7 @@ Citation
 ========
 
 For citation of this project please use one of the following bibtex snippets.
+
 The code for one-dimensional simulations::
 
    @misc{waveblocks,
