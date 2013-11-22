@@ -17,3 +17,5 @@ Class documentation
 .. autoclass:: TensorProductQR
    :members:
    :inherited-members:
+
+   .. automethod:: __init__

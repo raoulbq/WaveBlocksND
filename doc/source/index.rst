@@ -55,6 +55,7 @@ Basic numerics
    waveblocks_classes/GaussHermiteOriginalQR
    waveblocks_classes/GaussLaguerreQR
    waveblocks_classes/TensorProductQR
+   waveblocks_classes/SmolyakQR
 
    waveblocks_classes/MatrixExponential
 
