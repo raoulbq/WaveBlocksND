@@ -26,14 +26,17 @@ class GaussHermiteOriginalQR(QuadratureRule):
     def __init__(self, order, options={}):
         r"""Initialize a new quadrature rule.
 
-        :param order: The order :math:`R` of the Gauss-Hermite quadrature.
+        :param order: The order :math:`k` of the Gauss-Hermite quadrature.
+                      From theory we know that a Gauss quadrature rule
+                      of order :math:`k` is exact for polynomials up to
+                      degree :math:`2 k - 1`.
 
         :raise: :py:class:`ValueError` if the ``order`` is not 1 or above.
         """
         # The space dimension of the quadrature rule.
         self._dimension = 1
 
-        # The order R of the Gauss-Hermite quadrature.
+        # The order of the Gauss-Hermite quadrature.
         self._order = order
 
         # Qudrature has to have at least a single (node,weight) pair.

@@ -33,6 +33,10 @@ class SmolyakQR(QuadratureRule):
         :param dimension: The dimension :math:`D` of the final
                           quadrature rule.
         :param level: The level :math:`k` of the Smolyak construction.
+                      From theory we know that a Smolyak rule of order
+                      :math:`k` is exact up to :math:`2 k - 1` if the
+                      individual rules :math:`Q_i` are exact up to
+                      :math:`2 i - 1`.
         :param rules: A list of :py:class:`QuadratureRule` subclass
                       instances. Their nodes and weights will be used
                       in the Smolyak construction.
@@ -51,9 +55,8 @@ class SmolyakQR(QuadratureRule):
         # The individual quadrature rules.
         self._rules = rules
 
-        # The order R of the tensor product quadrature.
-        self._order = None
-        # TODO: From theory it should be something like 2*level - 1
+        # The level of the Smolyak sparse grid quadrature
+        self._order = level
 
         # Set the options
         self._options = options
@@ -70,7 +73,7 @@ class SmolyakQR(QuadratureRule):
 
     def __str__(self):
         s = "Sparse grid (Smolyak) quadrature rule consisting of:\n"
-        l = ["  " + str(rule) + "\n" for rule in self._rules]
+        l = ["  " + str(rule) + "\n" for rule in self._rules if rule <= self._level]
         s += reduce(lambda x,y:x+y, l)
         return s
 
@@ -158,6 +161,9 @@ class SmolyakQR(QuadratureRule):
             k = self._level
         else:
             k = level
+
+        if k > max(self._rules.keys()):
+            raise ValueError("Not enough quadrature rules to build Smolyak grid of level "+str(k))
 
         allnodes = []
         allweights = []
