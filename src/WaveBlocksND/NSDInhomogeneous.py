@@ -10,7 +10,7 @@ numerical steepest descent technique.
 """
 
 from numpy import (zeros, ones, diag, squeeze,  conjugate, transpose, dot, einsum,
-                   zeros_like, product, complexfloating, imag, nan_to_num, triu)
+                   product, complexfloating, imag, nan_to_num, triu)
 from scipy import exp, sqrt, pi
 from scipy.linalg import inv, schur, det, sqrtm
 
@@ -209,9 +209,9 @@ class NSDInhomogeneous(Quadrature):
                 T[j,j] = T[j,j] - T[i-1,j]**2 / (4.0*T[i-1,i-1])
 
             # Others
-            for r in xrange(i,D):
-                for c in xrange(r+1,D):
-                    T[r,c] = T[r,c] - T[i-1,r]*T[i-1,c] / (2*T[i-1,i-1])
+            for rowi in xrange(i,D):
+                for coli in xrange(rowi+1,D):
+                    T[rowi,coli] = T[rowi,coli] - T[i-1,rowi]*T[i-1,coli] / (2*T[i-1,i-1])
 
         # Compute remaining parts
         X = inv(A + transpose(A))
