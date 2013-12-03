@@ -73,8 +73,8 @@ class SmolyakQR(QuadratureRule):
 
     def __str__(self):
         s = "Sparse grid (Smolyak) quadrature rule consisting of:\n"
-        l = ["  " + str(rule) + "\n" for rule in self._rules if rule <= self._level]
-        s += reduce(lambda x,y:x+y, l)
+        l = ["  " + str(rule) + "\n" for k,rule in self._rules.iteritems() if k <= self._level]
+        s += reduce(lambda x,y: x+y, l)
         return s
 
 
@@ -101,6 +101,8 @@ class SmolyakQR(QuadratureRule):
         :type split: Boolean, default is ``False``.
         :return: An ndarray containing the quadrature nodes :math:`\gamma_i`.
         """
+        if self._nodes is None:
+            self.construct_rule()
         return self._nodes.copy()
 
 
@@ -109,6 +111,8 @@ class SmolyakQR(QuadratureRule):
 
         :return: An ndarray containing the quadrature weights :math:`\omega_i`.
         """
+        if self._weights is None:
+            self.construct_rule()
         return self._weights.copy()
 
 
