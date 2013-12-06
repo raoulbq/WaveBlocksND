@@ -197,7 +197,7 @@ class DirectInhomogeneousQuadrature(DirectQuadrature):
         assert type(values) is ndarray
         assert values.shape == (1,self._QR.get_number_nodes())
         # Main part of the integrand
-        factor = squeeze(eps**D * values * self._weights * det(Pimix[1]))
+        factor = (eps**D * values * self._weights * det(Pimix[1])).reshape((-1,))
         # Sum up matrices over all quadrature nodes
         M = einsum("k,ik,jk", factor, conjugate(basisr), basisc)
         # Compute global phase difference
