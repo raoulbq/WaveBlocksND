@@ -36,7 +36,8 @@ class SmolyakQR(QuadratureRule):
                       From theory we know that a Smolyak rule of order
                       :math:`k` is exact up to :math:`2 k - 1` if the
                       individual rules :math:`Q_i` are exact up to
-                      :math:`2 i - 1`.
+                      :math:`2 i - 1`. The level has to be larger than
+                      or equal 1.
         :param rules: A list of :py:class:`QuadratureRule` subclass
                       instances. Their nodes and weights will be used
                       in the Smolyak construction.
@@ -51,6 +52,8 @@ class SmolyakQR(QuadratureRule):
 
         # The construction level
         self._level = level
+        if not self._level >= 1:
+            raise ValueError("Smolyak level has to be 1 at least.")
 
         # The individual quadrature rules.
         self._rules = rules
