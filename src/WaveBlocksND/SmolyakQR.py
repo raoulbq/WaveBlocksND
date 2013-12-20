@@ -187,7 +187,7 @@ class SmolyakQR(QuadratureRule):
         # Index Set
         for q in xrange(max(0, k-D), k):
             S = self.enumerate_lattice_points(q)
-            for j,s in enumerate(S):
+            for j, s in enumerate(S):
                 # Only use non-negative nodes for the construction.
                 # The quadrature nodes \gamma.
                 rules = [ self._rules[si+1] for si in s ]
@@ -199,7 +199,6 @@ class SmolyakQR(QuadratureRule):
                 weights = [ rule.get_weights() for rule in rules ]
                 weights = meshgrid_nd([ w[i] for w, i in zip(weights, indices) ])
                 weights = reduce(lambda x,y: x*y, weights)
-                #
                 allnodes.append(nodes)
                 allweights.append(weights.flatten())
                 factors.append((-1)**(k-1-q) * binom(D-1, k-1-q))
@@ -229,6 +228,15 @@ class SmolyakQR(QuadratureRule):
 
         allnodes = allnodes[:,I]
         allweights = allweights[:,I]
+
+        # Mirror points to all other hyperoctants
+        for d in xrange(D):
+            indices = abs(allnodes[d,:]) >= tolerance
+            mirrorn = allnodes[:,indices]
+            mirrorn[d,:] *= -1.0
+            mirrorw = allweights[:,indices]
+            allnodes = hstack([allnodes, mirrorn]).reshape(D,-1)
+            allweights = hstack([allweights, mirrorw]).reshape(1,-1)
 
         self._nodes = allnodes
         self._weights = allweights
