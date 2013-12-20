@@ -10,12 +10,12 @@ Smolyak construction.
 """
 
 from copy import deepcopy
-from numpy import zeros, hstack, vsplit, squeeze, lexsort, integer
+from numpy import zeros, hstack, vsplit, squeeze, lexsort, integer, where, vstack
 from numpy.linalg import norm
 from scipy.special import binom
 
 from QuadratureRule import QuadratureRule
-from TensorProductQR import TensorProductQR
+from Utils import meshgrid_nd
 
 __all__ = ["SmolyakQR"]
 
@@ -46,6 +46,14 @@ class SmolyakQR(QuadratureRule):
                   non-negative numbers and for a given index :math:`j` return
                   a univariate quadrature rule of order :math:`j`. Special attention
                   must be payed in case this object is mutable. We do not copy it.
+
+        .. warning:: This implementation uses a special optimization that
+                     speeds up the computation of all quadrature nodes, especially
+                     in high dimension, but is only valid if all one dimensional
+                     rules have symmetric nodes and weights. For every node weight
+                     pair :math:`(\gamma, \omega)` that is part of the rule
+                     the pair :math:`(-\gamma, \omega)` is also contained
+                     in the quadrature rule.
         """
         # The dimension of the quadrature rule.
         self._dimension = dimension
@@ -180,11 +188,20 @@ class SmolyakQR(QuadratureRule):
         for q in xrange(max(0, k-D), k):
             S = self.enumerate_lattice_points(q)
             for j,s in enumerate(S):
-                # TODO: Only use non-negative nodes for the construction.
-                #       The final rule is assumed to be symmetric.
-                Q = TensorProductQR([self._rules[si+1] for si in s])
-                allnodes.append(Q.get_nodes())
-                allweights.append(Q.get_weights())
+                # Only use non-negative nodes for the construction.
+                # The quadrature nodes \gamma.
+                rules = [ self._rules[si+1] for si in s ]
+                nodes = [ rule.get_nodes() for rule in rules ]
+                indices = [ where(n >= 0) for n in nodes ]
+                nodes = meshgrid_nd([ n[i] for n, i in zip(nodes, indices) ])
+                nodes = vstack([ node.flatten() for node in nodes ])
+                # The quadrature weights \omega.
+                weights = [ rule.get_weights() for rule in rules ]
+                weights = meshgrid_nd([ w[i] for w, i in zip(weights, indices) ])
+                weights = reduce(lambda x,y: x*y, weights)
+                #
+                allnodes.append(nodes)
+                allweights.append(weights.flatten())
                 factors.append((-1)**(k-1-q) * binom(D-1, k-1-q))
 
         # Sort
