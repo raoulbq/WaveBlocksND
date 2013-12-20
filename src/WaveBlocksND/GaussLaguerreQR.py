@@ -23,7 +23,10 @@ class GaussLaguerreQR(QuadratureRule):
     def __init__(self, order, a=-0.5, options={}):
         r"""Initialize a new quadrature rule.
 
-        :param order: The order :math:`R` of the Gauss-Laguerre quadrature.
+        :param order: The order :math:`k` of the Gauss-Laguerre quadrature.
+                      From theory we know that a Gauss quadrature rule
+                      of order :math:`k` is exact for polynomials up to
+                      degree :math:`2 k - 1`.
         :param a: The parameter :math:`a > -1` of the generalized Gauss-Laguerre quadrature.
                   This value defaults to `0` resulting in classical Gauss-Laguerre quadrature.
 
@@ -38,7 +41,7 @@ class GaussLaguerreQR(QuadratureRule):
         # The space dimension of the quadrature rule.
         self._dimension = 1
 
-        # The order R of the Gauss-Laguerre quadrature.
+        # The order of the Gauss-Laguerre quadrature.
         self._order = order
         self._a = a
 

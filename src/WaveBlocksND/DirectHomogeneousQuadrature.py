@@ -180,7 +180,7 @@ class DirectHomogeneousQuadrature(DirectQuadrature):
         eps = self._packet.get_eps()
         N  = self._packet.get_number_components()
         # Main part of the integrand
-        factor = squeeze(eps**D * self._weights * self._values[row*N + col])
+        factor = (eps**D * self._weights * self._values[row*N + col]).reshape((-1,))
         # Sum up matrices over all quadrature nodes
         M = einsum("k,ik,jk", factor, conjugate(self._bases[row]), self._bases[col])
         return M
