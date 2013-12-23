@@ -1,20 +1,20 @@
-TensorProductQR
-===============
+SmolyakQR
+=========
 
-About the ``TensorProductQR`` class
------------------------------------
+About the ``SmolyakQR`` class
+-----------------------------
 
 .. automodule:: WaveBlocksND
 
 Inheritance diagram
 -------------------
 
-.. inheritance-diagram:: TensorProductQR
+.. inheritance-diagram:: SmolyakQR
 
 Class documentation
 -------------------
 
-.. autoclass:: TensorProductQR
+.. autoclass:: SmolyakQR
    :members:
    :inherited-members:
 

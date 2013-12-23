@@ -10,7 +10,7 @@ numerical steepest descent technique.
 """
 
 from numpy import (zeros, ones, diag, squeeze,  conjugate, transpose, dot, einsum,
-                   zeros_like, product, indices, flipud, complexfloating, imag, nan_to_num)
+                   product, complexfloating, imag, nan_to_num, triu)
 from scipy import exp, sqrt, pi
 from scipy.linalg import inv, schur, det, sqrtm
 
@@ -158,41 +158,6 @@ class NSDInhomogeneous(Quadrature):
         return A, b, c
 
 
-    def update_oscillator(self, T, i):
-        r"""Given a upper triangular matrix :math:`\mathbf{T} \in \mathbb{C}^{D \times D}` representing
-        the oscillator :math:`g(x) = \underline{x}^{\mathrm{H}} \mathbf{T} \underline{x}`, update
-        its entries according to:
-
-        .. math::
-
-            t_{j,j} & := t_{j,j} - \frac{t_{i,j}^2}{4 t_{i,i}} \\
-            t_{j,k} & := t_{j,k} - \frac{t_{i,j} t_{i,k}}{2 t_{i,i}} \,, \quad k > j \,.
-
-        :param T: The matrix :math:`\mathbf{T}` we want to update. (Note that the matrix
-                  is not modified and a copy returned.)
-        :param i: The row :math:`0 \leq i \leq D-1` which is taken as base for the updates.
-        :return: The updated matrix :math:`\mathbf{T}`.
-        """
-        Ti = T.copy()
-        rr, cc = T.shape
-
-        if T[i-1,i-1] == 0:
-            # TODO: Prove that this never happens or handle it correctly!
-            print("Warning: 'update_oscillator' encountered a RESIDUE situation!")
-            return Ti
-
-        # Diagonal Elements
-        for j in xrange(i,rr):
-            Ti[j,j] = T[j,j] - T[i-1,j]**2 / (4.0*T[i-1,i-1])
-
-        # Others
-        for r in xrange(i,rr):
-            for c in xrange(r+1,cc):
-                Ti[r,c] = T[r,c] - T[i-1,r]*T[i-1,c] / (2*T[i-1,i-1])
-
-        return Ti
-
-
     def prepare(self, rows, cols):
         r"""Precompute some values needed for evaluating the quadrature
         :math:`\langle \Phi_i | f(x) | \Phi^\prime_j \rangle` or the corresponding
@@ -208,12 +173,6 @@ class NSDInhomogeneous(Quadrature):
         # Unpack quadrature rules
         self._nodes = self._QR.get_nodes()
         self._weights = self._QR.get_weights()
-        self._sqrtnodes = product(sqrt(self._nodes), axis=0)
-
-        # Signs
-        D = self._packet.get_dimension()
-        x,y = indices((D, 2**D))
-        self._allsigns = -2.0*(flipud((y>>x) & 1)-0.5)
 
 
     def do_nsd(self, row, col):
@@ -241,8 +200,20 @@ class NSDInhomogeneous(Quadrature):
 
         # Oscillator updates
         for i in xrange(1, D):
-            T = self.update_oscillator(T, i)
+            if T[i-1,i-1] == 0:
+                # TODO: Prove that this never happens or handle it correctly!
+                print("Warning: 'update_oscillator' encountered a RESIDUE situation!")
 
+            # Diagonal Elements
+            for j in xrange(i,D):
+                T[j,j] = T[j,j] - T[i-1,j]**2 / (4.0*T[i-1,i-1])
+
+            # Others
+            for rowi in xrange(i,D):
+                for coli in xrange(rowi+1,D):
+                    T[rowi,coli] = T[rowi,coli] - T[i-1,rowi]*T[i-1,coli] / (2*T[i-1,i-1])
+
+        # Compute remaining parts
         X = inv(A + transpose(A))
         ctilde = c - 0.5 * dot(transpose(b), dot(X, b))
 
@@ -254,15 +225,20 @@ class NSDInhomogeneous(Quadrature):
         # Take out diagonals of T
         Dk = diag(T).reshape((D,1))
         # Tau (path parametrization variable)
-        tk = self._nodes / w
-        # Paths
-        pathsqrtpart = sqrt(1.0j * tk / Dk)
-        # Path derivatives
-        dht = sqrt(1.0j / (4.0 * Dk * tk))
-        dhtp = product(dht, axis=0)
+        tk = self._nodes / sqrt(w)
 
-        # The path-independent but non-constant part of the integrand
-        quadrand = dhtp * self._sqrtnodes * self._weights / w**D
+        # Path Precomposition
+        Tu = 0.5 * triu(T, 1) / Dk
+        paths = (sqrt(1.0j / Dk) * tk).astype(complexfloating)
+        for i in reversed(xrange(D)):
+            paths[i,:] = paths[i,:] - dot(Tu[i,:], paths)
+
+        # Path derivatives
+        pathderivs = sqrt(1.0j / Dk)
+        pdp = product(pathderivs, axis=0)
+
+        # Backtransformation of paths
+        pathst = dot(conjugate(transpose(U)), paths) - dot(X, b)
 
         # Another normalization prefactor
         # This is what differs the constant part of phi_0 from 1.
@@ -276,47 +252,30 @@ class NSDInhomogeneous(Quadrature):
         # Compute global phase difference
         phase = exp(1.0j/eps**2 * (Piket[4]-conjugate(Pibra[4])))
 
-        # Packets can also have different basis sizes
-        Kbra = self._pacbra.get_basis_shapes(component=row).get_basis_size()
-        Kket = self._packet.get_basis_shapes(component=col).get_basis_size()
+        # Non-oscillatory parts
+        # Wavepacket
+        # TODO: This is a huge hack: division by phi_0 not stable?
+        basisr = self._pacbra.evaluate_basis_at(conjugate(pathst), row, prefactor=False)
+        basisr = basisr / basisr[0,:]
+        basisc = self._packet.evaluate_basis_at(pathst, col, prefactor=False)
+        basisc = basisc / basisc[0,:]
+        # Basis division by phi0 may introduce NaNs
+        #basisr = nan_to_num(basisr)
+        #basisc = nan_to_num(basisc)
 
-        # Compute all contour integrals
-        M = zeros((Kbra,Kket), dtype=complexfloating)
+        # Operator should support the component notation for efficiency
+        if self._eval_at_once is True:
+            # TODO: Sure, this is inefficient, but we can not do better right now.
+            opath = self._operator(pathst, Pimix[0])[row*N+col]
+        else:
+            opath = self._operator(pathst, Pimix[0], entry=(row,col))
 
-        for i in xrange(2**D):
-            # Signs
-            signs = self._allsigns[:,i].reshape((D,))
-            # Construct full paths
-            ht = zeros_like(pathsqrtpart)
-            for k in reversed(xrange(D)):
-                ht[k,:] = ht[k,:] + signs[k] * pathsqrtpart[k,:]
-                for j in xrange(k+1, D):
-                    ht[k,:] = ht[k,:] - 0.5*T[k,j]/T[k,k] * ht[j,:]
-            # Back transformation
-            h = dot(conjugate(transpose(U)), ht) - dot(X, b)
-            # Non-oscillatory parts
-            # Wavepacket
-            # TODO: This is a huge hack: division by phi_0 not stable?
-            basisr = self._pacbra.evaluate_basis_at(conjugate(h), row, prefactor=False)
-            basisr = basisr / basisr[0,:]
-            basisc = self._packet.evaluate_basis_at(h, col, prefactor=False)
-            basisc = basisc / basisc[0,:]
-            # Basis division by phi0 may introduce NaNs
-            #basisr = nan_to_num(basisr)
-            #basisc = nan_to_num(basisc)
+        # Do the quadrature
+        quadrand = (opath * pdp * self._weights).reshape((-1,))
+        # Sum up matrices over all quadrature nodes
+        M = einsum("k,ik,jk", quadrand, conjugate(basisr), basisc)
 
-            # Operator should support the component notation for efficiency
-            if self._eval_at_once is True:
-                # TODO: Sure, this is inefficient, but we can not do better right now.
-                opath = self._operator(h, Pimix[0])[row*N+col]
-            else:
-                opath = self._operator(h, Pimix[0], entry=(row,col))
-            # Do the quadrature
-            factor = (opath * quadrand).reshape((-1,))
-            # Sum up matrices over all quadrature nodes
-            M = M + einsum("k,ik,jk", factor, conjugate(basisr), basisc)
-
-        return phase * normfactor * prefactor * M
+        return phase * normfactor * prefactor * M / sqrt(w)**D
 
 
     def perform_quadrature(self, row, col):
