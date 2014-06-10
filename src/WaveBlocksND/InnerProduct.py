@@ -11,10 +11,12 @@ like inner products (brakets) etc.
 @license: Modified BSD License
 """
 
+from InnerProductCompatibility import InnerProductCompatibility
+
 __all__ = ["InnerProduct", "InnerProductException"]
 
 
-class InnerProduct(object):
+class InnerProduct(InnerProductCompatibility):
     r"""This class is an abstract interface to inner products in general.
     """
 
@@ -45,7 +47,11 @@ class InnerProduct(object):
         :param delegate: The new :py:class:`Quadrature` instance.
         """
         # TODO: Allow a list of quads, one quad for each component of Psi
-        self._delegate = delegate
+        if delegate is not None:
+            if self.compatible(self, delegate):
+                self._delegate = delegate
+        else:
+            self._delegate = delegate
 
 
     def get_delegate(self):

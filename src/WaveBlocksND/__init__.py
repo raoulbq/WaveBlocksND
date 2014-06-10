@@ -80,6 +80,8 @@ from InhomogeneousInnerProduct import InhomogeneousInnerProduct
 from HomogeneousInnerProductLCWP import HomogeneousInnerProductLCWP
 from InhomogeneousInnerProductLCWP import InhomogeneousInnerProductLCWP
 
+#from InnerProductCompatibility import InnerProductCompatibility
+
 from Quadrature import Quadrature
 from DirectQuadrature import DirectQuadrature
 from DirectHomogeneousQuadrature import DirectHomogeneousQuadrature

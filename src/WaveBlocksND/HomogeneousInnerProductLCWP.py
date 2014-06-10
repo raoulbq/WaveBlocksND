@@ -13,11 +13,12 @@ arbitrary operator.
 from numpy import zeros, complexfloating, conjugate, transpose, dot
 
 from InnerProduct import InnerProduct
+from InnerProductCompatibility import InnerProductCompatibility
 
 __all__ = ["HomogeneousInnerProductLCWP"]
 
 
-class HomogeneousInnerProductLCWP(InnerProduct):
+class HomogeneousInnerProductLCWP(InnerProduct, InnerProductCompatibility):
 
     def __init__(self, delegate=None, oracle=None):
         r"""
@@ -54,6 +55,14 @@ class HomogeneousInnerProductLCWP(InnerProduct):
         return d
 
 
+    def get_kind(self):
+        return ("homogeneous",)
+
+
+    def require_kind(self):
+        return ("homogeneous",)
+
+
     def get_oracle(self):
         r"""Return the sparsity oracle in use or ``None``.
         """
@@ -83,31 +92,8 @@ class HomogeneousInnerProductLCWP(InnerProduct):
         :return: The value of :math:`\langle\Upsilon|f|\Upsilon\rangle`.
         :type: An :py:class:`ndarray`.
         """
-        J = lcket.get_number_packets()
-        packets = lcket.get_wavepackets()
-
-        M = zeros((J, J), dtype=complexfloating)
-
-        # Elements below the diagonal
-        for row, pacbra in enumerate(packets):
-            for col, packet in enumerate(packets[:row]):
-                if self._obey_oracle:
-                    if self._oracle.is_not_zero(pacbra, packet):
-                        # TODO: Handle multi-component packets
-                        M[row, col] = self._quad.quadrature(pacbra, packet, operator=operator, component=0)
-                else:
-                    # TODO: Handle multi-component packets
-                    M[row, col] = self._delegate.quadrature(pacbra, packet, operator=operator, component=0)
-
-        M = M + conjugate(transpose(M))
-
-        # Diagonal Elements
-        for d, packet in enumerate(packets):
-            # TODO: Handle multi-component packets
-            M[d, d] = self._delegate.quadrature(packet, packet, operator=operator, component=0)
-
+        M = self.build_matrix(lcket, operator=operator)
         c = lcket.get_coefficients()
-
         return dot(conjugate(transpose(c)), dot(M, c))
 
 
@@ -127,13 +113,15 @@ class HomogeneousInnerProductLCWP(InnerProduct):
         M = zeros((J, J), dtype=complexfloating)
 
         # Elements below the diagonal
-        for row, pacbra in enumerate(packets):
-            for col, packet in enumerate(packets[:row]):
-                if self._obey_oracle:
+        if self._obey_oracle:
+            for row, pacbra in enumerate(packets):
+                for col, packet in enumerate(packets[:row]):
                     if self._oracle.is_not_zero(pacbra, packet):
                         # TODO: Handle multi-component packets
                         M[row, col] = self._quad.quadrature(pacbra, packet, operator=operator, component=0)
-                else:
+        else:
+            for row, pacbra in enumerate(packets):
+                for col, packet in enumerate(packets[:row]):
                     # TODO: Handle multi-component packets
                     M[row, col] = self._delegate.quadrature(pacbra, packet, operator=operator, component=0)
 

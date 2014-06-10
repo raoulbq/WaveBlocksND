@@ -14,20 +14,18 @@ from scipy import exp
 from scipy.linalg import sqrtm, inv, det
 
 from DirectQuadrature import DirectQuadrature
+from InnerProductCompatibility import InnerProductCompatibility
 
 __all__ = ["DirectInhomogeneousQuadrature"]
 
 
-class DirectInhomogeneousQuadrature(DirectQuadrature):
+class DirectInhomogeneousQuadrature(DirectQuadrature, InnerProductCompatibility):
     r"""
     """
 
     def __init__(self, QR=None):
         # Pure convenience to allow setting of quadrature rule in constructor
-        if QR is not None:
-            self.set_qr(QR)
-        else:
-            self._QR = None
+        self.set_qr(QR)
 
 
     def __str__(self):
@@ -44,6 +42,10 @@ class DirectInhomogeneousQuadrature(DirectQuadrature):
         d["type"] = "DirectInhomogeneousQuadrature"
         d["qr"] = self._QR.get_description()
         return d
+
+
+    def get_kind(self):
+        return ("homogeneous", "inhomogeneous",)
 
 
     def initialize_packet(self, pacbra, packet=None):

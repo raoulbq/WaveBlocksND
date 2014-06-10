@@ -13,11 +13,12 @@ arbitrary operator.
 from numpy import zeros, complexfloating, conjugate, transpose, dot
 
 from InnerProduct import InnerProduct
+from InnerProductCompatibility import InnerProductCompatibility
 
 __all__ = ["InhomogeneousInnerProductLCWP"]
 
 
-class InhomogeneousInnerProductLCWP(InnerProduct):
+class InhomogeneousInnerProductLCWP(InnerProduct, InnerProductCompatibility):
 
     def __init__(self, delegate=None, oracle=None):
         r"""
@@ -54,6 +55,14 @@ class InhomogeneousInnerProductLCWP(InnerProduct):
         return d
 
 
+    def get_kind(self):
+        return ("homogeneous", "inhomogeneous",)
+
+
+    def require_kind(self):
+        return ("inhomogeneous",)
+
+
     def get_oracle(self):
         r"""Return the sparsity oracle in use or ``None``.
         """
@@ -84,28 +93,9 @@ class InhomogeneousInnerProductLCWP(InnerProduct):
         :return: The value of :math:`\langle\Upsilon|f|\Upsilon^\prime\rangle`.
         :type: An :py:class:`ndarray`.
         """
-        # Allow to omit the ket if it is the same as the bra
-        if lcket is None:
-            lcket = lcbra
-
-        Jbra = lcbra.get_number_packets()
-        Jket = lcket.get_number_packets()
-
-        M = zeros((Jbra, Jket), dtype=complexfloating)
-
-        for row, pacbra in enumerate(lcbra.get_wavepackets()):
-            for col, packet in enumerate(lcket.get_wavepackets()):
-                if self._obey_oracle:
-                    if self._oracle.is_not_zero(pacbra, packet):
-                        # TODO: Handle multi-component packets
-                        M[row, col] = self._quad.quadrature(pacbra, packet, operator=operator, component=0)
-                else:
-                    # TODO: Handle multi-component packets
-                    M[row, col] = self._delegate.quadrature(pacbra, packet, operator=operator, component=0)
-
+        M = self.build_matrix(lcbra=lcbra, lcket=lcket, operator=operator)
         cbra = lcbra.get_coefficients()
         cket = lcket.get_coefficients()
-
         return dot(conjugate(transpose(cbra)), dot(M, cket))
 
 
@@ -126,16 +116,20 @@ class InhomogeneousInnerProductLCWP(InnerProduct):
 
         Jbra = lcbra.get_number_packets()
         Jket = lcket.get_number_packets()
+        pacbras = lcbra.get_wavepackets()
+        packets = lcket.get_wavepackets()
 
         M = zeros((Jbra, Jket), dtype=complexfloating)
 
-        for row, pacbra in enumerate(lcbra.get_wavepackets()):
-            for col, packet in enumerate(lcket.get_wavepackets()):
-                if self._obey_oracle:
+        if self._obey_oracle:
+            for row, pacbra in enumerate(pacbras):
+                for col, packet in enumerate(packets):
                     if self._oracle.is_not_zero(pacbra, packet):
                         # TODO: Handle multi-component packets
                         M[row, col] = self._quad.quadrature(pacbra, packet, operator=operator, component=0)
-                else:
+        else:
+            for row, pacbra in enumerate(pacbras):
+                for col, packet in enumerate(packets):
                     # TODO: Handle multi-component packets
                     M[row, col] = self._delegate.quadrature(pacbra, packet, operator=operator, component=0)
 
