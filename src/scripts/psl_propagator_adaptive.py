@@ -10,14 +10,14 @@ from WaveBlocksND import *
 from WaveBlocksND.Plot import plotcf
 
 # ========================================================================
-# model parameters
+# Model Parameters
 
 eps = 1.0 / 10.0
 
 # Potential
 potential = {}
 potential["variables"] = ["x"]
-potential["potential"] = "x**4 - 1*x**2 + 0.125*x"
+potential["potential"] = "x**4"
 
 # Basis shape of one Psi_j
 L = 7 #13
@@ -30,8 +30,8 @@ dt = 0.005
 Tend = 2 * 4.4
 
 # Initial value parameters
-q0 = 0.8
-p0 = 0.0
+q0 = 0.0
+p0 = 1.0
 
 # For the pseudoinverse
 threshold_i = 1e-6
@@ -40,7 +40,13 @@ threshold_i = 1e-6
 threshold_b = 1E-2
 
 # Cache size, choose >> C * max |J(t)|^2
-cachesize = 2**18
+cachesize_integrals = 2**18
+cachesize_wavepackets = 2**12
+cachesize_wavefunctions = 2**12
+
+# Grid for packet evaluation
+limits = [(-6.283185307179586, 6.283185307179586)]
+number_nodes = [4096]
 
 # ========================================================================
 # Potential setup
@@ -115,7 +121,7 @@ QR = GaussHermiteQR(L+4)
 Q = DirectHomogeneousQuadrature(QR)
 IPwpho = HomogeneousInnerProduct(Q)
 
-WP0 = {}
+WP0 = lrucache(cachesize_wavepackets)
 
 def new_wavepacket(k):
     q = k[0] * latdist
@@ -128,7 +134,7 @@ def new_wavepacket(k):
 
     WP0[k] = HAWP
 
-WP1 = {}
+WP1 = lrucache(cachesize_wavepackets)
 
 def propagate_wavepacket(k):
     HAWP = WP0[k].clone()
@@ -186,10 +192,10 @@ IPlcih = InhomogeneousInnerProductLCWP(IPwpih)
 
 Obs = ObservablesMixedHAWP(IPwpih)
 
-IPcache_T = lrucache(cachesize)
-IPcache_A = lrucache(cachesize)
-IPcache_epot = lrucache(cachesize)
-IPcache_ekin = lrucache(cachesize)
+IPcache_T = lrucache(cachesize_integrals)
+IPcache_A = lrucache(cachesize_integrals)
+IPcache_epot = lrucache(cachesize_integrals)
+IPcache_ekin = lrucache(cachesize_integrals)
 
 cache_A_fill = []
 cache_T_fill = []
@@ -280,6 +286,32 @@ def ekin_cut(Jt):
             EKINcut[kr,kc] = IPcache_ekin[(jr,jc)].copy()
 
     return EKINcut
+
+# ------------------------------------------------------------------------
+# Evaluate the functions in the generating system
+
+# Grid
+limitsx = limits[0]
+dx = abs(limitsx[1] - limitsx[0]) / (1.0 * number_nodes[0])
+x = linspace(limitsx[0], limitsx[1], number_nodes[0]).reshape(1, -1)
+
+WF = lrucache(cachesize_wavefunctions)
+
+def wavepackets_values(J, C):
+    # Find unevaluated packets if any
+    Jue = [j for j in J if not j in WF.keys()]
+
+    # Evaluate all unevaluated packets
+    wps = get_wavepackets_0(Jue)
+    for k, wp in wps.iteritems():
+        WF[k] = wp.evaluate_at(x, prefactor=True)[0]
+
+    # Compute final value of |Y>
+    wf = zeros_like(x, dtype=complexfloating)
+    for k, c in zip(J, C):
+        wf += c * WF[k]
+
+    return squeeze(wf)
 
 # ------------------------------------------------------------------------
 # Initial Value
@@ -373,6 +405,18 @@ xlabel(r"$k$")
 ylabel(r"$k$")
 savefig("Acut.png")
 
+# Evaluate wavepacket |Y>
+psi = wavepackets_values(Jt, ct)
+
+# Plot frames
+f = figure()
+ax = f.gca()
+plotcf(squeeze(x), angle(psi), abs(psi)**2, axes=ax)
+ax.set_xlim(-1.5, 1.5)
+ax.set_ylim(0, 10)
+f.savefig("frame_" + string.zfill(str(0),6)+".png")
+close(f)
+
 # Plot phase space grid
 fig = figure(figsize=(10,10))
 for j, co in zip(Jt, ct):
@@ -390,25 +434,6 @@ xlabel(r"$q$")
 ylabel(r"$p$")
 savefig("phasespace_" + string.zfill(str(0),6)+".png")
 close(fig)
-
-
-# ------------------------------------------------------------------------
-# Evaluate the functions in the generating system
-
-# limits = [-1.5, 1.5]
-# number_nodes = 2**12
-# dx = abs(limits[1] - limits[0]) / (1.0 * number_nodes)
-# x = linspace(limits[0], limits[1], number_nodes).reshape(1, -1)
-
-# B = zeros((number_nodes,K), dtype=complex)
-
-# for col, phi in enumerate(LC0.get_wavepackets()):
-#     B[:,col] = phi.evaluate_at(x, component=0, prefactor=True)
-
-# ------------------------------------------------------------------------
-# Initial value evaluated:
-#vals = dot(B, c)
-
 
 # ------------------------------------------------------------------------
 # Time propagation of the overall scheme
@@ -465,15 +490,17 @@ for n in xrange(1, nsteps+1):
     Jsize_hist.append(len(Jt))
     print(" Size of pruned J(t) is %d" % len(Jt))
 
-    # Plot frames
-    # vals = dot(B, c)
+    # Evaluate wavepacket |Y>
+    psi = wavepackets_values(Jt, ct)
 
-    # f = figure()
-    # plotcf(squeeze(x), angle(vals), abs(vals)**2, axes=f.gca())
-    # ylim(0,2)#10**-2)
-    # fname = "frame_" + string.zfill(str(n),6)+".png"
-    # f.savefig(fname)
-    # close(f)
+    # Plot frames
+    f = figure()
+    ax = f.gca()
+    plotcf(squeeze(x), angle(psi), abs(psi)**2, axes=ax)
+    ax.set_xlim(-1.5, 1.5)
+    ax.set_ylim(0, 10)
+    f.savefig("frame_" + string.zfill(str(n),6)+".png")
+    close(f)
 
     # Plot phase space grid
     fig = figure(figsize=(10,10))
@@ -493,14 +520,21 @@ for n in xrange(1, nsteps+1):
     savefig("phasespace_" + string.zfill(str(n),6)+".png")
     close(fig)
 
+# ------------------------------------------------------------------------
+# Output and plotting
 
 print("-------------------------")
 print("Cache Sizes:")
-print(" Maximal size: %d" % cachesize)
-print(" A:     %d" % len(IPcache_A))
-print(" Theta: %d" % len(IPcache_T))
-print(" Ekin:  %d" % len(IPcache_ekin))
-print(" Epot:  %d" % len(IPcache_epot))
+print(" Maximal size for wavepackets:   %d" % cachesize_wavepackets)
+print(" Maximal size for wavefunctions: %d" % cachesize_wavefunctions)
+print(" Maximal size for integrals:     %d" % cachesize_integrals)
+print(" WP(0):  %d" % len(WP0))
+print(" WP(dt): %d" % len(WP1))
+print(" A:      %d" % len(IPcache_A))
+print(" Theta:  %d" % len(IPcache_T))
+print(" Ekin:   %d" % len(IPcache_ekin))
+print(" Epot:   %d" % len(IPcache_epot))
+print(" WF:     %d" % len(WF))
 print("-------------------------")
 
 
