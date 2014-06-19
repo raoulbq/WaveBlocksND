@@ -27,7 +27,7 @@ T = 0.05
 dt = 0.005
 
 # Endtime
-Tend = 2 * 4.4
+Tend = 2.0 * 4.4
 
 # Initial value parameters
 q0 = 0.0
@@ -408,6 +408,9 @@ savefig("Acut.png")
 # Evaluate wavepacket |Y>
 psi = wavepackets_values(Jt, ct)
 
+IOM.add_wavefunction({"ncomponents":1, "number_nodes":number_nodes})
+IOM.save_wavefunction([psi], timestep=0)
+
 # Plot frames
 f = figure()
 ax = f.gca()
@@ -492,6 +495,8 @@ for n in xrange(1, nsteps+1):
 
     # Evaluate wavepacket |Y>
     psi = wavepackets_values(Jt, ct)
+
+    IOM.save_wavefunction([psi], timestep=n)
 
     # Plot frames
     f = figure()
