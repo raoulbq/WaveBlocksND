@@ -75,6 +75,9 @@ class SimulationLoopHagedorn(SimulationLoop):
         elif self.parameters["propagator"] == "hagedorn":
             from HagedornPropagator import HagedornPropagator
             self.propagator = HagedornPropagator(self.parameters, potential)
+        elif self.parameters["propagator"] == "nlse":
+            from NLSEPropagator import NLSEPropagator
+            self.propagator = NLSEPropagator(self.parameters, potential)
         else:
             raise NotImplementedError("Unknown propagator type: " + self.parameters["propagator"])
 

@@ -322,6 +322,14 @@ delta_gap["potential"] = [["1/2 * tanh(x)", "delta"         ],
 delta_gap["defaults"] = {"delta":"0.2"}
 delta_gap["number_levels"] = 2
 
+# A conic gap potential
+conic_gap = {}
+conic_gap["variables"] = ["x"]
+conic_gap["potential"] = [["x",  "delta"],
+                          ["delta", "-x"]]
+conic_gap["defaults"] = {"delta":0.05}
+conic_gap["number_levels"] = 2
+
 # Diagonalized single avoided crossing
 delta_gap_diag = {}
 delta_gap_diag["variables"] = ["x"]

@@ -38,6 +38,8 @@ from SemiclassicalPropagator import SemiclassicalPropagator
 from HagedornPropagatorInhomogeneous import HagedornPropagatorInhomogeneous
 from SplittingParameters import SplittingParameters
 
+from NLSEPropagator import NLSEPropagator
+
 from IOManager import IOManager
 
 # Basis shapes
