@@ -344,7 +344,8 @@ class MatrixPotential2S(MatrixPotential):
             except:
                 pass
 
-        if sympy.Eq(D,0):
+        # TODO: How should we handle the special case D=0?
+        if False: #sympy.Eq(D,0):
             # special case
             M[0,0] = t * (1 + (a-d)/2)
             M[0,1] = t * b
