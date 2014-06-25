@@ -39,6 +39,7 @@ from HagedornPropagatorInhomogeneous import HagedornPropagatorInhomogeneous
 from SplittingParameters import SplittingParameters
 
 from NLSEPropagator import NLSEPropagator
+from FourierPropagatorNLSE import FourierPropagatorNLSE
 
 from IOManager import IOManager
 
@@ -115,6 +116,7 @@ from SimulationLoop import SimulationLoop
 from SimulationLoopFourier import SimulationLoopFourier
 from SimulationLoopHagedorn import SimulationLoopHagedorn
 from SimulationLoopHagedornInhomogeneous import SimulationLoopHagedornInhomogeneous
+from SimulationLoopFourierNLSE import SimulationLoopFourierNLSE
 
 from Observables import Observables
 from ObservablesHAWP import ObservablesHAWP

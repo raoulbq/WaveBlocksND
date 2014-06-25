@@ -40,6 +40,10 @@ elif PA["algorithm"] == "hagedorn_inhomog":
     from WaveBlocksND import SimulationLoopHagedornInhomogeneous
     SL = SimulationLoopHagedornInhomogeneous(PA)
 
+elif PA["algorithm"] == "fourier_nlse":
+    from WaveBlocksND import SimulationLoopFourierNLSE
+    SL = SimulationLoopFourierNLSE(PA)
+
 # NOTE: Add new algorithms here
 
 else:
