@@ -334,7 +334,7 @@ LCI = LinearCombinationOfWPs(1, 1)
 LCI.add_wavepacket(IVWP)
 
 # Project to phasespace grid
-J0 = find_initial_J([q0,p0])
+J0 = find_initial_J([q0, p0])
 wps = get_wavepackets_0(J0)
 LC0 = LinearCombinationOfWPs(1, 1)
 for j in J0:
@@ -343,7 +343,7 @@ for j in J0:
 b = IPlcih.build_matrix(LC0, LCI)
 b = squeeze(b)
 
-# Prune irrelevant indicies
+# Prune irrelevant indices
 ib = abs(b) > threshold_prune
 b = b[ib]
 J0c = [ J0[i] for i, v in enumerate(ib) if v == True ]
@@ -460,7 +460,7 @@ for n in xrange(1, nsteps+1):
     THETAcut = theta_cut(Jtn, Jt)
     btn = dot(THETAcut, ct)
 
-    # Prune irrelevant indicies
+    # Prune irrelevant indices
     ibn = abs(btn) > threshold_prune
     btnc = btn[ibn]
     Jtnc = [ Jtn[i] for i, v in enumerate(ibn) if v == True ]

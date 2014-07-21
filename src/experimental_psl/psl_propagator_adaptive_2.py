@@ -1,10 +1,8 @@
 import string
-from copy import copy
 from pylru import lrucache
 
 from numpy import *
-from numpy.linalg import svd, norm, solve
-from scipy.linalg import pinv2, pinv
+from scipy.linalg import pinv2
 from matplotlib.pyplot import *
 
 from WaveBlocksND import *
@@ -13,7 +11,7 @@ from WaveBlocksND.Plot import plotcf
 # ========================================================================
 # Model Parameters
 
-eps = 1.0 / 10.0
+eps = 0.1
 
 # Potential
 potential = {}
@@ -22,6 +20,8 @@ potential["potential"] = "x**4"
 
 # Basis shape of one Psi_j
 L = 7 #13
+
+latdistratio = 0.75
 
 # Basis propagation
 T = 0.05
@@ -35,10 +35,10 @@ q0 = 0.0
 p0 = 1.0
 
 # For the pseudoinverse
-threshold_i = 1e-6
+threshold_invert = 1e-6
 
 # For pruning the active set
-threshold_b = 1e-2
+threshold_prune = 1e-2
 
 # Cache size, choose >> C * max |J(t)|^2
 cachesize_integrals = 2**18
@@ -63,17 +63,16 @@ V.calculate_local_remainder()
 # ------------------------------------------------------------------------
 # Phase space grid
 
-lattice = [(1,0), (0,1)]
-directions = map(array, [(-1,0),(1,0),(0,-1),(0,1)])
-latdist = 0.75 * eps * sqrt(pi)
+Id = eye(2, dtype=integer)
+directions = vstack([Id, -Id])
+latdist = latdistratio * eps * sqrt(pi)
 
 def neighbours(S):
     N = set([])
     for s in S:
-        n = []
-        for d in directions:
-            n.append(tuple(array(s) + d))
-        N.update(n)
+        ars = array(s)
+        n = vsplit(ars+directions, 4)
+        N.update(map(lambda x: tuple(squeeze(x)), n))
     return N.difference(S)
 
 
@@ -113,7 +112,7 @@ simparameters = {
     }
 
 TM0 = TimeManager(simparameters)
-prop = MagnusPropagator(simparameters, V)
+prop = SemiclassicalPropagator(simparameters, V)
 
 # ------------------------------------------------------------------------
 # Construct the families of wavepackets to be propagated semiclassically
@@ -125,8 +124,9 @@ IPwpho = HomogeneousInnerProduct(Q)
 WP0 = lrucache(cachesize_wavepackets)
 
 def new_wavepacket(k):
-    q = k[0] * latdist
-    p = k[1] * latdist
+    kq, kp = split(array(k), 2)
+    q = kq * latdist
+    p = kp * latdist
 
     HAWP = HagedornWavepacket(1, 1, eps)
     HAWP.set_parameters((q, p), key=('q','p'))
@@ -140,7 +140,7 @@ WP1 = lrucache(cachesize_wavepackets)
 def propagate_wavepacket(k):
     HAWP = WP0[k].clone()
 
-    # Give a larger basis the the packets we propagate
+    # Give a larger basis to the packets we propagate
     B = HyperCubicShape([L])
     HAWP.set_basis_shapes([B])
 
@@ -184,11 +184,11 @@ IOM.create_block()
 # ------------------------------------------------------------------------
 # Various quadratures needed
 
+# Warning: NSD not suitable for potentials with exponential parts
 QR = GaussHermiteOriginalQR(5)
 Q = NSDInhomogeneous(QR)
 
 IPwpih = InhomogeneousInnerProduct(Q)
-IPlcho = HomogeneousInnerProductLCWP(IPwpih)
 IPlcih = InhomogeneousInnerProductLCWP(IPwpih)
 
 Obs = ObservablesMixedHAWP(IPwpih)
@@ -292,9 +292,7 @@ def ekin_cut(Jt):
 # Evaluate the functions in the generating system
 
 # Grid
-limitsx = limits[0]
-dx = abs(limitsx[1] - limitsx[0]) / (1.0 * number_nodes[0])
-x = linspace(limitsx[0], limitsx[1], number_nodes[0]).reshape(1, -1)
+G = TensorProductGrid(limits, number_nodes)
 
 WF = lrucache(cachesize_wavefunctions)
 
@@ -305,7 +303,7 @@ def wavepackets_values(J, C):
     # Evaluate all unevaluated packets
     wps = get_wavepackets_0(Jue)
     for k, wp in wps.iteritems():
-        WF[k] = wp.evaluate_at(x, prefactor=True)[0]
+        WF[k] = wp.evaluate_at(x, prefactor=True, component=0)
 
     # Compute final value of |Y>
     wf = zeros_like(x, dtype=complexfloating)
@@ -319,9 +317,9 @@ def wavepackets_values(J, C):
 
 def find_initial_J(Pi0, distance=5):
     q0, p0 = Pi0
-    q0i = int(round(q0 / latdist))
-    p0i = int(round(p0 / latdist))
-    J0 = set([(q0i,p0i)])
+    q0i = list(squeeze((q0 / latdist).round().astype(integer)))
+    p0i = list(squeeze((p0 / latdist).round().astype(integer)))
+    J0 = set([tuple(q0i + p0i)])
     for i in xrange(distance):
         J0 = superset(J0)
     return sorted(list(J0))
@@ -336,7 +334,7 @@ LCI = LinearCombinationOfWPs(1, 1)
 LCI.add_wavepacket(IVWP)
 
 # Project to phasespace grid
-J0 = find_initial_J([q0,p0])
+J0 = find_initial_J([q0, p0])
 wps = get_wavepackets_0(J0)
 LC0 = LinearCombinationOfWPs(1, 1)
 for j in J0:
@@ -345,15 +343,15 @@ for j in J0:
 b = IPlcih.build_matrix(LC0, LCI)
 b = squeeze(b)
 
-# Prune irrelevant indicies
-ib = abs(b) > threshold_b
+# Prune irrelevant indices
+ib = abs(b) > threshold_prune
 b = b[ib]
 J0c = [ J0[i] for i, v in enumerate(ib) if v == True ]
 
 # Backproject to grid
 Acut = a_cut(J0c)
 
-ct = dot(pinv2(Acut, rcond=threshold_i), b)
+ct = dot(pinv2(Acut, rcond=threshold_invert), b)
 Jt = J0c
 
 # Observables
@@ -415,7 +413,7 @@ IOM.save_wavefunction([psi], timestep=0)
 # Plot frames
 f = figure()
 ax = f.gca()
-plotcf(squeeze(x), angle(psi), abs(psi)**2, axes=ax)
+plotcf(squeeze(G.get_nodes()), angle(psi), abs(psi)**2, axes=ax)
 ax.set_xlim(-1.5, 1.5)
 ax.set_ylim(0, 10)
 f.savefig("frame_" + string.zfill(str(0),6)+".png")
@@ -463,15 +461,15 @@ def enlarge_until_sufficient(Jt, ct, last_no, max_tries=3, threshold_norm=1e-2):
         THETAcut = theta_cut(Jtn_try, Jt_try)
         btn_try = dot(THETAcut, ct_try)
 
-        # Prune irrelevant indicies
+        # Prune irrelevant indices
         # TODO: Consider early pruning
-        #ibn = abs(btn) > threshold_b
+        #ibn = abs(btn) > threshold_prune
         #btnc = btn[ibn]
         #Jtnc = [ Jtn[i] for i, v in enumerate(ibn) if v == True ]
 
         # Backproject to grid
         Acut = a_cut(Jtn_try)
-        ctn_try = dot(pinv2(Acut, rcond=threshold_i), btn_try)
+        ctn_try = dot(pinv2(Acut, rcond=threshold_invert), btn_try)
 
         # Observables
         ctnbar_try = conjugate(transpose(ctn_try))
@@ -489,7 +487,7 @@ def enlarge_until_sufficient(Jt, ct, last_no, max_tries=3, threshold_norm=1e-2):
             Jt_try = Jtn_try
 
     else:
-        print("*** WARNING: Maximal number of tries exhausted ***")
+        print(" *** WARNING: Maximal number of tries exhausted ***")
 
     return Jtn
 
@@ -500,19 +498,20 @@ for n in xrange(1, nsteps+1):
 
     # Adaptively enlarge J(t)
     Jtn = enlarge_until_sufficient(Jt, ct, no)
+    print(" Size of unpruned J(t) is %d" % len(Jtn))
 
     # Make a theta-step
     THETAcut = theta_cut(Jtn, Jt)
     btn = dot(THETAcut, ct)
 
-    # Prune irrelevant indicies
-    ibn = abs(btn) > threshold_b
+    # Prune irrelevant indices
+    ibn = abs(btn) > threshold_prune
     btnc = btn[ibn]
     Jtnc = [ Jtn[i] for i, v in enumerate(ibn) if v == True ]
 
     # Backproject to grid
     Acut = a_cut(Jtnc)
-    ctn = dot(pinv2(Acut, rcond=threshold_i), btnc)
+    ctn = dot(pinv2(Acut, rcond=threshold_invert), btnc)
 
     # Loop
     ct = ctn
@@ -546,7 +545,7 @@ for n in xrange(1, nsteps+1):
     # Plot frames
     f = figure()
     ax = f.gca()
-    plotcf(squeeze(x), angle(psi), abs(psi)**2, axes=ax)
+    plotcf(squeeze(G.get_nodes()), angle(psi), abs(psi)**2, axes=ax)
     ax.set_xlim(-1.5, 1.5)
     ax.set_ylim(0, 10)
     f.savefig("frame_" + string.zfill(str(n),6)+".png")
