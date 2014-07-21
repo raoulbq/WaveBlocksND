@@ -1,20 +1,17 @@
-import string
 from pylru import lrucache
 
 from numpy import *
-from numpy.linalg import svd, norm, solve
-from scipy.linalg import pinv2, pinv
+from scipy.linalg import pinv2
 from matplotlib.pyplot import *
 
 from WaveBlocksND import *
-from WaveBlocksND.Plot import plotcf
 
 # ========================================================================
 # Model Parameters
 
 dimension = 2
 
-eps = 1.0 / 10.0
+eps = 0.1
 
 # Potential
 potential = {}
@@ -22,16 +19,17 @@ potential["variables"] = ["x", "y"]
 potential["potential"] = "x**2 + y**2"
 
 # Basis shape of one Psi_j
-#L = 7 #13
 L = 4
 Kbs = 2
+
+latdistratio = 0.75
 
 # Basis propagation
 T = 0.05
 dt = 0.005
 
 # Endtime
-Tend = 0.5 # 2.0 * 4.4
+Tend = 0.5
 
 # Initial value parameters
 q0 = array([[ 0.0],
@@ -41,10 +39,10 @@ p0 = array([[ 0.5],
             [ 0.0]])
 
 # For the pseudoinverse
-threshold_i = 1e-6
+threshold_invert = 1e-6
 
 # For pruning the active set
-threshold_b = 1E-2
+threshold_prune = 1e-2
 
 # Cache size, choose >> C * max |J(t)|^2
 cachesize_integrals = 2**20
@@ -71,18 +69,15 @@ V.calculate_local_remainder()
 # Phase space grid
 
 Id = eye(2*dimension, dtype=integer)
-lattice = map(squeeze, hsplit(Id, 2*dimension))
-lattice_neg = map(squeeze, hsplit(-Id, 2*dimension))
-directions = lattice + lattice_neg
-
-latdist = 0.75 * eps * sqrt(pi)
+directions = vstack([Id, -Id])
+latdist = latdistratio * eps * sqrt(pi)
 
 def neighbours(S):
     N = set([])
     for s in S:
         ars = array(s)
-        n = [ars + d for d in directions]
-        N.update(map(tuple, n))
+        n = vsplit(ars+directions, 2*2*dimension)
+        N.update(map(lambda x: tuple(squeeze(x)), n))
     return N.difference(S)
 
 
@@ -103,7 +98,7 @@ simparameters = {
     }
 
 TM0 = TimeManager(simparameters)
-prop = MagnusPropagator(simparameters, V)
+prop = SemiclassicalPropagator(simparameters, V)
 
 # ------------------------------------------------------------------------
 # Construct the families of wavepackets to be propagated semiclassically
@@ -132,7 +127,7 @@ WP1 = lrucache(cachesize_wavepackets)
 def propagate_wavepacket(k):
     HAWP = WP0[k].clone()
 
-    # Give a larger basis the the packets we propagate
+    # Give a larger basis to the packets we propagate
     B = HyperbolicCutShape(dimension, Kbs)
     HAWP.set_basis_shapes([B])
 
@@ -176,12 +171,12 @@ IOM.create_block()
 # ------------------------------------------------------------------------
 # Various quadratures needed
 
+# Warning: NSD not suitable for potentials with exponential parts
 QR = GaussHermiteOriginalQR(5)
 TPQR = TensorProductQR(dimension * [QR])
 Q = NSDInhomogeneous(TPQR)
 
 IPwpih = InhomogeneousInnerProduct(Q)
-IPlcho = HomogeneousInnerProductLCWP(IPwpih)
 IPlcih = InhomogeneousInnerProductLCWP(IPwpih)
 
 Obs = ObservablesMixedHAWP(IPwpih)
@@ -296,10 +291,10 @@ def wavepackets_values(J, C):
     # Evaluate all unevaluated packets
     wps = get_wavepackets_0(Jue)
     for k, wp in wps.iteritems():
-        WF[k] = wp.evaluate_at(G, prefactor=True)[0]
+        WF[k] = wp.evaluate_at(G, prefactor=True, component=0)
 
     # Compute final value of |Y>
-    wf = zeros_like(x, dtype=complexfloating)
+    wf = zeros_like(G.get_nodes(), dtype=complexfloating)
     for k, c in zip(J, C):
         wf += c * WF[k]
 
@@ -337,14 +332,14 @@ b = IPlcih.build_matrix(LC0, LCI)
 b = squeeze(b)
 
 # Prune irrelevant indicies
-ib = abs(b) > threshold_b
+ib = abs(b) > threshold_prune
 b = b[ib]
 J0c = [ J0[i] for i, v in enumerate(ib) if v == True ]
 
 # Backproject to grid
 Acut = a_cut(J0c)
 
-ct = dot(pinv2(Acut, rcond=threshold_i), b)
+ct = dot(pinv2(Acut, rcond=threshold_invert), b)
 Jt = J0c
 
 # Observables
@@ -402,13 +397,13 @@ for n in xrange(1, nsteps+1):
     btn = dot(THETAcut, ct)
 
     # Prune irrelevant indicies
-    ibn = abs(btn) > threshold_b
+    ibn = abs(btn) > threshold_prune
     btnc = btn[ibn]
     Jtnc = [ Jtn[i] for i, v in enumerate(ibn) if v == True ]
 
     # Backproject to grid
     Acut = a_cut(Jtnc)
-    ctn = dot(pinv2(Acut, rcond=threshold_i), btnc)
+    ctn = dot(pinv2(Acut, rcond=threshold_invert), btnc)
 
     # Loop
     ct = ctn
@@ -430,7 +425,7 @@ for n in xrange(1, nsteps+1):
     # Trail
     trail = trail.union(Jt)
 
-    # Statitics
+    # Statistics
     Jsize_hist.append(len(Jt))
     print(" Size of pruned J(t) is %d" % len(Jt))
 
@@ -473,6 +468,7 @@ legend(loc="lower right")
 xlabel(r"$t$")
 ylabel(r"cache fill")
 savefig("cache_fill.png")
+
 
 # Plot Observables
 timegrid = IOM.load_norm_timegrid()
