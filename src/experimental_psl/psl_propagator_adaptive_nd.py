@@ -305,8 +305,8 @@ def wavepackets_values(J, C):
 
 def find_initial_J(Pi0, distance=2):
     q0, p0 = Pi0
-    q0i = list(squeeze((q0 / latdist).round().astype(integer)))
-    p0i = list(squeeze((p0 / latdist).round().astype(integer)))
+    q0i = list((q0 / latdist).round().astype(integer).reshape(dimension))
+    p0i = list((p0 / latdist).round().astype(integer).reshape(dimension))
     J0 = set([tuple(q0i + p0i)])
     for i in xrange(distance):
         J0 = superset(J0)
