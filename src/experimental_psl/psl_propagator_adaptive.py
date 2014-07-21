@@ -35,10 +35,10 @@ q0 = 0.0
 p0 = 1.0
 
 # For the pseudoinverse
-threshold_i = 1e-6
+threshold_invert = 1e-6
 
 # For pruning the active set
-threshold_b = 1e-2
+threshold_prune = 1e-2
 
 # Cache size, choose >> C * max |J(t)|^2
 cachesize_integrals = 2**18
@@ -63,17 +63,16 @@ V.calculate_local_remainder()
 # ------------------------------------------------------------------------
 # Phase space grid
 
-lattice = [(1,0), (0,1)]
-directions = map(array, [(-1,0),(1,0),(0,-1),(0,1)])
+Id = eye(2, dtype=integer)
+directions = vstack([Id, -Id])
 latdist = latdistratio * eps * sqrt(pi)
 
 def neighbours(S):
     N = set([])
     for s in S:
-        n = []
-        for d in directions:
-            n.append(tuple(array(s) + d))
-        N.update(n)
+        ars = array(s)
+        n = vsplit(ars+directions, 4)
+        N.update(map(lambda x: tuple(squeeze(x)), n))
     return N.difference(S)
 
 
@@ -125,8 +124,9 @@ IPwpho = HomogeneousInnerProduct(Q)
 WP0 = lrucache(cachesize_wavepackets)
 
 def new_wavepacket(k):
-    q = k[0] * latdist
-    p = k[1] * latdist
+    kq, kp = split(array(k), 2)
+    q = kq * latdist
+    p = kp * latdist
 
     HAWP = HagedornWavepacket(1, 1, eps)
     HAWP.set_parameters((q, p), key=('q','p'))
@@ -292,9 +292,7 @@ def ekin_cut(Jt):
 # Evaluate the functions in the generating system
 
 # Grid
-limitsx = limits[0]
-dx = abs(limitsx[1] - limitsx[0]) / (1.0 * number_nodes[0])
-x = linspace(limitsx[0], limitsx[1], number_nodes[0]).reshape(1, -1)
+G = TensorProductGrid(limits, number_nodes)
 
 WF = lrucache(cachesize_wavefunctions)
 
@@ -305,10 +303,10 @@ def wavepackets_values(J, C):
     # Evaluate all unevaluated packets
     wps = get_wavepackets_0(Jue)
     for k, wp in wps.iteritems():
-        WF[k] = wp.evaluate_at(x, prefactor=True, component=0)
+        WF[k] = wp.evaluate_at(G, prefactor=True, component=0)
 
     # Compute final value of |Y>
-    wf = zeros_like(x, dtype=complexfloating)
+    wf = zeros_like(G.get_nodes(), dtype=complexfloating)
     for k, c in zip(J, C):
         wf += c * WF[k]
 
@@ -319,9 +317,9 @@ def wavepackets_values(J, C):
 
 def find_initial_J(Pi0, distance=5):
     q0, p0 = Pi0
-    q0i = int(round(q0 / latdist))
-    p0i = int(round(p0 / latdist))
-    J0 = set([(q0i,p0i)])
+    q0i = list(squeeze((q0 / latdist).round().astype(integer)))
+    p0i = list(squeeze((p0 / latdist).round().astype(integer)))
+    J0 = set([tuple(q0i + p0i)])
     for i in xrange(distance):
         J0 = superset(J0)
     return sorted(list(J0))
@@ -346,14 +344,14 @@ b = IPlcih.build_matrix(LC0, LCI)
 b = squeeze(b)
 
 # Prune irrelevant indicies
-ib = abs(b) > threshold_b
+ib = abs(b) > threshold_prune
 b = b[ib]
 J0c = [ J0[i] for i, v in enumerate(ib) if v == True ]
 
 # Backproject to grid
 Acut = a_cut(J0c)
 
-ct = dot(pinv2(Acut, rcond=threshold_i), b)
+ct = dot(pinv2(Acut, rcond=threshold_invert), b)
 Jt = J0c
 
 # Observables
@@ -415,7 +413,7 @@ IOM.save_wavefunction([psi], timestep=0)
 # Plot frames
 f = figure()
 ax = f.gca()
-plotcf(squeeze(x), angle(psi), abs(psi)**2, axes=ax)
+plotcf(squeeze(G.get_nodes()), angle(psi), abs(psi)**2, axes=ax)
 ax.set_xlim(-1.5, 1.5)
 ax.set_ylim(0, 10)
 f.savefig("frame_" + string.zfill(str(0),6)+".png")
@@ -456,19 +454,20 @@ for n in xrange(1, nsteps+1):
 
     # Enlarge Einzugsgebiete
     Jtn = superset(Jt)
+    print(" Size of unpruned J(t) is %d" % len(Jtn))
 
     # Make a theta-step
     THETAcut = theta_cut(Jtn, Jt)
     btn = dot(THETAcut, ct)
 
     # Prune irrelevant indicies
-    ibn = abs(btn) > threshold_b
+    ibn = abs(btn) > threshold_prune
     btnc = btn[ibn]
     Jtnc = [ Jtn[i] for i, v in enumerate(ibn) if v == True ]
 
     # Backproject to grid
     Acut = a_cut(Jtnc)
-    ctn = dot(pinv2(Acut, rcond=threshold_i), btnc)
+    ctn = dot(pinv2(Acut, rcond=threshold_invert), btnc)
 
     # Loop
     ct = ctn
@@ -490,7 +489,7 @@ for n in xrange(1, nsteps+1):
     # Trail
     trail = trail.union(Jt)
 
-    # Statitics
+    # Statistics
     Jsize_hist.append(len(Jt))
     print(" Size of pruned J(t) is %d" % len(Jt))
 
@@ -502,7 +501,7 @@ for n in xrange(1, nsteps+1):
     # Plot frames
     f = figure()
     ax = f.gca()
-    plotcf(squeeze(x), angle(psi), abs(psi)**2, axes=ax)
+    plotcf(squeeze(G.get_nodes()), angle(psi), abs(psi)**2, axes=ax)
     ax.set_xlim(-1.5, 1.5)
     ax.set_ylim(0, 10)
     f.savefig("frame_" + string.zfill(str(n),6)+".png")
