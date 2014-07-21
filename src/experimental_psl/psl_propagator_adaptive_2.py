@@ -1,4 +1,5 @@
 import string
+from copy import copy as clone
 from pylru import lrucache
 
 from numpy import *
@@ -303,10 +304,10 @@ def wavepackets_values(J, C):
     # Evaluate all unevaluated packets
     wps = get_wavepackets_0(Jue)
     for k, wp in wps.iteritems():
-        WF[k] = wp.evaluate_at(x, prefactor=True, component=0)
+        WF[k] = wp.evaluate_at(G, prefactor=True, component=0)
 
     # Compute final value of |Y>
-    wf = zeros_like(x, dtype=complexfloating)
+    wf = zeros_like(G.get_nodes(), dtype=complexfloating)
     for k, c in zip(J, C):
         wf += c * WF[k]
 
@@ -317,12 +318,19 @@ def wavepackets_values(J, C):
 
 def find_initial_J(Pi0, distance=5):
     q0, p0 = Pi0
-    q0i = list(squeeze((q0 / latdist).round().astype(integer)))
-    p0i = list(squeeze((p0 / latdist).round().astype(integer)))
+    q0i = list((q0 / latdist).round().astype(integer).reshape(1))
+    p0i = list((p0 / latdist).round().astype(integer).reshape(1))
     J0 = set([tuple(q0i + p0i)])
+    # TODO: Put this in extra method
     for i in xrange(distance):
         J0 = superset(J0)
     return sorted(list(J0))
+
+
+def enlarge_initial_J(J0, ):
+    pass
+
+
 
 
 # Build packet from initial value
@@ -449,19 +457,22 @@ TM = TimeManager(simparameters2)
 nsteps = TM.compute_number_timesteps()
 
 
-def enlarge_until_sufficient(Jt, ct, last_no, max_tries=3, threshold_norm=1e-2):
-    Jt_try = Jt
+def adaptive_step(Jt, ct, last_no, max_tries=5, threshold_norm=1e-6):
+    Jt_try = clone(Jt)
     ct_try = ct.copy()
+    no_last_try = last_no
 
+    # Adaptively enlarge J(t)
     for new_try in xrange(max_tries):
         # Enlarge Einzugsgebiete
         Jtn_try = superset(Jt_try)
+        print("  Size of new test set J(t) is %d" % len(Jtn_try))
 
         # Make a theta-step
-        THETAcut = theta_cut(Jtn_try, Jt_try)
+        THETAcut = theta_cut(Jtn_try, Jt)
         btn_try = dot(THETAcut, ct_try)
 
-        # Prune irrelevant indices
+        # Prune irrelevant indicies
         # TODO: Consider early pruning
         #ibn = abs(btn) > threshold_prune
         #btnc = btn[ibn]
@@ -476,35 +487,30 @@ def enlarge_until_sufficient(Jt, ct, last_no, max_tries=3, threshold_norm=1e-2):
         no_try = abs(dot(ctnbar_try, dot(Acut, ctn_try)))
         print("  Norm (try: %d): %f" % (new_try, no_try))
 
-        if abs(no - no_try) <= threshold_norm:
-            print("   Norm difference: %f" % abs(no - no_try))
+        if abs(last_no - no_try) <= threshold_norm:
+            print("   Norm difference: %f" % abs(last_no - no_try))
             print("  => sucess")
-
             Jtn = Jtn_try
             break
         else:
-            print("  => retry")
-            Jt_try = Jtn_try
+            if abs(no_last_try - no_try) <= threshold_norm:
+                print("+++ WARNING: Norm did not improve enough +++")
+                Jtn = Jtn_try
+                break
+            else:
+                Jt_try = Jtn_try
+                no_last_try = no_try
+                print("  => retry")
 
     else:
-        print(" *** WARNING: Maximal number of tries exhausted ***")
-
-    return Jtn
-
-
-# Go
-for n in xrange(1, nsteps+1):
-    print("Step: "+str(n))
-
-    # Adaptively enlarge J(t)
-    Jtn = enlarge_until_sufficient(Jt, ct, no)
-    print(" Size of unpruned J(t) is %d" % len(Jtn))
+        print("*** WARNING: Maximal number of tries exhausted ***")
+        Jtn = Jtn_try
 
     # Make a theta-step
     THETAcut = theta_cut(Jtn, Jt)
     btn = dot(THETAcut, ct)
 
-    # Prune irrelevant indices
+    # Prune irrelevant indicies
     ibn = abs(btn) > threshold_prune
     btnc = btn[ibn]
     Jtnc = [ Jtn[i] for i, v in enumerate(ibn) if v == True ]
@@ -513,17 +519,26 @@ for n in xrange(1, nsteps+1):
     Acut = a_cut(Jtnc)
     ctn = dot(pinv2(Acut, rcond=threshold_invert), btnc)
 
+    # Observables
+    ctnbar = conjugate(transpose(ctn))
+    no = abs(dot(ctnbar, dot(Acut, ctn)))
+
+    return Jtnc, ctn, no
+
+
+# Go
+for n in xrange(1, nsteps+1):
+    print("Step: "+str(n))
+
     # Loop
-    ct = ctn
-    Jt = Jtnc
+    Jt, ct, no = adaptive_step(Jt, ct, no)
 
     # Observables
-    ctbar = conjugate(transpose(ct))
-    no = abs(dot(ctbar, dot(Acut, ct)))
     print(" Norm: %f" % no)
 
-    EPOTcut = epot_cut(Jtnc)
-    EKINcut = ekin_cut(Jtnc)
+    EPOTcut = epot_cut(Jt)
+    EKINcut = ekin_cut(Jt)
+    ctbar = conjugate(transpose(ct))
     ep = dot(ctbar, dot(EPOTcut, ct))
     ek = dot(ctbar, dot(EKINcut, ct))
 
@@ -533,7 +548,7 @@ for n in xrange(1, nsteps+1):
     # Trail
     trail = trail.union(Jt)
 
-    # Statitics
+    # Statistics
     Jsize_hist.append(len(Jt))
     print(" Size of pruned J(t) is %d" % len(Jt))
 
