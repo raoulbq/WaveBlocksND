@@ -2,8 +2,7 @@ import string
 from pylru import lrucache
 
 from numpy import *
-from numpy.linalg import svd, norm, solve
-from scipy.linalg import pinv2, pinv
+from scipy.linalg import pinv2
 from matplotlib.pyplot import *
 
 from WaveBlocksND import *
@@ -12,7 +11,7 @@ from WaveBlocksND.Plot import plotcf
 # ========================================================================
 # Model Parameters
 
-eps = 1.0 / 10.0
+eps = 0.1
 
 # Potential
 potential = {}
@@ -21,6 +20,8 @@ potential["potential"] = "x**4"
 
 # Basis shape of one Psi_j
 L = 7 #13
+
+latdistratio = 0.75
 
 # Basis propagation
 T = 0.05
@@ -37,7 +38,7 @@ p0 = 1.0
 threshold_i = 1e-6
 
 # For pruning the active set
-threshold_b = 1E-2
+threshold_b = 1e-2
 
 # Cache size, choose >> C * max |J(t)|^2
 cachesize_integrals = 2**18
@@ -64,7 +65,7 @@ V.calculate_local_remainder()
 
 lattice = [(1,0), (0,1)]
 directions = map(array, [(-1,0),(1,0),(0,-1),(0,1)])
-latdist = 0.75 * eps * sqrt(pi)
+latdist = latdistratio * eps * sqrt(pi)
 
 def neighbours(S):
     N = set([])
@@ -112,7 +113,7 @@ simparameters = {
     }
 
 TM0 = TimeManager(simparameters)
-prop = MagnusPropagator(simparameters, V)
+prop = SemiclassicalPropagator(simparameters, V)
 
 # ------------------------------------------------------------------------
 # Construct the families of wavepackets to be propagated semiclassically
@@ -139,7 +140,7 @@ WP1 = lrucache(cachesize_wavepackets)
 def propagate_wavepacket(k):
     HAWP = WP0[k].clone()
 
-    # Give a larger basis the the packets we propagate
+    # Give a larger basis to the propagated packets
     B = HyperCubicShape([L])
     HAWP.set_basis_shapes([B])
 
@@ -183,11 +184,11 @@ IOM.create_block()
 # ------------------------------------------------------------------------
 # Various quadratures needed
 
+# Warning: NSD not suitable for potentials with exponential parts
 QR = GaussHermiteOriginalQR(5)
 Q = NSDInhomogeneous(QR)
 
 IPwpih = InhomogeneousInnerProduct(Q)
-IPlcho = HomogeneousInnerProductLCWP(IPwpih)
 IPlcih = InhomogeneousInnerProductLCWP(IPwpih)
 
 Obs = ObservablesMixedHAWP(IPwpih)
@@ -304,7 +305,7 @@ def wavepackets_values(J, C):
     # Evaluate all unevaluated packets
     wps = get_wavepackets_0(Jue)
     for k, wp in wps.iteritems():
-        WF[k] = wp.evaluate_at(x, prefactor=True)[0]
+        WF[k] = wp.evaluate_at(x, prefactor=True, component=0)
 
     # Compute final value of |Y>
     wf = zeros_like(x, dtype=complexfloating)
