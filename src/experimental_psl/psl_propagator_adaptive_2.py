@@ -4,6 +4,7 @@ from pylru import lrucache
 
 from numpy import *
 from scipy.linalg import pinv2
+from scipy.special import erf
 from matplotlib.pyplot import *
 
 from WaveBlocksND import *
@@ -433,7 +434,7 @@ for j, co in zip(Jt, ct):
     q = j[0] * latdist
     p = j[1] * latdist
     plot(q, p, ".b")
-    circle1 = Circle((q,p), eps, color="b", fill=True, alpha=clip(abs(co), 0.0, 1.0))
+    circle1 = Circle((q,p), eps, color="b", fill=True, alpha=clip(erf(abs(co)), 0.0, 1.0))
     fig.gca().add_artist(circle1)
 grid(True)
 ax = fig.gca()
@@ -472,7 +473,7 @@ def adaptive_step(Jt, ct, last_no, max_tries=5, threshold_norm=1e-6):
         THETAcut = theta_cut(Jtn_try, Jt)
         btn_try = dot(THETAcut, ct_try)
 
-        # Prune irrelevant indicies
+        # Prune irrelevant indices
         # TODO: Consider early pruning
         #ibn = abs(btn) > threshold_prune
         #btnc = btn[ibn]
@@ -510,7 +511,7 @@ def adaptive_step(Jt, ct, last_no, max_tries=5, threshold_norm=1e-6):
     THETAcut = theta_cut(Jtn, Jt)
     btn = dot(THETAcut, ct)
 
-    # Prune irrelevant indicies
+    # Prune irrelevant indices
     ibn = abs(btn) > threshold_prune
     btnc = btn[ibn]
     Jtnc = [ Jtn[i] for i, v in enumerate(ibn) if v == True ]
@@ -572,7 +573,7 @@ for n in xrange(1, nsteps+1):
         q = j[0] * latdist
         p = j[1] * latdist
         plot(q, p, ".b")
-        circle1 = Circle((q,p), eps, color="b", fill=True, alpha=clip(abs(co), 0.0, 1.0))
+        circle1 = Circle((q,p), eps, color="b", fill=True, alpha=clip(erf(abs(co)), 0.0, 1.0))
         fig.gca().add_artist(circle1)
     grid(True)
     ax = fig.gca()

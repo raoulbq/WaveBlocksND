@@ -3,6 +3,7 @@ from pylru import lrucache
 
 from numpy import *
 from scipy.linalg import pinv2
+from scipy.special import erf
 from matplotlib.pyplot import *
 
 from WaveBlocksND import *
@@ -425,7 +426,7 @@ for j, co in zip(Jt, ct):
     q = j[0] * latdist
     p = j[1] * latdist
     plot(q, p, ".b")
-    circle1 = Circle((q,p), eps, color="b", fill=True, alpha=clip(abs(co), 0.0, 1.0))
+    circle1 = Circle((q,p), eps, color="b", fill=True, alpha=clip(erf(abs(co)), 0.0, 1.0))
     fig.gca().add_artist(circle1)
 grid(True)
 ax = fig.gca()
@@ -513,7 +514,7 @@ for n in xrange(1, nsteps+1):
         q = j[0] * latdist
         p = j[1] * latdist
         plot(q, p, ".b")
-        circle1 = Circle((q,p), eps, color="b", fill=True, alpha=clip(abs(co), 0.0, 1.0))
+        circle1 = Circle((q,p), eps, color="b", fill=True, alpha=clip(erf(abs(co)), 0.0, 1.0))
         fig.gca().add_artist(circle1)
     grid(True)
     ax = fig.gca()
