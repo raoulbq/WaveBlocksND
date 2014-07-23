@@ -30,20 +30,20 @@ T = 0.05
 dt = 0.005
 
 # Endtime
-Tend = 0.5 * 4.4
+Tend = 1.0 * 4.4
 
 # Initial value parameters
-q0 = 0.0
-p0 = 1.0
+q0 = 1.0
+p0 = 0.0
 
 # For the pseudoinverse of A
 threshold_invert = 1e-6
 
 # For pruning the active set J(t)
-threshold_prune = 1e-6
+threshold_prune = 1e-2
 
 # For the norm conservation tests
-threshold_norm = 1e-8
+threshold_norm = 1e-6
 
 # Maximal size of J(t)
 Jsizemax = 1000
@@ -368,29 +368,29 @@ def initial_step(J0, IV, normiv):
         J0k, b0k = prune(J0k, b0k)
         print("  Size of pruned set J(0) is %d" % len(J0k))
         # Backproject to obtain Psi(0)^(k)
-        Acut = a_cut(J0k)
-        c0k = dot(pinv2(Acut, rcond=threshold_invert), b0k)
+        Ak = a_cut(J0k)
+        c0k = dot(pinv2(Ak, rcond=threshold_invert), b0k)
         # Compute norm of current candidate Psi(0)^(k)
         c0kbar = conjugate(transpose(c0k))
-        norm0k = abs(dot(c0kbar, dot(Acut, c0k)))
+        norm0k = abs(dot(c0kbar, dot(Ak, c0k)))
         print("   Norm (try: %d): %f" % (k, norm0k))
         # Decide if the current solution Psi(0)^(k) is good enough
         normdiffk = abs(normiv - norm0k)
         print("   Norm difference: %f" % normdiffk)
         if normdiffk <= threshold_norm:
-            print("   => success & break")
+            print("   \033[1;32m=> success & break\033[1;m")
             break
         else:
             if abs(norm0km1 - norm0k) <= threshold_norm / 10.0:
-                print("   WARNING: Norm did not improve enough")
-                print("   => give up & break")
+                print("   \033[1;33mWARNING: Norm did not improve enough\033[1;m")
+                print("   \033[1;33m=> give up & break\033[1;m")
                 break
             else:
                 J0km1 = J0k
                 norm0km1 = norm0k
                 print("   => not sufficient & retry")
     else:
-        print("*** WARNING: Maximal adaptivity exhausted ***")
+        print("  \033[1;31mWARNING: Maximal adaptivity exhausted\033[1;m")
 
     Jt = J0k
     ct = c0k
@@ -489,76 +489,55 @@ TM = TimeManager(simparameters2)
 nsteps = TM.compute_number_timesteps()
 
 
-def adaptive_step(Jt, ct, last_no, max_tries=5, threshold_norm=threshold_norm):
-    Jt_try = clone(Jt)
-    ct_try = ct.copy()
-    no_last_try = last_no
+def adaptive_step(Jt, ct, normt):
+    # Copy input data and setup
+    k = 0
+    Jtkm1 = clone(Jt)
+    normtkm1 = 0.0
 
-    # Adaptively enlarge J(t)
-    for new_try in xrange(max_tries):
-        # Enlarge Einzugsgebiete
-        Jtn_try = enlarge(Jt_try)
-        print("  Size of new test set J(t) is %d" % len(Jtn_try))
-
+    while k <= maxiter and len(Jtkm1) <= Jsizemax:
+        k += 1
+        # Enlarge the current candidate set J(t)^(k)
+        Jtk = enlarge(Jtkm1)
+        print("  Size of enlarged set J(t) is %d" % len(Jtk))
         # Make a theta-step
-        THETAcut = theta_cut(Jtn_try, Jt)
-        btn_try = dot(THETAcut, ct_try)
-
-        # Prune irrelevant indices
-        # TODO: Consider early pruning
-        #ibn = abs(btn) > threshold_prune
-        #btnc = btn[ibn]
-        #Jtnc = [ Jtn[i] for i, v in enumerate(ibn) if v == True ]
-
-        # Backproject to grid
-        Acut = a_cut(Jtn_try)
-        ctn_try = dot(pinv2(Acut, rcond=threshold_invert), btn_try)
-
-        # Observables
-        ctnbar_try = conjugate(transpose(ctn_try))
-        no_try = abs(dot(ctnbar_try, dot(Acut, ctn_try)))
-        print("  Norm (try: %d): %f" % (new_try, no_try))
-
-        if abs(last_no - no_try) <= threshold_norm:
-            print("   Norm difference: %f" % abs(last_no - no_try))
-            print("  => sucess")
-            Jtn = Jtn_try
+        THETAk = theta_cut(Jtk, Jt)
+        btk = dot(THETAk, ct)
+        # Threshold and prune J(t)^(k)
+        Jtk, btk = prune(Jtk, btk)
+        print("  Size of pruned set J(t) is %d" % len(Jtk))
+        # Backproject to obtain Psi(t)^(k)
+        Ak = a_cut(Jtk)
+        ctk = dot(pinv2(Ak, rcond=threshold_invert), btk)
+        # Compute norm of current candidate Psi(t)^(k)
+        ctkbar = conjugate(transpose(ctk))
+        normtk = abs(dot(ctkbar, dot(Ak, ctk)))
+        print("   Norm (try: %d): %f" % (k, normtk))
+        # Decide if the current solution Psi(t)^(k) is good enough
+        normdiffk = abs(normt - normtk)
+        print("   Norm difference: %f" % normdiffk)
+        if normdiffk <= threshold_norm:
+            print("   => success & break")
             break
         else:
-            if abs(no_last_try - no_try) <= threshold_norm:
-                print("+++ WARNING: Norm did not improve enough +++")
-                Jtn = Jtn_try
+            if abs(normtkm1 - normtk) <= threshold_norm / 10.0:
+                print("   \033[1;33mWARNING: Norm did not improve enough\033[1;m")
+                print("   => give up & break")
                 break
             else:
-                Jt_try = Jtn_try
-                no_last_try = no_try
-                print("  => retry")
-
+                Jtkm1 = Jtk
+                normtkm1 = normtk
+                print("   => not sufficient & retry")
     else:
-        print("*** WARNING: Maximal number of tries exhausted ***")
-        Jtn = Jtn_try
+        print("  \033[1;31mWARNING: Maximal adaptivity exhausted\033[1;m")
 
-    # Make a theta-step
-    THETAcut = theta_cut(Jtn, Jt)
-    btn = dot(THETAcut, ct)
-
-    # Prune irrelevant indices
-    ibn = abs(btn) > threshold_prune
-    btnc = btn[ibn]
-    Jtnc = [ Jtn[i] for i, v in enumerate(ibn) if v == True ]
-
-    # Backproject to grid
-    Acut = a_cut(Jtnc)
-    ctn = dot(pinv2(Acut, rcond=threshold_invert), btnc)
-
-    # Observables
-    ctnbar = conjugate(transpose(ctn))
-    no = abs(dot(ctnbar, dot(Acut, ctn)))
-
-    return Jtnc, ctn, no
+    Jt = Jtk
+    ct = ctk
+    no = normtk
+    return Jt, ct, no
 
 
-# Go
+# Perform the time iteration
 for n in xrange(1, nsteps+1):
     print("Step %d:" % n)
 
@@ -566,8 +545,6 @@ for n in xrange(1, nsteps+1):
     Jt, ct, no = adaptive_step(Jt, ct, no)
 
     # Observables
-    print(" Norm: %f" % no)
-
     EPOTcut = epot_cut(Jt)
     EKINcut = ekin_cut(Jt)
     ctbar = conjugate(transpose(ct))
@@ -582,11 +559,9 @@ for n in xrange(1, nsteps+1):
 
     # Statistics
     Jsize_hist.append(len(Jt))
-    print(" Size of pruned J(t) is %d" % len(Jt))
 
     # Evaluate wavepacket |Y>
     psi = wavepackets_values(Jt, ct)
-
     IOM.save_wavefunction([psi], timestep=n)
 
     # Plot frames
@@ -661,8 +636,8 @@ for j in trail:
 grid(True)
 ax = fig.gca()
 ax.axis('equal')
-ax.set_xlim(-1.5,1.5)
-ax.set_ylim(-1.5,1.5)
+ax.set_xlim(-2.5,2.5)
+ax.set_ylim(-2.5,2.5)
 xlabel(r"$q$")
 ylabel(r"$p$")
 savefig("phasespace_trail.png")
