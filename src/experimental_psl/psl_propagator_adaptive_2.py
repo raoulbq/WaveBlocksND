@@ -36,11 +36,20 @@ Tend = 0.5 * 4.4
 q0 = 0.0
 p0 = 1.0
 
-# For the pseudoinverse
+# For the pseudoinverse of A
 threshold_invert = 1e-6
 
-# For pruning the active set
-threshold_prune = 1e-2
+# For pruning the active set J(t)
+threshold_prune = 1e-6
+
+# For the norm conservation tests
+threshold_norm = 1e-8
+
+# Maximal size of J(t)
+Jsizemax = 1000
+
+# Maximal number of iterations in adaptivity steps
+maxiter = 5
 
 # Cache size, choose >> C * max |J(t)|^2
 cachesize_integrals = 2**18
@@ -76,12 +85,6 @@ def neighbours(S):
         n = vsplit(ars+directions, 4)
         N.update(map(lambda x: tuple(squeeze(x)), n))
     return N.difference(S)
-
-
-def superset(J):
-    J = set(J)
-    Jn = neighbours(J)
-    return sorted(list(J.union(Jn)))
 
 
 def plot_grid(J, filename="phasespace"):
@@ -315,24 +318,84 @@ def wavepackets_values(J, C):
     return squeeze(wf)
 
 # ------------------------------------------------------------------------
+# Helper functions
+
+def enlarge(J, steps=1):
+    # Enlarge active set J(t)
+    J = set(J)
+    for step in xrange(steps):
+        J = J.union(neighbours(J))
+    return sorted(list(J))
+
+
+def prune(J, c, threshold_prune=threshold_prune):
+    # Prune negligible indices
+    c = atleast_1d(c)
+    indices = abs(c) > threshold_prune
+    cpruned = c[indices]
+    Jpruned = [ J[i] for i, v in enumerate(indices) if v == True ]
+    return Jpruned, cpruned
+
+# ------------------------------------------------------------------------
 # Initial Value
 
-def find_initial_J(Pi0, distance=5):
+def find_initial_J(Pi0):
     q0, p0 = Pi0
     q0i = list((q0 / latdist).round().astype(integer).reshape(1))
     p0i = list((p0 / latdist).round().astype(integer).reshape(1))
-    J0 = set([tuple(q0i + p0i)])
-    # TODO: Put this in extra method
-    for i in xrange(distance):
-        J0 = superset(J0)
-    return sorted(list(J0))
+    return set([tuple(q0i + p0i)])
 
 
-def enlarge_initial_J(J0, ):
-    pass
+def initial_step(J0, IV, normiv):
+    k = 0
+    J0km1 = J0
+    norm0km1 = 0.0
 
+    while k <= maxiter and len(J0km1) <= Jsizemax:
+        k += 1
+        # Enlarge the current candidate set J(0)^(k)
+        J0k = enlarge(J0km1)
+        print("  Size of enlarged set J(0) is %d" % len(J0k))
+        # Build linear combination Y(0)^(k) from J(0)^(k)
+        wps = get_wavepackets_0(J0k)
+        LC0 = LinearCombinationOfWPs(1, 1)
+        for j in J0k:
+            LC0.add_wavepacket(wps[j])
+        # Project initial value to J(0)^(k)
+        b0k = IPlcih.build_matrix(LC0, LCI)
+        b0k = squeeze(b0k)
+        # Threshold and prune J(0)^(k)
+        J0k, b0k = prune(J0k, b0k)
+        print("  Size of pruned set J(0) is %d" % len(J0k))
+        # Backproject to obtain Psi(0)^(k)
+        Acut = a_cut(J0k)
+        c0k = dot(pinv2(Acut, rcond=threshold_invert), b0k)
+        # Compute norm of current candidate Psi(0)^(k)
+        c0kbar = conjugate(transpose(c0k))
+        norm0k = abs(dot(c0kbar, dot(Acut, c0k)))
+        print("   Norm (try: %d): %f" % (k, norm0k))
+        # Decide if the current solution Psi(0)^(k) is good enough
+        normdiffk = abs(normiv - norm0k)
+        print("   Norm difference: %f" % normdiffk)
+        if normdiffk <= threshold_norm:
+            print("   => success & break")
+            break
+        else:
+            if abs(norm0km1 - norm0k) <= threshold_norm / 10.0:
+                print("   WARNING: Norm did not improve enough")
+                print("   => give up & break")
+                break
+            else:
+                J0km1 = J0k
+                norm0km1 = norm0k
+                print("   => not sufficient & retry")
+    else:
+        print("*** WARNING: Maximal adaptivity exhausted ***")
 
-
+    Jt = J0k
+    ct = c0k
+    no = norm0k
+    return Jt, ct, no
 
 # Build packet from initial value
 IVWP = HagedornWavepacket(1, 1, eps)
@@ -342,32 +405,16 @@ IVWP.set_coefficient(0, (0,), 1.0)
 LCI = LinearCombinationOfWPs(1, 1)
 LCI.add_wavepacket(IVWP)
 
-# Project to phasespace grid
+# Compute norm of initial value
+normiv = IVWP.norm(summed=True)
+
+# Perform the initial step
+print("Initial Step 0:")
 J0 = find_initial_J([q0, p0])
-wps = get_wavepackets_0(J0)
-LC0 = LinearCombinationOfWPs(1, 1)
-for j in J0:
-    LC0.add_wavepacket(wps[j])
-
-b = IPlcih.build_matrix(LC0, LCI)
-b = squeeze(b)
-
-# Prune irrelevant indices
-ib = abs(b) > threshold_prune
-b = b[ib]
-J0c = [ J0[i] for i, v in enumerate(ib) if v == True ]
-
-# Backproject to grid
-Acut = a_cut(J0c)
-
-ct = dot(pinv2(Acut, rcond=threshold_invert), b)
-Jt = J0c
+Jt, ct, no = initial_step(J0, LCI, normiv)
 
 # Observables
 ctbar = conjugate(transpose(ct))
-no = abs(dot(ctbar, dot(Acut, ct)))
-print(" Norm: %f" % no)
-
 EPOTcut = epot_cut(Jt)
 EKINcut = ekin_cut(Jt)
 ep = dot(ctbar, dot(EPOTcut, ct))
@@ -379,7 +426,6 @@ trail = set(Jt)
 # Statistics
 Jsize_hist = []
 Jsize_hist.append(len(Jt))
-print(" Size of pruned J(t) is %d" % len(Jt))
 
 # Output
 IOM.add_norm({"ncomponents":1})
@@ -390,15 +436,6 @@ IOM.save_energy([ek, ep], timestep=0)
 
 # Plot coefficients
 figure()
-plot(real(b))
-plot(imag(b))
-plot(abs(b))
-grid(True)
-xlabel(r"$k$")
-ylabel(r"$b_k$")
-savefig("b.png")
-
-figure()
 plot(real(ct))
 plot(imag(ct))
 plot(abs(ct))
@@ -406,12 +443,6 @@ grid(True)
 xlabel(r"$k$")
 ylabel(r"$c_k$")
 savefig("c.png")
-
-figure()
-matshow(abs(Acut))
-xlabel(r"$k$")
-ylabel(r"$k$")
-savefig("Acut.png")
 
 # Evaluate wavepacket |Y>
 psi = wavepackets_values(Jt, ct)
@@ -458,7 +489,7 @@ TM = TimeManager(simparameters2)
 nsteps = TM.compute_number_timesteps()
 
 
-def adaptive_step(Jt, ct, last_no, max_tries=5, threshold_norm=1e-6):
+def adaptive_step(Jt, ct, last_no, max_tries=5, threshold_norm=threshold_norm):
     Jt_try = clone(Jt)
     ct_try = ct.copy()
     no_last_try = last_no
@@ -466,7 +497,7 @@ def adaptive_step(Jt, ct, last_no, max_tries=5, threshold_norm=1e-6):
     # Adaptively enlarge J(t)
     for new_try in xrange(max_tries):
         # Enlarge Einzugsgebiete
-        Jtn_try = superset(Jt_try)
+        Jtn_try = enlarge(Jt_try)
         print("  Size of new test set J(t) is %d" % len(Jtn_try))
 
         # Make a theta-step
@@ -529,7 +560,7 @@ def adaptive_step(Jt, ct, last_no, max_tries=5, threshold_norm=1e-6):
 
 # Go
 for n in xrange(1, nsteps+1):
-    print("Step: "+str(n))
+    print("Step %d:" % n)
 
     # Loop
     Jt, ct, no = adaptive_step(Jt, ct, no)
