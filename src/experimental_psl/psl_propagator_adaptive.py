@@ -202,13 +202,13 @@ IPcache_ekin = lrucache(cachesize_integrals)
 cache_A_fill = []
 cache_T_fill = []
 
-def a_cut(Jt):
+def matrix_a(Jt):
     # <LC0 | LC1>
     Jt = sorted(Jt)
     wp0 = get_wavepackets_0(Jt)
     nrow = len(Jt)
     ncol = len(Jt)
-    Acut = zeros((nrow, ncol), dtype=complexfloating)
+    A = zeros((nrow, ncol), dtype=complexfloating)
     # Manually build matrix entry by entry
     for kr, jr in enumerate(Jt):
         for kc, jc in enumerate(Jt):
@@ -218,13 +218,13 @@ def a_cut(Jt):
                 Ijrjc = IPwpih.quadrature(wp0[jr], wp0[jc], summed=True)
                 IPcache_A[(jr,jc)] = Ijrjc.copy()
             # Fill in matrix entry
-            Acut[kr,kc] = IPcache_A[(jr,jc)].copy()
+            A[kr,kc] = IPcache_A[(jr,jc)].copy()
 
     cache_A_fill.append(len(IPcache_A))
-    return Acut
+    return A
 
 
-def theta_cut(J1, J0):
+def matrix_theta(J1, J0):
     # <LC0 | LC1>
     J0 = sorted(J0)
     J1 = sorted(J1)
@@ -232,7 +232,7 @@ def theta_cut(J1, J0):
     wp1 = get_wavepackets_1(J0)
     nrow = len(J1)
     ncol = len(J0)
-    THETAcut = zeros((nrow, ncol), dtype=complexfloating)
+    THETA = zeros((nrow, ncol), dtype=complexfloating)
     # Manually build matrix entry by entry
     for kr, jr in enumerate(J1):
         for kc, jc in enumerate(J0):
@@ -242,19 +242,19 @@ def theta_cut(J1, J0):
                 Ijrjc = IPwpih.quadrature(wp0[jr], wp1[jc], summed=True)
                 IPcache_T[(jr,jc)] = Ijrjc.copy()
             # Fill in matrix entry
-            THETAcut[kr,kc] = IPcache_T[(jr,jc)].copy()
+            THETA[kr,kc] = IPcache_T[(jr,jc)].copy()
 
     cache_T_fill.append(len(IPcache_T))
-    return THETAcut
+    return THETA
 
 
-def epot_cut(Jt):
+def matrix_epot(Jt):
     # <LC0 | V | LC1>
     Jt = sorted(Jt)
     wp0 = get_wavepackets_0(Jt)
     nrow = len(Jt)
     ncol = len(Jt)
-    EPOTcut = zeros((nrow, ncol), dtype=complexfloating)
+    EPOT = zeros((nrow, ncol), dtype=complexfloating)
     # Manually build matrix entry by entry
     for kr, jr in enumerate(Jt):
         for kc, jc in enumerate(Jt):
@@ -264,18 +264,18 @@ def epot_cut(Jt):
                 Ijrjc = Obs.potential_overlap_energy(wp0[jr], wp0[jc], V.evaluate_at, summed=True)
                 IPcache_epot[(jr,jc)] = Ijrjc.copy()
             # Fill in matrix entry
-            EPOTcut[kr,kc] = IPcache_epot[(jr,jc)].copy()
+            EPOT[kr,kc] = IPcache_epot[(jr,jc)].copy()
 
-    return EPOTcut
+    return EPOT
 
 
-def ekin_cut(Jt):
+def matrix_ekin(Jt):
     # <LC0 | T | LC1
     Jt = sorted(Jt)
     wp0 = get_wavepackets_0(Jt)
     nrow = len(Jt)
     ncol = len(Jt)
-    EKINcut = zeros((nrow, ncol), dtype=complexfloating)
+    EKIN = zeros((nrow, ncol), dtype=complexfloating)
     # Manually build matrix entry by entry
     for kr, jr in enumerate(Jt):
         for kc, jc in enumerate(Jt):
@@ -285,9 +285,9 @@ def ekin_cut(Jt):
                 Ijrjc = Obs.kinetic_overlap_energy(wp0[jr], wp0[jc], summed=True)
                 IPcache_ekin[(jr,jc)] = Ijrjc.copy()
             # Fill in matrix entry
-            EKINcut[kr,kc] = IPcache_ekin[(jr,jc)].copy()
+            EKIN[kr,kc] = IPcache_ekin[(jr,jc)].copy()
 
-    return EKINcut
+    return EKIN
 
 # ------------------------------------------------------------------------
 # Evaluate the functions in the generating system
@@ -350,20 +350,20 @@ b = b[ib]
 J0c = [ J0[i] for i, v in enumerate(ib) if v == True ]
 
 # Backproject to grid
-Acut = a_cut(J0c)
+A = matrix_a(J0c)
 
-ct = dot(pinv2(Acut, rcond=threshold_invert), b)
+ct = dot(pinv2(A, rcond=threshold_invert), b)
 Jt = J0c
 
 # Observables
 ctbar = conjugate(transpose(ct))
-no = abs(dot(ctbar, dot(Acut, ct)))
+no = abs(dot(ctbar, dot(A, ct)))
 print(" Norm: %f" % no)
 
-EPOTcut = epot_cut(Jt)
-EKINcut = ekin_cut(Jt)
-ep = dot(ctbar, dot(EPOTcut, ct))
-ek = dot(ctbar, dot(EKINcut, ct))
+EPOT = matrix_epot(Jt)
+EKIN = matrix_ekin(Jt)
+ep = dot(ctbar, dot(EPOT, ct))
+ek = dot(ctbar, dot(EKIN, ct))
 
 # Trail
 trail = set(Jt)
@@ -400,10 +400,10 @@ ylabel(r"$c_k$")
 savefig("c.png")
 
 figure()
-matshow(abs(Acut))
+matshow(abs(A))
 xlabel(r"$k$")
 ylabel(r"$k$")
-savefig("Acut.png")
+savefig("A.png")
 
 # Evaluate wavepacket |Y>
 psi = wavepackets_values(Jt, ct)
@@ -458,8 +458,8 @@ for n in xrange(1, nsteps+1):
     print(" Size of unpruned J(t) is %d" % len(Jtn))
 
     # Make a theta-step
-    THETAcut = theta_cut(Jtn, Jt)
-    btn = dot(THETAcut, ct)
+    THETA = matrix_theta(Jtn, Jt)
+    btn = dot(THETA, ct)
 
     # Prune irrelevant indices
     ibn = abs(btn) > threshold_prune
@@ -467,8 +467,8 @@ for n in xrange(1, nsteps+1):
     Jtnc = [ Jtn[i] for i, v in enumerate(ibn) if v == True ]
 
     # Backproject to grid
-    Acut = a_cut(Jtnc)
-    ctn = dot(pinv2(Acut, rcond=threshold_invert), btnc)
+    A = matrix_a(Jtnc)
+    ctn = dot(pinv2(A, rcond=threshold_invert), btnc)
 
     # Loop
     ct = ctn
@@ -476,13 +476,13 @@ for n in xrange(1, nsteps+1):
 
     # Observables
     ctbar = conjugate(transpose(ct))
-    no = abs(dot(ctbar, dot(Acut, ct)))
+    no = abs(dot(ctbar, dot(A, ct)))
     print(" Norm: %f" % no)
 
-    EPOTcut = epot_cut(Jtnc)
-    EKINcut = ekin_cut(Jtnc)
-    ep = dot(ctbar, dot(EPOTcut, ct))
-    ek = dot(ctbar, dot(EKINcut, ct))
+    EPOT = matrix_epot(Jtnc)
+    EKIN = matrix_ekin(Jtnc)
+    ep = dot(ctbar, dot(EPOT, ct))
+    ek = dot(ctbar, dot(EKIN, ct))
 
     IOM.save_norm(no, timestep=n)
     IOM.save_energy([ek, ep], timestep=n)

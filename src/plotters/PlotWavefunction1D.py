@@ -112,7 +112,7 @@ if __name__ == "__main__":
         PP = None
 
     # The axes rectangle that is plotted
-    view = [-3.5, 3.5, -0.1, 3.5]
+    view = [-1.5, 1.5, 0.0, 10.0]
 
     # Iterate over all blocks and plot their data
     for blockid in iom.get_block_ids():

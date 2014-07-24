@@ -1,27 +1,27 @@
-import string
 from copy import copy as clone
 from pylru import lrucache
 
 from numpy import *
 from scipy.linalg import pinv2
-from scipy.special import erf
 from matplotlib.pyplot import *
 
 from WaveBlocksND import *
-from WaveBlocksND.Plot import plotcf
 
 # ========================================================================
 # Model Parameters
+
+dimension = 2
 
 eps = 0.1
 
 # Potential
 potential = {}
-potential["variables"] = ["x"]
-potential["potential"] = "x**4 - x**2"
+potential["variables"] = ["x", "y"]
+potential["potential"] = "x**2 + y**2"
 
 # Basis shape of one Psi_j
-L = 7 #13
+L = 4
+Kbs = 2
 
 latdistratio = 0.75
 
@@ -30,11 +30,14 @@ T = 0.05
 dt = 0.005
 
 # Endtime
-Tend = 1.0 * 4.4
+Tend = 0.5
 
 # Initial value parameters
-q0 = 0.9
-p0 = 0.0
+q0 = array([[ 0.0],
+            [ 0.2]])
+
+p0 = array([[ 0.5],
+            [ 0.0]])
 
 # For the pseudoinverse of A
 threshold_invert = 1e-6
@@ -46,19 +49,20 @@ threshold_prune = 1e-2
 threshold_norm = 1e-6
 
 # Maximal size of J(t)
-Jsizemax = 1000
+Jsizemax = 5000
 
 # Maximal number of iterations in adaptivity steps
-maxiter = 5
+maxiter = 10
 
 # Cache size, choose >> C * max |J(t)|^2
-cachesize_integrals = 2**18
+cachesize_integrals = 2**20
 cachesize_wavepackets = 2**12
 cachesize_wavefunctions = 2**12
 
 # Grid for packet evaluation
-limits = [(-6.283185307179586, 6.283185307179586)]
-number_nodes = [4096]
+evaluate = False
+limits = [(-6.283185307179586, 6.283185307179586), (-6.283185307179586, 6.283185307179586)]
+number_nodes = [1024, 1024]
 
 # ========================================================================
 # Potential setup
@@ -74,7 +78,7 @@ V.calculate_local_remainder()
 # ------------------------------------------------------------------------
 # Phase space grid
 
-Id = eye(2, dtype=integer)
+Id = eye(2*dimension, dtype=integer)
 directions = vstack([Id, -Id])
 latdist = latdistratio * eps * sqrt(pi)
 
@@ -82,28 +86,9 @@ def neighbours(S):
     N = set([])
     for s in S:
         ars = array(s)
-        n = vsplit(ars+directions, 4)
+        n = vsplit(ars+directions, 2*2*dimension)
         N.update(map(lambda x: tuple(squeeze(x)), n))
     return N.difference(S)
-
-
-def plot_grid(J, filename="phasespace"):
-    fig = figure()
-    ax = fig.gca()
-    for k0, k1 in J:
-        q = k0 * latdist
-        p = k1 * latdist
-        ax.plot(q, p, ".b")
-        circle = Circle((q,p), eps, color="b", fill=False)
-        ax.add_artist(circle)
-    circle0 = Circle((q0,p0), eps, color="r", fill=False)
-    ax.add_artist(circle0)
-    grid(True)
-    ax.axis('equal')
-    ax.set_xlabel(r"$q$")
-    ax.set_ylabel(r"$p$")
-    ax.plot(q0, p0, 'ro')
-    savefig(filename+".png")
 
 # ------------------------------------------------------------------------
 # The parameters governing the semiclassical splitting
@@ -123,7 +108,8 @@ prop = SemiclassicalPropagator(simparameters, V)
 # Construct the families of wavepackets to be propagated semiclassically
 
 QR = GaussHermiteQR(L+4)
-Q = DirectHomogeneousQuadrature(QR)
+TPQR = TensorProductQR(dimension * [QR])
+Q = DirectHomogeneousQuadrature(TPQR)
 IPwpho = HomogeneousInnerProduct(Q)
 
 WP0 = lrucache(cachesize_wavepackets)
@@ -133,9 +119,9 @@ def new_wavepacket(k):
     q = kq * latdist
     p = kp * latdist
 
-    HAWP = HagedornWavepacket(1, 1, eps)
+    HAWP = HagedornWavepacket(dimension, 1, eps)
     HAWP.set_parameters((q, p), key=('q','p'))
-    HAWP.set_coefficient(0, (0,), 1.0)
+    HAWP.set_coefficient(0, tuple(dimension * [0]), 1.0)
     HAWP.set_innerproduct(IPwpho)
 
     WP0[k] = HAWP
@@ -146,7 +132,7 @@ def propagate_wavepacket(k):
     HAWP = WP0[k].clone()
 
     # Give a larger basis to the packets we propagate
-    B = HyperCubicShape([L])
+    B = HyperbolicCutShape(dimension, Kbs)
     HAWP.set_basis_shapes([B])
 
     prop.set_wavepackets([(HAWP,0)])
@@ -191,7 +177,8 @@ IOM.create_block()
 
 # Warning: NSD not suitable for potentials with exponential parts
 QR = GaussHermiteOriginalQR(5)
-Q = NSDInhomogeneous(QR)
+TPQR = TensorProductQR(dimension * [QR])
+Q = NSDInhomogeneous(TPQR)
 
 IPwpih = InhomogeneousInnerProduct(Q)
 IPlcih = InhomogeneousInnerProductLCWP(IPwpih)
@@ -315,7 +302,7 @@ def wavepackets_values(J, C):
     for k, c in zip(J, C):
         wf += c * WF[k]
 
-    return squeeze(wf)
+    return wf
 
 # ------------------------------------------------------------------------
 # Helper functions
@@ -341,8 +328,8 @@ def prune(J, c, threshold_prune=threshold_prune):
 
 def find_initial_J(Pi0):
     q0, p0 = Pi0
-    q0i = list((q0 / latdist).round().astype(integer).reshape(1))
-    p0i = list((p0 / latdist).round().astype(integer).reshape(1))
+    q0i = list((q0 / latdist).round().astype(integer).reshape(dimension))
+    p0i = list((p0 / latdist).round().astype(integer).reshape(dimension))
     return set([tuple(q0i + p0i)])
 
 
@@ -358,7 +345,7 @@ def initial_step(J0, IV, normiv):
         print("  Size of enlarged set J(0) is %d" % len(J0k))
         # Build linear combination Y(0)^(k) from J(0)^(k)
         wps = get_wavepackets_0(J0k)
-        LC0 = LinearCombinationOfWPs(1, 1)
+        LC0 = LinearCombinationOfWPs(dimension, 1)
         for j in J0k:
             LC0.add_wavepacket(wps[j])
         # Project initial value to J(0)^(k)
@@ -399,11 +386,11 @@ def initial_step(J0, IV, normiv):
 
 
 # Build packet from initial value
-IVWP = HagedornWavepacket(1, 1, eps)
+IVWP = HagedornWavepacket(dimension, 1, eps)
 IVWP.set_parameters((q0, p0), key=('q','p'))
-IVWP.set_coefficient(0, (0,), 1.0)
+IVWP.set_coefficient(0, tuple(dimension * [0]), 1.0)
 
-LCI = LinearCombinationOfWPs(1, 1)
+LCI = LinearCombinationOfWPs(dimension, 1)
 LCI.add_wavepacket(IVWP)
 
 # Compute norm of initial value
@@ -435,48 +422,11 @@ IOM.add_energy({"ncomponents":1})
 IOM.save_norm(no, timestep=0)
 IOM.save_energy([ek, ep], timestep=0)
 
-# Plot coefficients
-figure()
-plot(real(ct))
-plot(imag(ct))
-plot(abs(ct))
-grid(True)
-xlabel(r"$k$")
-ylabel(r"$c_k$")
-savefig("c.png")
-
 # Evaluate wavepacket |Y>
-psi = wavepackets_values(Jt, ct)
+#psi = wavepackets_values(Jt, ct)
 
-IOM.add_wavefunction({"ncomponents":1, "number_nodes":number_nodes})
-IOM.save_wavefunction([psi], timestep=0)
-
-# Plot frames
-f = figure()
-ax = f.gca()
-plotcf(squeeze(G.get_nodes()), angle(psi), abs(psi)**2, axes=ax)
-ax.set_xlim(-1.5, 1.5)
-ax.set_ylim(0, 10)
-f.savefig("frame_" + string.zfill(str(0),6)+".png")
-close(f)
-
-# Plot phase space grid
-fig = figure(figsize=(10,10))
-for j, co in zip(Jt, ct):
-    q = j[0] * latdist
-    p = j[1] * latdist
-    plot(q, p, ".b")
-    circle1 = Circle((q,p), eps, color="b", fill=True, alpha=clip(erf(abs(co)), 0.0, 1.0))
-    fig.gca().add_artist(circle1)
-grid(True)
-ax = fig.gca()
-ax.axis('equal')
-ax.set_xlim(-2.5,2.5)
-ax.set_ylim(-2.5,2.5)
-xlabel(r"$q$")
-ylabel(r"$p$")
-savefig("phasespace_" + string.zfill(str(0),6)+".png")
-close(fig)
+#IOM.add_wavefunction({"ncomponents":1, "number_nodes":number_nodes})
+#IOM.save_wavefunction([psi], timestep=0)
 
 # ------------------------------------------------------------------------
 # Time propagation of the overall scheme
@@ -562,35 +512,9 @@ for n in xrange(1, nsteps+1):
     Jsize_hist.append(len(Jt))
 
     # Evaluate wavepacket |Y>
-    psi = wavepackets_values(Jt, ct)
-    IOM.save_wavefunction([psi], timestep=n)
+    #psi = wavepackets_values(Jt, ct)
 
-    # Plot frames
-    f = figure()
-    ax = f.gca()
-    plotcf(squeeze(G.get_nodes()), angle(psi), abs(psi)**2, axes=ax)
-    ax.set_xlim(-1.5, 1.5)
-    ax.set_ylim(0, 10)
-    f.savefig("frame_" + string.zfill(str(n),6)+".png")
-    close(f)
-
-    # Plot phase space grid
-    fig = figure(figsize=(10,10))
-    for j, co in zip(Jt, ct):
-        q = j[0] * latdist
-        p = j[1] * latdist
-        plot(q, p, ".b")
-        circle1 = Circle((q,p), eps, color="b", fill=True, alpha=clip(erf(abs(co)), 0.0, 1.0))
-        fig.gca().add_artist(circle1)
-    grid(True)
-    ax = fig.gca()
-    ax.axis('equal')
-    ax.set_xlim(-2.5,2.5)
-    ax.set_ylim(-2.5,2.5)
-    xlabel(r"$q$")
-    ylabel(r"$p$")
-    savefig("phasespace_" + string.zfill(str(n),6)+".png")
-    close(fig)
+    #IOM.save_wavefunction([psi], timestep=n)
 
 # ------------------------------------------------------------------------
 # Output and plotting
@@ -626,23 +550,6 @@ legend(loc="lower right")
 xlabel(r"$t$")
 ylabel(r"cache fill")
 savefig("cache_fill.png")
-
-
-# Trail
-fig = figure(figsize=(10,10))
-for j in trail:
-    q = j[0] * latdist
-    p = j[1] * latdist
-    plot(q, p, "ob")
-grid(True)
-ax = fig.gca()
-ax.axis('equal')
-ax.set_xlim(-2.5,2.5)
-ax.set_ylim(-2.5,2.5)
-xlabel(r"$q$")
-ylabel(r"$p$")
-savefig("phasespace_trail.png")
-close(fig)
 
 
 # Plot Observables
