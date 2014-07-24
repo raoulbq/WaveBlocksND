@@ -19,7 +19,6 @@ potential["variables"] = ["x", "y"]
 potential["potential"] = "x**2 + y**2"
 
 # Basis shape of one Psi_j
-L = 4
 Kbs = 2
 
 latdistratio = 0.75
@@ -103,7 +102,7 @@ prop = SemiclassicalPropagator(simparameters, V)
 # ------------------------------------------------------------------------
 # Construct the families of wavepackets to be propagated semiclassically
 
-QR = GaussHermiteQR(L+4)
+QR = GaussHermiteQR(Kbs+4)
 TPQR = TensorProductQR(dimension * [QR])
 Q = DirectHomogeneousQuadrature(TPQR)
 IPwpho = HomogeneousInnerProduct(Q)
@@ -127,7 +126,7 @@ WP1 = lrucache(cachesize_wavepackets)
 def propagate_wavepacket(k):
     HAWP = WP0[k].clone()
 
-    # Give a larger basis to the packets we propagate
+    # Give a larger basis to the propagated packets
     B = HyperbolicCutShape(dimension, Kbs)
     HAWP.set_basis_shapes([B])
 
@@ -189,7 +188,7 @@ IPcache_ekin = lrucache(cachesize_integrals)
 cache_A_fill = []
 cache_T_fill = []
 
-def a_cut(Jt):
+def matrix_a(Jt):
     # <LC0 | LC1>
     Jt = sorted(Jt)
     wp0 = get_wavepackets_0(Jt)
@@ -235,7 +234,7 @@ def matrix_theta(J1, J0):
     return THETA
 
 
-def epot_cut(Jt):
+def matrix_epot(Jt):
     # <LC0 | V | LC1>
     Jt = sorted(Jt)
     wp0 = get_wavepackets_0(Jt)
@@ -256,7 +255,7 @@ def epot_cut(Jt):
     return EPOT
 
 
-def ekin_cut(Jt):
+def matrix_ekin(Jt):
     # <LC0 | T | LC1
     Jt = sorted(Jt)
     wp0 = get_wavepackets_0(Jt)
@@ -337,7 +336,7 @@ b = b[ib]
 J0c = [ J0[i] for i, v in enumerate(ib) if v == True ]
 
 # Backproject to grid
-A = a_cut(J0c)
+A = matrix_a(J0c)
 
 ct = dot(pinv2(A, rcond=threshold_invert), b)
 Jt = J0c
@@ -347,8 +346,8 @@ ctbar = conjugate(transpose(ct))
 no = abs(dot(ctbar, dot(A, ct)))
 print(" Norm: %f" % no)
 
-EPOT = epot_cut(Jt)
-EKIN = ekin_cut(Jt)
+EPOT = matrix_epot(Jt)
+EKIN = matrix_ekin(Jt)
 ep = dot(ctbar, dot(EPOT, ct))
 ek = dot(ctbar, dot(EKIN, ct))
 
@@ -402,7 +401,7 @@ for n in xrange(1, nsteps+1):
     Jtnc = [ Jtn[i] for i, v in enumerate(ibn) if v == True ]
 
     # Backproject to grid
-    A = a_cut(Jtnc)
+    A = matrix_a(Jtnc)
     ctn = dot(pinv2(A, rcond=threshold_invert), btnc)
 
     # Loop
@@ -414,8 +413,8 @@ for n in xrange(1, nsteps+1):
     no = abs(dot(ctbar, dot(A, ct)))
     print(" Norm: %f" % no)
 
-    EPOT = epot_cut(Jtnc)
-    EKIN = ekin_cut(Jtnc)
+    EPOT = matrix_epot(Jtnc)
+    EKIN = matrix_ekin(Jtnc)
     ep = dot(ctbar, dot(EPOT, ct))
     ek = dot(ctbar, dot(EKIN, ct))
 
