@@ -59,6 +59,10 @@ cachesize_wavepackets = 2**12
 cachesize_wavefunctions = 2**12
 
 # Grid for packet evaluation
+evaluate_packets = True
+plot_packets = True
+save_wavefunction = True
+
 limits = [(-6.283185307179586, 6.283185307179586)]
 number_nodes = [4096]
 
@@ -315,7 +319,7 @@ def wavepackets_values(J, C):
         WF[k] = wp.evaluate_at(G, prefactor=True, component=0)
 
     # Compute final value of |Y>
-    wf = zeros_like(G.get_nodes(), dtype=complexfloating)
+    wf = zeros((1, G.get_number_nodes(overall=True)), dtype=complexfloating)
     for k, c in zip(J, C):
         wf += c * WF[k]
 
@@ -450,19 +454,25 @@ ylabel(r"$c_k$")
 savefig("c.png")
 
 # Evaluate wavepacket |Y>
-psi = wavepackets_values(Jt, ct)
+if evaluate_packets:
+    psi = wavepackets_values(Jt, ct)
 
-IOM.add_wavefunction({"ncomponents":1, "number_nodes":number_nodes})
-IOM.save_wavefunction([psi], timestep=0)
+if evaluate_packets and save_wavefunction:
+    IOM.add_grid({"dimension":dimension, "number_nodes":number_nodes}, blockid="global")
+    IOM.add_wavefunction({"ncomponents":1, "number_nodes":number_nodes})
+
+    IOM.save_grid(G.get_nodes(flat=True), blockid="global")
+    IOM.save_wavefunction([psi.reshape(G.get_number_nodes())], timestep=0)
 
 # Plot frames
-f = figure()
-ax = f.gca()
-plotcf(squeeze(G.get_nodes()), squeeze(angle(psi)), squeeze(abs(psi)**2), axes=ax)
-ax.set_xlim(-1.5, 1.5)
-ax.set_ylim(0, 10)
-f.savefig("frame_" + string.zfill(str(0),6)+".png")
-close(f)
+if evaluate_packets and plot_packets:
+    f = figure()
+    ax = f.gca()
+    plotcf(squeeze(G.get_nodes()), squeeze(angle(psi)), squeeze(abs(psi)**2), axes=ax)
+    ax.set_xlim(-1.5, 1.5)
+    ax.set_ylim(0, 10)
+    f.savefig("frame_" + string.zfill(str(0),6)+".png")
+    close(f)
 
 # Plot phase space grid
 fig = figure(figsize=(10,10))
@@ -566,17 +576,21 @@ for n in xrange(1, nsteps+1):
     Jsize_hist.append(len(Jt))
 
     # Evaluate wavepacket |Y>
-    psi = wavepackets_values(Jt, ct)
-    IOM.save_wavefunction([psi], timestep=n)
+    if evaluate_packets:
+        psi = wavepackets_values(Jt, ct)
+
+    if evaluate_packets and save_wavefunction:
+        IOM.save_wavefunction([psi.reshape(G.get_number_nodes())], timestep=n)
 
     # Plot frames
-    f = figure()
-    ax = f.gca()
-    plotcf(squeeze(G.get_nodes()), squeeze(angle(psi)), squeeze(abs(psi)**2), axes=ax)
-    ax.set_xlim(-1.5, 1.5)
-    ax.set_ylim(0, 10)
-    f.savefig("frame_" + string.zfill(str(n),6)+".png")
-    close(f)
+    if evaluate_packets and plot_packets:
+        f = figure()
+        ax = f.gca()
+        plotcf(squeeze(G.get_nodes()), squeeze(angle(psi)), squeeze(abs(psi)**2), axes=ax)
+        ax.set_xlim(-1.5, 1.5)
+        ax.set_ylim(0, 10)
+        f.savefig("frame_" + string.zfill(str(n),6)+".png")
+        close(f)
 
     # Plot phase space grid
     fig = figure(figsize=(10,10))

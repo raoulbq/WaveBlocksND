@@ -1,3 +1,4 @@
+import string
 from copy import copy as clone
 from pylru import lrucache
 
@@ -6,6 +7,7 @@ from scipy.linalg import pinv2
 from matplotlib.pyplot import *
 
 from WaveBlocksND import *
+from WaveBlocksND.Plot import plotcf2d
 
 # ========================================================================
 # Model Parameters
@@ -59,7 +61,10 @@ cachesize_wavepackets = 2**12
 cachesize_wavefunctions = 2**12
 
 # Grid for packet evaluation
-evaluate = False
+evaluate_packets = True
+plot_packets = True
+save_wavefunction = True
+
 limits = [(-6.283185307179586, 6.283185307179586), (-6.283185307179586, 6.283185307179586)]
 number_nodes = [1024, 1024]
 
@@ -284,6 +289,7 @@ def matrix_ekin(Jt):
 
 # Grid
 G = TensorProductGrid(limits, number_nodes)
+axx, axy = G.get_axes()
 
 WF = lrucache(cachesize_wavefunctions)
 
@@ -297,7 +303,7 @@ def wavepackets_values(J, C):
         WF[k] = wp.evaluate_at(G, prefactor=True, component=0)
 
     # Compute final value of |Y>
-    wf = zeros_like(G.get_nodes(), dtype=complexfloating)
+    wf = zeros((1, G.get_number_nodes(overall=True)), dtype=complexfloating)
     for k, c in zip(J, C):
         wf += c * WF[k]
 
@@ -422,10 +428,25 @@ IOM.save_norm(no, timestep=0)
 IOM.save_energy([ek, ep], timestep=0)
 
 # Evaluate wavepacket |Y>
-#psi = wavepackets_values(Jt, ct)
+if evaluate_packets:
+    psi = wavepackets_values(Jt, ct)
 
-#IOM.add_wavefunction({"ncomponents":1, "number_nodes":number_nodes})
-#IOM.save_wavefunction([psi], timestep=0)
+if evaluate_packets and save_wavefunction:
+    IOM.add_grid({"dimension":dimension, "number_nodes":number_nodes}, blockid="global")
+    IOM.add_wavefunction({"ncomponents":1, "number_nodes":number_nodes})
+
+    IOM.save_grid(G.get_nodes(flat=True), blockid="global")
+    IOM.save_wavefunction([psi.reshape(G.get_number_nodes())], timestep=0)
+
+# Plot frames
+if evaluate_packets and plot_packets and dimension == 2:
+    f = figure()
+    ax = f.gca()
+    plotcf2d(axx, axy, psi.reshape(G.get_number_nodes()), axes=ax, darken=0.5)
+    ax.set_xlim(-1.5, 1.5)
+    ax.set_ylim(-1.5, 1.5)
+    f.savefig("frame_" + string.zfill(str(0),6)+".png")
+    close(f)
 
 # ------------------------------------------------------------------------
 # Time propagation of the overall scheme
@@ -511,9 +532,22 @@ for n in xrange(1, nsteps+1):
     Jsize_hist.append(len(Jt))
 
     # Evaluate wavepacket |Y>
-    #psi = wavepackets_values(Jt, ct)
+    if evaluate_packets:
+        psi = wavepackets_values(Jt, ct)
 
-    #IOM.save_wavefunction([psi], timestep=n)
+    if evaluate_packets and save_wavefunction:
+        IOM.save_wavefunction([psi.reshape(G.get_number_nodes())], timestep=n)
+
+    # Plot frames
+    if evaluate_packets and plot_packets and dimension == 2:
+        f = figure()
+        ax = f.gca()
+        plotcf2d(axx, axy, psi.reshape(G.get_number_nodes()), axes=ax, darken=0.5)
+        ax.set_xlim(-1.5, 1.5)
+        ax.set_ylim(-1.5, 1.5)
+        f.savefig("frame_" + string.zfill(str(n),6)+".png")
+        close(f)
+
 
 # ------------------------------------------------------------------------
 # Output and plotting
