@@ -20,7 +20,6 @@ potential["variables"] = ["x", "y"]
 potential["potential"] = "x**2 + y**2"
 
 # Basis shape of one Psi_j
-L = 4
 Kbs = 2
 
 latdistratio = 0.75
@@ -107,7 +106,7 @@ prop = SemiclassicalPropagator(simparameters, V)
 # ------------------------------------------------------------------------
 # Construct the families of wavepackets to be propagated semiclassically
 
-QR = GaussHermiteQR(L+4)
+QR = GaussHermiteQR(Kbs+4)
 TPQR = TensorProductQR(dimension * [QR])
 Q = DirectHomogeneousQuadrature(TPQR)
 IPwpho = HomogeneousInnerProduct(Q)

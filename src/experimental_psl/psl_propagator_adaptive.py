@@ -12,6 +12,8 @@ from WaveBlocksND.Plot import plotcf
 # ========================================================================
 # Model Parameters
 
+dimension = 1
+
 eps = 0.1
 
 # Potential
@@ -20,7 +22,7 @@ potential["variables"] = ["x"]
 potential["potential"] = "x**4"
 
 # Basis shape of one Psi_j
-L = 7 #13
+Kbs = 7 #13
 
 latdistratio = 0.75
 
@@ -64,7 +66,7 @@ V.calculate_local_remainder()
 # ------------------------------------------------------------------------
 # Phase space grid
 
-Id = eye(2, dtype=integer)
+Id = eye(2*dimension, dtype=integer)
 directions = vstack([Id, -Id])
 latdist = latdistratio * eps * sqrt(pi)
 
@@ -72,7 +74,7 @@ def neighbours(S):
     N = set([])
     for s in S:
         ars = array(s)
-        n = vsplit(ars+directions, 4)
+        n = vsplit(ars+directions, 2*2*dimension)
         N.update(map(lambda x: tuple(squeeze(x)), n))
     return N.difference(S)
 
@@ -118,8 +120,9 @@ prop = SemiclassicalPropagator(simparameters, V)
 # ------------------------------------------------------------------------
 # Construct the families of wavepackets to be propagated semiclassically
 
-QR = GaussHermiteQR(L+4)
-Q = DirectHomogeneousQuadrature(QR)
+QR = GaussHermiteQR(Kbs+4)
+TPQR = TensorProductQR(dimension * [QR])
+Q = DirectHomogeneousQuadrature(TPQR)
 IPwpho = HomogeneousInnerProduct(Q)
 
 WP0 = lrucache(cachesize_wavepackets)
@@ -129,9 +132,9 @@ def new_wavepacket(k):
     q = kq * latdist
     p = kp * latdist
 
-    HAWP = HagedornWavepacket(1, 1, eps)
+    HAWP = HagedornWavepacket(dimension, 1, eps)
     HAWP.set_parameters((q, p), key=('q','p'))
-    HAWP.set_coefficient(0, (0,), 1.0)
+    HAWP.set_coefficient(0, tuple(dimension * [0]), 1.0)
     HAWP.set_innerproduct(IPwpho)
 
     WP0[k] = HAWP
@@ -142,7 +145,7 @@ def propagate_wavepacket(k):
     HAWP = WP0[k].clone()
 
     # Give a larger basis to the propagated packets
-    B = HyperCubicShape([L])
+    B = HyperbolicCutShape(dimension, Kbs)
     HAWP.set_basis_shapes([B])
 
     prop.set_wavepackets([(HAWP,0)])
@@ -187,7 +190,8 @@ IOM.create_block()
 
 # Warning: NSD not suitable for potentials with exponential parts
 QR = GaussHermiteOriginalQR(5)
-Q = NSDInhomogeneous(QR)
+TPQR = TensorProductQR(dimension * [QR])
+Q = NSDInhomogeneous(TPQR)
 
 IPwpih = InhomogeneousInnerProduct(Q)
 IPlcih = InhomogeneousInnerProductLCWP(IPwpih)
@@ -311,15 +315,15 @@ def wavepackets_values(J, C):
     for k, c in zip(J, C):
         wf += c * WF[k]
 
-    return squeeze(wf)
+    return wf
 
 # ------------------------------------------------------------------------
 # Initial Value
 
 def find_initial_J(Pi0, distance=5):
     q0, p0 = Pi0
-    q0i = list((q0 / latdist).round().astype(integer).reshape(1))
-    p0i = list((p0 / latdist).round().astype(integer).reshape(1))
+    q0i = list((q0 / latdist).round().astype(integer).reshape(dimension))
+    p0i = list((p0 / latdist).round().astype(integer).reshape(dimension))
     J0 = set([tuple(q0i + p0i)])
     for i in xrange(distance):
         J0 = superset(J0)
@@ -327,17 +331,17 @@ def find_initial_J(Pi0, distance=5):
 
 
 # Build packet from initial value
-IVWP = HagedornWavepacket(1, 1, eps)
+IVWP = HagedornWavepacket(dimension, 1, eps)
 IVWP.set_parameters((q0, p0), key=('q','p'))
-IVWP.set_coefficient(0, (0,), 1.0)
+IVWP.set_coefficient(0, tuple(dimension * [0]), 1.0)
 
-LCI = LinearCombinationOfWPs(1, 1)
+LCI = LinearCombinationOfWPs(dimension, 1)
 LCI.add_wavepacket(IVWP)
 
 # Project to phasespace grid
 J0 = find_initial_J([q0, p0])
 wps = get_wavepackets_0(J0)
-LC0 = LinearCombinationOfWPs(1, 1)
+LC0 = LinearCombinationOfWPs(dimension, 1)
 for j in J0:
     LC0.add_wavepacket(wps[j])
 
@@ -414,7 +418,7 @@ IOM.save_wavefunction([psi], timestep=0)
 # Plot frames
 f = figure()
 ax = f.gca()
-plotcf(squeeze(G.get_nodes()), angle(psi), abs(psi)**2, axes=ax)
+plotcf(squeeze(G.get_nodes()), squeeze(angle(psi)), squeeze(abs(psi)**2), axes=ax)
 ax.set_xlim(-1.5, 1.5)
 ax.set_ylim(0, 10)
 f.savefig("frame_" + string.zfill(str(0),6)+".png")
@@ -502,7 +506,7 @@ for n in xrange(1, nsteps+1):
     # Plot frames
     f = figure()
     ax = f.gca()
-    plotcf(squeeze(G.get_nodes()), angle(psi), abs(psi)**2, axes=ax)
+    plotcf(squeeze(G.get_nodes()), squeeze(angle(psi)), squeeze(abs(psi)**2), axes=ax)
     ax.set_xlim(-1.5, 1.5)
     ax.set_ylim(0, 10)
     f.savefig("frame_" + string.zfill(str(n),6)+".png")
