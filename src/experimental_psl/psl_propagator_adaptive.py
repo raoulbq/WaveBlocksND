@@ -311,7 +311,7 @@ def wavepackets_values(J, C):
         WF[k] = wp.evaluate_at(G, prefactor=True, component=0)
 
     # Compute final value of |Y>
-    wf = zeros_like(G.get_nodes(), dtype=complexfloating)
+    wf = zeros((1, G.get_number_nodes(overall=True)), dtype=complexfloating)
     for k, c in zip(J, C):
         wf += c * WF[k]
 
