@@ -161,6 +161,7 @@ Time propagation
 
    waveblocks_classes/Propagator
    waveblocks_classes/FourierPropagator
+   waveblocks_classes/ChinChenPropagator
    waveblocks_classes/HagedornPropagator
    waveblocks_classes/HagedornPropagatorInhomogeneous
    waveblocks_classes/MagnusPropagator
