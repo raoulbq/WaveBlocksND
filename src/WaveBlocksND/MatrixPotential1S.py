@@ -69,8 +69,10 @@ class MatrixPotential1S(MatrixPotential):
         self._exponential_n = None
 
         # The cached Jacobian of the eigenvalues, symbolic expressions and evaluatable functions
-        self._jacobian_s = None
-        self._jacobian_n = None
+        self._jacobian_can_s = None
+        self._jacobian_can_n = None
+        self._jacobian_eigen_s = None
+        self._jacobian_eigen_n = None
 
         # The cached Hessian of the eigenvalues, symbolic expressions and evaluatable functions
         self._hessian_s = None
@@ -231,17 +233,54 @@ class MatrixPotential1S(MatrixPotential):
 
 
     def calculate_jacobian(self):
-        r"""Calculate the Jacobian matrix :math:`\nabla V` of the potential :math:`V(x)`
+        r"""Calculate the Jacobian matrix :math:`\nabla \Lambda(x)` of the potential :math:`V(x)`
         with :math:`x \in \mathbb{R}^D`. For potentials which depend only one variable,
         this equals the first derivative and :math:`D=1`. Note that this function is idempotent.
         """
-        if self._jacobian_s is None:
+        if self._jacobian_eigen_s is None:
             # TODO: Add symbolic simplification
-            self._jacobian_s = self._potential_s.jacobian(self._variables).T
-            self._jacobian_n = tuple([ sympy.lambdify(self._variables, entry, "numpy") for entry in self._jacobian_s ])
+            self._jacobian_eigen_s = self._potential_s.jacobian(self._variables).T
+            self._jacobian_eigen_n = tuple([ sympy.lambdify(self._variables, entry, "numpy") for entry in self._jacobian_eigen_s ])
 
 
     def evaluate_jacobian_at(self, grid, component=None):
+        r"""Evaluate the potential's Jacobian :math:`\nabla \Lambda(x)` at some grid
+        nodes :math:`\Gamma`.
+
+        :param grid: The grid nodes :math:`\Gamma` the Jacobian gets evaluated at.
+        :param component: Dummy parameter that has no effect here.
+        :return: The value of the potential's Jacobian at the given nodes. The result
+                 is an ``ndarray`` of shape :math:`(D,1)` is we evaluate at a single
+                 grid node or of shape :math:`(D,|\Gamma|)`
+                 if we evaluate at multiple nodes simultaneously.
+        """
+        # TODO: Rethink about the 'component' parameter here. Do we need it?
+        grid = self._grid_wrap(grid)
+        nodes = grid.get_nodes(split=True)
+
+        D = self._dimension
+        N = grid.get_number_nodes(overall=True)
+
+        J = numpy.zeros((D,N), dtype=numpy.complexfloating)
+
+        for row in xrange(D):
+            J[row,:] = self._jacobian_can_n[row](*nodes)
+
+        return J
+
+
+    def calculate_jacobian_canonical(self):
+        r"""Calculate the Jacobian matrix :math:`\nabla V(x)` of the potential :math:`V(x)`
+        with :math:`x \in \mathbb{R}^D`. For potentials which depend only one variable,
+        this equals the first derivative and :math:`D=1`. Note that this function is idempotent.
+        """
+        if self._jacobian_can_s is None:
+            # TODO: Add symbolic simplification
+            self._jacobian_can_s = self._potential_s.jacobian(self._variables).T
+            self._jacobian_can_n = tuple([ sympy.lambdify(self._variables, entry, "numpy") for entry in self._jacobian_can_s ])
+
+
+    def evaluate_jacobian_canonical_at(self, grid, component=None):
         r"""Evaluate the potential's Jacobian :math:`\nabla V(x)` at some grid
         nodes :math:`\Gamma`.
 
@@ -262,7 +301,7 @@ class MatrixPotential1S(MatrixPotential):
         J = numpy.zeros((D,N), dtype=numpy.complexfloating)
 
         for row in xrange(D):
-            J[row, :] = self._jacobian_n[row](*nodes)
+            J[row,:] = self._jacobian_eigen_n[row](*nodes)
 
         return J
 
@@ -321,8 +360,8 @@ class MatrixPotential1S(MatrixPotential):
         self.calculate_hessian()
 
         # Construct function to evaluate the Taylor approximation at point q at the given nodes
-        self._taylor_eigen_s = [ (0, self._eigenvalues_s), (1, self._jacobian_s), (2, self._hessian_s) ]
-        self._taylor_eigen_n = [ (0, self._eigenvalues_n), (1, self._jacobian_n), (2, self._hessian_n) ]
+        self._taylor_eigen_s = [ (0, self._eigenvalues_s), (1, self._jacobian_eigen_s), (2, self._hessian_s) ]
+        self._taylor_eigen_n = [ (0, self._eigenvalues_n), (1, self._jacobian_eigen_n), (2, self._hessian_n) ]
 
 
     def evaluate_local_quadratic_at(self, grid, diagonal_component=None):
@@ -339,7 +378,7 @@ class MatrixPotential1S(MatrixPotential):
 
         # TODO: Relate this to the _taylor_eigen_{s,n} data
         V = self.evaluate_eigenvalues_at(grid, entry=(diagonal_component,diagonal_component))
-        J = self.evaluate_jacobian_at(grid)
+        J = self.evaluate_jacobian_eigen_at(grid)
         H = self.evaluate_hessian_at(grid)
 
         return tuple([V, J, H])
@@ -364,7 +403,7 @@ class MatrixPotential1S(MatrixPotential):
         pairs = [ (xi,qi) for xi,qi in zip(self._variables, qs) ]
 
         V = self._eigenvalues_s.subs(pairs)
-        J = self._jacobian_s.subs(pairs)
+        J = self._jacobian_eigen_s.subs(pairs)
         H = self._hessian_s.subs(pairs)
 
         # Symbolic expression for the quadratic Taylor expansion term
