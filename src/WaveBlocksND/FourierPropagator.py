@@ -5,7 +5,7 @@ This file contains the Fourier propagator class. The wavefunction
 exponential :math:`\exp(-\frac{i}{\varepsilon^2} \tau H)`.
 
 @author: R. Bourquin
-@copyright: Copyright (C) 2012 R. Bourquin
+@copyright: Copyright (C) 2012, 2014 R. Bourquin
 @license: Modified BSD License
 """
 
@@ -27,7 +27,7 @@ class FourierPropagator(Propagator):
     def __init__(self, potential, initial_values, para):
         r"""Initialize a new :py:class:`FourierPropagator` instance. Precalculate the
         the kinetic operator :math:`T_e` and the potential operator :math:`V_e`
-        used or time propagation.
+        used for time propagation.
 
         :param potential: The potential :math:`V(x)` governing the time evolution.
         :type potential: A :py:class:`MatrixPotential` instance.
