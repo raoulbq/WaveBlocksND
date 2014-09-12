@@ -83,7 +83,7 @@ class ChinChenPropagator(Propagator):
         self._potential.calculate_jacobian_canonical()
         Vx = self._potential.evaluate_at(self._grid)
         Jx = self._potential.evaluate_jacobian_at(self._grid)
-        Jx = norm(vstack(Jx), axis=0).reshape(1,-1)
+        Jx = norm(vstack(Jx), axis=0).reshape(1,n)
 
         # Exponential '\exp(-2i/(3*eps^2)*dt * (V + 1/48*dt^2*JV))' used in the Chin-Chen splitting.
         # Fill in values
@@ -93,8 +93,7 @@ class ChinChenPropagator(Propagator):
 
         # Calculate exponential
         for i in xrange(n):
-            # TODO: Recheck the expm parameter
-            tmp[i,:,:] = expm(tmp[i,:,:], 10)
+            tmp[i,:,:] = expm(tmp[i,:,:])
 
         # Split the data into different components
         self._VEtilde = tuple([ tmp[:,row,col].reshape((1,n)) for row in xrange(N) for col in xrange(N) ])
