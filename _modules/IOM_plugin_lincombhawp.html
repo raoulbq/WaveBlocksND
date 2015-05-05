@@ -1,0 +1,621 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>IOM_plugin_lincombhawp &mdash; WaveBlocksND devel documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     'devel',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="WaveBlocksND devel documentation" href="../index.html" />
+    <link rel="up" title="Module code" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">WaveBlocksND devel documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for IOM_plugin_lincombhawp</h1><div class="highlight"><pre>
+<span class="sd">&quot;&quot;&quot;The WaveBlocks Project</span>
+
+<span class="sd">IOM plugin providing functions for handling</span>
+<span class="sd">linear combinations of Hagedorn wavepackets.</span>
+
+<span class="sd">@author: R. Bourquin</span>
+<span class="sd">@copyright: Copyright (C) 2013 R. Bourquin</span>
+<span class="sd">@license: Modified BSD License</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">pickle</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+
+
+<div class="viewcode-block" id="add_lincombhawp"><a class="viewcode-back" href="../waveblocks_classes/IOM_plugin_lincombhawp.html#IOM_plugin_lincombhawp.add_lincombhawp">[docs]</a><span class="k">def</span> <span class="nf">add_lincombhawp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parameters</span><span class="p">,</span> <span class="n">timeslots</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">lincombsize</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">wavepacketsize</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">blockid</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="p">(</span><span class="s">&quot;q&quot;</span><span class="p">,</span><span class="s">&quot;p&quot;</span><span class="p">,</span><span class="s">&quot;Q&quot;</span><span class="p">,</span><span class="s">&quot;P&quot;</span><span class="p">,</span><span class="s">&quot;S&quot;</span><span class="p">)):</span>
+    <span class="sd">r&quot;&quot;&quot;Add storage for the linear combination of Hagedorn wavepackets.</span>
+
+<span class="sd">    :param parameters: An :py:class:`ParameterProvider` instance with at</span>
+<span class="sd">                       least the keys ``dimension`` and ``ncomponents``.</span>
+<span class="sd">    :param timeslots: The number of time slots we need. Can be set to ``None``</span>
+<span class="sd">                      to get automatically growing datasets.</span>
+<span class="sd">    :param lincombsize: The (maximal) size ``J`` of the linear combination of wavepackets. If specified</span>
+<span class="sd">                        this remains fixed for all timeslots. Can be set to ``None`` (default)</span>
+<span class="sd">                        to get automatically growing datasets.</span>
+<span class="sd">    :param wavepacketsize: The (maximal) basis shape size ``K`` of each of the wavepackets. If specified</span>
+<span class="sd">                           this remains fixed for all timeslots. Can be set to ``None`` (default)</span>
+<span class="sd">                           to get automatically growing datasets.</span>
+<span class="sd">    :param blockid: The ID of the data block to operate on.</span>
+<span class="sd">    :param key: Specify which parameters to save. All are independent.</span>
+<span class="sd">    :type key: Tuple of valid identifier strings that are ``q``, ``p``, ``Q``, ``P``, ``S`` and ``adQ``.</span>
+<span class="sd">               Default is ``(&quot;q&quot;, &quot;p&quot;, &quot;Q&quot;, &quot;P&quot;, &quot;S&quot;)``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">N</span> <span class="o">=</span> <span class="n">parameters</span><span class="p">[</span><span class="s">&quot;ncomponents&quot;</span><span class="p">]</span>
+    <span class="n">D</span> <span class="o">=</span> <span class="n">parameters</span><span class="p">[</span><span class="s">&quot;dimension&quot;</span><span class="p">]</span>
+
+    <span class="c"># TODO: Handle multi-component packets</span>
+    <span class="k">assert</span> <span class="n">N</span> <span class="o">==</span> <span class="mi">1</span>
+
+    <span class="k">if</span> <span class="n">timeslots</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">T</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">Ts</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">T</span> <span class="o">=</span> <span class="n">timeslots</span>
+        <span class="n">Ts</span> <span class="o">=</span> <span class="n">timeslots</span>
+
+    <span class="k">if</span> <span class="n">lincombsize</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">J</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">Js</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="n">csJs</span> <span class="o">=</span> <span class="mi">32</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">J</span> <span class="o">=</span> <span class="n">lincombsize</span>
+        <span class="n">Js</span> <span class="o">=</span> <span class="n">lincombsize</span>
+        <span class="n">csJs</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="n">Js</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">wavepacketsize</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">K</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">Ks</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="n">csKs</span> <span class="o">=</span> <span class="mi">8</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">K</span> <span class="o">=</span> <span class="n">wavepacketsize</span>
+        <span class="n">Ks</span> <span class="o">=</span> <span class="n">wavepacketsize</span>
+        <span class="n">csKs</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="n">Ks</span><span class="p">)</span>
+
+    <span class="c"># The overall group containing all lincombwp data</span>
+    <span class="n">grp_lc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_srf</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_prefixb</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">blockid</span><span class="p">)]</span><span class="o">.</span><span class="n">require_group</span><span class="p">(</span><span class="s">&quot;lincombhawp&quot;</span><span class="p">)</span>
+
+    <span class="c"># The group for storing the wavepacket basis shapes</span>
+    <span class="n">grp_lc</span><span class="o">.</span><span class="n">create_group</span><span class="p">(</span><span class="s">&quot;basisshapes&quot;</span><span class="p">)</span>
+    <span class="c"># The group for storing the wavepacket parameter set Pi</span>
+    <span class="n">grp_wppi</span> <span class="o">=</span> <span class="n">grp_lc</span><span class="o">.</span><span class="n">create_group</span><span class="p">(</span><span class="s">&quot;Pi&quot;</span><span class="p">)</span>
+    <span class="c"># The group for storing the wavepacket coefficients</span>
+    <span class="n">grp_wpci</span> <span class="o">=</span> <span class="n">grp_lc</span><span class="o">.</span><span class="n">create_group</span><span class="p">(</span><span class="s">&quot;wp_coefficients&quot;</span><span class="p">)</span>
+
+    <span class="c"># Create the dataset with appropriate parameters</span>
+    <span class="n">daset_tg_lc</span> <span class="o">=</span> <span class="n">grp_lc</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="s">&quot;timegrid_lc_coefficients&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">T</span><span class="p">,),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">integer</span><span class="p">,</span> <span class="n">chunks</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">maxshape</span><span class="o">=</span><span class="p">(</span><span class="n">Ts</span><span class="p">,),</span> <span class="n">fillvalue</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">grp_lc</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="s">&quot;timegrid_wp_parameters&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">T</span><span class="p">,),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">integer</span><span class="p">,</span> <span class="n">chunks</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">maxshape</span><span class="o">=</span><span class="p">(</span><span class="n">Ts</span><span class="p">,),</span> <span class="n">fillvalue</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">grp_lc</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="s">&quot;timegrid_wp_coefficients&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">T</span><span class="p">,),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">integer</span><span class="p">,</span> <span class="n">chunks</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">maxshape</span><span class="o">=</span><span class="p">(</span><span class="n">Ts</span><span class="p">,),</span> <span class="n">fillvalue</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">grp_lc</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="s">&quot;lincomb_size&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">T</span><span class="p">,),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">integer</span><span class="p">,</span> <span class="n">chunks</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">maxshape</span><span class="o">=</span><span class="p">(</span><span class="n">Ts</span><span class="p">,),</span> <span class="n">fillvalue</span><span class="o">=</span><span class="n">J</span><span class="p">)</span>
+    <span class="c"># Linear combination coefficients</span>
+    <span class="n">grp_lc</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="s">&quot;lc_coefficients&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">T</span><span class="p">,</span><span class="n">J</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">complexfloating</span><span class="p">,</span> <span class="n">chunks</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">csJs</span><span class="p">),</span> <span class="n">maxshape</span><span class="o">=</span><span class="p">(</span><span class="n">Ts</span><span class="p">,</span><span class="n">Js</span><span class="p">))</span>
+    <span class="c"># Linear combination wavepackets</span>
+    <span class="n">grp_lc</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="s">&quot;basis_shapes_hashes&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">T</span><span class="p">,</span><span class="n">J</span><span class="p">,</span><span class="n">N</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">integer</span><span class="p">,</span> <span class="n">chunks</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">csJs</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="n">maxshape</span><span class="o">=</span><span class="p">(</span><span class="n">Ts</span><span class="p">,</span><span class="n">Js</span><span class="p">,</span><span class="n">N</span><span class="p">))</span>
+    <span class="n">grp_lc</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="s">&quot;basis_sizes&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">T</span><span class="p">,</span><span class="n">J</span><span class="p">,</span><span class="n">N</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">integer</span><span class="p">,</span> <span class="n">chunks</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">csJs</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="n">maxshape</span><span class="o">=</span><span class="p">(</span><span class="n">Ts</span><span class="p">,</span><span class="n">Js</span><span class="p">,</span><span class="n">N</span><span class="p">))</span>
+    <span class="c"># Wavepacket parameters</span>
+    <span class="k">if</span> <span class="s">&quot;q&quot;</span> <span class="ow">in</span> <span class="n">key</span> <span class="ow">and</span> <span class="ow">not</span> <span class="s">&quot;q&quot;</span> <span class="ow">in</span> <span class="n">grp_wppi</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="n">grp_wppi</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="s">&quot;q&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">T</span><span class="p">,</span><span class="n">J</span><span class="p">,</span><span class="n">D</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">complexfloating</span><span class="p">,</span> <span class="n">chunks</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">csJs</span><span class="p">,</span><span class="n">D</span><span class="p">),</span> <span class="n">maxshape</span><span class="o">=</span><span class="p">(</span><span class="n">Ts</span><span class="p">,</span><span class="n">Js</span><span class="p">,</span><span class="n">D</span><span class="p">))</span>
+    <span class="k">if</span> <span class="s">&quot;p&quot;</span> <span class="ow">in</span> <span class="n">key</span> <span class="ow">and</span> <span class="ow">not</span> <span class="s">&quot;p&quot;</span> <span class="ow">in</span> <span class="n">grp_wppi</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="n">grp_wppi</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="s">&quot;p&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">T</span><span class="p">,</span><span class="n">J</span><span class="p">,</span><span class="n">D</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">complexfloating</span><span class="p">,</span> <span class="n">chunks</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">csJs</span><span class="p">,</span><span class="n">D</span><span class="p">),</span> <span class="n">maxshape</span><span class="o">=</span><span class="p">(</span><span class="n">Ts</span><span class="p">,</span><span class="n">Js</span><span class="p">,</span><span class="n">D</span><span class="p">))</span>
+    <span class="k">if</span> <span class="s">&quot;Q&quot;</span> <span class="ow">in</span> <span class="n">key</span> <span class="ow">and</span> <span class="ow">not</span> <span class="s">&quot;Q&quot;</span> <span class="ow">in</span> <span class="n">grp_wppi</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="n">grp_wppi</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="s">&quot;Q&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">T</span><span class="p">,</span><span class="n">J</span><span class="p">,</span><span class="n">D</span><span class="p">,</span><span class="n">D</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">complexfloating</span><span class="p">,</span> <span class="n">chunks</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">csJs</span><span class="p">,</span><span class="n">D</span><span class="p">,</span><span class="n">D</span><span class="p">),</span> <span class="n">maxshape</span><span class="o">=</span><span class="p">(</span><span class="n">Ts</span><span class="p">,</span><span class="n">Js</span><span class="p">,</span><span class="n">D</span><span class="p">,</span><span class="n">D</span><span class="p">))</span>
+    <span class="k">if</span> <span class="s">&quot;P&quot;</span> <span class="ow">in</span> <span class="n">key</span> <span class="ow">and</span> <span class="ow">not</span> <span class="s">&quot;P&quot;</span> <span class="ow">in</span> <span class="n">grp_wppi</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="n">grp_wppi</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="s">&quot;P&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">T</span><span class="p">,</span><span class="n">J</span><span class="p">,</span><span class="n">D</span><span class="p">,</span><span class="n">D</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">complexfloating</span><span class="p">,</span> <span class="n">chunks</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">csJs</span><span class="p">,</span><span class="n">D</span><span class="p">,</span><span class="n">D</span><span class="p">),</span> <span class="n">maxshape</span><span class="o">=</span><span class="p">(</span><span class="n">Ts</span><span class="p">,</span><span class="n">Js</span><span class="p">,</span><span class="n">D</span><span class="p">,</span><span class="n">D</span><span class="p">))</span>
+    <span class="k">if</span> <span class="s">&quot;S&quot;</span> <span class="ow">in</span> <span class="n">key</span> <span class="ow">and</span> <span class="ow">not</span> <span class="s">&quot;S&quot;</span> <span class="ow">in</span> <span class="n">grp_wppi</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="n">grp_wppi</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="s">&quot;S&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">T</span><span class="p">,</span><span class="n">J</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">complexfloating</span><span class="p">,</span> <span class="n">chunks</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">csJs</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="n">maxshape</span><span class="o">=</span><span class="p">(</span><span class="n">Ts</span><span class="p">,</span><span class="n">Js</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+    <span class="c"># Wavepacket coefficients</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+        <span class="n">grp_wpci</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="s">&quot;c_&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="p">(</span><span class="n">T</span><span class="p">,</span><span class="n">J</span><span class="p">,</span><span class="n">K</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">complexfloating</span><span class="p">,</span> <span class="n">chunks</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">csJs</span><span class="p">,</span><span class="n">csKs</span><span class="p">),</span> <span class="n">maxshape</span><span class="o">=</span><span class="p">(</span><span class="n">Ts</span><span class="p">,</span><span class="n">Js</span><span class="p">,</span><span class="n">Ks</span><span class="p">))</span>
+
+    <span class="c"># Attach pointer to timegrid</span>
+    <span class="n">daset_tg_lc</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s">&quot;pointer&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">grp_wppi</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s">&quot;pointer&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">grp_wpci</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s">&quot;pointer&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+
+</div>
+<div class="viewcode-block" id="delete_lincombhawp"><a class="viewcode-back" href="../waveblocks_classes/IOM_plugin_lincombhawp.html#IOM_plugin_lincombhawp.delete_lincombhawp">[docs]</a><span class="k">def</span> <span class="nf">delete_lincombhawp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">blockid</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="sd">r&quot;&quot;&quot;Remove the stored linear combination.</span>
+
+<span class="sd">    :param blockid: The ID of the data block to operate on.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_srf</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_prefixb</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">blockid</span><span class="p">)</span><span class="o">+</span><span class="s">&quot;/lincombhawp&quot;</span><span class="p">]</span>
+    <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+        <span class="k">pass</span>
+
+</div>
+<div class="viewcode-block" id="has_lincombhawp"><a class="viewcode-back" href="../waveblocks_classes/IOM_plugin_lincombhawp.html#IOM_plugin_lincombhawp.has_lincombhawp">[docs]</a><span class="k">def</span> <span class="nf">has_lincombhawp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">blockid</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="sd">r&quot;&quot;&quot;Ask if the specified data block has the desired data tensor.</span>
+
+<span class="sd">    :param blockid: The ID of the data block to operate on.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="s">&quot;lincombhawp&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_srf</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_prefixb</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">blockid</span><span class="p">)]</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+
+</div>
+<div class="viewcode-block" id="save_lincombhawp_description"><a class="viewcode-back" href="../waveblocks_classes/IOM_plugin_lincombhawp.html#IOM_plugin_lincombhawp.save_lincombhawp_description">[docs]</a><span class="k">def</span> <span class="nf">save_lincombhawp_description</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">descr</span><span class="p">,</span> <span class="n">blockid</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="sd">r&quot;&quot;&quot;Save the description of this linear combination.</span>
+
+<span class="sd">    :param descr: The description.</span>
+<span class="sd">    :param blockid: The ID of the data block to operate on.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">pathd</span> <span class="o">=</span> <span class="s">&quot;/&quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">_prefixb</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">blockid</span><span class="p">)</span><span class="o">+</span><span class="s">&quot;/lincombhawp&quot;</span>
+    <span class="c"># Save the description</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">descr</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+        <span class="c"># Store all the values as pickled strings because hdf can</span>
+        <span class="c"># only store strings or ndarrays as attributes.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_srf</span><span class="p">[</span><span class="n">pathd</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="save_lincombhawp_coefficients"><a class="viewcode-back" href="../waveblocks_classes/IOM_plugin_lincombhawp.html#IOM_plugin_lincombhawp.save_lincombhawp_coefficients">[docs]</a><span class="k">def</span> <span class="nf">save_lincombhawp_coefficients</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coefficients</span><span class="p">,</span> <span class="n">timestep</span><span class="p">,</span> <span class="n">blockid</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="sd">r&quot;&quot;&quot;Save the coefficients of the linear combination to a file.</span>
+
+<span class="sd">    :param coefficients: The coefficients of the linear combination of wavepackets.</span>
+<span class="sd">    :type coefficients: A single, suitable ``ndarray``.</span>
+<span class="sd">    :param timestep: The timestep at which we save the data.</span>
+<span class="sd">    :param blockid: The ID of the data block to operate on.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">pathtg</span> <span class="o">=</span> <span class="s">&quot;/&quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">_prefixb</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">blockid</span><span class="p">)</span><span class="o">+</span><span class="s">&quot;/lincombhawp/timegrid_lc_coefficients&quot;</span>
+    <span class="n">pathlcs</span> <span class="o">=</span> <span class="s">&quot;/&quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">_prefixb</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">blockid</span><span class="p">)</span><span class="o">+</span><span class="s">&quot;/lincombhawp/lincomb_size&quot;</span>
+    <span class="n">pathd</span> <span class="o">=</span> <span class="s">&quot;/&quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">_prefixb</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">blockid</span><span class="p">)</span><span class="o">+</span><span class="s">&quot;/lincombhawp/lc_coefficients&quot;</span>
+
+    <span class="n">timeslot</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_srf</span><span class="p">[</span><span class="n">pathtg</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s">&quot;pointer&quot;</span><span class="p">]</span>
+
+    <span class="c"># Write the data</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">must_resize</span><span class="p">(</span><span class="n">pathlcs</span><span class="p">,</span> <span class="n">timeslot</span><span class="p">)</span>
+    <span class="n">J</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">coefficients</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_srf</span><span class="p">[</span><span class="n">pathlcs</span><span class="p">][</span><span class="n">timeslot</span><span class="p">]</span> <span class="o">=</span> <span class="n">J</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">must_resize</span><span class="p">(</span><span class="n">pathd</span><span class="p">,</span> <span class="n">timeslot</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">J</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">must_resize</span><span class="p">(</span><span class="n">pathd</span><span class="p">,</span> <span class="n">J</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_srf</span><span class="p">[</span><span class="n">pathd</span><span class="p">][</span><span class="n">timeslot</span><span class="p">,:</span><span class="n">J</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">coefficients</span><span class="p">)</span>
+
+    <span class="c"># Write the timestep to which the stored values belong into the timegrid</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">must_resize</span><span class="p">(</span><span class="n">pathtg</span><span class="p">,</span> <span class="n">timeslot</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_srf</span><span class="p">[</span><span class="n">pathtg</span><span class="p">][</span><span class="n">timeslot</span><span class="p">]</span> <span class="o">=</span> <span class="n">timestep</span>
+
+    <span class="c"># Update the pointer</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_srf</span><span class="p">[</span><span class="n">pathtg</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s">&quot;pointer&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+
+</div>
+<div class="viewcode-block" id="save_lincombhawp_wavepacket_parameters"><a class="viewcode-back" href="../waveblocks_classes/IOM_plugin_lincombhawp.html#IOM_plugin_lincombhawp.save_lincombhawp_wavepacket_parameters">[docs]</a><span class="k">def</span> <span class="nf">save_lincombhawp_wavepacket_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parameters</span><span class="p">,</span> <span class="n">timestep</span><span class="p">,</span> <span class="n">blockid</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="p">(</span><span class="s">&quot;q&quot;</span><span class="p">,</span><span class="s">&quot;p&quot;</span><span class="p">,</span><span class="s">&quot;Q&quot;</span><span class="p">,</span><span class="s">&quot;P&quot;</span><span class="p">,</span><span class="s">&quot;S&quot;</span><span class="p">)):</span>
+    <span class="sd">r&quot;&quot;&quot;Save the parameter set :math:`\Pi` of the Hagedorn wavepacket :math:`\Psi` to a file.</span>
+
+<span class="sd">    :param parameters: The parameter set of the Hagedorn wavepacket.</span>
+<span class="sd">    :type parameters: A ``list`` containing the (five) ``ndarrays`` like :math:`(q,p,Q,P,S)`</span>
+<span class="sd">    :param timestep: The timestep at which we save the data.</span>
+<span class="sd">    :param blockid: The ID of the data block to operate on.</span>
+<span class="sd">    :param key: Specify which parameters to save. All are independent.</span>
+<span class="sd">    :type key: Tuple of valid identifier strings that are ``q``, ``p``, ``Q``, ``P``, ``S`` and ``adQ``.</span>
+<span class="sd">               Default is ``(&quot;q&quot;, &quot;p&quot;, &quot;Q&quot;, &quot;P&quot;, &quot;S&quot;)``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">pathtg</span> <span class="o">=</span> <span class="s">&quot;/&quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">_prefixb</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">blockid</span><span class="p">)</span><span class="o">+</span><span class="s">&quot;/lincombhawp/timegrid_wp_parameters&quot;</span>
+    <span class="n">pathlcs</span> <span class="o">=</span> <span class="s">&quot;/&quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">_prefixb</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">blockid</span><span class="p">)</span><span class="o">+</span><span class="s">&quot;/lincombhawp/lincomb_size&quot;</span>
+    <span class="n">pathd</span> <span class="o">=</span> <span class="s">&quot;/&quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">_prefixb</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">blockid</span><span class="p">)</span><span class="o">+</span><span class="s">&quot;/lincombhawp/Pi/&quot;</span>
+    <span class="n">timeslot</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_srf</span><span class="p">[</span><span class="n">pathd</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s">&quot;pointer&quot;</span><span class="p">]</span>
+
+    <span class="c"># TODO: This an assumption based on data layout and stable</span>
+    <span class="n">J</span> <span class="o">=</span> <span class="n">parameters</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="c"># Write the basis size</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">must_resize</span><span class="p">(</span><span class="n">pathlcs</span><span class="p">,</span> <span class="n">timeslot</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_srf</span><span class="p">[</span><span class="n">pathlcs</span><span class="p">][</span><span class="n">timeslot</span><span class="p">]</span> <span class="o">=</span> <span class="n">J</span>
+
+    <span class="c"># Write the parameters</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">parameters</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">must_resize</span><span class="p">(</span><span class="n">pathd</span><span class="o">+</span><span class="n">key</span><span class="p">,</span> <span class="n">timeslot</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">must_resize</span><span class="p">(</span><span class="n">pathd</span><span class="o">+</span><span class="n">key</span><span class="p">,</span> <span class="n">J</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_srf</span><span class="p">[</span><span class="n">pathd</span><span class="o">+</span><span class="n">key</span><span class="p">][</span><span class="n">timeslot</span><span class="p">,:</span><span class="n">J</span><span class="p">,</span><span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span>
+
+    <span class="c"># Write the timestep to which the stored values belong into the timegrid</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">must_resize</span><span class="p">(</span><span class="n">pathtg</span><span class="p">,</span> <span class="n">timeslot</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_srf</span><span class="p">[</span><span class="n">pathtg</span><span class="p">][</span><span class="n">timeslot</span><span class="p">]</span> <span class="o">=</span> <span class="n">timestep</span>
+
+    <span class="c"># Update the pointer</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_srf</span><span class="p">[</span><span class="n">pathd</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s">&quot;pointer&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+
+</div>
+<div class="viewcode-block" id="save_lincombhawp_wavepacket_coefficients"><a class="viewcode-back" href="../waveblocks_classes/IOM_plugin_lincombhawp.html#IOM_plugin_lincombhawp.save_lincombhawp_wavepacket_coefficients">[docs]</a><span class="k">def</span> <span class="nf">save_lincombhawp_wavepacket_coefficients</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coefficients</span><span class="p">,</span> <span class="n">basisshapes</span><span class="p">,</span> <span class="n">timestep</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">blockid</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="sd">r&quot;&quot;&quot;Save the coefficients of the Hagedorn wavepacket linear combination to a file.</span>
+<span class="sd">    Warning: we do only save tha hash of the basis shapes here!</span>
+<span class="sd">    You have to save the basis shape with the corresponding function too.</span>
+
+<span class="sd">    :param coefficients: The coefficients of the Hagedorn wavepacket.</span>
+<span class="sd">    :type coefficients: A ``list`` with :math:`N` suitable ``ndarrays``.</span>
+<span class="sd">    :param basisshapes: The corresponding basis shapes of the Hagedorn wavepacket.</span>
+<span class="sd">    :type basisshapes: A ``list`` with :math:`N` :py:class:`BasisShape` subclass instances.</span>
+<span class="sd">    :param timestep: The timestep at which we save the data.</span>
+<span class="sd">    :param blockid: The ID of the data block to operate on.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">pathtg</span> <span class="o">=</span> <span class="s">&quot;/&quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">_prefixb</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">blockid</span><span class="p">)</span><span class="o">+</span><span class="s">&quot;/lincombhawp/timegrid_wp_coefficients&quot;</span>
+    <span class="n">pathlcs</span> <span class="o">=</span> <span class="s">&quot;/&quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">_prefixb</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">blockid</span><span class="p">)</span><span class="o">+</span><span class="s">&quot;/lincombhawp/lincomb_size&quot;</span>
+    <span class="n">pathbsi</span> <span class="o">=</span> <span class="s">&quot;/&quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">_prefixb</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">blockid</span><span class="p">)</span><span class="o">+</span><span class="s">&quot;/lincombhawp/basis_sizes&quot;</span>
+    <span class="n">pathbsh</span> <span class="o">=</span> <span class="s">&quot;/&quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">_prefixb</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">blockid</span><span class="p">)</span><span class="o">+</span><span class="s">&quot;/lincombhawp/basis_shapes_hashes&quot;</span>
+    <span class="n">pathd</span> <span class="o">=</span> <span class="s">&quot;/&quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">_prefixb</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">blockid</span><span class="p">)</span><span class="o">+</span><span class="s">&quot;/lincombhawp/wp_coefficients/&quot;</span>
+
+    <span class="n">timeslot</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_srf</span><span class="p">[</span><span class="n">pathd</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s">&quot;pointer&quot;</span><span class="p">]</span>
+
+    <span class="c"># Write the lincomb size</span>
+    <span class="n">basissizes</span> <span class="o">=</span> <span class="p">[</span> <span class="n">K</span><span class="o">.</span><span class="n">get_basis_size</span><span class="p">()</span> <span class="k">for</span> <span class="n">K</span> <span class="ow">in</span> <span class="n">basisshapes</span> <span class="p">]</span>
+    <span class="n">J</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">basissizes</span><span class="p">)</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">must_resize</span><span class="p">(</span><span class="n">pathlcs</span><span class="p">,</span> <span class="n">timeslot</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_srf</span><span class="p">[</span><span class="n">pathlcs</span><span class="p">][</span><span class="n">timeslot</span><span class="p">]</span> <span class="o">=</span> <span class="n">J</span>
+
+    <span class="c"># Write all basis sizes</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">must_resize</span><span class="p">(</span><span class="n">pathbsi</span><span class="p">,</span> <span class="n">timeslot</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">must_resize</span><span class="p">(</span><span class="n">pathbsi</span><span class="p">,</span> <span class="n">J</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_srf</span><span class="p">[</span><span class="n">pathbsi</span><span class="p">][</span><span class="n">timeslot</span><span class="p">,:</span><span class="n">J</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">basissizes</span><span class="p">)</span>
+
+    <span class="c"># Write basis shape hashes</span>
+    <span class="n">basisshapeshashes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span> <span class="nb">hash</span><span class="p">(</span><span class="n">K</span><span class="p">)</span> <span class="k">for</span> <span class="n">K</span> <span class="ow">in</span> <span class="n">basisshapes</span> <span class="p">])</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">must_resize</span><span class="p">(</span><span class="n">pathbsh</span><span class="p">,</span> <span class="n">timeslot</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">must_resize</span><span class="p">(</span><span class="n">pathbsh</span><span class="p">,</span> <span class="n">J</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_srf</span><span class="p">[</span><span class="n">pathbsh</span><span class="p">][</span><span class="n">timeslot</span><span class="p">,:</span><span class="n">J</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">basisshapeshashes</span>
+
+    <span class="c"># Write the wavepackets coefficients data</span>
+    <span class="n">coefficients</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">coefficients</span><span class="p">)</span>
+    <span class="n">j</span><span class="p">,</span> <span class="n">k</span> <span class="o">=</span> <span class="n">coefficients</span><span class="o">.</span><span class="n">shape</span>
+    <span class="c"># TODO: Allow wavepackets with multiple components</span>
+    <span class="n">index</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">pathc</span> <span class="o">=</span> <span class="n">pathd</span><span class="o">+</span><span class="s">&quot;c_&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+    <span class="c"># Do we have to resize due to changed number of packets or coefficients</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">must_resize</span><span class="p">(</span><span class="n">pathc</span><span class="p">,</span> <span class="n">timeslot</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">must_resize</span><span class="p">(</span><span class="n">pathc</span><span class="p">,</span> <span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">must_resize</span><span class="p">(</span><span class="n">pathc</span><span class="p">,</span> <span class="n">k</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_srf</span><span class="p">[</span><span class="n">pathc</span><span class="p">][</span><span class="n">timeslot</span><span class="p">,:</span><span class="n">j</span><span class="p">,:</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">coefficients</span>
+
+    <span class="c"># Write the timestep to which the stored values belong into the timegrid</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">must_resize</span><span class="p">(</span><span class="n">pathtg</span><span class="p">,</span> <span class="n">timeslot</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_srf</span><span class="p">[</span><span class="n">pathtg</span><span class="p">][</span><span class="n">timeslot</span><span class="p">]</span> <span class="o">=</span> <span class="n">timestep</span>
+
+    <span class="c"># Update the pointer</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_srf</span><span class="p">[</span><span class="n">pathd</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s">&quot;pointer&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+
+</div>
+<div class="viewcode-block" id="save_lincombhawp_wavepacket_basisshapes"><a class="viewcode-back" href="../waveblocks_classes/IOM_plugin_lincombhawp.html#IOM_plugin_lincombhawp.save_lincombhawp_wavepacket_basisshapes">[docs]</a><span class="k">def</span> <span class="nf">save_lincombhawp_wavepacket_basisshapes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">basisshapes</span><span class="p">,</span> <span class="n">blockid</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="sd">r&quot;&quot;&quot;Save the basis shapes of the linear combination of</span>
+<span class="sd">    Hagedorn wavepacket to a file.</span>
+
+<span class="sd">    :param basisshapes: A list of the basis shapes of the linear combination.</span>
+<span class="sd">    :param blockid: The ID of the data block to operate on.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">pathd</span> <span class="o">=</span> <span class="s">&quot;/&quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">_prefixb</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">blockid</span><span class="p">)</span><span class="o">+</span><span class="s">&quot;/lincombhawp/basisshapes/&quot;</span>
+
+    <span class="k">for</span> <span class="n">basisshape</span> <span class="ow">in</span> <span class="n">basisshapes</span><span class="p">:</span>
+        <span class="n">ha</span> <span class="o">=</span> <span class="nb">hash</span><span class="p">(</span><span class="n">basisshape</span><span class="p">)</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="s">&quot;basis_shape_&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">ha</span><span class="p">)</span>
+
+        <span class="c"># Chech if we already stored this basis shape</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_srf</span><span class="p">[</span><span class="n">pathd</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="c"># TODO: Consider storing all hashes in one big dataset</span>
+            <span class="c"># Create new data set</span>
+            <span class="n">daset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_srf</span><span class="p">[</span><span class="n">pathd</span><span class="p">]</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="s">&quot;basis_shape_&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">ha</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">integer</span><span class="p">)</span>
+            <span class="n">daset</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">ha</span>
+
+            <span class="c"># Save the description</span>
+            <span class="n">descr</span> <span class="o">=</span> <span class="n">basisshape</span><span class="o">.</span><span class="n">get_description</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">descr</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+                <span class="c"># Store all the values as pickled strings because hdf can</span>
+                <span class="c"># only store strings or ndarrays as attributes.</span>
+                <span class="n">daset</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="load_lincombhawp_description"><a class="viewcode-back" href="../waveblocks_classes/IOM_plugin_lincombhawp.html#IOM_plugin_lincombhawp.load_lincombhawp_description">[docs]</a><span class="k">def</span> <span class="nf">load_lincombhawp_description</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">blockid</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="sd">r&quot;&quot;&quot;Load the description of this linear combination.</span>
+
+<span class="sd">    :param blockid: The ID of the data block to operate on.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">pathd</span> <span class="o">=</span> <span class="s">&quot;/&quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">_prefixb</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">blockid</span><span class="p">)</span><span class="o">+</span><span class="s">&quot;/lincombhawp&quot;</span>
+
+    <span class="c"># Load and return all descriptions available</span>
+    <span class="n">descr</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_srf</span><span class="p">[</span><span class="n">pathd</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+        <span class="n">descr</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">descr</span>
+
+</div>
+<div class="viewcode-block" id="load_lincombhawp_timegrid"><a class="viewcode-back" href="../waveblocks_classes/IOM_plugin_lincombhawp.html#IOM_plugin_lincombhawp.load_lincombhawp_timegrid">[docs]</a><span class="k">def</span> <span class="nf">load_lincombhawp_timegrid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">blockid</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="p">(</span><span class="s">&quot;coeffs&quot;</span><span class="p">,</span> <span class="s">&quot;packets&quot;</span><span class="p">)):</span>
+    <span class="sd">r&quot;&quot;&quot;Load the timegrid of this linear combination.</span>
+
+<span class="sd">    :param blockid: The ID of the data block to operate on.</span>
+<span class="sd">    :param key: Specify which linear combination timegrids to load. All are independent.</span>
+<span class="sd">    :type key: Tuple of valid identifier strings that are ``ceoffs`` and ``packets``.</span>
+<span class="sd">               Default is ``(&quot;coeffs&quot;, &quot;packets&quot;)``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">tg</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">key</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">item</span> <span class="o">==</span> <span class="s">&quot;coeffs&quot;</span><span class="p">:</span>
+            <span class="n">pathtg</span> <span class="o">=</span> <span class="s">&quot;/&quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">_prefixb</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">blockid</span><span class="p">)</span><span class="o">+</span><span class="s">&quot;/lincombhawp/timegrid_lc_coefficients&quot;</span>
+            <span class="n">tg</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_srf</span><span class="p">[</span><span class="n">pathtg</span><span class="p">][:])</span>
+        <span class="k">elif</span> <span class="n">item</span> <span class="o">==</span> <span class="s">&quot;packets&quot;</span><span class="p">:</span>
+            <span class="n">pathtg</span> <span class="o">=</span> <span class="s">&quot;/&quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">_prefixb</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">blockid</span><span class="p">)</span><span class="o">+</span><span class="s">&quot;/lincombhawp/timegrid_lc_packets&quot;</span>
+            <span class="n">tg</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_srf</span><span class="p">[</span><span class="n">pathtg</span><span class="p">][:])</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">tg</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">tg</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">tg</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="load_lincombhawp_size"><a class="viewcode-back" href="../waveblocks_classes/IOM_plugin_lincombhawp.html#IOM_plugin_lincombhawp.load_lincombhawp_size">[docs]</a><span class="k">def</span> <span class="nf">load_lincombhawp_size</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timestep</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">blockid</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="sd">r&quot;&quot;&quot;Load the size (number of packets) of this linear combination.</span>
+
+<span class="sd">    :param timestep: Load only the data of this timestep.</span>
+<span class="sd">    :param blockid: The ID of the data block to operate on.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">pathtg</span> <span class="o">=</span> <span class="s">&quot;/&quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">_prefixb</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">blockid</span><span class="p">)</span><span class="o">+</span><span class="s">&quot;/lincombhawp/timegrid_lc_coefficients&quot;</span>
+    <span class="n">pathlcs</span> <span class="o">=</span> <span class="s">&quot;/&quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">_prefixb</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">blockid</span><span class="p">)</span><span class="o">+</span><span class="s">&quot;/lincombhawp/lincomb_size&quot;</span>
+
+    <span class="k">if</span> <span class="n">timestep</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_timestep_index</span><span class="p">(</span><span class="n">pathtg</span><span class="p">,</span> <span class="n">timestep</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_srf</span><span class="p">[</span><span class="n">pathlcs</span><span class="p">][</span><span class="n">index</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="bp">None</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_srf</span><span class="p">[</span><span class="n">pathlcs</span><span class="p">][</span><span class="n">index</span><span class="p">]</span>
+
+</div>
+<div class="viewcode-block" id="load_lincombhawp_coefficients"><a class="viewcode-back" href="../waveblocks_classes/IOM_plugin_lincombhawp.html#IOM_plugin_lincombhawp.load_lincombhawp_coefficients">[docs]</a><span class="k">def</span> <span class="nf">load_lincombhawp_coefficients</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timestep</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">blockid</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="sd">r&quot;&quot;&quot;Load the coefficients of this linear combination.</span>
+
+<span class="sd">    :param timestep: Load only the data of this timestep.</span>
+<span class="sd">    :param blockid: The ID of the data block to operate on.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">pathtg</span> <span class="o">=</span> <span class="s">&quot;/&quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">_prefixb</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">blockid</span><span class="p">)</span><span class="o">+</span><span class="s">&quot;/lincombhawp/timegrid_lc_coefficients&quot;</span>
+    <span class="n">pathlcs</span> <span class="o">=</span> <span class="s">&quot;/&quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">_prefixb</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">blockid</span><span class="p">)</span><span class="o">+</span><span class="s">&quot;/lincombhawp/lincomb_size&quot;</span>
+    <span class="n">pathd</span> <span class="o">=</span> <span class="s">&quot;/&quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">_prefixb</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">blockid</span><span class="p">)</span><span class="o">+</span><span class="s">&quot;/lincombhawp/lc_coefficients&quot;</span>
+
+    <span class="k">if</span> <span class="n">timestep</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_timestep_index</span><span class="p">(</span><span class="n">pathtg</span><span class="p">,</span> <span class="n">timestep</span><span class="p">)</span>
+        <span class="n">J</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_srf</span><span class="p">[</span><span class="n">pathlcs</span><span class="p">][</span><span class="n">index</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_srf</span><span class="p">[</span><span class="n">pathd</span><span class="p">][</span><span class="n">index</span><span class="p">,:</span><span class="n">J</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="bp">None</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_srf</span><span class="p">[</span><span class="n">pathd</span><span class="p">][</span><span class="n">index</span><span class="p">,:]</span>
+
+</div>
+<div class="viewcode-block" id="load_lincombhawp_wavepacket_parameters"><a class="viewcode-back" href="../waveblocks_classes/IOM_plugin_lincombhawp.html#IOM_plugin_lincombhawp.load_lincombhawp_wavepacket_parameters">[docs]</a><span class="k">def</span> <span class="nf">load_lincombhawp_wavepacket_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timestep</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">blockid</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="p">(</span><span class="s">&quot;q&quot;</span><span class="p">,</span><span class="s">&quot;p&quot;</span><span class="p">,</span><span class="s">&quot;Q&quot;</span><span class="p">,</span><span class="s">&quot;P&quot;</span><span class="p">,</span><span class="s">&quot;S&quot;</span><span class="p">)):</span>
+    <span class="sd">r&quot;&quot;&quot;Load the wavepacket parameters.</span>
+
+<span class="sd">    :param timestep: Load only the data of this timestep.</span>
+<span class="sd">    :param blockid: The ID of the data block to operate on.</span>
+<span class="sd">    :param key: Specify which parameters to load. All are independent.</span>
+<span class="sd">    :type key: Tuple of valid identifier strings that are ``q``, ``p``, ``Q``, ``P``, ``S`` and ``adQ``.</span>
+<span class="sd">               Default is ``(&quot;q&quot;, &quot;p&quot;, &quot;Q&quot;, &quot;P&quot;, &quot;S&quot;)``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">pathtg</span> <span class="o">=</span> <span class="s">&quot;/&quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">_prefixb</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">blockid</span><span class="p">)</span><span class="o">+</span><span class="s">&quot;/lincombhawp/timegrid_wp_parameters&quot;</span>
+    <span class="n">pathlcs</span> <span class="o">=</span> <span class="s">&quot;/&quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">_prefixb</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">blockid</span><span class="p">)</span><span class="o">+</span><span class="s">&quot;/lincombhawp/lincomb_size&quot;</span>
+    <span class="n">pathd</span> <span class="o">=</span> <span class="s">&quot;/&quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">_prefixb</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">blockid</span><span class="p">)</span><span class="o">+</span><span class="s">&quot;/lincombhawp/Pi/&quot;</span>
+
+    <span class="k">if</span> <span class="n">timestep</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_timestep_index</span><span class="p">(</span><span class="n">pathtg</span><span class="p">,</span> <span class="n">timestep</span><span class="p">)</span>
+        <span class="n">J</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_srf</span><span class="p">[</span><span class="n">pathlcs</span><span class="p">][</span><span class="n">index</span><span class="p">]</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">([</span> <span class="bp">self</span><span class="o">.</span><span class="n">_srf</span><span class="p">[</span><span class="n">pathd</span><span class="o">+</span><span class="n">k</span><span class="p">][</span><span class="n">index</span><span class="p">,:</span><span class="n">J</span><span class="p">,</span><span class="o">...</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">key</span> <span class="p">])</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">([</span> <span class="bp">self</span><span class="o">.</span><span class="n">_srf</span><span class="p">[</span><span class="n">pathd</span><span class="o">+</span><span class="n">k</span><span class="p">][:,:,</span><span class="o">...</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">key</span> <span class="p">])</span>
+
+    <span class="k">return</span> <span class="n">params</span>
+
+</div>
+<div class="viewcode-block" id="load_lincombhawp_wavepacket_coefficients"><a class="viewcode-back" href="../waveblocks_classes/IOM_plugin_lincombhawp.html#IOM_plugin_lincombhawp.load_lincombhawp_wavepacket_coefficients">[docs]</a><span class="k">def</span> <span class="nf">load_lincombhawp_wavepacket_coefficients</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timestep</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">get_hashes</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">blockid</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="sd">r&quot;&quot;&quot;Load the wavepacket coefficients.</span>
+
+<span class="sd">    :param timestep: Load only the data of this timestep.</span>
+<span class="sd">    :param get_hashes: Return the corresponding basis shape hashes.</span>
+<span class="sd">    :param blockid: The ID of the data block to operate on.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">pathtg</span> <span class="o">=</span> <span class="s">&quot;/&quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">_prefixb</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">blockid</span><span class="p">)</span><span class="o">+</span><span class="s">&quot;/lincombhawp/timegrid_wp_coefficients&quot;</span>
+    <span class="n">pathlcs</span> <span class="o">=</span> <span class="s">&quot;/&quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">_prefixb</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">blockid</span><span class="p">)</span><span class="o">+</span><span class="s">&quot;/lincombhawp/lincomb_size&quot;</span>
+    <span class="n">pathbsh</span> <span class="o">=</span> <span class="s">&quot;/&quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">_prefixb</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">blockid</span><span class="p">)</span><span class="o">+</span><span class="s">&quot;/lincombhawp/basis_shapes_hashes&quot;</span>
+    <span class="n">pathbsi</span> <span class="o">=</span> <span class="s">&quot;/&quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">_prefixb</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">blockid</span><span class="p">)</span><span class="o">+</span><span class="s">&quot;/lincombhawp/basis_sizes&quot;</span>
+    <span class="n">pathd</span> <span class="o">=</span> <span class="s">&quot;/&quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">_prefixb</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">blockid</span><span class="p">)</span><span class="o">+</span><span class="s">&quot;/lincombhawp/wp_coefficients/&quot;</span>
+
+    <span class="c"># TODO: Allow wavepackets with multiple components</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">if</span> <span class="n">timestep</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_timestep_index</span><span class="p">(</span><span class="n">pathtg</span><span class="p">,</span> <span class="n">timestep</span><span class="p">)</span>
+        <span class="n">Js</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_srf</span><span class="p">[</span><span class="n">pathlcs</span><span class="p">][</span><span class="n">index</span><span class="p">])</span>
+        <span class="n">Ks</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_srf</span><span class="p">[</span><span class="n">pathbsi</span><span class="p">][</span><span class="n">index</span><span class="p">,:,</span><span class="mi">0</span><span class="p">]))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="bp">None</span><span class="p">)</span>
+        <span class="n">Js</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="bp">None</span><span class="p">)</span>
+        <span class="n">Ks</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="bp">None</span><span class="p">)</span>
+
+    <span class="c"># Load the hash data</span>
+    <span class="k">if</span> <span class="n">get_hashes</span> <span class="ow">is</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="n">hashes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_srf</span><span class="p">[</span><span class="n">pathbsh</span><span class="p">][</span><span class="n">index</span><span class="p">,</span><span class="n">Js</span><span class="p">]</span>
+
+    <span class="c"># Load the coefficient data</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_srf</span><span class="p">[</span><span class="n">pathd</span><span class="o">+</span><span class="s">&quot;c_&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)][</span><span class="n">index</span><span class="p">,</span><span class="n">Js</span><span class="p">,</span><span class="n">Ks</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">get_hashes</span> <span class="ow">is</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">hashes</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">data</span>
+
+</div>
+<div class="viewcode-block" id="load_lincombhawp_wavepacket_basisshapes"><a class="viewcode-back" href="../waveblocks_classes/IOM_plugin_lincombhawp.html#IOM_plugin_lincombhawp.load_lincombhawp_wavepacket_basisshapes">[docs]</a><span class="k">def</span> <span class="nf">load_lincombhawp_wavepacket_basisshapes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">the_hash</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">blockid</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="sd">r&quot;&quot;&quot;Load the basis shapes by hash.</span>
+
+<span class="sd">    :param the_hash: The hash of the basis shape whose description we want to load.</span>
+<span class="sd">    :param blockid: The ID of the data block to operate on.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">pathd</span> <span class="o">=</span> <span class="s">&quot;/&quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">_prefixb</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">blockid</span><span class="p">)</span><span class="o">+</span><span class="s">&quot;/lincombhawp/basisshapes/&quot;</span>
+
+    <span class="k">if</span> <span class="n">the_hash</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="c"># Load and return all descriptions available</span>
+        <span class="n">descrs</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">ahash</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_srf</span><span class="p">[</span><span class="n">pathd</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="c"># TODO: What data exactly do we want to return?</span>
+            <span class="n">descr</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_srf</span><span class="p">[</span><span class="n">pathd</span><span class="o">+</span><span class="n">ahash</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+                <span class="n">descr</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+            <span class="c"># &#39;ahash&#39; is &quot;basis_shape_...&quot; and we want only the &quot;...&quot; part</span>
+            <span class="n">descrs</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">ahash</span><span class="p">[</span><span class="mi">12</span><span class="p">:])]</span> <span class="o">=</span> <span class="n">descr</span>
+        <span class="k">return</span> <span class="n">descrs</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">the_hash</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">the_hash</span><span class="p">)</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="s">&quot;basis_shape_&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">the_hash</span><span class="p">)</span>
+        <span class="c"># Chech if we already stored this basis shape</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_srf</span><span class="p">[</span><span class="n">pathd</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="c"># TODO: What data exactly do we want to return?</span>
+            <span class="n">descr</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_srf</span><span class="p">[</span><span class="n">pathd</span><span class="o">+</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+                <span class="n">descr</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">descr</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">IndexError</span><span class="p">(</span><span class="s">&quot;No basis shape with given hash &quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="nb">hash</span><span class="p">))</span>
+
+
+<span class="c">#</span>
+<span class="c"># The following two methods are only for convenience and are NOT particularly efficient.</span>
+<span class="c">#</span>
+
+</div>
+<div class="viewcode-block" id="load_lincombhawp"><a class="viewcode-back" href="../waveblocks_classes/IOM_plugin_lincombhawp.html#IOM_plugin_lincombhawp.load_lincombhawp">[docs]</a><span class="k">def</span> <span class="nf">load_lincombhawp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timestep</span><span class="p">,</span> <span class="n">blockid</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="p">(</span><span class="s">&quot;q&quot;</span><span class="p">,</span><span class="s">&quot;p&quot;</span><span class="p">,</span><span class="s">&quot;Q&quot;</span><span class="p">,</span><span class="s">&quot;P&quot;</span><span class="p">,</span><span class="s">&quot;S&quot;</span><span class="p">)):</span>
+    <span class="sd">r&quot;&quot;&quot;Load a linear combination at a given timestep and return a fully configured</span>
+<span class="sd">    :py:class:`LinearCombinationOfHAWPs` instance. This method just calls some other</span>
+<span class="sd">    :py:class:`IOManager` methods in the correct order. It is included only for</span>
+<span class="sd">    convenience and is not particularly efficient.</span>
+
+<span class="sd">    :param timestep: The timestep :math:`n` we load the wavepacket.</span>
+<span class="sd">    :param blockid: The ID of the data block to operate on.</span>
+<span class="sd">    :return: A :py:class:`LinearCombinationOfHAWPs` instance.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span> <span class="nn">LinearCombinationOfHAWPs</span> <span class="kn">import</span> <span class="n">LinearCombinationOfHAWPs</span>
+    <span class="kn">from</span> <span class="nn">BlockFactory</span> <span class="kn">import</span> <span class="n">BlockFactory</span>
+    <span class="n">BF</span> <span class="o">=</span> <span class="n">BlockFactory</span><span class="p">()</span>
+
+    <span class="n">descr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_lincombhawp_description</span><span class="p">(</span><span class="n">blockid</span><span class="o">=</span><span class="n">blockid</span><span class="p">)</span>
+
+    <span class="c"># Empty linear combination</span>
+    <span class="n">J</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_lincombhawp_size</span><span class="p">(</span><span class="n">timestep</span><span class="o">=</span><span class="n">timestep</span><span class="p">,</span> <span class="n">blockid</span><span class="o">=</span><span class="n">blockid</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">J</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">None</span>
+
+    <span class="c"># A new and empty linear combination</span>
+    <span class="n">LC</span> <span class="o">=</span> <span class="n">LinearCombinationOfHAWPs</span><span class="p">(</span><span class="n">descr</span><span class="p">[</span><span class="s">&quot;dimension&quot;</span><span class="p">],</span> <span class="n">descr</span><span class="p">[</span><span class="s">&quot;ncomponents&quot;</span><span class="p">],</span> <span class="n">descr</span><span class="p">[</span><span class="s">&quot;eps&quot;</span><span class="p">],</span> <span class="n">number_packets</span><span class="o">=</span><span class="n">J</span><span class="p">)</span>
+    <span class="c"># Basis shapes</span>
+    <span class="n">K_descrs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_lincombhawp_wavepacket_basisshapes</span><span class="p">(</span><span class="n">blockid</span><span class="o">=</span><span class="n">blockid</span><span class="p">)</span>
+    <span class="n">K</span> <span class="o">=</span> <span class="p">{</span> <span class="n">ha</span><span class="p">:</span><span class="n">BF</span><span class="o">.</span><span class="n">create_basis_shape</span><span class="p">(</span><span class="n">de</span><span class="p">)</span> <span class="k">for</span> <span class="n">ha</span><span class="p">,</span><span class="n">de</span> <span class="ow">in</span> <span class="n">K_descrs</span><span class="o">.</span><span class="n">iteritems</span><span class="p">()</span> <span class="p">}</span>
+    <span class="c"># Coefficients and basis shape hashes</span>
+    <span class="n">hashes</span><span class="p">,</span> <span class="n">coeffs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_lincombhawp_wavepacket_coefficients</span><span class="p">(</span><span class="n">timestep</span><span class="o">=</span><span class="n">timestep</span><span class="p">,</span> <span class="n">get_hashes</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">blockid</span><span class="o">=</span><span class="n">blockid</span><span class="p">)</span>
+    <span class="n">Ks</span> <span class="o">=</span> <span class="p">[</span> <span class="n">K</span><span class="p">[</span><span class="n">ha</span><span class="p">]</span> <span class="k">for</span> <span class="n">ha</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">hashes</span><span class="p">)</span> <span class="p">]</span>
+    <span class="n">LC</span><span class="o">.</span><span class="n">set_wavepacket_coefficients</span><span class="p">(</span><span class="n">coeffs</span><span class="p">,</span> <span class="n">Ks</span><span class="p">)</span>
+    <span class="c"># Parameters</span>
+    <span class="n">Pi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_lincombhawp_wavepacket_parameters</span><span class="p">(</span><span class="n">timestep</span><span class="o">=</span><span class="n">timestep</span><span class="p">,</span> <span class="n">blockid</span><span class="o">=</span><span class="n">blockid</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">key</span><span class="p">)</span>
+    <span class="n">LC</span><span class="o">.</span><span class="n">set_wavepacket_parameters</span><span class="p">(</span><span class="n">Pi</span><span class="p">)</span>
+    <span class="c"># Cj</span>
+    <span class="n">Cj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_lincombhawp_coefficients</span><span class="p">(</span><span class="n">timestep</span><span class="o">=</span><span class="n">timestep</span><span class="p">,</span> <span class="n">blockid</span><span class="o">=</span><span class="n">blockid</span><span class="p">)</span>
+    <span class="n">LC</span><span class="o">.</span><span class="n">set_coefficients</span><span class="p">(</span><span class="n">Cj</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">LC</span>
+
+</div>
+<div class="viewcode-block" id="save_lincombhawp"><a class="viewcode-back" href="../waveblocks_classes/IOM_plugin_lincombhawp.html#IOM_plugin_lincombhawp.save_lincombhawp">[docs]</a><span class="k">def</span> <span class="nf">save_lincombhawp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lincomb</span><span class="p">,</span> <span class="n">timestep</span><span class="p">,</span> <span class="n">blockid</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="sd">r&quot;&quot;&quot;Save a linear combination of Hagedorn wavepackets at a given timestep and read</span>
+<span class="sd">    all data to save from the :py:class:`LinearCombinationOfHAWPs` instance provided. This</span>
+<span class="sd">    method just calls some other :py:class:`IOManager` methods in the correct order.</span>
+<span class="sd">    It is included only for convenience and is not particularly efficient. We assume</span>
+<span class="sd">    the linear combination is already set up with the correct :py:meth:`add_lincombhawp`</span>
+<span class="sd">    method call.</span>
+
+<span class="sd">    :param lincomb: The :py:class:`LinearCombinationOfHAWPs` instance we want to save.</span>
+<span class="sd">    :param timestep: The timestep :math:`n` at which we save the linear combination.</span>
+<span class="sd">    :param blockid: The ID of the data block to operate on.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c"># Description</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">save_lincombhawp_description</span><span class="p">(</span><span class="n">lincomb</span><span class="o">.</span><span class="n">get_description</span><span class="p">(),</span> <span class="n">blockid</span><span class="o">=</span><span class="n">blockid</span><span class="p">)</span>
+    <span class="c"># Wavepackets</span>
+    <span class="n">Ks</span> <span class="o">=</span> <span class="n">lincomb</span><span class="o">.</span><span class="n">get_basis_shapes</span><span class="p">()</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">save_lincombhawp_wavepacket_basisshapes</span><span class="p">(</span><span class="n">Ks</span><span class="p">,</span> <span class="n">blockid</span><span class="o">=</span><span class="n">blockid</span><span class="p">)</span>
+    <span class="n">Pi</span> <span class="o">=</span> <span class="n">lincomb</span><span class="o">.</span><span class="n">get_wavepacket_parameters</span><span class="p">()</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">save_lincombhawp_wavepacket_parameters</span><span class="p">(</span><span class="n">Pi</span><span class="p">,</span> <span class="n">timestep</span><span class="o">=</span><span class="n">timestep</span><span class="p">,</span> <span class="n">blockid</span><span class="o">=</span><span class="n">blockid</span><span class="p">)</span>
+    <span class="n">Ck</span> <span class="o">=</span> <span class="n">lincomb</span><span class="o">.</span><span class="n">get_wavepacket_coefficients</span><span class="p">()</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">save_lincombhawp_wavepacket_coefficients</span><span class="p">(</span><span class="n">Ck</span><span class="p">,</span> <span class="n">Ks</span><span class="p">,</span> <span class="n">timestep</span><span class="o">=</span><span class="n">timestep</span><span class="p">,</span> <span class="n">blockid</span><span class="o">=</span><span class="n">blockid</span><span class="p">)</span>
+    <span class="c"># Coefficients</span>
+    <span class="n">Cj</span> <span class="o">=</span> <span class="n">lincomb</span><span class="o">.</span><span class="n">get_coefficients</span><span class="p">()</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">save_lincombhawp_coefficients</span><span class="p">(</span><span class="n">Cj</span><span class="p">,</span> <span class="n">timestep</span><span class="o">=</span><span class="n">timestep</span><span class="p">,</span> <span class="n">blockid</span><span class="o">=</span><span class="n">blockid</span><span class="p">)</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">WaveBlocksND devel documentation</a> &raquo;</li>
+          <li><a href="index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, R. Bourquin.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,224 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>PhaseSpaceLattice &mdash; WaveBlocksND devel documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     'devel',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="WaveBlocksND devel documentation" href="../index.html" />
+    <link rel="next" title="WaveFunction" href="WaveFunction.html" />
+    <link rel="prev" title="Utils" href="Utils.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="WaveFunction.html" title="WaveFunction"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="Utils.html" title="Utils"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">WaveBlocksND devel documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="phasespacelattice">
+<h1>PhaseSpaceLattice<a class="headerlink" href="#phasespacelattice" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-WaveBlocksND">
+<span id="about-the-phasespacelattice-class"></span><h2>About the <tt class="docutils literal"><span class="pre">PhaseSpaceLattice</span></tt> class<a class="headerlink" href="#module-WaveBlocksND" title="Permalink to this headline">¶</a></h2>
+<p>The WaveBlocks Project</p>
+<p>&#64;author: R. Bourquin
+&#64;copyright: Copyright (C) 2010, 2011, 2012, 2013, 2014 R. Bourquin
+&#64;license: Modified BSD License</p>
+</div>
+<div class="section" id="inheritance-diagram">
+<h2>Inheritance diagram<a class="headerlink" href="#inheritance-diagram" title="Permalink to this headline">¶</a></h2>
+<p class="graphviz">
+<img src="../_images/inheritance-f227c9dbb58b79ddad6833a0e01e784fa68200e6.png" alt="Inheritance diagram of PhaseSpaceLattice" class="inheritance"/>
+</p>
+</div>
+<div class="section" id="class-documentation">
+<h2>Class documentation<a class="headerlink" href="#class-documentation" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="WaveBlocksND.PhaseSpaceLattice">
+<em class="property">class </em><tt class="descclassname">WaveBlocksND.</tt><tt class="descname">PhaseSpaceLattice</tt><big>(</big><em>potential</em>, <em>energy</em>, <em>energydelta</em>, <em>eps</em>, <em>D</em><big>)</big><a class="headerlink" href="#WaveBlocksND.PhaseSpaceLattice" title="Permalink to this definition">¶</a></dt>
+<dd><p>A phase space lattice centered around an energy <img class="math" src="../_images/math/8a52f40afedf1c8727d71b0ad5a7ea0a7119b088.png" alt="E_0"/>
+and bounded by an energy delta <img class="math" src="../_images/math/b255ecfecac2fe4200fabb2d0338b8aeaeaf97ac.png" alt="\Delta E"/>.</p>
+<dl class="method">
+<dt id="WaveBlocksND.PhaseSpaceLattice.__init__">
+<tt class="descname">__init__</tt><big>(</big><em>potential</em>, <em>energy</em>, <em>energydelta</em>, <em>eps</em>, <em>D</em><big>)</big><a class="headerlink" href="#WaveBlocksND.PhaseSpaceLattice.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Configure a new phase space lattice centered around an energy <img class="math" src="../_images/math/8a52f40afedf1c8727d71b0ad5a7ea0a7119b088.png" alt="E_0"/>
+and bounded by an energy delta <img class="math" src="../_images/math/b255ecfecac2fe4200fabb2d0338b8aeaeaf97ac.png" alt="\Delta E"/>. The actual lattice points
+are computed by the member function <a class="reference internal" href="#WaveBlocksND.PhaseSpaceLattice.compute_lattice" title="WaveBlocksND.PhaseSpaceLattice.compute_lattice"><tt class="xref py py-func docutils literal"><span class="pre">compute_lattice()</span></tt></a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>potential</strong> (Not a <a class="reference internal" href="MatrixPotential.html#WaveBlocksND.MatrixPotential" title="WaveBlocksND.MatrixPotential"><tt class="xref py py-class docutils literal"><span class="pre">MatrixPotential</span></tt></a> instance but possible a (partially evaluated)
+member method like <tt class="xref py py-func docutils literal"><span class="pre">evaluate_at()</span></tt> or any scalar valued function.) &#8211; The potential <img class="math" src="../_images/math/12d58aa29201da09d8e620f8698e3a37547f6b4a.png" alt="V"/>.</li>
+<li><strong>energy</strong> &#8211; The energy <img class="math" src="../_images/math/8a52f40afedf1c8727d71b0ad5a7ea0a7119b088.png" alt="E_0"/> around which to center the lattice points.</li>
+<li><strong>energydelta</strong> &#8211; The energy delta <img class="math" src="../_images/math/b255ecfecac2fe4200fabb2d0338b8aeaeaf97ac.png" alt="\Delta E"/>.</li>
+<li><strong>eps</strong> &#8211; The semiclassical scaling parameter <img class="math" src="../_images/math/e2a63918a6fa75b62ad87ad17aaf65f782d71546.png" alt="\varepsilon"/>.</li>
+<li><strong>D</strong> &#8211; The dimensionality <img class="math" src="../_images/math/9ffb448918db29f2a72f8f87f421b3b3cad18f95.png" alt="D"/> of position space.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="WaveBlocksND.PhaseSpaceLattice.compute_lattice">
+<tt class="descname">compute_lattice</tt><big>(</big><em>qlimits</em>, <em>plimits</em><big>)</big><a class="headerlink" href="#WaveBlocksND.PhaseSpaceLattice.compute_lattice" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the lattice points. Search for valid points an a hypercubic
+region of phase space given by limits for position <img class="math" src="../_images/math/0615acc3725de21025457e7d6f7694dab8e2f758.png" alt="q"/> and
+momentum <img class="math" src="../_images/math/36f73fc1312ee0349b3f3a0f3bd9eb5504339011.png" alt="p"/>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>qlimits</strong> (<em>A list of pairs of floats.</em>) &#8211; The position limits <img class="math" src="../_images/math/570304e4e7fe05048cda901fe2463ed51d2e3bd8.png" alt="q^d_{\mathrm{min}}"/> and <img class="math" src="../_images/math/b85ef8bf78a625805a60ed87a0c0fa27af39af8b.png" alt="q^d_{\mathrm{max}}"/>
+for all dimensions <img class="math" src="../_images/math/d8d93f916fcf30df4ed589cc89c711746e795f47.png" alt="d \in [0,\ldots,D-1]"/>.</li>
+<li><strong>plimits</strong> (<em>A list of pairs of floats.</em>) &#8211; The momentum limit <img class="math" src="../_images/math/8b1de9c6e4fffd247c8641c6e0afe70e7477a3db.png" alt="p^d_{\mathrm{min}}"/> and <img class="math" src="../_images/math/53b0149a3672c3c89abc40611f6b911aef4da7f8.png" alt="p^d_{\mathrm{max}}"/>
+for all dimensions <img class="math" src="../_images/math/d8d93f916fcf30df4ed589cc89c711746e795f47.png" alt="d \in [0,\ldots,D-1]"/>.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="WaveBlocksND.PhaseSpaceLattice.get_lattice">
+<tt class="descname">get_lattice</tt><big>(</big><big>)</big><a class="headerlink" href="#WaveBlocksND.PhaseSpaceLattice.get_lattice" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The phase space lattice in the form <tt class="docutils literal"><span class="pre">(qgrid,</span> <span class="pre">pgrid)</span></tt></td>
+</tr>
+</tbody>
+</table>
+<p>where each grid is an <tt class="xref py py-class docutils literal"><span class="pre">ndarray</span></tt> of shape <tt class="docutils literal"><span class="pre">(D,</span> <span class="pre">lattice_size)</span></tt></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="WaveBlocksND.PhaseSpaceLattice.get_lattice_size">
+<tt class="descname">get_lattice_size</tt><big>(</big><big>)</big><a class="headerlink" href="#WaveBlocksND.PhaseSpaceLattice.get_lattice_size" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The number of points <img class="math" src="../_images/math/80c648aee0f0860ce357dae0abfb20a6c1ce6174.png" alt="(q_i,p_i)"/> in the lattice.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">PhaseSpaceLattice</a><ul>
+<li><a class="reference internal" href="#module-WaveBlocksND">About the <tt class="docutils literal"><span class="pre">PhaseSpaceLattice</span></tt> class</a></li>
+<li><a class="reference internal" href="#inheritance-diagram">Inheritance diagram</a></li>
+<li><a class="reference internal" href="#class-documentation">Class documentation</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="Utils.html"
+                        title="previous chapter">Utils</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="WaveFunction.html"
+                        title="next chapter">WaveFunction</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/waveblocks_classes/PhaseSpaceLattice.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="WaveFunction.html" title="WaveFunction"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="Utils.html" title="Utils"
+             >previous</a> |</li>
+        <li><a href="../index.html">WaveBlocksND devel documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, R. Bourquin.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

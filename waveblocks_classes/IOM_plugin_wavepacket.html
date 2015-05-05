@@ -1,0 +1,409 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>IOM_plugin_wavepacket &mdash; WaveBlocksND devel documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     'devel',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="WaveBlocksND devel documentation" href="../index.html" />
+    <link rel="next" title="IOM_plugin_inhomogwavepacket" href="IOM_plugin_inhomogwavepacket.html" />
+    <link rel="prev" title="IOM_plugin_fourieroperators" href="IOM_plugin_fourieroperators.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="IOM_plugin_inhomogwavepacket.html" title="IOM_plugin_inhomogwavepacket"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="IOM_plugin_fourieroperators.html" title="IOM_plugin_fourieroperators"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">WaveBlocksND devel documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="iom-plugin-wavepacket">
+<h1>IOM_plugin_wavepacket<a class="headerlink" href="#iom-plugin-wavepacket" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-WaveBlocksND">
+<span id="about-the-iom-plugin-wavepacket-class"></span><h2>About the <tt class="docutils literal"><span class="pre">IOM_plugin_wavepacket</span></tt> class<a class="headerlink" href="#module-WaveBlocksND" title="Permalink to this headline">¶</a></h2>
+<p>The WaveBlocks Project</p>
+<p>&#64;author: R. Bourquin
+&#64;copyright: Copyright (C) 2010, 2011, 2012, 2013, 2014 R. Bourquin
+&#64;license: Modified BSD License</p>
+</div>
+<div class="section" id="module-IOM_plugin_wavepacket">
+<span id="class-documentation"></span><h2>Class documentation<a class="headerlink" href="#module-IOM_plugin_wavepacket" title="Permalink to this headline">¶</a></h2>
+<p>The WaveBlocks Project</p>
+<p>IOM plugin providing functions for handling
+homogeneous Hagedorn wavepacket data.</p>
+<p>&#64;author: R. Bourquin
+&#64;copyright: Copyright (C) 2010, 2011, 2012, 2013 R. Bourquin
+&#64;license: Modified BSD License</p>
+<dl class="function">
+<dt id="IOM_plugin_wavepacket.add_wavepacket">
+<tt class="descclassname">IOM_plugin_wavepacket.</tt><tt class="descname">add_wavepacket</tt><big>(</big><em>self</em>, <em>parameters</em>, <em>timeslots=None</em>, <em>blockid=0</em>, <em>key=('q'</em>, <em>'p'</em>, <em>'Q'</em>, <em>'P'</em>, <em>'S')</em><big>)</big><a class="reference internal" href="../_modules/IOM_plugin_wavepacket.html#add_wavepacket"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#IOM_plugin_wavepacket.add_wavepacket" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add storage for the homogeneous wavepackets.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>parameters</strong> &#8211; An <tt class="xref py py-class docutils literal"><span class="pre">ParameterProvider</span></tt> instance with at
+least the keys <tt class="docutils literal"><span class="pre">dimension</span></tt> and <tt class="docutils literal"><span class="pre">ncomponents</span></tt>.</li>
+<li><strong>timeslots</strong> &#8211; The number of time slots we need. Can be set to <tt class="docutils literal"><span class="pre">None</span></tt>
+to get automatically growing datasets.</li>
+<li><strong>blockid</strong> &#8211; The ID of the data block to operate on.</li>
+<li><strong>key</strong> (Tuple of valid identifier strings that are <tt class="docutils literal"><span class="pre">q</span></tt>, <tt class="docutils literal"><span class="pre">p</span></tt>, <tt class="docutils literal"><span class="pre">Q</span></tt>, <tt class="docutils literal"><span class="pre">P</span></tt>, <tt class="docutils literal"><span class="pre">S</span></tt> and <tt class="docutils literal"><span class="pre">adQ</span></tt>.
+Default is <tt class="docutils literal"><span class="pre">(&quot;q&quot;,</span> <span class="pre">&quot;p&quot;,</span> <span class="pre">&quot;Q&quot;,</span> <span class="pre">&quot;P&quot;,</span> <span class="pre">&quot;S&quot;)</span></tt>.) &#8211; Specify which parameters to save. All are independent.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="IOM_plugin_wavepacket.delete_wavepacket">
+<tt class="descclassname">IOM_plugin_wavepacket.</tt><tt class="descname">delete_wavepacket</tt><big>(</big><em>self</em>, <em>blockid=0</em><big>)</big><a class="reference internal" href="../_modules/IOM_plugin_wavepacket.html#delete_wavepacket"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#IOM_plugin_wavepacket.delete_wavepacket" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove the stored wavepackets.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>blockid</strong> &#8211; The ID of the data block to operate on.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="IOM_plugin_wavepacket.has_wavepacket">
+<tt class="descclassname">IOM_plugin_wavepacket.</tt><tt class="descname">has_wavepacket</tt><big>(</big><em>self</em>, <em>blockid=0</em><big>)</big><a class="reference internal" href="../_modules/IOM_plugin_wavepacket.html#has_wavepacket"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#IOM_plugin_wavepacket.has_wavepacket" title="Permalink to this definition">¶</a></dt>
+<dd><p>Ask if the specified data block has the desired data tensor.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>blockid</strong> &#8211; The ID of the data block to operate on.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="IOM_plugin_wavepacket.load_wavepacket">
+<tt class="descclassname">IOM_plugin_wavepacket.</tt><tt class="descname">load_wavepacket</tt><big>(</big><em>self</em>, <em>timestep</em>, <em>blockid=0</em>, <em>key=('q'</em>, <em>'p'</em>, <em>'Q'</em>, <em>'P'</em>, <em>'S'</em>, <em>'adQ')</em><big>)</big><a class="reference internal" href="../_modules/IOM_plugin_wavepacket.html#load_wavepacket"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#IOM_plugin_wavepacket.load_wavepacket" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load a wavepacket at a given timestep and return a fully configured instance.
+This method just calls some other <tt class="xref py py-class docutils literal"><span class="pre">IOManager</span></tt> methods in the correct
+order. It is included only for convenience and is not particularly efficient.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>timestep</strong> &#8211; The timestep <img class="math" src="../_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/> at which we load the wavepacket.</li>
+<li><strong>key</strong> (Tuple of valid identifier strings that are <tt class="docutils literal"><span class="pre">q</span></tt>, <tt class="docutils literal"><span class="pre">p</span></tt>, <tt class="docutils literal"><span class="pre">Q</span></tt>, <tt class="docutils literal"><span class="pre">P</span></tt>, <tt class="docutils literal"><span class="pre">S</span></tt> and <tt class="docutils literal"><span class="pre">adQ</span></tt>.
+Default is <tt class="docutils literal"><span class="pre">(&quot;q&quot;,</span> <span class="pre">&quot;p&quot;,</span> <span class="pre">&quot;Q&quot;,</span> <span class="pre">&quot;P&quot;,</span> <span class="pre">&quot;S&quot;,</span> <span class="pre">&quot;adQ&quot;)</span></tt>.) &#8211; Specify which parameters to load. All are independent.</li>
+<li><strong>blockid</strong> &#8211; The ID of the data block to operate on.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A <tt class="xref py py-class docutils literal"><span class="pre">HagedornWavepacket</span></tt> instance.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="IOM_plugin_wavepacket.load_wavepacket_basisshapes">
+<tt class="descclassname">IOM_plugin_wavepacket.</tt><tt class="descname">load_wavepacket_basisshapes</tt><big>(</big><em>self</em>, <em>the_hash=None</em>, <em>blockid=0</em><big>)</big><a class="reference internal" href="../_modules/IOM_plugin_wavepacket.html#load_wavepacket_basisshapes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#IOM_plugin_wavepacket.load_wavepacket_basisshapes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load the basis shapes by hash.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>the_hash</strong> &#8211; The hash of the basis shape whose description we want to load.</li>
+<li><strong>blockid</strong> &#8211; The ID of the data block to operate on.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="IOM_plugin_wavepacket.load_wavepacket_coefficients">
+<tt class="descclassname">IOM_plugin_wavepacket.</tt><tt class="descname">load_wavepacket_coefficients</tt><big>(</big><em>self</em>, <em>timestep=None</em>, <em>get_hashes=False</em>, <em>component=None</em>, <em>blockid=0</em><big>)</big><a class="reference internal" href="../_modules/IOM_plugin_wavepacket.html#load_wavepacket_coefficients"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#IOM_plugin_wavepacket.load_wavepacket_coefficients" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load the wavepacket coefficients.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>timestep</strong> &#8211; Load only the data of this timestep.</li>
+<li><strong>get_hashes</strong> &#8211; Return the corresponding basis shape hashes.</li>
+<li><strong>component</strong> &#8211; Load only data from this component.</li>
+<li><strong>blockid</strong> &#8211; The ID of the data block to operate on.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="IOM_plugin_wavepacket.load_wavepacket_description">
+<tt class="descclassname">IOM_plugin_wavepacket.</tt><tt class="descname">load_wavepacket_description</tt><big>(</big><em>self</em>, <em>blockid=0</em><big>)</big><a class="reference internal" href="../_modules/IOM_plugin_wavepacket.html#load_wavepacket_description"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#IOM_plugin_wavepacket.load_wavepacket_description" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load the wavepacket description.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>blockid</strong> &#8211; The ID of the data block to operate on.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="IOM_plugin_wavepacket.load_wavepacket_parameters">
+<tt class="descclassname">IOM_plugin_wavepacket.</tt><tt class="descname">load_wavepacket_parameters</tt><big>(</big><em>self</em>, <em>timestep=None</em>, <em>blockid=0</em>, <em>key=('q'</em>, <em>'p'</em>, <em>'Q'</em>, <em>'P'</em>, <em>'S')</em><big>)</big><a class="reference internal" href="../_modules/IOM_plugin_wavepacket.html#load_wavepacket_parameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#IOM_plugin_wavepacket.load_wavepacket_parameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load the wavepacket parameters.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>timestep</strong> &#8211; Load only the data of this timestep.</li>
+<li><strong>blockid</strong> &#8211; The ID of the data block to operate on.</li>
+<li><strong>key</strong> (Tuple of valid identifier strings that are <tt class="docutils literal"><span class="pre">q</span></tt>, <tt class="docutils literal"><span class="pre">p</span></tt>, <tt class="docutils literal"><span class="pre">Q</span></tt>, <tt class="docutils literal"><span class="pre">P</span></tt>, <tt class="docutils literal"><span class="pre">S</span></tt> and <tt class="docutils literal"><span class="pre">adQ</span></tt>.
+Default is <tt class="docutils literal"><span class="pre">(&quot;q&quot;,</span> <span class="pre">&quot;p&quot;,</span> <span class="pre">&quot;Q&quot;,</span> <span class="pre">&quot;P&quot;,</span> <span class="pre">&quot;S&quot;)</span></tt>.) &#8211; Specify which parameters to load. All are independent.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="IOM_plugin_wavepacket.load_wavepacket_timegrid">
+<tt class="descclassname">IOM_plugin_wavepacket.</tt><tt class="descname">load_wavepacket_timegrid</tt><big>(</big><em>self</em>, <em>blockid=0</em><big>)</big><a class="reference internal" href="../_modules/IOM_plugin_wavepacket.html#load_wavepacket_timegrid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#IOM_plugin_wavepacket.load_wavepacket_timegrid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load the wavepacket timegrid.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>blockid</strong> &#8211; The ID of the data block to operate on.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="IOM_plugin_wavepacket.save_wavepacket">
+<tt class="descclassname">IOM_plugin_wavepacket.</tt><tt class="descname">save_wavepacket</tt><big>(</big><em>self</em>, <em>packet</em>, <em>timestep</em>, <em>blockid=None</em>, <em>key=('q'</em>, <em>'p'</em>, <em>'Q'</em>, <em>'P'</em>, <em>'S'</em>, <em>'adQ')</em><big>)</big><a class="reference internal" href="../_modules/IOM_plugin_wavepacket.html#save_wavepacket"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#IOM_plugin_wavepacket.save_wavepacket" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save a wavepacket at a given timestep and read all data to save from the
+<tt class="xref py py-class docutils literal"><span class="pre">HagedornWavepacket</span></tt> instance provided. This method just calls some
+other <tt class="xref py py-class docutils literal"><span class="pre">IOManager</span></tt> methods in the correct order. It is included only
+for convenience and is not particularly efficient. We assume the wavepacket
+is already set up with the correct <a class="reference internal" href="#IOM_plugin_wavepacket.add_wavepacket" title="IOM_plugin_wavepacket.add_wavepacket"><tt class="xref py py-meth docutils literal"><span class="pre">add_wavepacket()</span></tt></a> method call.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>packet</strong> &#8211; The <tt class="xref py py-class docutils literal"><span class="pre">HagedornWavepacket</span></tt> instance we want to save.</li>
+<li><strong>timestep</strong> &#8211; The timestep <img class="math" src="../_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/> at which we save the wavepacket.</li>
+<li><strong>key</strong> (Tuple of valid identifier strings that are <tt class="docutils literal"><span class="pre">q</span></tt>, <tt class="docutils literal"><span class="pre">p</span></tt>, <tt class="docutils literal"><span class="pre">Q</span></tt>, <tt class="docutils literal"><span class="pre">P</span></tt>, <tt class="docutils literal"><span class="pre">S</span></tt> and <tt class="docutils literal"><span class="pre">adQ</span></tt>.
+Default is <tt class="docutils literal"><span class="pre">(&quot;q&quot;,</span> <span class="pre">&quot;p&quot;,</span> <span class="pre">&quot;Q&quot;,</span> <span class="pre">&quot;P&quot;,</span> <span class="pre">&quot;S&quot;,</span> <span class="pre">&quot;adQ&quot;)</span></tt>.) &#8211; Specify which parameters to save. All are independent.</li>
+<li><strong>blockid</strong> &#8211; The ID of the data block to operate on.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="IOM_plugin_wavepacket.save_wavepacket_basisshapes">
+<tt class="descclassname">IOM_plugin_wavepacket.</tt><tt class="descname">save_wavepacket_basisshapes</tt><big>(</big><em>self</em>, <em>basisshape</em>, <em>blockid=0</em><big>)</big><a class="reference internal" href="../_modules/IOM_plugin_wavepacket.html#save_wavepacket_basisshapes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#IOM_plugin_wavepacket.save_wavepacket_basisshapes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save the basis shapes of the Hagedorn wavepacket to a file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>basisshape</strong> &#8211; The basis shape of the Hagedorn wavepacket.</li>
+<li><strong>blockid</strong> &#8211; The ID of the data block to operate on.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="IOM_plugin_wavepacket.save_wavepacket_coefficients">
+<tt class="descclassname">IOM_plugin_wavepacket.</tt><tt class="descname">save_wavepacket_coefficients</tt><big>(</big><em>self</em>, <em>coefficients</em>, <em>basisshapes</em>, <em>timestep=None</em>, <em>blockid=0</em><big>)</big><a class="reference internal" href="../_modules/IOM_plugin_wavepacket.html#save_wavepacket_coefficients"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#IOM_plugin_wavepacket.save_wavepacket_coefficients" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save the coefficients of the Hagedorn wavepacket to a file.
+Warning: we do only save tha hash of the basis shapes here!
+You have to save the basis shape with the corresponding function too.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>coefficients</strong> (A <tt class="docutils literal"><span class="pre">list</span></tt> with <img class="math" src="../_images/math/fc97ef67268cd4e91bacdf12b8901d7036c9a056.png" alt="N"/> suitable <tt class="docutils literal"><span class="pre">ndarrays</span></tt>.) &#8211; The coefficients of the Hagedorn wavepacket.</li>
+<li><strong>basisshapes</strong> (A <tt class="docutils literal"><span class="pre">list</span></tt> with <img class="math" src="../_images/math/fc97ef67268cd4e91bacdf12b8901d7036c9a056.png" alt="N"/> <tt class="xref py py-class docutils literal"><span class="pre">BasisShape</span></tt> subclass instances.) &#8211; The corresponding basis shapes of the Hagedorn wavepacket.</li>
+<li><strong>timestep</strong> &#8211; The timestep at which we save the data.</li>
+<li><strong>blockid</strong> &#8211; The ID of the data block to operate on.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="IOM_plugin_wavepacket.save_wavepacket_description">
+<tt class="descclassname">IOM_plugin_wavepacket.</tt><tt class="descname">save_wavepacket_description</tt><big>(</big><em>self</em>, <em>descr</em>, <em>blockid=0</em><big>)</big><a class="reference internal" href="../_modules/IOM_plugin_wavepacket.html#save_wavepacket_description"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#IOM_plugin_wavepacket.save_wavepacket_description" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save the description of this wavepacket.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>descr</strong> &#8211; The description.</li>
+<li><strong>blockid</strong> &#8211; The ID of the data block to operate on.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="IOM_plugin_wavepacket.save_wavepacket_parameters">
+<tt class="descclassname">IOM_plugin_wavepacket.</tt><tt class="descname">save_wavepacket_parameters</tt><big>(</big><em>self</em>, <em>parameters</em>, <em>timestep=None</em>, <em>blockid=0</em>, <em>key=('q'</em>, <em>'p'</em>, <em>'Q'</em>, <em>'P'</em>, <em>'S')</em><big>)</big><a class="reference internal" href="../_modules/IOM_plugin_wavepacket.html#save_wavepacket_parameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#IOM_plugin_wavepacket.save_wavepacket_parameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save the parameter set <img class="math" src="../_images/math/c3e77f8dac39bd44cff4ca15469c871bab27c02e.png" alt="\Pi"/> of the Hagedorn wavepacket <img class="math" src="../_images/math/866f0204648be9ca6b10e14dd72295295dd53a79.png" alt="\Psi"/> to a file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>parameters</strong> (A <tt class="docutils literal"><span class="pre">list</span></tt> containing the (five) <tt class="docutils literal"><span class="pre">ndarrays</span></tt> like <img class="math" src="../_images/math/3bb712a9fa7d9f25a832daa4e5b30d59000e0119.png" alt="(q,p,Q,P,S)"/>) &#8211; The parameter set of the Hagedorn wavepacket.</li>
+<li><strong>timestep</strong> &#8211; The timestep at which we save the data.</li>
+<li><strong>blockid</strong> &#8211; The ID of the data block to operate on.</li>
+<li><strong>key</strong> (Tuple of valid identifier strings that are <tt class="docutils literal"><span class="pre">q</span></tt>, <tt class="docutils literal"><span class="pre">p</span></tt>, <tt class="docutils literal"><span class="pre">Q</span></tt>, <tt class="docutils literal"><span class="pre">P</span></tt>, <tt class="docutils literal"><span class="pre">S</span></tt> and <tt class="docutils literal"><span class="pre">adQ</span></tt>.
+Default is <tt class="docutils literal"><span class="pre">(&quot;q&quot;,</span> <span class="pre">&quot;p&quot;,</span> <span class="pre">&quot;Q&quot;,</span> <span class="pre">&quot;P&quot;,</span> <span class="pre">&quot;S&quot;)</span></tt>.) &#8211; Specify which parameters to save. All are independent.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">IOM_plugin_wavepacket</a><ul>
+<li><a class="reference internal" href="#module-WaveBlocksND">About the <tt class="docutils literal"><span class="pre">IOM_plugin_wavepacket</span></tt> class</a></li>
+<li><a class="reference internal" href="#module-IOM_plugin_wavepacket">Class documentation</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="IOM_plugin_fourieroperators.html"
+                        title="previous chapter">IOM_plugin_fourieroperators</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="IOM_plugin_inhomogwavepacket.html"
+                        title="next chapter">IOM_plugin_inhomogwavepacket</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/waveblocks_classes/IOM_plugin_wavepacket.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="IOM_plugin_inhomogwavepacket.html" title="IOM_plugin_inhomogwavepacket"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="IOM_plugin_fourieroperators.html" title="IOM_plugin_fourieroperators"
+             >previous</a> |</li>
+        <li><a href="../index.html">WaveBlocksND devel documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, R. Bourquin.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

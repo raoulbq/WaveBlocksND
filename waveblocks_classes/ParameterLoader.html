@@ -1,0 +1,182 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>ParameterLoader &mdash; WaveBlocksND devel documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     'devel',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="WaveBlocksND devel documentation" href="../index.html" />
+    <link rel="next" title="ParameterProvider" href="ParameterProvider.html" />
+    <link rel="prev" title="GlobalDefaults" href="GlobalDefaults.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="ParameterProvider.html" title="ParameterProvider"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="GlobalDefaults.html" title="GlobalDefaults"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">WaveBlocksND devel documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="parameterloader">
+<h1>ParameterLoader<a class="headerlink" href="#parameterloader" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-WaveBlocksND">
+<span id="about-the-parameterloader-class"></span><h2>About the <tt class="docutils literal"><span class="pre">ParameterLoader</span></tt> class<a class="headerlink" href="#module-WaveBlocksND" title="Permalink to this headline">¶</a></h2>
+<p>The WaveBlocks Project</p>
+<p>&#64;author: R. Bourquin
+&#64;copyright: Copyright (C) 2010, 2011, 2012, 2013, 2014 R. Bourquin
+&#64;license: Modified BSD License</p>
+</div>
+<div class="section" id="inheritance-diagram">
+<h2>Inheritance diagram<a class="headerlink" href="#inheritance-diagram" title="Permalink to this headline">¶</a></h2>
+<p class="graphviz">
+<img src="../_images/inheritance-67f5d6d69fc63083f7daafe6c42a39bc85c2e166.png" alt="Inheritance diagram of ParameterLoader" class="inheritance"/>
+</p>
+</div>
+<div class="section" id="class-documentation">
+<h2>Class documentation<a class="headerlink" href="#class-documentation" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="WaveBlocksND.ParameterLoader">
+<em class="property">class </em><tt class="descclassname">WaveBlocksND.</tt><tt class="descname">ParameterLoader</tt><a class="headerlink" href="#WaveBlocksND.ParameterLoader" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="WaveBlocksND.ParameterLoader.load_from_dict">
+<tt class="descname">load_from_dict</tt><big>(</big><em>adict</em><big>)</big><a class="headerlink" href="#WaveBlocksND.ParameterLoader.load_from_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Construct a <a class="reference internal" href="ParameterProvider.html#WaveBlocksND.ParameterProvider" title="WaveBlocksND.ParameterProvider"><tt class="xref py py-class docutils literal"><span class="pre">ParameterProvider</span></tt></a> instance from a
+common python key-value dict.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>adict</strong> &#8211; A plain python <cite>dict</cite> with key-value pairs.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A <a class="reference internal" href="ParameterProvider.html#WaveBlocksND.ParameterProvider" title="WaveBlocksND.ParameterProvider"><tt class="xref py py-class docutils literal"><span class="pre">ParameterProvider</span></tt></a> instance.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="WaveBlocksND.ParameterLoader.load_from_file">
+<tt class="descname">load_from_file</tt><big>(</big><em>filepath</em><big>)</big><a class="headerlink" href="#WaveBlocksND.ParameterLoader.load_from_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read the parameters from a configuration file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filepath</strong> &#8211; Path to the configuration file.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A <a class="reference internal" href="ParameterProvider.html#WaveBlocksND.ParameterProvider" title="WaveBlocksND.ParameterProvider"><tt class="xref py py-class docutils literal"><span class="pre">ParameterProvider</span></tt></a> instance.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">ParameterLoader</a><ul>
+<li><a class="reference internal" href="#module-WaveBlocksND">About the <tt class="docutils literal"><span class="pre">ParameterLoader</span></tt> class</a></li>
+<li><a class="reference internal" href="#inheritance-diagram">Inheritance diagram</a></li>
+<li><a class="reference internal" href="#class-documentation">Class documentation</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="GlobalDefaults.html"
+                        title="previous chapter">GlobalDefaults</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="ParameterProvider.html"
+                        title="next chapter">ParameterProvider</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/waveblocks_classes/ParameterLoader.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="ParameterProvider.html" title="ParameterProvider"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="GlobalDefaults.html" title="GlobalDefaults"
+             >previous</a> |</li>
+        <li><a href="../index.html">WaveBlocksND devel documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, R. Bourquin.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

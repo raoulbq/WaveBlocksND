@@ -1,0 +1,343 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>BasisShape &mdash; WaveBlocksND devel documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     'devel',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="WaveBlocksND devel documentation" href="../index.html" />
+    <link rel="next" title="HyperCubicShape" href="HyperCubicShape.html" />
+    <link rel="prev" title="MatrixPotentialMS" href="MatrixPotentialMS.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="HyperCubicShape.html" title="HyperCubicShape"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="MatrixPotentialMS.html" title="MatrixPotentialMS"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">WaveBlocksND devel documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="basisshape">
+<h1>BasisShape<a class="headerlink" href="#basisshape" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-WaveBlocksND">
+<span id="about-the-basisshape-class"></span><h2>About the <tt class="docutils literal"><span class="pre">BasisShape</span></tt> class<a class="headerlink" href="#module-WaveBlocksND" title="Permalink to this headline">¶</a></h2>
+<p>The WaveBlocks Project</p>
+<p>&#64;author: R. Bourquin
+&#64;copyright: Copyright (C) 2010, 2011, 2012, 2013, 2014 R. Bourquin
+&#64;license: Modified BSD License</p>
+</div>
+<div class="section" id="inheritance-diagram">
+<h2>Inheritance diagram<a class="headerlink" href="#inheritance-diagram" title="Permalink to this headline">¶</a></h2>
+<p class="graphviz">
+<img src="../_images/inheritance-e7610fb3fd5b9ac6c0347ff3b4f2390c5d4152a1.png" alt="Inheritance diagram of BasisShape" class="inheritance"/>
+</p>
+</div>
+<div class="section" id="class-documentation">
+<h2>Class documentation<a class="headerlink" href="#class-documentation" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="WaveBlocksND.BasisShape">
+<em class="property">class </em><tt class="descclassname">WaveBlocksND.</tt><tt class="descname">BasisShape</tt><a class="headerlink" href="#WaveBlocksND.BasisShape" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class defines the abstract interface to basis shapes.
+A basis shape is essentially all information and operations
+related to the set <img class="math" src="../_images/math/e026c53d33036cab34ff37c543094cda14d04f7a.png" alt="\mathfrak{K}"/> of multi-indices <img class="math" src="../_images/math/8c325612684d41304b9751c175df7bcc0f61f64f.png" alt="k"/>.</p>
+<p>Basis shapes must be immutable objects.</p>
+<dl class="method">
+<dt id="WaveBlocksND.BasisShape.__init__">
+<tt class="descname">__init__</tt><big>(</big><big>)</big><a class="headerlink" href="#WaveBlocksND.BasisShape.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Raise :</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">NotImplementedError</span></tt> Abstract interface.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="WaveBlocksND.BasisShape.__str__">
+<tt class="descname">__str__</tt><big>(</big><big>)</big><a class="headerlink" href="#WaveBlocksND.BasisShape.__str__" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A string describing the basis shape <img class="math" src="../_images/math/e026c53d33036cab34ff37c543094cda14d04f7a.png" alt="\mathfrak{K}"/>.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise :</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">NotImplementedError</span></tt> Abstract interface.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="WaveBlocksND.BasisShape.__hash__">
+<tt class="descname">__hash__</tt><big>(</big><big>)</big><a class="headerlink" href="#WaveBlocksND.BasisShape.__hash__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Implement a custom hash function for basis shapes.
+This is important for storing wavepackets.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Raise :</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">NotImplementedError</span></tt> Abstract interface.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="WaveBlocksND.BasisShape.__iter__">
+<tt class="descname">__iter__</tt><big>(</big><big>)</big><a class="headerlink" href="#WaveBlocksND.BasisShape.__iter__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Implements iteration over the multi-indices <img class="math" src="../_images/math/8c325612684d41304b9751c175df7bcc0f61f64f.png" alt="k"/> of the non-extended
+basis set <img class="math" src="../_images/math/e026c53d33036cab34ff37c543094cda14d04f7a.png" alt="\mathfrak{K}"/>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Raise :</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">NotImplementedError</span></tt> Abstract interface.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="WaveBlocksND.BasisShape.__contains__">
+<tt class="descname">__contains__</tt><big>(</big><em>k</em><big>)</big><a class="headerlink" href="#WaveBlocksND.BasisShape.__contains__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if a given multi-index <img class="math" src="../_images/math/8c325612684d41304b9751c175df7bcc0f61f64f.png" alt="k"/> is part of the basis set <img class="math" src="../_images/math/e026c53d33036cab34ff37c543094cda14d04f7a.png" alt="\mathfrak{K}"/>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Raise :</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">NotImplementedError</span></tt> Abstract interface.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="WaveBlocksND.BasisShape.contains">
+<tt class="descname">contains</tt><big>(</big><em>k</em><big>)</big><a class="headerlink" href="#WaveBlocksND.BasisShape.contains" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if a given multi-index <img class="math" src="../_images/math/8c325612684d41304b9751c175df7bcc0f61f64f.png" alt="k"/> is part of the basis set <img class="math" src="../_images/math/e026c53d33036cab34ff37c543094cda14d04f7a.png" alt="\mathfrak{K}"/>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>k</strong> (<em>tuple</em>) &#8211; The multi-index we want to test.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise :</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">NotImplementedError</span></tt> Abstract interface.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="WaveBlocksND.BasisShape.find_largest_index">
+<tt class="descname">find_largest_index</tt><big>(</big><big>)</big><a class="headerlink" href="#WaveBlocksND.BasisShape.find_largest_index" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find the index <img class="math" src="../_images/math/5e43b4137ecdb519857b50e5b1d360b92d2ef463.png" alt="k \in \mathfrak{K}"/> with maximal distance
+<img class="math" src="../_images/math/726609be8d91d2d96dbe6449994fa6a64c8aad7b.png" alt="\sum_{d=0}^D k_d^2"/> from the zero index. In case of
+multiple maxima the method returns the first one found.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="WaveBlocksND.BasisShape.get_basis_size">
+<tt class="descname">get_basis_size</tt><big>(</big><em>extended=False</em><big>)</big><a class="headerlink" href="#WaveBlocksND.BasisShape.get_basis_size" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the size <img class="math" src="../_images/math/5be940194aa26baa17e694bb8a682199d6c055f1.png" alt="|\mathfrak{K}|"/> of the basis. The size is the
+number of distinct multi-indices <img class="math" src="../_images/math/8c325612684d41304b9751c175df7bcc0f61f64f.png" alt="k"/> that belong to the basis
+<img class="math" src="../_images/math/e026c53d33036cab34ff37c543094cda14d04f7a.png" alt="\mathfrak{K}"/>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Raise :</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">NotImplementedError</span></tt> Abstract interface.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="WaveBlocksND.BasisShape.get_description">
+<tt class="descname">get_description</tt><big>(</big><big>)</big><a class="headerlink" href="#WaveBlocksND.BasisShape.get_description" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a description of this basis shape object.
+A description is a <tt class="docutils literal"><span class="pre">dict</span></tt> containing all key-value pairs
+necessary to reconstruct the current basis shape. A description
+never contains any data.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Raise :</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">NotImplementedError</span></tt> Abstract interface.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="WaveBlocksND.BasisShape.get_dimension">
+<tt class="descname">get_dimension</tt><big>(</big><big>)</big><a class="headerlink" href="#WaveBlocksND.BasisShape.get_dimension" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the dimension <img class="math" src="../_images/math/9ffb448918db29f2a72f8f87f421b3b3cad18f95.png" alt="D"/> of the basis shape <img class="math" src="../_images/math/e026c53d33036cab34ff37c543094cda14d04f7a.png" alt="\mathfrak{K}"/>.
+This is defined as the number of components each multi-index
+<img class="math" src="../_images/math/463329e09b69409b3a09a8cf75621b58ef2e9536.png" alt="k = (k_0, \ldots, k_{D-1})"/> has.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Raise :</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">NotImplementedError</span></tt> Abstract interface.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="WaveBlocksND.BasisShape.get_neighbours">
+<tt class="descname">get_neighbours</tt><big>(</big><em>k</em>, <em>direction=None</em><big>)</big><a class="headerlink" href="#WaveBlocksND.BasisShape.get_neighbours" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of all multi-indices that are neighbours of a given
+multi-index <img class="math" src="../_images/math/8c325612684d41304b9751c175df7bcc0f61f64f.png" alt="k"/>. A direct neighbours is defines as
+<img class="math" src="../_images/math/7cc229a87ffcc7708cfafbd77fbc2612004340b2.png" alt="(k_0, \ldots, k_d \pm 1, \ldots, k_{D-1}) \forall d \in [0 \ldots D-1]"/>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>k</strong> (<em>tuple</em>) &#8211; The multi-index of which we want to get the neighbours.</li>
+<li><strong>direction</strong> (<em>int</em>) &#8211; The direction <img class="math" src="../_images/math/9ae72ce213c7ba820c516d9c16dc9c3e6339637f.png" alt="0 \leq d &lt; D"/> in which we want to find
+the neighbours <img class="math" src="../_images/math/2c27d525f307a5878db48ef7254529f901cd67f6.png" alt="k \pm e_d"/>.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A list containing the pairs <img class="math" src="../_images/math/ec6875c367e414241e1153a3e470e101e31e824b.png" alt="(d, k^\prime)"/>.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raise :</th><td class="field-body"><p class="first last"><tt class="xref py py-class docutils literal"><span class="pre">NotImplementedError</span></tt> Abstract interface.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="WaveBlocksND.BasisShape.get_node_iterator">
+<tt class="descname">get_node_iterator</tt><big>(</big><em>mode='lex'</em><big>)</big><a class="headerlink" href="#WaveBlocksND.BasisShape.get_node_iterator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns an iterator to iterate over all basis elements <img class="math" src="../_images/math/8c325612684d41304b9751c175df7bcc0f61f64f.png" alt="k"/>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>mode</strong> (<em>string</em>) &#8211; The mode by which we iterate over the indices. Default is &#8216;lex&#8217;
+for lexicographical order. Supported is also &#8216;chain&#8217;, for
+the chain-like mode, details see the manual.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise :</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">NotImplementedError</span></tt> Abstract interface.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">BasisShape</a><ul>
+<li><a class="reference internal" href="#module-WaveBlocksND">About the <tt class="docutils literal"><span class="pre">BasisShape</span></tt> class</a></li>
+<li><a class="reference internal" href="#inheritance-diagram">Inheritance diagram</a></li>
+<li><a class="reference internal" href="#class-documentation">Class documentation</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="MatrixPotentialMS.html"
+                        title="previous chapter">MatrixPotentialMS</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="HyperCubicShape.html"
+                        title="next chapter">HyperCubicShape</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/waveblocks_classes/BasisShape.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="HyperCubicShape.html" title="HyperCubicShape"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="MatrixPotentialMS.html" title="MatrixPotentialMS"
+             >previous</a> |</li>
+        <li><a href="../index.html">WaveBlocksND devel documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, R. Bourquin.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,310 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>SplittingParameters &mdash; WaveBlocksND devel documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     'devel',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="WaveBlocksND devel documentation" href="../index.html" />
+    <link rel="next" title="PerturbedSplittingParameters" href="PerturbedSplittingParameters.html" />
+    <link rel="prev" title="KineticOperator" href="KineticOperator.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="PerturbedSplittingParameters.html" title="PerturbedSplittingParameters"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="KineticOperator.html" title="KineticOperator"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">WaveBlocksND devel documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="splittingparameters">
+<h1>SplittingParameters<a class="headerlink" href="#splittingparameters" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-WaveBlocksND">
+<span id="about-the-splittingparameters-class"></span><h2>About the <tt class="docutils literal"><span class="pre">SplittingParameters</span></tt> class<a class="headerlink" href="#module-WaveBlocksND" title="Permalink to this headline">¶</a></h2>
+<p>The WaveBlocks Project</p>
+<p>&#64;author: R. Bourquin
+&#64;copyright: Copyright (C) 2010, 2011, 2012, 2013, 2014 R. Bourquin
+&#64;license: Modified BSD License</p>
+</div>
+<div class="section" id="inheritance-diagram">
+<h2>Inheritance diagram<a class="headerlink" href="#inheritance-diagram" title="Permalink to this headline">¶</a></h2>
+<p class="graphviz">
+<img src="../_images/inheritance-5c11089977917c629fbdf4e1b3b35824733679e1.png" alt="Inheritance diagram of SplittingParameters" class="inheritance"/>
+</p>
+</div>
+<div class="section" id="class-documentation">
+<h2>Class documentation<a class="headerlink" href="#class-documentation" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="WaveBlocksND.SplittingParameters">
+<em class="property">class </em><tt class="descclassname">WaveBlocksND.</tt><tt class="descname">SplittingParameters</tt><a class="headerlink" href="#WaveBlocksND.SplittingParameters" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="WaveBlocksND.SplittingParameters.build">
+<tt class="descname">build</tt><big>(</big><em>method</em><big>)</big><a class="headerlink" href="#WaveBlocksND.SplittingParameters.build" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>method</strong> &#8211; A string specifying the method for time integration.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Two arrays <img class="math" src="../_images/math/c7d457e388298246adb06c587bccd419ea67f7e8.png" alt="a"/> and <img class="math" src="../_images/math/8136a7ef6a03334a7246df9097e5bcc31ba33fd2.png" alt="b"/>.</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="11%" />
+<col width="9%" />
+<col width="20%" />
+<col width="61%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Method</th>
+<th class="head">Order</th>
+<th class="head">Authors</th>
+<th class="head">Reference</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>LT</td>
+<td>1</td>
+<td>Lie/Trotter</td>
+<td><a class="footnote-reference" href="#id20" id="id1">[1]</a>, <a class="footnote-reference" href="#id22" id="id2">[3]</a> page 42, equation 5.2</td>
+</tr>
+<tr class="row-odd"><td>S2</td>
+<td>2</td>
+<td>Strang</td>
+<td><a class="footnote-reference" href="#id21" id="id3">[2]</a>, <a class="footnote-reference" href="#id22" id="id4">[3]</a> page 42, equation 5.3</td>
+</tr>
+<tr class="row-even"><td>SS</td>
+<td>2</td>
+<td>Strang</td>
+<td><a class="footnote-reference" href="#id21" id="id5">[2]</a>, <a class="footnote-reference" href="#id22" id="id6">[3]</a> page 42, equation 5.3</td>
+</tr>
+<tr class="row-odd"><td>PRKS6</td>
+<td>4</td>
+<td>Blanes/Moan</td>
+<td><a class="footnote-reference" href="#id23" id="id7">[4]</a> page 318, table 2, &#8216;S6&#8217;</td>
+</tr>
+<tr class="row-even"><td>BM42</td>
+<td>4</td>
+<td>Blanes/Moan</td>
+<td><a class="footnote-reference" href="#id23" id="id8">[4]</a> page 318, table 3, &#8216;SRKNb6&#8217;</td>
+</tr>
+<tr class="row-odd"><td>Y4</td>
+<td>4</td>
+<td>Yoshida</td>
+<td><a class="footnote-reference" href="#id24" id="id9">[5]</a>, <a class="footnote-reference" href="#id22" id="id10">[3]</a> page 40, equation 4.4</td>
+</tr>
+<tr class="row-even"><td>Y61</td>
+<td>6</td>
+<td>Yoshida</td>
+<td><a class="footnote-reference" href="#id24" id="id11">[5]</a>, <a class="footnote-reference" href="#id22" id="id12">[3]</a> page 144, equation 3.11</td>
+</tr>
+<tr class="row-odd"><td>BM63</td>
+<td>6</td>
+<td>Blanes/Moan</td>
+<td><a class="footnote-reference" href="#id23" id="id13">[4]</a> page 318, table 3, &#8216;SRKNa14&#8217;</td>
+</tr>
+<tr class="row-even"><td>KL6</td>
+<td>6</td>
+<td>Kahan/Li</td>
+<td><a class="footnote-reference" href="#id25" id="id14">[6]</a>, <a class="footnote-reference" href="#id22" id="id15">[3]</a> page 144, equation 3.12</td>
+</tr>
+<tr class="row-odd"><td>KL8</td>
+<td>8</td>
+<td>Kahan/Li</td>
+<td><a class="footnote-reference" href="#id25" id="id16">[6]</a>, <a class="footnote-reference" href="#id22" id="id17">[3]</a> page 145, equation 3.14</td>
+</tr>
+<tr class="row-even"><td>KL10</td>
+<td>10</td>
+<td>Kahan/Li</td>
+<td><a class="footnote-reference" href="#id25" id="id18">[6]</a>, <a class="footnote-reference" href="#id22" id="id19">[3]</a> page 146, equation 3.15</td>
+</tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="id20" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>H.F. Trotter, &#8220;On the product of semi-groups of operators&#8221;,
+Proc. Am. Math. Soc.1O (1959) 545-551.</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="id21" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[2]</td><td><em>(<a class="fn-backref" href="#id3">1</a>, <a class="fn-backref" href="#id5">2</a>)</em> G. Strang, &#8220;On the construction and comparison of difference schemes&#8221;,
+SIAM J. Numer. Anal. 5 (1968) 506-517.</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="id22" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[3]</td><td><em>(<a class="fn-backref" href="#id2">1</a>, <a class="fn-backref" href="#id4">2</a>, <a class="fn-backref" href="#id6">3</a>, <a class="fn-backref" href="#id10">4</a>, <a class="fn-backref" href="#id12">5</a>, <a class="fn-backref" href="#id15">6</a>, <a class="fn-backref" href="#id17">7</a>, <a class="fn-backref" href="#id19">8</a>)</em> E. Hairer, C. Lubich, and G. Wanner, &#8220;Geometric Numerical Integration -
+Structure-Preserving Algorithms for Ordinary Differential Equations&#8221;,
+Springer-Verlag, New York, 2002 (Corrected second printing 2004).</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="id23" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[4]</td><td><em>(<a class="fn-backref" href="#id7">1</a>, <a class="fn-backref" href="#id8">2</a>, <a class="fn-backref" href="#id13">3</a>)</em> S. Blanes and P.C. Moan, &#8220;Practical Symplectic Partitioned
+Runge-Kutta and Runge-Kutta-Nystrom Methods&#8221;, J. Computational and
+Applied Mathematics, Volume 142, Issue 2, (2002) 313-330.</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="id24" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[5]</td><td><em>(<a class="fn-backref" href="#id9">1</a>, <a class="fn-backref" href="#id11">2</a>)</em> H. Yoshida, &#8220;Construction of higher order symplectic integrators&#8221;,
+Phys. Lett. A 150 (1990) 262-268.</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="id25" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[6]</td><td><em>(<a class="fn-backref" href="#id14">1</a>, <a class="fn-backref" href="#id16">2</a>, <a class="fn-backref" href="#id18">3</a>)</em> W. Kahan and  R.-c. Li, &#8220;Composition constants for raising the orders
+of unconventional schemes for ordinary differential equations&#8221;,
+Math. Comput. 66 (1997) 1089-1099.</td></tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="WaveBlocksND.SplittingParameters.intsplit">
+<tt class="descname">intsplit</tt><big>(</big><em>psi1</em>, <em>psi2</em>, <em>a</em>, <em>b</em>, <em>tspan</em>, <em>N</em>, <em>args1=</em><span class="optional">[</span><span class="optional">]</span>, <em>args2=</em><span class="optional">[</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#WaveBlocksND.SplittingParameters.intsplit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute a single, full propagation step by operator splitting.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>psi1</strong> &#8211; First evolution operator <img class="math" src="../_images/math/5704864677f1bee9106fcb1c79c623fc364d3e0b.png" alt="\Psi_a"/></li>
+<li><strong>psi2</strong> &#8211; Second evolution operator <img class="math" src="../_images/math/f8aa66a4e7cd7d89d87d48692311faa46982e49d.png" alt="\Psi_b"/></li>
+<li><strong>a</strong> &#8211; Parameters for evolution with <img class="math" src="../_images/math/5704864677f1bee9106fcb1c79c623fc364d3e0b.png" alt="\Psi_a"/></li>
+<li><strong>b</strong> &#8211; Parameters for evolution with <img class="math" src="../_images/math/f8aa66a4e7cd7d89d87d48692311faa46982e49d.png" alt="\Psi_b"/></li>
+<li><strong>tspan</strong> &#8211; Timespan <img class="math" src="../_images/math/e0d2bf360290fd61d1c1557e763f2622363b3d35.png" alt="t"/> of a single, full splitting step</li>
+<li><strong>N</strong> &#8211; Number of substeps to perform</li>
+<li><strong>args1</strong> &#8211; Additional optional arguments of <img class="math" src="../_images/math/5704864677f1bee9106fcb1c79c623fc364d3e0b.png" alt="\Psi_a"/></li>
+<li><strong>args2</strong> &#8211; Additional optional arguments of <img class="math" src="../_images/math/f8aa66a4e7cd7d89d87d48692311faa46982e49d.png" alt="\Psi_b"/></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The values for <tt class="docutils literal"><span class="pre">args1</span></tt> and <tt class="docutils literal"><span class="pre">args2</span></tt> have to be
+<a href="#id26"><span class="problematic" id="id27">``</span></a>list``s even in case of single items.</p>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">SplittingParameters</a><ul>
+<li><a class="reference internal" href="#module-WaveBlocksND">About the <tt class="docutils literal"><span class="pre">SplittingParameters</span></tt> class</a></li>
+<li><a class="reference internal" href="#inheritance-diagram">Inheritance diagram</a></li>
+<li><a class="reference internal" href="#class-documentation">Class documentation</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="KineticOperator.html"
+                        title="previous chapter">KineticOperator</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="PerturbedSplittingParameters.html"
+                        title="next chapter">PerturbedSplittingParameters</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/waveblocks_classes/SplittingParameters.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="PerturbedSplittingParameters.html" title="PerturbedSplittingParameters"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="KineticOperator.html" title="KineticOperator"
+             >previous</a> |</li>
+        <li><a href="../index.html">WaveBlocksND devel documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, R. Bourquin.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

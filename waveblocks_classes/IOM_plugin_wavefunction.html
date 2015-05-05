@@ -1,0 +1,247 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>IOM_plugin_wavefunction &mdash; WaveBlocksND devel documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     'devel',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="WaveBlocksND devel documentation" href="../index.html" />
+    <link rel="next" title="IOM_plugin_fourieroperators" href="IOM_plugin_fourieroperators.html" />
+    <link rel="prev" title="IOM_plugin_grid" href="IOM_plugin_grid.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="IOM_plugin_fourieroperators.html" title="IOM_plugin_fourieroperators"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="IOM_plugin_grid.html" title="IOM_plugin_grid"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">WaveBlocksND devel documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="iom-plugin-wavefunction">
+<h1>IOM_plugin_wavefunction<a class="headerlink" href="#iom-plugin-wavefunction" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-WaveBlocksND">
+<span id="about-the-iom-plugin-wavefunction-class"></span><h2>About the <tt class="docutils literal"><span class="pre">IOM_plugin_wavefunction</span></tt> class<a class="headerlink" href="#module-WaveBlocksND" title="Permalink to this headline">¶</a></h2>
+<p>The WaveBlocks Project</p>
+<p>&#64;author: R. Bourquin
+&#64;copyright: Copyright (C) 2010, 2011, 2012, 2013, 2014 R. Bourquin
+&#64;license: Modified BSD License</p>
+</div>
+<div class="section" id="module-IOM_plugin_wavefunction">
+<span id="class-documentation"></span><h2>Class documentation<a class="headerlink" href="#module-IOM_plugin_wavefunction" title="Permalink to this headline">¶</a></h2>
+<p>The WaveBlocks Project</p>
+<p>IOM plugin providing functions for handling wavefunction data.</p>
+<p>&#64;author: R. Bourquin
+&#64;copyright: Copyright (C) 2010, 2011, 2012, 2013, 2014 R. Bourquin
+&#64;license: Modified BSD License</p>
+<dl class="function">
+<dt id="IOM_plugin_wavefunction.add_wavefunction">
+<tt class="descclassname">IOM_plugin_wavefunction.</tt><tt class="descname">add_wavefunction</tt><big>(</big><em>self</em>, <em>parameters</em>, <em>flat=False</em>, <em>timeslots=None</em>, <em>blockid=0</em><big>)</big><a class="reference internal" href="../_modules/IOM_plugin_wavefunction.html#add_wavefunction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#IOM_plugin_wavefunction.add_wavefunction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add storage for sampled wavefunctions. The wavefunction is
+saved in full hypercubic array shape with <img class="math" src="../_images/math/9ffb448918db29f2a72f8f87f421b3b3cad18f95.png" alt="D"/> dimensions and
+<img class="math" src="../_images/math/e464187a5b0e1a8bb32fc74a4bd0e6a5ab8789b6.png" alt="N_d"/> data points in each direction.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>parameters</strong> &#8211; A <tt class="xref py py-class docutils literal"><span class="pre">ParameterProvider</span></tt> instance containing
+at least the keys <cite>number_nodes</cite> and <cite>ncomponents</cite>.</li>
+<li><strong>flat</strong> (Boolean, default is <tt class="docutils literal"><span class="pre">False</span></tt>.) &#8211; A flag indicating if we store wavefunctions <img class="math" src="../_images/math/723b6fedb49357c680e0b184381403a4798294bf.png" alt="\Psi(\Gamma)"/>
+in a hypercubic shape <img class="math" src="../_images/math/6301c1ef4dda82ceafb02da7c02477d37ceb7e91.png" alt="(N_1, ..., N_D)"/> or
+in a flat shape <img class="math" src="../_images/math/65386017ecf42bb0ef1872b47350d2d05d532fe7.png" alt="(D, |\Gamma|)"/> with <img class="math" src="../_images/math/cade772420ba68720274ba0610d031b07033c545.png" alt="|\Gamma| = \prod_i^D N_i"/>.</li>
+<li><strong>timeslots</strong> &#8211; The number of time slots we need. Can be set to <tt class="docutils literal"><span class="pre">None</span></tt>
+to get automatically growing datasets.</li>
+<li><strong>blockid</strong> &#8211; The ID of the data block to operate on.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="IOM_plugin_wavefunction.delete_wavefunction">
+<tt class="descclassname">IOM_plugin_wavefunction.</tt><tt class="descname">delete_wavefunction</tt><big>(</big><em>self</em>, <em>blockid=0</em><big>)</big><a class="reference internal" href="../_modules/IOM_plugin_wavefunction.html#delete_wavefunction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#IOM_plugin_wavefunction.delete_wavefunction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove the stored wavefunction.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>blockid</strong> &#8211; The ID of the data block to operate on.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="IOM_plugin_wavefunction.has_wavefunction">
+<tt class="descclassname">IOM_plugin_wavefunction.</tt><tt class="descname">has_wavefunction</tt><big>(</big><em>self</em>, <em>blockid=0</em><big>)</big><a class="reference internal" href="../_modules/IOM_plugin_wavefunction.html#has_wavefunction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#IOM_plugin_wavefunction.has_wavefunction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Ask if the specified data block has the desired data tensor.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>blockid</strong> &#8211; The ID of the data block to operate on.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="IOM_plugin_wavefunction.load_wavefunction">
+<tt class="descclassname">IOM_plugin_wavefunction.</tt><tt class="descname">load_wavefunction</tt><big>(</big><em>self</em>, <em>timestep=None</em>, <em>blockid=0</em><big>)</big><a class="reference internal" href="../_modules/IOM_plugin_wavefunction.html#load_wavefunction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#IOM_plugin_wavefunction.load_wavefunction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load the wavefunction values.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>timestep</strong> &#8211; Load only the data of this timestep.</li>
+<li><strong>blockid</strong> &#8211; The ID of the data block to operate on.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="IOM_plugin_wavefunction.load_wavefunction_timegrid">
+<tt class="descclassname">IOM_plugin_wavefunction.</tt><tt class="descname">load_wavefunction_timegrid</tt><big>(</big><em>self</em>, <em>blockid=0</em><big>)</big><a class="reference internal" href="../_modules/IOM_plugin_wavefunction.html#load_wavefunction_timegrid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#IOM_plugin_wavefunction.load_wavefunction_timegrid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load the wavefunction timegrid.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>blockid</strong> &#8211; The ID of the data block to operate on.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="IOM_plugin_wavefunction.save_wavefunction">
+<tt class="descclassname">IOM_plugin_wavefunction.</tt><tt class="descname">save_wavefunction</tt><big>(</big><em>self</em>, <em>wavefunctionvalues</em>, <em>timestep=None</em>, <em>blockid=0</em><big>)</big><a class="reference internal" href="../_modules/IOM_plugin_wavefunction.html#save_wavefunction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#IOM_plugin_wavefunction.save_wavefunction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save the values <img class="math" src="../_images/math/75b7bc3d0bbe11946d21dabacfde02b7d0978b3f.png" alt="\psi_i"/> of a <tt class="xref py py-class docutils literal"><span class="pre">WaveFunction</span></tt> instance.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>wavefunctionvalues</strong> (<em>A list of ndarrays.</em>) &#8211; A list of the values to save.</li>
+<li><strong>timestep</strong> &#8211; The timestep at which we save the data.</li>
+<li><strong>blockid</strong> &#8211; The ID of the data block to operate on.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">IOM_plugin_wavefunction</a><ul>
+<li><a class="reference internal" href="#module-WaveBlocksND">About the <tt class="docutils literal"><span class="pre">IOM_plugin_wavefunction</span></tt> class</a></li>
+<li><a class="reference internal" href="#module-IOM_plugin_wavefunction">Class documentation</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="IOM_plugin_grid.html"
+                        title="previous chapter">IOM_plugin_grid</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="IOM_plugin_fourieroperators.html"
+                        title="next chapter">IOM_plugin_fourieroperators</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/waveblocks_classes/IOM_plugin_wavefunction.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="IOM_plugin_fourieroperators.html" title="IOM_plugin_fourieroperators"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="IOM_plugin_grid.html" title="IOM_plugin_grid"
+             >previous</a> |</li>
+        <li><a href="../index.html">WaveBlocksND devel documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, R. Bourquin.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

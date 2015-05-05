@@ -1,0 +1,997 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>The Core and User scripts &mdash; WaveBlocksND devel documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     'devel',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="WaveBlocksND devel documentation" href="../index.html" />
+    <link rel="next" title="Interactive use" href="interactive_use.html" />
+    <link rel="prev" title="Using WaveBlocks for performing simulations" href="performing_simulations.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="interactive_use.html" title="Interactive use"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="performing_simulations.html" title="Using WaveBlocks for performing simulations"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">WaveBlocksND devel documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="the-core-and-user-scripts">
+<h1>The Core and User scripts<a class="headerlink" href="#the-core-and-user-scripts" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="the-big-picture">
+<h2>The big picture<a class="headerlink" href="#the-big-picture" title="Permalink to this headline">¶</a></h2>
+<p>The <tt class="docutils literal"><span class="pre">WaveBlocks</span></tt> project is split into two parts. The first part (and this is called
+<tt class="docutils literal"><span class="pre">WaveBlocks</span></tt> too) is nothing else than a library or python package which collects
+code modules that are general enough to be useful in many different applications
+and simulation contexts. The second part consists of several scripts that use
+code from the <tt class="docutils literal"><span class="pre">WaveBlocks</span></tt> package via python&#8217;s <tt class="docutils literal"><span class="pre">import</span></tt> statement and perform
+simulations, do data evaluation, plotting and much more. Some of these scripts
+are fairly general (for example the one responsible for plotting energies) while
+others originated from a single very specific research question ...</p>
+</div>
+<div class="section" id="in-the-core">
+<h2>In the Core<a class="headerlink" href="#in-the-core" title="Permalink to this headline">¶</a></h2>
+<p>In this section we describe the important parts of the <tt class="docutils literal"><span class="pre">WaveBlocks</span></tt>
+package from a user point of view.</p>
+</div>
+<div class="section" id="time-propagation-algorithms">
+<h2>Time propagation algorithms<a class="headerlink" href="#time-propagation-algorithms" title="Permalink to this headline">¶</a></h2>
+<p>At the moment, three algorithms for time propagation of initial values are
+implemented.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="25%" />
+<col width="75%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>fourier</td>
+<td>Fourier propagation / Operator splitting</td>
+</tr>
+<tr class="row-odd"><td>hagedorn</td>
+<td>Homogeneous Hagedorn wavepackets</td>
+</tr>
+<tr class="row-even"><td>multihagedorn</td>
+<td>Inhomogeneous Hagedorn wavepackets</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="specifying-initial-values">
+<h2>Specifying initial values<a class="headerlink" href="#specifying-initial-values" title="Permalink to this headline">¶</a></h2>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">The following sections describe the settings of the old WaveBlocks
+code and do not apply to <cite>WaveBlocksND</cite>.</p>
+</div>
+<p>Initial values are always specified as wavepackets. For the Fourier propagator,
+the packets are sampled at the grid nodes and for packet based algorithms, these
+initial packets are just propagated. The two configuration variables <tt class="docutils literal"><span class="pre">parameters</span></tt>
+and <tt class="docutils literal"><span class="pre">coefficients</span></tt> are responsible for specifying the initial wavepackets.
+Their values are interpreted as usual but let&#8217;s look at this important part
+a bit closer.</p>
+<div class="section" id="for-the-fourier-propagator">
+<h3>For the <tt class="docutils literal"><span class="pre">fourier</span></tt> Propagator<a class="headerlink" href="#for-the-fourier-propagator" title="Permalink to this headline">¶</a></h3>
+<p>The initial values for the <tt class="docutils literal"><span class="pre">fourier</span></tt> propagator are given in the simulation
+configuration file by the variable <tt class="docutils literal"><span class="pre">initial_values</span></tt>. The data format is
+a list of arbitrary length. Each entry is a list itself having the format:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">[</span> <span class="n">level</span><span class="p">,</span> <span class="n">parameters</span><span class="p">,</span> <span class="p">[(</span><span class="n">index</span><span class="p">,</span><span class="n">value</span><span class="p">),</span> <span class="p">(</span><span class="n">index</span><span class="p">,</span><span class="n">value</span><span class="p">),</span> <span class="o">...</span><span class="p">]</span> <span class="p">]</span>
+</pre></div>
+</div>
+<p>where the <tt class="docutils literal"><span class="pre">level</span></tt> is the energy level, the <tt class="docutils literal"><span class="pre">parameters</span></tt> is a 5-tuple
+of the usual form <tt class="docutils literal"><span class="pre">(q,p,Q,P,S)</span></tt> containing the wavepacket&#8217;s parameter. The
+third part is a list containing one or several <tt class="docutils literal"><span class="pre">(index,value)</span></tt> pairs
+which hold the value <img class="math" src="../_images/math/1e95be43c04d6869c67861aae1e3e69123fedd8c.png" alt="c_i"/> of the coefficient with index <img class="math" src="../_images/math/34857b3ba74ce5cd8607f3ebd23e9015908ada71.png" alt="i"/>. We know
+that this is all the data necessary for constructing a wavepacket that lives on
+the given energy level. (But remember that these packets are sampled at the grid
+nodes later to be usable for the Fourier propagation.)</p>
+<p>This input format allows us to place several wavepackets on the same energy level,
+for example the following valid specification places two Gaussian packets
+which will run into each other and bounce off:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">initial_values</span> <span class="o">=</span> <span class="p">[[</span> <span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="n">Q</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">,</span>  <span class="mf">2.0</span><span class="p">),</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span><span class="mf">1.0</span><span class="p">)]],</span>
+                  <span class="p">[</span> <span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="n">Q</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span>  <span class="mf">0.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.0</span><span class="p">),</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span><span class="mf">1.0</span><span class="p">)]]]</span>
+</pre></div>
+</div>
+<p>For compatibility reasons the input can also be of the format described
+in the next two sections. This allows for sharing of simulation configurations.</p>
+</div>
+<div class="section" id="for-the-hagedorn-propagator">
+<h3>For the <tt class="docutils literal"><span class="pre">hagedorn</span></tt> Propagator<a class="headerlink" href="#for-the-hagedorn-propagator" title="Permalink to this headline">¶</a></h3>
+<p>For this propagator we need one set of parameters which belong to
+the leading component. With these parameters we then set up a homogeneous
+wavepacket. We can specify the parameters as follows:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">parameters</span> <span class="o">=</span> <span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">Q</span><span class="p">,</span> <span class="n">P</span><span class="p">,</span> <span class="n">S</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>with some meaningful values for <img class="math" src="../_images/math/9866e3a998d628ba0941eb4fea0666ac391d149a.png" alt="Q"/>, <img class="math" src="../_images/math/4b4cade9ca8a2c8311fafcf040bc5b15ca507f52.png" alt="P"/>, <img class="math" src="../_images/math/ad28c83c99a8fd0dd2e2e594c9d02ee532765a0a.png" alt="S"/> and <img class="math" src="../_images/math/0615acc3725de21025457e7d6f7694dab8e2f758.png" alt="q"/>
+and <img class="math" src="../_images/math/36f73fc1312ee0349b3f3a0f3bd9eb5504339011.png" alt="p"/>. For compatibility with the inhomogeneous case, we can also
+specify the parameters as:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">parameters</span> <span class="o">=</span> <span class="p">[</span> <span class="p">(</span><span class="n">P0</span><span class="p">,</span> <span class="n">Q0</span><span class="p">,</span> <span class="n">S0</span><span class="p">,</span> <span class="n">p0</span><span class="p">,</span> <span class="n">q0</span><span class="p">),</span> <span class="o">...</span><span class="p">,</span> <span class="p">(</span><span class="n">Pn</span><span class="p">,</span> <span class="n">Qn</span><span class="p">,</span> <span class="n">Sn</span><span class="p">,</span> <span class="n">pn</span><span class="p">,</span> <span class="n">qn</span><span class="p">)</span> <span class="p">]</span>
+</pre></div>
+</div>
+<p>where there are as many inner tuples as energy levels. The initialisation
+code then picks just the single tuple with its index matching the
+<tt class="docutils literal"><span class="pre">leading_component</span></tt> value. This allows easy sharing of
+configuration files with minimal editing.</p>
+<p>The coefficients <img class="math" src="../_images/math/1e95be43c04d6869c67861aae1e3e69123fedd8c.png" alt="c_i"/> of the linear combination are specified for each
+level separately. There is a list of <tt class="docutils literal"><span class="pre">(index,value)</span></tt> pairs for
+each energy level and all these lists are collected in one big list
+assigned to the variable <tt class="docutils literal"><span class="pre">coefficients</span></tt>. This could for example look like:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">coefficients</span> <span class="o">=</span> <span class="p">[[</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mf">1.0</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mf">0.5</span><span class="p">),</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mf">0.2</span><span class="p">)],</span>
+                <span class="p">[</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mf">0.1</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mf">1.2</span><span class="p">)]]</span>
+</pre></div>
+</div>
+<p>where we have two energy levels (note that the wave function here is not normalized!).
+These <tt class="docutils literal"><span class="pre">(index,value)</span></tt> pairs give the value <img class="math" src="../_images/math/1e95be43c04d6869c67861aae1e3e69123fedd8c.png" alt="c_i"/> of the coefficient
+with index <img class="math" src="../_images/math/34857b3ba74ce5cd8607f3ebd23e9015908ada71.png" alt="i"/>. For example the list containing only the pair <tt class="docutils literal"><span class="pre">[</span> <span class="pre">(2,1.0)</span> <span class="pre">]</span></tt>
+yields a <img class="math" src="../_images/math/39f267913db90a1788d6adbf5c815a0df075358f.png" alt="\varphi_2"/> packet while the list <tt class="docutils literal"><span class="pre">[</span> <span class="pre">(0,0.5),</span> <span class="pre">(1,0.5)</span> <span class="pre">]</span></tt> gives
+a superposition of <img class="math" src="../_images/math/11f5ab47b445c0b7fee046bbd7e65d20682c6d22.png" alt="\frac{1}{2} \left( \varphi_0 + \varphi_1 \right)"/>. If you
+wish to have no wavepacket on an energy level just provide the dummy pair <tt class="docutils literal"><span class="pre">[</span> <span class="pre">(0,0.0)</span> <span class="pre">]</span></tt>.</p>
+</div>
+<div class="section" id="for-the-multihagedorn-propagator">
+<h3>For the <tt class="docutils literal"><span class="pre">multihagedorn</span></tt> Propagator<a class="headerlink" href="#for-the-multihagedorn-propagator" title="Permalink to this headline">¶</a></h3>
+<p>This propagator needs a set of parameters for each energy level. Thus
+the data structure must look like:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">parameters</span> <span class="o">=</span> <span class="p">[</span> <span class="p">(</span><span class="n">P0</span><span class="p">,</span> <span class="n">Q0</span><span class="p">,</span> <span class="n">S0</span><span class="p">,</span> <span class="n">p0</span><span class="p">,</span> <span class="n">q0</span><span class="p">),</span> <span class="o">...</span><span class="p">,</span> <span class="p">(</span><span class="n">Pn</span><span class="p">,</span> <span class="n">Qn</span><span class="p">,</span> <span class="n">Sn</span><span class="p">,</span> <span class="n">pn</span><span class="p">,</span> <span class="n">qn</span><span class="p">)</span> <span class="p">]</span>
+</pre></div>
+</div>
+<p>where there are as many inner tuples as energy levels. The coefficients <img class="math" src="../_images/math/1e95be43c04d6869c67861aae1e3e69123fedd8c.png" alt="c_i"/>
+are specified the same way as in the homogeneous case above.</p>
+</div>
+</div>
+<div class="section" id="required-parameter-sets">
+<h2>Required parameter sets<a class="headerlink" href="#required-parameter-sets" title="Permalink to this headline">¶</a></h2>
+<p>The simulations can be configured with a very flexible scheme. One must only
+specify the values that are really necessary and can omit all others. There
+are some input parameters that have to be provided in any case and many others that
+are only necessary for a specific algorithm or are purely optional.</p>
+<p>In this section all parameters that can be provided are listed.
+You are free to define additional parameters and use them in a data evaluation
+script. Just make sure there is no variable name clash.</p>
+<div class="section" id="parameters-for-all-propagation-algorithms">
+<h3>Parameters for all propagation algorithms<a class="headerlink" href="#parameters-for-all-propagation-algorithms" title="Permalink to this headline">¶</a></h3>
+<dl class="docutils">
+<dt><tt class="docutils literal"><span class="pre">algorithm</span></tt></dt>
+<dd><p class="first">The simulation algorithm.</p>
+<ul class="last simple">
+<li>Possible values: <tt class="docutils literal"><span class="pre">fourier</span></tt>, <tt class="docutils literal"><span class="pre">hagedorn</span></tt>, <tt class="docutils literal"><span class="pre">multihagedorn</span></tt></li>
+<li>Data type: string</li>
+</ul>
+</dd>
+<dt><tt class="docutils literal"><span class="pre">potential</span></tt></dt>
+<dd><p class="first">The potential</p>
+<ul class="last simple">
+<li>Possible values: see Section <em class="xref std std-ref">Ready made Potentials</em></li>
+<li>Data type: string or dict</li>
+</ul>
+</dd>
+<dt><tt class="docutils literal"><span class="pre">T</span></tt></dt>
+<dd><p class="first">The time when the simulation stops</p>
+<ul class="last simple">
+<li>Possible values: Non-negative float</li>
+<li>Data type: float</li>
+</ul>
+</dd>
+<dt><tt class="docutils literal"><span class="pre">dt</span></tt></dt>
+<dd><p class="first">The size of a single time step</p>
+<ul class="last simple">
+<li>Possible values: Non-negative float</li>
+<li>Data type: float</li>
+</ul>
+</dd>
+<dt><tt class="docutils literal"><span class="pre">eps</span></tt></dt>
+<dd><p class="first">The semi-classical scaling parameter</p>
+<ul class="last simple">
+<li>Possible values: Non-negative float</li>
+<li>Data type: float</li>
+</ul>
+</dd>
+<dt><tt class="docutils literal"><span class="pre">parameters</span></tt></dt>
+<dd>The Hagedorn parameters <img class="math" src="../_images/math/e19d0db3a155ddab6223a26bc4d41890ad690913.png" alt="\{P, Q, S, p, q \}"/> of the
+initial wavepackets. The exact format of this variable depends on the
+simulation algorithm used, see above.</dd>
+<dt><tt class="docutils literal"><span class="pre">coefficients</span></tt></dt>
+<dd>A list with the lists of (index,value) tuples that
+set the coefficients of the basis functions for the initial wavepackets. The
+exact format of this variable depends on the simulation algorithm used, see above.</dd>
+<dt><tt class="docutils literal"><span class="pre">write_nth</span></tt></dt>
+<dd><p class="first">Save simulation data every n-th timestep</p>
+<ul class="last">
+<li><dl class="first docutils">
+<dt>Possible values: Positive Integer where the case 0 is interpreted as</dt>
+<dd><p class="first last"><em>never</em>. In this case only the initial values are saved.</p>
+</dd>
+</dl>
+</li>
+<li><p class="first">Data type: integer</p>
+</li>
+<li><p class="first">Default value: is 0 if no other value is provided.</p>
+</li>
+</ul>
+</dd>
+<dt><tt class="docutils literal"><span class="pre">save_at</span></tt></dt>
+<dd><p class="first">A list of times and/or timesteps when saving of the
+simulation data takes place. (Which data are saved depends on the implementation
+of the respective <tt class="docutils literal"><span class="pre">SimulationLoop</span></tt> subclass.)</p>
+<ul class="last">
+<li><dl class="first docutils">
+<dt>Possible values: A list of integers and/or floats. Integers are interpreted</dt>
+<dd><p class="first last">as timesteps and floats as (absolute) times. Always be aware
+of this difference in interpretation!</p>
+</dd>
+</dl>
+</li>
+<li><p class="first">Data type: integer or float</p>
+</li>
+<li><dl class="first docutils">
+<dt>Default value: an empty list, thus saving at special points in time</dt>
+<dd><p class="first last">is not enabled.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+<dt><tt class="docutils literal"><span class="pre">matrix_exponential</span></tt></dt>
+<dd><p class="first">Choose the algorithm used for computing the matrix exponential.</p>
+<ul class="last simple">
+<li>Possible values: <tt class="docutils literal"><span class="pre">&quot;pade&quot;</span></tt>, <tt class="docutils literal"><span class="pre">&quot;arnoldi&quot;</span></tt></li>
+<li>Data type: string</li>
+<li>Default value: <tt class="docutils literal"><span class="pre">&quot;arnoldi&quot;</span></tt></li>
+</ul>
+</dd>
+<dt><tt class="docutils literal"><span class="pre">arnoldi_steps</span></tt></dt>
+<dd><p class="first">The number of arnoldi steps performed. Use this together with
+the parameter <tt class="docutils literal"><span class="pre">matrix_exponential</span></tt> set to <tt class="docutils literal"><span class="pre">&quot;arnoldi&quot;</span></tt>.</p>
+<ul class="last simple">
+<li>Possible values: positive integers</li>
+<li>Data type: integer</li>
+<li>Default value: 20</li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="parameters-for-the-fourier-propagator">
+<h3>Parameters for the <tt class="docutils literal"><span class="pre">fourier</span></tt> propagator<a class="headerlink" href="#parameters-for-the-fourier-propagator" title="Permalink to this headline">¶</a></h3>
+<dl class="docutils">
+<dt><tt class="docutils literal"><span class="pre">initial_values</span></tt></dt>
+<dd>A specific input format for the initial values. This allows to
+place an arbitrary number of wavepackets on any energy level.
+A valid configuration must either have this variable set or both of
+<tt class="docutils literal"><span class="pre">parameters</span></tt> and <tt class="docutils literal"><span class="pre">coefficients</span></tt>. If all three are given, this
+takes precedence.</dd>
+<dt><tt class="docutils literal"><span class="pre">ngn</span></tt></dt>
+<dd><p class="first">The number of grid nodes used for the Fourier transformation.</p>
+<ul class="last simple">
+<li>Possible values: Integer, optimal is a power of 2 but this is not necessary.</li>
+<li>Data type: integer</li>
+</ul>
+</dd>
+<dt><tt class="docutils literal"><span class="pre">f</span></tt></dt>
+<dd><p class="first">A scalar number that determines the extension of the computational domain.</p>
+<ul class="last simple">
+<li>Possible values: A non-negative float</li>
+<li>Data type: float</li>
+</ul>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">You must specify a <tt class="docutils literal"><span class="pre">basis_size</span></tt> (see below) for the Fourier
+propagator too because we compute initial values from wavepackets.</p>
+</div>
+</div>
+<div class="section" id="parameters-for-the-hagedorn-propagator">
+<h3>Parameters for the <tt class="docutils literal"><span class="pre">hagedorn</span></tt> propagator<a class="headerlink" href="#parameters-for-the-hagedorn-propagator" title="Permalink to this headline">¶</a></h3>
+<dl class="docutils">
+<dt><tt class="docutils literal"><span class="pre">basis_size</span></tt></dt>
+<dd><p class="first">Number of basis functions used for homogeneous Hagedorn wavepackets.</p>
+<ul class="last simple">
+<li>Possible values: Non-negative integer larger than 2.</li>
+<li>Data type: integer</li>
+</ul>
+</dd>
+<dt><tt class="docutils literal"><span class="pre">leading_component</span></tt></dt>
+<dd><p class="first">The leading component is the eigenvalue that governs the propagation
+of the wavepackets&#8217; parameters.</p>
+<ul class="last">
+<li><dl class="first docutils">
+<dt>Possible values: Integer in the range 0 to <img class="math" src="../_images/math/a256c70ad4c46ec1127c5be68f8bb3075e9ced31.png" alt="N-1"/> inclusive,</dt>
+<dd><p class="first last">where <img class="math" src="../_images/math/fc97ef67268cd4e91bacdf12b8901d7036c9a056.png" alt="N"/> is the number of energy levels the
+given potential supports.</p>
+</dd>
+</dl>
+</li>
+<li><p class="first">Data type: integer</p>
+</li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="parameters-for-the-multihagedorn-propagator">
+<h3>Parameters for the <tt class="docutils literal"><span class="pre">multihagedorn</span></tt> propagator<a class="headerlink" href="#parameters-for-the-multihagedorn-propagator" title="Permalink to this headline">¶</a></h3>
+<dl class="docutils">
+<dt><tt class="docutils literal"><span class="pre">basis_size</span></tt></dt>
+<dd><p class="first">Number of basis functions used for inhomogeneous Hagedorn packets.</p>
+<ul class="last simple">
+<li>Possible values: Non-negative integer larger than 2.</li>
+<li>Data type: integer</li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="optional-parameters">
+<h3>Optional parameters<a class="headerlink" href="#optional-parameters" title="Permalink to this headline">¶</a></h3>
+<p>All variables that appear as parameters of some potential can be specified
+here. For example, the <tt class="docutils literal"><span class="pre">quadratic</span></tt> potential has a parameter <tt class="docutils literal"><span class="pre">sigma</span></tt>
+which can be given in the simulation configuration. (Otherwise a default value
+would be used.) For potentials that contain parameters for which no default
+values are specified, these parameters must be given in the configuration file.
+An example of such a parameter is the <tt class="docutils literal"><span class="pre">delta</span></tt> of the <tt class="docutils literal"><span class="pre">delta_gap</span></tt> potential.</p>
+</div>
+<div class="section" id="parameters-related-to-spawning">
+<h3>Parameters related to spawning<a class="headerlink" href="#parameters-related-to-spawning" title="Permalink to this headline">¶</a></h3>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">The spawning algorithms are not supported in the new <tt class="docutils literal"><span class="pre">WaveBlocksND</span></tt> code yet.</p>
+</div>
+<p>There are a number of parameters which are all related to the different
+spawning techniques. The name of these parameters always starts with the prefix
+<tt class="docutils literal"><span class="pre">spawn</span></tt>. It is beyond the scope of this document to explain the details
+of the spawning techniques and also the theoretical origin of the various parameters.</p>
+<p>To enable spawning, the configuration parameter <tt class="docutils literal"><span class="pre">algorithm</span></tt> can be set
+to additional values not mentioned above.</p>
+<dl class="docutils">
+<dt><tt class="docutils literal"><span class="pre">algorithm</span></tt></dt>
+<dd><p class="first">The simulation algorithm</p>
+<ul class="last simple">
+<li>Possible values: <tt class="docutils literal"><span class="pre">&quot;spawning_adiabatic&quot;</span></tt>, <tt class="docutils literal"><span class="pre">&quot;spawning_nonadiabatic&quot;</span></tt></li>
+<li>Data type: string</li>
+</ul>
+</dd>
+</dl>
+<p>Since these algorithms make use of the homogeneous Hagedorn propagation internally,
+all variables related to this propagator must be set additionally.</p>
+<p>Then there is a bunch of parameters controlling the details of the spawning
+process. Most of these variables must be set properly, some are optional
+depending on specific choices for others.</p>
+<dl class="docutils">
+<dt><tt class="docutils literal"><span class="pre">spawn_method</span></tt></dt>
+<dd><p class="first">Specify the spawning method used. If set to <tt class="docutils literal"><span class="pre">lumping</span></tt> we just spawn a
+normed wavepacket by copying over the norm of the <cite>spawn candidate</cite>. If
+set to <tt class="docutils literal"><span class="pre">projection</span></tt> a full basis projection is done up to the maximal
+order given by the parameter <tt class="docutils literal"><span class="pre">spawn_max_order</span></tt>. (Always set this value
+too.)</p>
+<ul class="last simple">
+<li>Possible values: <tt class="docutils literal"><span class="pre">&quot;lumping&quot;</span></tt> or <tt class="docutils literal"><span class="pre">&quot;projection&quot;</span></tt></li>
+<li>Data type: string</li>
+</ul>
+</dd>
+<dt><tt class="docutils literal"><span class="pre">spawn_max_order</span></tt></dt>
+<dd><p class="first">The maximal order (size) of the spawned wavepacket i.e. on how many new basis
+functions the basis projection is performed. This only makes sense in
+combination with the <tt class="docutils literal"><span class="pre">spawn_method</span></tt> parameter set to <tt class="docutils literal"><span class="pre">projection</span></tt>.</p>
+<ul class="last">
+<li><dl class="first docutils">
+<dt>Possible values: Non-negative integer in the range <img class="math" src="../_images/math/7a6666218e0ac354c5d24973d8fbafdeebe3b835.png" alt="\left[0, \ldots, K\right]"/></dt>
+<dd><p class="first last">where <img class="math" src="../_images/math/dfb064112b6c94470339f6571f69d07afc1c024c.png" alt="K"/> is the basis size given by <tt class="docutils literal"><span class="pre">basis_size</span></tt>.</p>
+</dd>
+</dl>
+</li>
+<li><p class="first">Data type: integer</p>
+</li>
+</ul>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This <tt class="docutils literal"><span class="pre">spawn_max_order</span></tt> is <em>not</em> the basis size of the spawned wavepacket.
+(Which we currently can not control.)</p>
+</div>
+<dl class="docutils">
+<dt><tt class="docutils literal"><span class="pre">spawn_order</span></tt></dt>
+<dd><p class="first">The spawned wavepacket is assumed to be of the form of <img class="math" src="../_images/math/b91ac9c58c0e22ff0b88f239dbda5d97e8329e81.png" alt="\phi_k"/> at leading
+order. This is not always true but we need the value of <img class="math" src="../_images/math/8c325612684d41304b9751c175df7bcc0f61f64f.png" alt="k"/> in the algorithms
+for formal reasons. If the value of <img class="math" src="../_images/math/8c325612684d41304b9751c175df7bcc0f61f64f.png" alt="k"/> is wrong then the results may be
+much worse. (Consider this to be a limitation of the current algorithms.)</p>
+<ul class="last">
+<li><dl class="first docutils">
+<dt>Possible values: Non-negative integer in the range <img class="math" src="../_images/math/7a6666218e0ac354c5d24973d8fbafdeebe3b835.png" alt="\left[0, \ldots, K\right]"/></dt>
+<dd><p class="first last">where <img class="math" src="../_images/math/dfb064112b6c94470339f6571f69d07afc1c024c.png" alt="K"/> is the basis size given by <tt class="docutils literal"><span class="pre">basis_size</span></tt>.</p>
+</dd>
+</dl>
+</li>
+<li><p class="first">Data type: integer</p>
+</li>
+</ul>
+</dd>
+</dl>
+<p>Finally, we have several possibilities how we decide if and when to spawn. This
+criterion or <cite>oracle</cite> has to be set by the following variable. There is an
+open set of possibilities, more criteria may be added in the future. All values
+are class names of the classes that implement the corresponding condition. The
+implementations can be found in the file <tt class="docutils literal"><span class="pre">SpawnConditions.py</span></tt>.</p>
+<dl class="docutils">
+<dt><tt class="docutils literal"><span class="pre">spawn_condition</span></tt></dt>
+<dd><p class="first">Specify the spawning condition used to decide if and when spawning should occur.</p>
+<ul class="last">
+<li><dl class="first docutils">
+<dt>Possible values: <tt class="docutils literal"><span class="pre">&quot;spawn_at_time&quot;</span></tt>, <tt class="docutils literal"><span class="pre">&quot;norm_threshold&quot;</span></tt>, <tt class="docutils literal"><span class="pre">&quot;high_k_norm_threshold&quot;</span></tt>,</dt>
+<dd><p class="first last"><tt class="docutils literal"><span class="pre">&quot;high_k_norm_derivative_threshold&quot;</span></tt>, <tt class="docutils literal"><span class="pre">&quot;norm_derivative_threshold_l2&quot;</span></tt>,
+<tt class="docutils literal"><span class="pre">&quot;norm_derivative_threshold_max&quot;</span></tt></p>
+</dd>
+</dl>
+</li>
+<li><p class="first">Data type: string</p>
+</li>
+</ul>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If in doubt, try using <tt class="docutils literal"><span class="pre">norm_threshold</span></tt> or <tt class="docutils literal"><span class="pre">norm_derivative_threshold_l2</span></tt>
+with sensible values for the related parameters. (Choosing good values for these
+parameters is the most difficult part.)</p>
+</div>
+<p>Each of these methods depend on one or several more parameters configuring their
+behaviour in detail. These parameters are described in the following list.</p>
+<dl class="docutils">
+<dt><tt class="docutils literal"><span class="pre">spawn_threshold</span></tt></dt>
+<dd><p class="first">The spawning threshold is compared to the norm of the fragment or <cite>spawning candidate</cite>
+examined. Its norm has to exceed this value in order to initiate the spawning process.</p>
+<ul class="last">
+<li><p class="first">Possible values: Non-negative float (should be between 0.0 and 1.0)</p>
+</li>
+<li><p class="first">Data type: float</p>
+</li>
+<li><dl class="first docutils">
+<dt>Used by: All methods. (Because it is used in the parameter estimation process</dt>
+<dd><p class="first last">to avoid division by zero.) The methods <tt class="docutils literal"><span class="pre">norm_threshold</span></tt> and
+<tt class="docutils literal"><span class="pre">high_k_norm_threshold</span></tt> decide solely on this value. The methods
+<tt class="docutils literal"><span class="pre">*_derivative_*</span></tt> use this value as a first hint in combination with others.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+<dt><tt class="docutils literal"><span class="pre">spawn_K0</span></tt></dt>
+<dd><p class="first">The index of the coefficient <img class="math" src="../_images/math/846d68ab9ee14e290b5538d5b8042bf2cb443a29.png" alt="c_{K0}"/> where splitting in low and high
+coefficients is applied. (<img class="math" src="../_images/math/846d68ab9ee14e290b5538d5b8042bf2cb443a29.png" alt="c_{K0}"/> is included into the set of high ones.)</p>
+<ul class="last">
+<li><dl class="first docutils">
+<dt>Possible values: Non-negative integer in the range <img class="math" src="../_images/math/7a6666218e0ac354c5d24973d8fbafdeebe3b835.png" alt="\left[0, \ldots, K\right]"/></dt>
+<dd><p class="first last">where <img class="math" src="../_images/math/dfb064112b6c94470339f6571f69d07afc1c024c.png" alt="K"/> is the basis size given by <img class="math" src="../_images/math/d37528ce72c52819024812fd864fb06b033a9619.png" alt="basis_size"/>.</p>
+</dd>
+</dl>
+</li>
+<li><p class="first">Data type: integer</p>
+</li>
+<li><dl class="first docutils">
+<dt>Used by: The conditions <tt class="docutils literal"><span class="pre">high_k_norm_threshold</span></tt> and <tt class="docutils literal"><span class="pre">high_k_norm_derivative_threshold</span></tt>.</dt>
+<dd><p class="first last">This parameter is also used by all method that do a low/high filtering.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+<dt><tt class="docutils literal"><span class="pre">spawn_hist_len</span></tt></dt>
+<dd><p class="first">The length of the history measured in number of samples.</p>
+<ul class="last">
+<li><dl class="first docutils">
+<dt>Possible values: Positive integers. Values in the range of 5 up to</dt>
+<dd><p class="first last">about 30 are probably good choices.</p>
+</dd>
+</dl>
+</li>
+<li><p class="first">Data type: integer</p>
+</li>
+<li><dl class="first docutils">
+<dt>Used by: All methods that keep a history and remember their past.</dt>
+<dd><p class="first last">In particular these are:
+<tt class="docutils literal"><span class="pre">high_k_norm_derivative_threshold</span></tt>,
+<tt class="docutils literal"><span class="pre">norm_derivative_threshold_l2</span></tt>,
+<tt class="docutils literal"><span class="pre">norm_derivative_threshold_max</span></tt>.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+<dt><tt class="docutils literal"><span class="pre">spawn_deriv_threshold</span></tt></dt>
+<dd><p class="first">The threshold applied to the derivative of the norm of the fragment examined for
+spawning. The derivative is usually approximated by simple finite differences.</p>
+<ul class="last">
+<li><p class="first">Possible values: (Small) real positive values</p>
+</li>
+<li><p class="first">Data type: float</p>
+</li>
+<li><dl class="first docutils">
+<dt>Used by: The methods</dt>
+<dd><p class="first last"><tt class="docutils literal"><span class="pre">high_k_norm_derivative_threshold</span></tt>,
+<tt class="docutils literal"><span class="pre">norm_derivative_threshold_l2</span></tt>,
+<tt class="docutils literal"><span class="pre">norm_derivative_threshold_max</span></tt></p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+<dt><tt class="docutils literal"><span class="pre">spawn_time</span></tt></dt>
+<dd><p class="first">The time when we want to spawn.</p>
+<ul class="last">
+<li><dl class="first docutils">
+<dt>Possible values: Real values in the range <img class="math" src="../_images/math/e4f1d46aa6e48e7c3aab59e19939014d0d5b477a.png" alt="[0, T]"/>. The values will</dt>
+<dd><p class="first last">be rounded to the nearest timestep interval.</p>
+</dd>
+</dl>
+</li>
+<li><p class="first">Data type: float</p>
+</li>
+<li><p class="first">Used by: The method <tt class="docutils literal"><span class="pre">spawn_at_time</span></tt>.</p>
+</li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="parameters-related-to-aposteriori-spawning">
+<h3>Parameters related to aposteriori spawning<a class="headerlink" href="#parameters-related-to-aposteriori-spawning" title="Permalink to this headline">¶</a></h3>
+<p>In addition to the algorithms that combine propagation with spawning there are
+also algorithms which perform an aposteriori analysis of spawning methods. They
+can be chosen by the following values for the parameter <tt class="docutils literal"><span class="pre">algorithm</span></tt>.</p>
+<dl class="docutils">
+<dt><tt class="docutils literal"><span class="pre">algorithm</span></tt></dt>
+<dd><p class="first">The simulation algorithm</p>
+<ul class="last simple">
+<li>Possible values: <tt class="docutils literal"><span class="pre">&quot;spawning_apost&quot;</span></tt> and <tt class="docutils literal"><span class="pre">&quot;spawning_apost_na&quot;</span></tt></li>
+<li>Data type: string</li>
+</ul>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">These values are currently unused.</p>
+</div>
+<p>In the non-adiabatic case we might be interested on specific energy levels only.
+These level can be set by the following variable. (This does not apply to the
+algorithms from the last section.)</p>
+<dl class="docutils">
+<dt><tt class="docutils literal"><span class="pre">spawn_components</span></tt></dt>
+<dd><p class="first">The energy levels on which spawning is tried.</p>
+<ul class="last simple">
+<li>Possible values: List of integers between 0 and the number of energy levels.</li>
+<li>Data type: list or tuple</li>
+</ul>
+</dd>
+</dl>
+<p>All other parameters from the last section must be used additionally to configure
+the details of the spawning process.</p>
+<p>For this very specialised problem setting you have to use the scripts
+<tt class="docutils literal"><span class="pre">AposterioriSpawning.py</span></tt> and <tt class="docutils literal"><span class="pre">AposterioriSpawningNA.py</span></tt>. These scripts
+perform the aposteriori analysis on some given simulation data. They produce
+new data files which then can be evaluated with the usual tools.</p>
+</div>
+</div>
+<div class="section" id="data-storage">
+<h2>Data storage<a class="headerlink" href="#data-storage" title="Permalink to this headline">¶</a></h2>
+<p>What data are written to disk. How can we retrieve data, IOM basics, usage, etc</p>
+<div class="section" id="how-iom-works">
+<h3>How IOM works<a class="headerlink" href="#how-iom-works" title="Permalink to this headline">¶</a></h3>
+<p>The so-called <cite>IOManager</cite> is responsible for storing all our data. It provides a
+meaningful API for storing and retrieving simulation data and the goal is to
+make data handling from scripts as easy as possible. The IOManager uses the low-level
+<tt class="docutils literal"><span class="pre">hdf5</span></tt> file format to actually store the numerical data efficiently. Dealing directly
+with the hdf5 API provided by <tt class="docutils literal"><span class="pre">h5py</span></tt> would be cumbersome as we would have
+to remember much more details about how the data are stored inside an hdf file.
+With this thin layer we just tell the IOM which data we want to store or load and
+it performs all the low-level stuff behind our back.</p>
+<p>Please note that the tab-completion of <tt class="docutils literal"><span class="pre">ipython</span></tt> won&#8217;t work as usual
+on <tt class="docutils literal"><span class="pre">IOManager</span></tt> instances because of its plugin architecture. The plugins
+allow to add functionality at runtime and only when its really used. Thus a
+(member)function may be loaded right at the moment it gets called the first time.
+This is the reason why tab-completion and introspection will not work for
+(member)functions that had never been called before.</p>
+</div>
+<div class="section" id="what-gets-stored">
+<h3>What gets stored<a class="headerlink" href="#what-gets-stored" title="Permalink to this headline">¶</a></h3>
+<p>Each file containing simulation results is basically divided into <cite>datablocks</cite>.
+There is one special block called the <cite>global datablock</cite> which stores
+data that are identical for the whole simulation (for example space domain grids,
+simulation parameters etc). Then there can be an arbitrary number of normal data
+blocks which can store various data related to wavepackets, wavefunctions and observables.
+Each of these data sets is optional and there are functions to query if specified
+data is available. The next figure shows the coarse structure of any simulation
+results file.</p>
+<div class="figure align-center">
+<img alt="../_images/structure_result_file.png" src="../_images/structure_result_file.png" />
+<p class="caption">Coarse structure of a file containing simulation results.</p>
+</div>
+<p>The figure below shows the internal structure of a single data block.
+In this structure not all data objects always exist depending on what
+computations were performed. The dark blocks are at the level of individual data
+tensors while the lighter grey boxes represent hdf groups. Note that not all data
+sets may exist at all and that each group can have different subsets. For example
+if you never computed observables, then this entire block is missing. The
+wavefunction data can come from a simulation with the Fourier propagator or from
+the evaluation of wavepackets on a given domain-wide grid.</p>
+<div class="figure align-center">
+<img alt="../_images/structure_datablock.png" src="../_images/structure_datablock.png" />
+<p class="caption">Possible structure of a single data block. Not all data always exist.</p>
+</div>
+</div>
+<div class="section" id="saving-data-at-times-and-timesteps">
+<h3>Saving data at times and timesteps<a class="headerlink" href="#saving-data-at-times-and-timesteps" title="Permalink to this headline">¶</a></h3>
+<p>Storing simulation data can happen in various different ways. For example you
+can store data at regular time intervals. Or at a list of fixed points in time.
+Both is easily possible with the tools provided by the <tt class="docutils literal"><span class="pre">IOManager</span></tt> together
+with the <tt class="docutils literal"><span class="pre">TimeManager</span></tt>. While the <tt class="docutils literal"><span class="pre">IOManager</span></tt> is responsible for
+saving and loading the data, the <tt class="docutils literal"><span class="pre">TimeManager</span></tt> is used for all computations
+related with time, timesteps and so on, for example to convert a list of times
+into a list of timesteps or checking if a given time is is within the simulated
+time range etc.</p>
+<p>The two parameters <tt class="docutils literal"><span class="pre">write_nth</span></tt> and <tt class="docutils literal"><span class="pre">save_at</span></tt> are used to configure the
+way you wish to save data. While the first is used to specify the details of saving
+at regular time intervals, the second one provides the means to specify a list
+of points in time when saving should take place. A few examples of saving at regular
+intervals:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># Save data at each timestep</span>
+<span class="n">write_nth</span> <span class="o">=</span> <span class="mi">1</span>
+
+<span class="c"># Save data each 5th timestep</span>
+<span class="n">write_nth</span> <span class="o">=</span> <span class="mi">5</span>
+
+<span class="c"># Never save data</span>
+<span class="n">write_nth</span> <span class="o">=</span> <span class="mi">0</span>
+</pre></div>
+</div>
+<p>Please note that this scheme is rigid in the sense that if for example the timestep
+corresponding to the end of the simulation is not an integer multiple of the value
+of this parameter then the data from the end is missing. (This should be quite obvious!)</p>
+<p>The parameter <tt class="docutils literal"><span class="pre">save_at</span></tt> has to be a python list containing integers
+and/or floats. There is a <em>big difference</em> between the two data types
+you always have to be aware of! Integer values are interpreted as <cite>timesteps</cite>
+while floats will be taken as <cite>times</cite>. A few examples on saving at specified
+times only:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># Save at timestep 3, 6, 7, 13 and 19</span>
+<span class="n">save_at</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">19</span><span class="p">]</span>
+
+<span class="c"># Save at the end time only</span>
+<span class="c"># Assuming T = 5.34 and T is an integer multiple of dt!</span>
+<span class="n">save_at</span> <span class="o">=</span> <span class="p">[</span><span class="mf">5.34</span><span class="p">]</span>
+
+<span class="c"># Save at a few times</span>
+<span class="c"># This is usefull to compare simulation results of simulations</span>
+<span class="c"># with different timestep sizes. Of course the times have to be</span>
+<span class="c"># integer multiples of *all* timestep sizes in consideration!</span>
+<span class="n">save_at</span> <span class="o">=</span> <span class="p">[</span><span class="mf">3.2</span><span class="p">,</span> <span class="mf">4.5</span><span class="p">,</span> <span class="mf">8.7</span><span class="p">,</span> <span class="mf">19.3</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>You can freely mix the two approaches and specify crazy things like
+the following:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">write_nth</span> <span class="o">=</span> <span class="mi">15</span>
+<span class="n">save_at</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mf">4.5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mf">3.2</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mf">23.45</span><span class="p">,</span> <span class="mf">23.55</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>which translates to the: <cite>Save the data each 15 steps and additionally
+save the data at the timesteps 1, 2, 3, 10 and 40 and save the data at the time 3.2,
+23.45 and 23.55.</cite> It is assumed that <cite>time</cite> is an integer multiple of the
+<tt class="docutils literal"><span class="pre">timestep</span></tt> size. (Otherwise more or less careful rounding will be applied.)
+The list doesn&#8217;t have to be in monotone order and duplicates will be removed as well
+as values outside the interval <img class="math" src="../_images/math/e4f1d46aa6e48e7c3aab59e19939014d0d5b477a.png" alt="[0, T]"/> where <img class="math" src="../_images/math/2554b6496c3b678897e9b060ef00aa9f0a7d7ece.png" alt="T"/> is the time at which
+the simulation stops. A good use case for a mixed specification is for example saving at big
+intervals but including the very end of the simulation:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">write_nth</span> <span class="o">=</span> <span class="mi">35</span>
+<span class="n">save_at</span> <span class="o">=</span> <span class="p">[</span><span class="mf">5.34</span><span class="p">]</span>    <span class="c"># Same assumption as above</span>
+</pre></div>
+</div>
+<p>Note that even if you disable saving data entirely be setting:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">write_nth</span> <span class="o">=</span> <span class="mi">0</span>     <span class="c"># Default is 1</span>
+<span class="n">save_at</span> <span class="o">=</span> <span class="p">[]</span>      <span class="c"># Default is []</span>
+</pre></div>
+</div>
+<p>you will end up with a hdf5 file still containing the initial values as they
+are at time equal 0 (before the first timestep was made).</p>
+</div>
+<div class="section" id="retrieving-the-simulation-parameters">
+<h3>Retrieving the simulation parameters<a class="headerlink" href="#retrieving-the-simulation-parameters" title="Permalink to this headline">¶</a></h3>
+<p>From a hdf5 file with the simulation data we can get back the parameters this
+simulation used. Retrieval is trivial, the following commented interactive python
+session shows the basics which can of course be used in a user script too:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">WaveBlocks</span> <span class="kn">import</span> <span class="n">IOManager</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">iom</span> <span class="o">=</span> <span class="n">IOManager</span><span class="p">()</span>                         <span class="c"># create an IOM instance</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">iom</span><span class="o">.</span><span class="n">load_file</span><span class="p">(</span><span class="s">&quot;simulation_results.hdf5&quot;</span><span class="p">)</span>  <span class="c"># load the data file</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sim_params</span> <span class="o">=</span> <span class="n">iom</span><span class="o">.</span><span class="n">get_parameters</span><span class="p">()</span>         <span class="c"># request the parameters</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">sim_params</span><span class="p">)</span>
+<span class="go">====================================</span>
+<span class="go">Parameters of the current simulation</span>
+<span class="go">------------------------------------</span>
+<span class="go">[...]</span>
+</pre></div>
+</div>
+<p>With only three trivial lines of code we get back all the parameters
+that were used for the simulation!</p>
+</div>
+<div class="section" id="load-simulation-data">
+<h3>Load simulation data<a class="headerlink" href="#load-simulation-data" title="Permalink to this headline">¶</a></h3>
+<p>Simulation data can be loaded from a given <tt class="docutils literal"><span class="pre">simulation_results.hdf5</span></tt> file by
+an IOManager instance. You can even do this inside an interactive <tt class="docutils literal"><span class="pre">ipython</span></tt>
+session. The API is quite trivial, all functions for loading data have their name
+prefixed by <tt class="docutils literal"><span class="pre">load_</span></tt> as for example in <tt class="docutils literal"><span class="pre">load_energy(...)</span></tt>. Every function
+for loading and saving data has a keyword argument <tt class="docutils literal"><span class="pre">block</span></tt> defaulting to 0
+which tells the IOManager from which data block to take the requested data.
+For quantities that represent time series, the load functions also provide a keyword
+argument <tt class="docutils literal"><span class="pre">timestep</span></tt> that can be used to load data from a single timestep.
+The default is <tt class="docutils literal"><span class="pre">None</span></tt> meaning <cite>load the data from all timesteps</cite>.
+A sample of such an interactive session could look like this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">WaveBlocks</span> <span class="kn">import</span> <span class="n">IOManager</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">iom</span> <span class="o">=</span> <span class="n">IOManager</span><span class="p">()</span>                          <span class="c"># Create a new IOManager instance</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">iom</span><span class="o">.</span><span class="n">open_file</span><span class="p">(</span><span class="s">&quot;simulation_results.hdf5&quot;</span><span class="p">)</span>   <span class="c"># And open a given hdf5 file</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">iom</span><span class="p">)</span>
+<span class="go">  IOManager instance with open file simulation_results.hdf5</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ekin</span><span class="p">,</span> <span class="n">epot</span> <span class="o">=</span> <span class="n">iom</span><span class="o">.</span><span class="n">load_energy</span><span class="p">()</span>         <span class="c"># Load the energies from a simulation</span>
+<span class="go">  Requested function: load_energy          # Don&#39;t bother about the messages</span>
+<span class="go">  Plugin to load: IOM_plugin_energy        # concerning the plugins.</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ekin</span><span class="o">.</span><span class="n">shape</span>                             <span class="c"># We see the the energies are given</span>
+<span class="go">  (301, 1)                                 # as time series over 301 timesteps</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">epot</span><span class="o">.</span><span class="n">shape</span>
+<span class="go">  (301, 1)</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tg</span> <span class="o">=</span> <span class="n">iom</span><span class="o">.</span><span class="n">load_energy_timegrid</span><span class="p">()</span>        <span class="c"># Load the corresponding timegrid which</span>
+<span class="go">                                           # contains the timesteps when the data</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tg</span><span class="o">.</span><span class="n">shape</span>                               <span class="c"># was saved. This is important if the</span>
+<span class="go">  (301,)                                   # data was saved at non-regular intervalls.</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">iom</span><span class="o">.</span><span class="n">finalize</span><span class="p">()</span>                         <span class="c"># Close the hdf5 file</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plot</span><span class="p">(</span><span class="n">tg</span><span class="p">,</span> <span class="n">ekin</span><span class="p">)</span>                         <span class="c"># Plot the kinetic energy over time</span>
+</pre></div>
+</div>
+<p>Of course all this works exactly the same inside any regular python script.
+For a complete list of all the <tt class="docutils literal"><span class="pre">load_</span></tt> functions please see the API
+documentation or the docstrings.</p>
+</div>
+<div class="section" id="working-with-simulation-data">
+<h3>Working with simulation data<a class="headerlink" href="#working-with-simulation-data" title="Permalink to this headline">¶</a></h3>
+<p>The following code snippet shows how to perform a data transformation task
+for all blocks of a simulation results file.:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">iom</span> <span class="o">=</span> <span class="n">IOManager</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">iom</span><span class="o">.</span><span class="n">open_file</span><span class="p">(</span><span class="s">&quot;testdata.hdf5&quot;</span><span class="p">)</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">blockid</span> <span class="ow">in</span> <span class="n">iom</span><span class="o">.</span><span class="n">get_block_ids</span><span class="p">():</span>      <span class="c"># Iterate over all data blocks</span>
+<span class="go">        if iom.has_energy(block=blockid):    # If the current data block containes</span>
+<span class="go">            ...                              # energies we may do something</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="user-scripts">
+<h2>User scripts<a class="headerlink" href="#user-scripts" title="Permalink to this headline">¶</a></h2>
+<p>Consider merging this section with chapter 2.
+Do an explicit example walk through somewhere.</p>
+<div class="section" id="preparing-simulations">
+<h3>Preparing simulations<a class="headerlink" href="#preparing-simulations" title="Permalink to this headline">¶</a></h3>
+<p>Preparing a whole bunch of simulations is easy. Given the <cite>metaconfiguration</cite>
+file we call the script <cite>ConfigurationGenerator.py</cite> like:</p>
+<div class="highlight-python"><pre>python ConfigurationGenerator.py  &lt;metaconfiguration.py&gt; &lt;configurations_dir&gt;</pre>
+</div>
+<p>where the <tt class="docutils literal"><span class="pre">configurations_dir</span></tt> is optional. If not given a directory called
+<tt class="docutils literal"><span class="pre">autogen_configurations</span></tt> will be created. Remember to move the configuration
+to the <tt class="docutils literal"><span class="pre">configurations</span></tt> directory if you plan to use the <tt class="docutils literal"><span class="pre">Batch.py</span></tt> script.</p>
+</div>
+<div class="section" id="generating-configurations">
+<h3>Generating Configurations<a class="headerlink" href="#generating-configurations" title="Permalink to this headline">¶</a></h3>
+<p>In detail description on how to generate valid configurations</p>
+<div class="section" id="manually">
+<h4>Manually<a class="headerlink" href="#manually" title="Permalink to this headline">¶</a></h4>
+</div>
+<div class="section" id="meta-configurations">
+<h4>Meta-configurations<a class="headerlink" href="#meta-configurations" title="Permalink to this headline">¶</a></h4>
+<p>The best approach to write a <cite>metaconfiguration</cite> file is to
+copy an existing one from the <tt class="docutils literal"><span class="pre">examples</span></tt> directory.</p>
+<p>The rules for valid files are as follows:</p>
+<ul class="simple">
+<li>You can use any valid python statement as value</li>
+<li>All statements are written to a pure python code file</li>
+<li>You can write numbers, lists etc as plain text strings</li>
+<li>All that is not in string form gets evaluated <strong>right now</strong></li>
+<li>Remember to escape python strings twice</li>
+<li>You can use variable references but with great care!</li>
+<li>The ordering of the statements in the output file is such that
+all statements can be executed w.r.t. local variables. This is
+some kind of topological sorting. Be warned, it&#8217;s implemented
+using black magic and may fail now and then!</li>
+</ul>
+<p>That should be all ...</p>
+</div>
+</div>
+<div class="section" id="running-simulations">
+<h3>Running simulations<a class="headerlink" href="#running-simulations" title="Permalink to this headline">¶</a></h3>
+<p>To run a single simulation, use the <tt class="docutils literal"><span class="pre">Main.py</span></tt> script. The first command-line
+argument is the simulation configuration file (with an arbitrary file path):</p>
+<div class="highlight-python"><pre>python Main.py path/to/the/simulationparameters.py</pre>
+</div>
+<p>The results will be written to the file <tt class="docutils literal"><span class="pre">simulation_results.hdf5</span></tt> in the
+<cite>local</cite> directory where the script was called and <cite>not</cite> where the configuration
+file was loaded from. The script refuses to run if there is already a file
+<tt class="docutils literal"><span class="pre">simulation_results.hdf5</span></tt> in the local directory. This is to prevent you
+from data loss.</p>
+<p>To run a bunch of simulations, use the script called <tt class="docutils literal"><span class="pre">Batch.py</span></tt>. It
+has three command line parameters and all are optional with sensible defaults.
+The first specifies the <cite>batch configuration</cite> that will be used. The second
+is a directory path pointing to the directory where the configuration files
+are located. All python files within that directory (excluding recursive descent)
+will be treated as simulation configurations. The directory path defaults to
+<tt class="docutils literal"><span class="pre">./configurations/</span></tt>. Last but not least the third argument specifies the
+directory path where the simulation results (numerical data, plots etc) will be
+placed after the simulation finishes. This defaults to <tt class="docutils literal"><span class="pre">./results/</span></tt>
+with one subdirectory for each simulation configuration. A call looks like:</p>
+<div class="highlight-python"><pre>python Batch.py batchconfiguration.py configurations_dir results_dir</pre>
+</div>
+<p>This is all you need to know to be able to run simulations.</p>
+</div>
+<div class="section" id="computing-additional-data">
+<h3>Computing additional data<a class="headerlink" href="#computing-additional-data" title="Permalink to this headline">¶</a></h3>
+<p>Only compute/store what comes out directly from the time propagation
+(Or what would be much more difficult to computer afterwards)</p>
+<p>Compute all other data in a separate step after the simulation finished
+Example: Norms, energies etc</p>
+</div>
+<div class="section" id="evaluating-data">
+<h3>Evaluating data<a class="headerlink" href="#evaluating-data" title="Permalink to this headline">¶</a></h3>
+<p>Further computations</p>
+</div>
+<div class="section" id="plot-data">
+<h3>Plot data<a class="headerlink" href="#plot-data" title="Permalink to this headline">¶</a></h3>
+<p>Call plot scripts which load the simulation data from a file and plot
+some values.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">The Core and User scripts</a><ul>
+<li><a class="reference internal" href="#the-big-picture">The big picture</a></li>
+<li><a class="reference internal" href="#in-the-core">In the Core</a></li>
+<li><a class="reference internal" href="#time-propagation-algorithms">Time propagation algorithms</a></li>
+<li><a class="reference internal" href="#specifying-initial-values">Specifying initial values</a><ul>
+<li><a class="reference internal" href="#for-the-fourier-propagator">For the <tt class="docutils literal"><span class="pre">fourier</span></tt> Propagator</a></li>
+<li><a class="reference internal" href="#for-the-hagedorn-propagator">For the <tt class="docutils literal"><span class="pre">hagedorn</span></tt> Propagator</a></li>
+<li><a class="reference internal" href="#for-the-multihagedorn-propagator">For the <tt class="docutils literal"><span class="pre">multihagedorn</span></tt> Propagator</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#required-parameter-sets">Required parameter sets</a><ul>
+<li><a class="reference internal" href="#parameters-for-all-propagation-algorithms">Parameters for all propagation algorithms</a></li>
+<li><a class="reference internal" href="#parameters-for-the-fourier-propagator">Parameters for the <tt class="docutils literal"><span class="pre">fourier</span></tt> propagator</a></li>
+<li><a class="reference internal" href="#parameters-for-the-hagedorn-propagator">Parameters for the <tt class="docutils literal"><span class="pre">hagedorn</span></tt> propagator</a></li>
+<li><a class="reference internal" href="#parameters-for-the-multihagedorn-propagator">Parameters for the <tt class="docutils literal"><span class="pre">multihagedorn</span></tt> propagator</a></li>
+<li><a class="reference internal" href="#optional-parameters">Optional parameters</a></li>
+<li><a class="reference internal" href="#parameters-related-to-spawning">Parameters related to spawning</a></li>
+<li><a class="reference internal" href="#parameters-related-to-aposteriori-spawning">Parameters related to aposteriori spawning</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#data-storage">Data storage</a><ul>
+<li><a class="reference internal" href="#how-iom-works">How IOM works</a></li>
+<li><a class="reference internal" href="#what-gets-stored">What gets stored</a></li>
+<li><a class="reference internal" href="#saving-data-at-times-and-timesteps">Saving data at times and timesteps</a></li>
+<li><a class="reference internal" href="#retrieving-the-simulation-parameters">Retrieving the simulation parameters</a></li>
+<li><a class="reference internal" href="#load-simulation-data">Load simulation data</a></li>
+<li><a class="reference internal" href="#working-with-simulation-data">Working with simulation data</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#user-scripts">User scripts</a><ul>
+<li><a class="reference internal" href="#preparing-simulations">Preparing simulations</a></li>
+<li><a class="reference internal" href="#generating-configurations">Generating Configurations</a><ul>
+<li><a class="reference internal" href="#manually">Manually</a></li>
+<li><a class="reference internal" href="#meta-configurations">Meta-configurations</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#running-simulations">Running simulations</a></li>
+<li><a class="reference internal" href="#computing-additional-data">Computing additional data</a></li>
+<li><a class="reference internal" href="#evaluating-data">Evaluating data</a></li>
+<li><a class="reference internal" href="#plot-data">Plot data</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="performing_simulations.html"
+                        title="previous chapter">Using <cite>WaveBlocks</cite> for performing simulations</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="interactive_use.html"
+                        title="next chapter">Interactive use</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/manual/the_core.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="interactive_use.html" title="Interactive use"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="performing_simulations.html" title="Using WaveBlocks for performing simulations"
+             >previous</a> |</li>
+        <li><a href="../index.html">WaveBlocksND devel documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, R. Bourquin.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,164 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>MatrixExponential &mdash; WaveBlocksND devel documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     'devel',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="WaveBlocksND devel documentation" href="../index.html" />
+    <link rel="up" title="Module code" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">WaveBlocksND devel documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for MatrixExponential</h1><div class="highlight"><pre>
+<span class="sd">&quot;&quot;&quot;The WaveBlocks Project</span>
+
+<span class="sd">This file contains several different algorithms to compute the</span>
+<span class="sd">matrix exponential. Currently we have an exponential based on</span>
+<span class="sd">Pade approximations and an Arnoldi iteration method.</span>
+
+<span class="sd">@author: R. Bourquin</span>
+<span class="sd">@copyright: Copyright (C) 2007 V. Gradinaru</span>
+<span class="sd">@copyright: Copyright (C) 2010, 2011, 2012, 2015 R. Bourquin</span>
+<span class="sd">@license: Modified BSD License</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">zeros</span><span class="p">,</span> <span class="n">dot</span><span class="p">,</span> <span class="n">complexfloating</span><span class="p">,</span> <span class="n">conjugate</span>
+<span class="kn">from</span> <span class="nn">scipy.linalg</span> <span class="kn">import</span> <span class="n">norm</span><span class="p">,</span> <span class="n">expm</span>
+
+
+<div class="viewcode-block" id="matrix_exp_pade"><a class="viewcode-back" href="../waveblocks_classes/MatrixExponential.html#MatrixExponential.matrix_exp_pade">[docs]</a><span class="k">def</span> <span class="nf">matrix_exp_pade</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">factor</span><span class="p">):</span>
+    <span class="sd">r&quot;&quot;&quot;Compute the solution of :math:`v&#39; = A v` with a full</span>
+<span class="sd">    matrix exponential via Pade approximation.</span>
+
+<span class="sd">    :param A: The matrix :math:`A` of shape :math:`N \times N`.</span>
+<span class="sd">    :param v: The vector :math:`v` of length :math:`N`.</span>
+<span class="sd">    :param factor: An additional scalar factor :math:`\alpha`.</span>
+<span class="sd">    :return: The (approximate) value of :math:`\exp\left(-i \alpha A\right) v`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">dot</span><span class="p">(</span><span class="n">expm</span><span class="p">(</span><span class="n">A</span><span class="o">*</span><span class="n">factor</span><span class="p">),</span> <span class="n">v</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="arnoldi"><a class="viewcode-back" href="../waveblocks_classes/MatrixExponential.html#MatrixExponential.arnoldi">[docs]</a><span class="k">def</span> <span class="nf">arnoldi</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">v0</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+    <span class="sd">r&quot;&quot;&quot;Arnoldi algorithm to compute the Krylov approximation :math:`H` of a matrix :math:`A`.</span>
+
+<span class="sd">    :param A: The matrix :math:`A` of shape :math:`N \times N` to approximate.</span>
+<span class="sd">    :param v0: The initial vector :math:`v_0` of length :math:`N`.</span>
+<span class="sd">    :param k: The number :math:`k` of Krylov steps performed.</span>
+<span class="sd">    :return: A tuple :math:`(V, H)` where :math:`V` is the large matrix of shape</span>
+<span class="sd">             :math:`N \times (k+1)` containing the orthogonal vectors and :math:`H` is the</span>
+<span class="sd">             small matrix of shape :math:`(k+1) \times k` containing the Krylov approximation</span>
+<span class="sd">             of :math:`A`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">r</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">shape</span>
+    <span class="n">V</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">((</span><span class="n">r</span><span class="p">,</span> <span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">complexfloating</span><span class="p">)</span>
+    <span class="n">H</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">((</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">k</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">complexfloating</span><span class="p">)</span>
+
+    <span class="n">V</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">v0</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="n">norm</span><span class="p">(</span><span class="n">v0</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+        <span class="n">vi</span> <span class="o">=</span> <span class="n">dot</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">V</span><span class="p">[:,</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>
+            <span class="n">H</span><span class="p">[</span><span class="n">j</span><span class="p">,</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">dot</span><span class="p">(</span><span class="n">conjugate</span><span class="p">(</span><span class="n">V</span><span class="p">[:,</span><span class="n">j</span><span class="p">]),</span> <span class="n">vi</span><span class="p">)</span>
+            <span class="n">vi</span> <span class="o">-=</span> <span class="n">H</span><span class="p">[</span><span class="n">j</span><span class="p">,</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">V</span><span class="p">[:,</span><span class="n">j</span><span class="p">]</span>
+        <span class="n">H</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">norm</span><span class="p">(</span><span class="n">vi</span><span class="p">)</span>
+        <span class="n">V</span><span class="p">[:,</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">vi</span> <span class="o">/</span> <span class="n">H</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">V</span><span class="p">,</span> <span class="n">H</span>
+
+</div>
+<div class="viewcode-block" id="matrix_exp_arnoldi"><a class="viewcode-back" href="../waveblocks_classes/MatrixExponential.html#MatrixExponential.matrix_exp_arnoldi">[docs]</a><span class="k">def</span> <span class="nf">matrix_exp_arnoldi</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">factor</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+    <span class="sd">r&quot;&quot;&quot;Compute the solution of :math:`v&#39; = A v` via :math:`k`</span>
+<span class="sd">    steps of a the Arnoldi krylov method.</span>
+
+<span class="sd">    :param A: The matrix :math:`A` of shape :math:`N \times N`.</span>
+<span class="sd">    :param v: The vector :math:`v` of length :math:`N`.</span>
+<span class="sd">    :param factor: An additional scalar factor :math:`\alpha`.</span>
+<span class="sd">    :param k: The number :math:`k` of Krylov steps performed.</span>
+<span class="sd">    :return: The (approximate) value of :math:`\exp\left(-i \alpha A\right) v`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">V</span><span class="p">,</span> <span class="n">H</span> <span class="o">=</span> <span class="n">arnoldi</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">),</span> <span class="n">k</span><span class="p">))</span>
+    <span class="n">eH</span> <span class="o">=</span> <span class="n">expm</span><span class="p">(</span><span class="n">factor</span><span class="o">*</span><span class="n">H</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">,:])</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">norm</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">*</span> <span class="n">dot</span><span class="p">(</span><span class="n">V</span><span class="p">[:,:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">eH</span><span class="p">[:,</span><span class="mi">0</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">r</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">v</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">WaveBlocksND devel documentation</a> &raquo;</li>
+          <li><a href="index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, R. Bourquin.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

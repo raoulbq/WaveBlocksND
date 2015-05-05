@@ -1,0 +1,276 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>A first glance &mdash; WaveBlocksND devel documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     'devel',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="WaveBlocksND devel documentation" href="../index.html" />
+    <link rel="next" title="Using WaveBlocks for performing simulations" href="performing_simulations.html" />
+    <link rel="prev" title="Welcome to WaveBlocksND’s documentation!" href="../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="performing_simulations.html" title="Using WaveBlocks for performing simulations"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../index.html" title="Welcome to WaveBlocksND’s documentation!"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">WaveBlocksND devel documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="a-first-glance">
+<h1>A first glance<a class="headerlink" href="#a-first-glance" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>The WaveBlocks project is a collection of reusable software components
+providing many of the objects used in the study of semi-classical wavepackets.
+Currently it&#8217;s all about the time-dependent Schroedinger equation and the time
+evolution of initial states.</p>
+<p>One of the main goals is to provide a set of building blocks - hence the project&#8217;s
+name - that are well tested and reliable. The included features range from
+very simple mathematical operations like specialised quadrature rules to basic
+data structures for semi-classical wavepackets to more high-level simulation
+algorithms and some non-standard plotting functions. Of course there are also
+routines included for saving, managing and evaluating simulation results inflexible
+manner. All of these components are put together in an easy to use and easy to
+extend framework.</p>
+<p>The whole project is written in the <cite>python</cite> programming language and a strong
+emphasis is put on readable code and clean software design. Speed and efficiency
+are, however, not the main concern for the moment.</p>
+</div>
+<div class="section" id="download">
+<h2>Download<a class="headerlink" href="#download" title="Permalink to this headline">¶</a></h2>
+<p>The WaveBlocks project has its home at GitHub</p>
+<p><a class="reference external" href="https://github.com/raoulbq/WaveBlocksND">https://github.com/raoulbq/WaveBlocksND</a></p>
+<p>and the latest version can be found in the git
+repository at the same place.</p>
+<p>Check out the <cite>master</cite> branch for the main development version or one of the
+tags for stable and released versions. There are also branches used for developing
+special features before they are ready to get merged into the <cite>master</cite> branch.
+Older stable versions are available as complete self-consistent tarballs.</p>
+</div>
+<div class="section" id="dependencies">
+<h2>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">¶</a></h2>
+<p>Probably the most difficult part of the installation is to get the dependencies
+right. We need some more or less well known python packages that are not
+installed by default. On any recent Linux distribution (for example Debian)
+you can use the package manager to download and install all the dependencies.
+First, make sure you run python 2.x and not python 3.x because some of
+the following packages will not (yet) work with the latest python version. All
+necessary dependencies are listed here together with a brief statement of why
+we need the package.</p>
+<ul>
+<li><p class="first">Numpy, available from <a class="reference external" href="http://www.numpy.org">http://www.numpy.org</a></p>
+<p>Numpy provides fast multidimensional arrays.</p>
+</li>
+<li><p class="first">Scipy, available from <a class="reference external" href="http://www.scipy.org">http://www.scipy.org</a></p>
+<p>Scipy interfaces to fast numerical subroutines (BLAS, LAPACK, FFTW).</p>
+</li>
+<li><p class="first">Sympy, available from <a class="reference external" href="http://sympy.org">http://sympy.org</a></p>
+<p>Sympy gives rise to (limited) symbolic calculation.</p>
+</li>
+<li><p class="first">Matplotlib, available from <a class="reference external" href="http://matplotlib.org">http://matplotlib.org</a></p>
+<p>Matplotlib is used for two-dimensional plotting.</p>
+</li>
+<li><p class="first">h5py, available from <a class="reference external" href="http://h5py.org">http://h5py.org</a></p>
+<p>H5py is the interface to the Hierarchical Data Format <cite>hdf</cite>.</p>
+</li>
+<li><p class="first">mayavi2, available from <a class="reference external" href="http://code.enthought.com/projects/mayavi/">http://code.enthought.com/projects/mayavi/</a></p>
+<p>Mayavi2 is used for three-dimensional plotting.</p>
+</li>
+</ul>
+<p>The mayavi2 dependency is weak in the sense that the whole <cite>WaveBlocks</cite> code
+runs fine without it and only the 3-dimensional plotting functions are not available.</p>
+<p>The package numdifftools is already included in the program archive. You
+should put it somewhere within your python path. (In the example instal-
+lation from below, this would be <tt class="docutils literal"><span class="pre">~/python/numdifftools/</span></tt>, just beside the
+<cite>WaveBlocks</cite> directory). The package itself can be found at</p>
+<p><a class="reference external" href="http://code.google.com/p/numdifftools/">http://code.google.com/p/numdifftools/</a></p>
+<p>in case you want to look for a newer version. In general the latest version of
+each software package should be used.</p>
+</div>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<p>In the following sections be sure not to mix up the name <cite>WaveBlocks</cite> that
+stands for the whole project and the subdirectory <cite>WaveBlocksND</cite> which is the
+python library and a small subset of the whole project.</p>
+<div class="section" id="using-a-tarball">
+<h3>Using a tarball<a class="headerlink" href="#using-a-tarball" title="Permalink to this headline">¶</a></h3>
+<p>Installing the <cite>WaveBlocks</cite> code itself is trivial if you use one of the provided
+tarballs. You just have to unpack the program archive and place the directories
+<tt class="docutils literal"><span class="pre">src/WaveBlocksND</span></tt> (which contains the library part of <cite>WaveBlocks</cite>) and
+<tt class="docutils literal"><span class="pre">src/numdifftools</span></tt> somewhere in your file system. Make sure the location is
+within your <cite>python path</cite>, otherwise you&#8217;ll have to adapt the environment variable
+<tt class="docutils literal"><span class="pre">PYTHONPATH</span></tt>.</p>
+<p>For example if you place these two directories below <tt class="docutils literal"><span class="pre">~/python</span></tt> then you have
+to adapt the python path as follows:</p>
+<div class="highlight-python"><pre>export PYTHONPATH="$PYTHONPATH:~/python"</pre>
+</div>
+<p>You can write this line into your .bashrc file or any comparable file for your
+default shell. (Otherwise this information is gone when you close the shell.)</p>
+</div>
+<div class="section" id="from-the-repository">
+<h3>From the repository<a class="headerlink" href="#from-the-repository" title="Permalink to this headline">¶</a></h3>
+<p>If you want to check out the source code from the repository, the necessary
+steps are similar. First check out the code (we assume here you want to use
+the <cite>master</cite> branch) into a new directory (here <tt class="docutils literal"><span class="pre">~/WB</span></tt>)</p>
+<div class="highlight-python"><pre>git clone https://github.com/raoulbq/WaveBlocksND.git ~/WB</pre>
+</div>
+<p>The directory listing should now look like</p>
+<div class="highlight-python"><pre>ls ~/WB/
+doc  examples  src</pre>
+</div>
+<p>and we find the source code below src,</p>
+<div class="highlight-python"><pre>ls ~/WB/src
+plotters  scripts  sh  tests  WaveBlocksND</pre>
+</div>
+<p>Assume we want to install any custom python software locally below <tt class="docutils literal"><span class="pre">~/python</span></tt>
+so we create this directory and put all the things there. We start with the
+<cite>numdifftools</cite> python package.</p>
+<div class="highlight-python"><pre>mkdir ~/python
+cp -r ~/WB/src/numdifftools/ ~/python</pre>
+</div>
+<p>We can just copy the files as they won&#8217;t change in the git repository often. But
+it&#8217;s a wise idea not to copy <tt class="docutils literal"><span class="pre">~/WB/src/WaveBlocks</span></tt> but to instead use symbolic
+links. (If you have multiple checkouts this is also a simple way to choose which
+one will be used when you just type <tt class="docutils literal"><span class="pre">import</span> <span class="pre">WaveBlocksND</span></tt> at a python prompt.
+This is similar to the alternatives framework in Debian.) You may just follow
+the shell command given here for a working sample setup.</p>
+<div class="highlight-python"><pre>ln -s ~/WB/src/WaveBlocksND WaveBlocksND</pre>
+</div>
+<p>Finally we have to adapt the python path to include the directory <tt class="docutils literal"><span class="pre">~/python</span></tt>
+which can be done as follows:</p>
+<div class="highlight-python"><pre>export PYTHONPATH="$PYTHONPATH:~/python"</pre>
+</div>
+<p>You can write this last line into your <tt class="docutils literal"><span class="pre">.bashrc</span></tt> file or any comparable file
+for your default shell. (Otherwise this information is gone when you close the shell.)</p>
+</div>
+<div class="section" id="the-scripts">
+<h3>The scripts<a class="headerlink" href="#the-scripts" title="Permalink to this headline">¶</a></h3>
+<p>The scripts (everything in <tt class="docutils literal"><span class="pre">src/scripts</span></tt> and <tt class="docutils literal"><span class="pre">src/plotters</span></tt>)
+that perform simulations, data evaluation and plotting can now be stored and
+called from anywhere as these file are just plain python scripts that import the
+<tt class="docutils literal"><span class="pre">WaveBlocksND</span></tt> python module. It&#8217;s best to put these scripts all together in a
+directory where you plan to work and perform simulations.</p>
+</div>
+</div>
+<div class="section" id="supported-computing-platforms">
+<h2>Supported computing platforms<a class="headerlink" href="#supported-computing-platforms" title="Permalink to this headline">¶</a></h2>
+<p>The <cite>WaveBlocksND</cite> code should run on <cite>Windows</cite> and <cite>Mac OS X</cite> and the various
+<cite>BSD</cite> variants too, provided that the required python dependencies are installed.
+However, this has not yet been tested. The primary development platform is
+<cite>GNU/Linux</cite> and in particular <cite>Debian</cite>.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">A first glance</a><ul>
+<li><a class="reference internal" href="#introduction">Introduction</a></li>
+<li><a class="reference internal" href="#download">Download</a></li>
+<li><a class="reference internal" href="#dependencies">Dependencies</a></li>
+<li><a class="reference internal" href="#installation">Installation</a><ul>
+<li><a class="reference internal" href="#using-a-tarball">Using a tarball</a></li>
+<li><a class="reference internal" href="#from-the-repository">From the repository</a></li>
+<li><a class="reference internal" href="#the-scripts">The scripts</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#supported-computing-platforms">Supported computing platforms</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../index.html"
+                        title="previous chapter">Welcome to WaveBlocksND&#8217;s documentation!</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="performing_simulations.html"
+                        title="next chapter">Using <cite>WaveBlocks</cite> for performing simulations</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/manual/first_glance.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="performing_simulations.html" title="Using WaveBlocks for performing simulations"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../index.html" title="Welcome to WaveBlocksND’s documentation!"
+             >previous</a> |</li>
+        <li><a href="../index.html">WaveBlocksND devel documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, R. Bourquin.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

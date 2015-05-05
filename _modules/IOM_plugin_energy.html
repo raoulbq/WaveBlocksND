@@ -1,0 +1,295 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>IOM_plugin_energy &mdash; WaveBlocksND devel documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     'devel',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="WaveBlocksND devel documentation" href="../index.html" />
+    <link rel="up" title="Module code" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">WaveBlocksND devel documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for IOM_plugin_energy</h1><div class="highlight"><pre>
+<span class="sd">&quot;&quot;&quot;The WaveBlocks Project</span>
+
+<span class="sd">IOM plugin providing functions for handling energy data.</span>
+
+<span class="sd">@author: R. Bourquin</span>
+<span class="sd">@copyright: Copyright (C) 2010, 2011, 2012, 2013 R. Bourquin</span>
+<span class="sd">@license: Modified BSD License</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+
+
+<div class="viewcode-block" id="add_energy"><a class="viewcode-back" href="../waveblocks_classes/IOM_plugin_energy.html#IOM_plugin_energy.add_energy">[docs]</a><span class="k">def</span> <span class="nf">add_energy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parameters</span><span class="p">,</span> <span class="n">timeslots</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">blockid</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="p">(</span><span class="s">&quot;kin&quot;</span><span class="p">,</span> <span class="s">&quot;pot&quot;</span><span class="p">)):</span>
+    <span class="sd">r&quot;&quot;&quot;</span>
+<span class="sd">    :param parameters: A :py:class:`ParameterProvider` instance containing</span>
+<span class="sd">                       at least the key `ncomponents`.</span>
+<span class="sd">    :param timeslots: The number of time slots we need. Can be set to ``None``</span>
+<span class="sd">                      to get automatically growing datasets.</span>
+<span class="sd">    :param blockid: The ID of the data block to operate on.</span>
+<span class="sd">    :param key: Specify which energies to save. All are independent.</span>
+<span class="sd">    :type key: Tuple of valid identifier strings that are ``kin``, ``pot`` and ``tot``.</span>
+<span class="sd">               Default is ``(&quot;kin&quot;, &quot;pot&quot;)``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">N</span> <span class="o">=</span> <span class="n">parameters</span><span class="p">[</span><span class="s">&quot;ncomponents&quot;</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">timeslots</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">T</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">Ts</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="n">csTs</span> <span class="o">=</span> <span class="mi">64</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">T</span> <span class="o">=</span> <span class="n">timeslots</span>
+        <span class="n">Ts</span> <span class="o">=</span> <span class="n">timeslots</span>
+        <span class="n">csTs</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="n">Ts</span><span class="p">)</span>
+
+    <span class="c"># Check that the &quot;observables&quot; group is present</span>
+    <span class="n">grp_ob</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_srf</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_prefixb</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">blockid</span><span class="p">)]</span><span class="o">.</span><span class="n">require_group</span><span class="p">(</span><span class="s">&quot;observables&quot;</span><span class="p">)</span>
+    <span class="c"># Add a new group for energies</span>
+    <span class="n">grp_en</span> <span class="o">=</span> <span class="n">grp_ob</span><span class="o">.</span><span class="n">create_group</span><span class="p">(</span><span class="s">&quot;energies&quot;</span><span class="p">)</span>
+
+    <span class="c"># Add all requested data sets</span>
+    <span class="k">if</span> <span class="s">&quot;kin&quot;</span> <span class="ow">in</span> <span class="n">key</span> <span class="ow">and</span> <span class="ow">not</span> <span class="s">&quot;kinetic&quot;</span> <span class="ow">in</span> <span class="n">grp_en</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="n">daset_tgek</span> <span class="o">=</span> <span class="n">grp_en</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="s">&quot;timegrid_kin&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">T</span><span class="p">,),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">integer</span><span class="p">,</span> <span class="n">chunks</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">maxshape</span><span class="o">=</span><span class="p">(</span><span class="n">Ts</span><span class="p">,),</span> <span class="n">fillvalue</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">grp_en</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="s">&quot;kinetic&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">T</span><span class="p">,</span><span class="n">N</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">floating</span><span class="p">,</span> <span class="n">chunks</span><span class="o">=</span><span class="p">(</span><span class="n">csTs</span><span class="p">,</span><span class="n">N</span><span class="p">),</span> <span class="n">maxshape</span><span class="o">=</span><span class="p">(</span><span class="n">Ts</span><span class="p">,</span><span class="n">N</span><span class="p">))</span>
+        <span class="n">daset_tgek</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s">&quot;pointer&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">if</span> <span class="s">&quot;pot&quot;</span> <span class="ow">in</span> <span class="n">key</span> <span class="ow">and</span> <span class="ow">not</span> <span class="s">&quot;potential&quot;</span> <span class="ow">in</span> <span class="n">grp_en</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="n">daset_tgep</span> <span class="o">=</span> <span class="n">grp_en</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="s">&quot;timegrid_pot&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">T</span><span class="p">,),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">integer</span><span class="p">,</span> <span class="n">chunks</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">maxshape</span><span class="o">=</span><span class="p">(</span><span class="n">Ts</span><span class="p">,),</span> <span class="n">fillvalue</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">grp_en</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="s">&quot;potential&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">T</span><span class="p">,</span><span class="n">N</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">floating</span><span class="p">,</span> <span class="n">chunks</span><span class="o">=</span><span class="p">(</span><span class="n">csTs</span><span class="p">,</span><span class="n">N</span><span class="p">),</span> <span class="n">maxshape</span><span class="o">=</span><span class="p">(</span><span class="n">Ts</span><span class="p">,</span><span class="n">N</span><span class="p">))</span>
+        <span class="n">daset_tgep</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s">&quot;pointer&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">if</span> <span class="s">&quot;tot&quot;</span> <span class="ow">in</span> <span class="n">key</span> <span class="ow">and</span> <span class="ow">not</span> <span class="s">&quot;total&quot;</span> <span class="ow">in</span> <span class="n">grp_en</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="n">daset_tget</span> <span class="o">=</span> <span class="n">grp_en</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="s">&quot;timegrid_tot&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">T</span><span class="p">,),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">integer</span><span class="p">,</span> <span class="n">chunks</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">maxshape</span><span class="o">=</span><span class="p">(</span><span class="n">Ts</span><span class="p">,),</span> <span class="n">fillvalue</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">grp_en</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="s">&quot;total&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">T</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">floating</span><span class="p">,</span> <span class="n">chunks</span><span class="o">=</span><span class="p">(</span><span class="n">csTs</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="n">maxshape</span><span class="o">=</span><span class="p">(</span><span class="n">Ts</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+        <span class="n">daset_tget</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s">&quot;pointer&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+
+</div>
+<div class="viewcode-block" id="delete_energy"><a class="viewcode-back" href="../waveblocks_classes/IOM_plugin_energy.html#IOM_plugin_energy.delete_energy">[docs]</a><span class="k">def</span> <span class="nf">delete_energy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">blockid</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="sd">r&quot;&quot;&quot;Remove the stored energies</span>
+
+<span class="sd">    :param blockid: The ID of the data block to operate on.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_srf</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_prefixb</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">blockid</span><span class="p">)</span><span class="o">+</span><span class="s">&quot;/observables/energies&quot;</span><span class="p">]</span>
+        <span class="c"># Check if there are other children, if not remove the whole node.</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_srf</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_prefixb</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">blockid</span><span class="p">)</span><span class="o">+</span><span class="s">&quot;/observables&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_srf</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_prefixb</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">blockid</span><span class="p">)</span><span class="o">+</span><span class="s">&quot;/observables&quot;</span><span class="p">]</span>
+    <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+        <span class="k">pass</span>
+
+</div>
+<div class="viewcode-block" id="has_energy"><a class="viewcode-back" href="../waveblocks_classes/IOM_plugin_energy.html#IOM_plugin_energy.has_energy">[docs]</a><span class="k">def</span> <span class="nf">has_energy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">blockid</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="p">(</span><span class="s">&quot;kin&quot;</span><span class="p">,</span> <span class="s">&quot;pot&quot;</span><span class="p">)):</span>
+    <span class="sd">r&quot;&quot;&quot;Ask if the specified data block has the desired data tensor.</span>
+
+<span class="sd">    :param blockid: The ID of the data block to operate on.</span>
+<span class="sd">    :param key: Specify which energies to save. All are independent.</span>
+<span class="sd">    :type key: Tuple of valid identifier strings that are ``kin``, ``pot`` and ``tot``.</span>
+<span class="sd">               Default is ``(&quot;kin&quot;, &quot;pot&quot;)``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="bp">True</span>
+    <span class="n">r</span> <span class="o">&amp;=</span> <span class="p">(</span><span class="s">&quot;observables&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_srf</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_prefixb</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">blockid</span><span class="p">)]</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+
+    <span class="k">if</span> <span class="n">r</span> <span class="ow">is</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="n">r</span> <span class="o">&amp;=</span> <span class="p">(</span><span class="s">&quot;energies&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_srf</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_prefixb</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">blockid</span><span class="p">)][</span><span class="s">&quot;observables&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+
+    <span class="k">if</span> <span class="n">r</span> <span class="ow">and</span> <span class="s">&quot;kin&quot;</span> <span class="ow">in</span> <span class="n">key</span><span class="p">:</span>
+        <span class="n">r</span> <span class="o">&amp;=</span> <span class="p">(</span><span class="s">&quot;kinetic&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_srf</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_prefixb</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">blockid</span><span class="p">)][</span><span class="s">&quot;observables/energies&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+    <span class="k">if</span> <span class="n">r</span> <span class="ow">and</span> <span class="s">&quot;pot&quot;</span> <span class="ow">in</span> <span class="n">key</span><span class="p">:</span>
+        <span class="n">r</span> <span class="o">&amp;=</span> <span class="p">(</span><span class="s">&quot;potential&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_srf</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_prefixb</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">blockid</span><span class="p">)][</span><span class="s">&quot;observables/energies&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+    <span class="k">if</span> <span class="n">r</span> <span class="ow">and</span> <span class="s">&quot;tot&quot;</span> <span class="ow">in</span> <span class="n">key</span><span class="p">:</span>
+        <span class="n">r</span> <span class="o">&amp;=</span> <span class="p">(</span><span class="s">&quot;total&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_srf</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_prefixb</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">blockid</span><span class="p">)][</span><span class="s">&quot;observables/energies&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+
+    <span class="k">return</span> <span class="n">r</span>
+
+</div>
+<div class="viewcode-block" id="save_energy"><a class="viewcode-back" href="../waveblocks_classes/IOM_plugin_energy.html#IOM_plugin_energy.save_energy">[docs]</a><span class="k">def</span> <span class="nf">save_energy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">energies</span><span class="p">,</span> <span class="n">timestep</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">blockid</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="p">(</span><span class="s">&quot;kin&quot;</span><span class="p">,</span> <span class="s">&quot;pot&quot;</span><span class="p">)):</span>
+    <span class="sd">r&quot;&quot;&quot;Save the kinetic and potential energies to a file.</span>
+
+<span class="sd">    :param energies: A tuple containing the energies. The order is important,</span>
+<span class="sd">                     it has to match the order in the ``key`` argument. Per default</span>
+<span class="sd">                     the order has to be :math:`(E_\text{kin}, E_\text{pot})`.</span>
+<span class="sd">    :param timestep: The timestep at which we save the data.</span>
+<span class="sd">    :param blockid: The ID of the data block to operate on.</span>
+<span class="sd">    :param key: Specify which energies to save. All are independent.</span>
+<span class="sd">    :type key: Tuple of valid identifier strings that are ``kin``, ``pot`` and ``tot``.</span>
+<span class="sd">               Default is ``(&quot;kin&quot;, &quot;pot&quot;)``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">item</span><span class="p">,</span> <span class="n">datum</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">energies</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">item</span> <span class="o">==</span> <span class="s">&quot;kin&quot;</span><span class="p">:</span>
+            <span class="n">pathtg</span> <span class="o">=</span> <span class="s">&quot;/&quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">_prefixb</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">blockid</span><span class="p">)</span><span class="o">+</span><span class="s">&quot;/observables/energies/timegrid_kin&quot;</span>
+            <span class="n">pathd</span> <span class="o">=</span> <span class="s">&quot;/&quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">_prefixb</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">blockid</span><span class="p">)</span><span class="o">+</span><span class="s">&quot;/observables/energies/kinetic&quot;</span>
+        <span class="k">elif</span> <span class="n">item</span> <span class="o">==</span> <span class="s">&quot;pot&quot;</span><span class="p">:</span>
+            <span class="n">pathtg</span> <span class="o">=</span> <span class="s">&quot;/&quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">_prefixb</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">blockid</span><span class="p">)</span><span class="o">+</span><span class="s">&quot;/observables/energies/timegrid_pot&quot;</span>
+            <span class="n">pathd</span> <span class="o">=</span> <span class="s">&quot;/&quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">_prefixb</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">blockid</span><span class="p">)</span><span class="o">+</span><span class="s">&quot;/observables/energies/potential&quot;</span>
+        <span class="k">elif</span> <span class="n">item</span> <span class="o">==</span> <span class="s">&quot;tot&quot;</span><span class="p">:</span>
+            <span class="n">pathtg</span> <span class="o">=</span> <span class="s">&quot;/&quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">_prefixb</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">blockid</span><span class="p">)</span><span class="o">+</span><span class="s">&quot;/observables/energies/timegrid_tot&quot;</span>
+            <span class="n">pathd</span> <span class="o">=</span> <span class="s">&quot;/&quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">_prefixb</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">blockid</span><span class="p">)</span><span class="o">+</span><span class="s">&quot;/observables/energies/total&quot;</span>
+
+        <span class="n">timeslot</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_srf</span><span class="p">[</span><span class="n">pathtg</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s">&quot;pointer&quot;</span><span class="p">]</span>
+
+        <span class="c"># TODO: remove np.array</span>
+        <span class="n">energy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">datum</span><span class="p">))</span>
+
+        <span class="c"># Write the data</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">must_resize</span><span class="p">(</span><span class="n">pathd</span><span class="p">,</span> <span class="n">timeslot</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_srf</span><span class="p">[</span><span class="n">pathd</span><span class="p">][</span><span class="n">timeslot</span><span class="p">,:]</span> <span class="o">=</span> <span class="n">energy</span>
+
+        <span class="c"># Write the timestep to which the stored values belong into the timegrid</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">must_resize</span><span class="p">(</span><span class="n">pathtg</span><span class="p">,</span> <span class="n">timeslot</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_srf</span><span class="p">[</span><span class="n">pathtg</span><span class="p">][</span><span class="n">timeslot</span><span class="p">]</span> <span class="o">=</span> <span class="n">timestep</span>
+
+        <span class="c"># Update the pointer</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_srf</span><span class="p">[</span><span class="n">pathtg</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s">&quot;pointer&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+
+</div>
+<div class="viewcode-block" id="load_energy_timegrid"><a class="viewcode-back" href="../waveblocks_classes/IOM_plugin_energy.html#IOM_plugin_energy.load_energy_timegrid">[docs]</a><span class="k">def</span> <span class="nf">load_energy_timegrid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">blockid</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="p">(</span><span class="s">&quot;kin&quot;</span><span class="p">,</span> <span class="s">&quot;pot&quot;</span><span class="p">)):</span>
+    <span class="sd">r&quot;&quot;&quot;Load the time grid for specified energies.</span>
+
+<span class="sd">    :param blockid: The ID of the data block to operate on.</span>
+<span class="sd">    :param key: Specify which energy timegrids to load. All are independent.</span>
+<span class="sd">    :type key: Tuple of valid identifier strings that are ``kin``, ``pot`` and ``tot``.</span>
+<span class="sd">               Default is ``(&quot;kin&quot;, &quot;pot&quot;)``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">tg</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">key</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">item</span> <span class="o">==</span> <span class="s">&quot;kin&quot;</span><span class="p">:</span>
+            <span class="n">pathtg</span> <span class="o">=</span> <span class="s">&quot;/&quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">_prefixb</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">blockid</span><span class="p">)</span><span class="o">+</span><span class="s">&quot;/observables/energies/timegrid_kin&quot;</span>
+            <span class="n">tg</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_srf</span><span class="p">[</span><span class="n">pathtg</span><span class="p">][:])</span>
+        <span class="k">elif</span> <span class="n">item</span> <span class="o">==</span> <span class="s">&quot;pot&quot;</span><span class="p">:</span>
+            <span class="n">pathtg</span> <span class="o">=</span> <span class="s">&quot;/&quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">_prefixb</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">blockid</span><span class="p">)</span><span class="o">+</span><span class="s">&quot;/observables/energies/timegrid_pot&quot;</span>
+            <span class="n">tg</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_srf</span><span class="p">[</span><span class="n">pathtg</span><span class="p">][:])</span>
+        <span class="k">elif</span> <span class="n">item</span> <span class="o">==</span> <span class="s">&quot;tot&quot;</span><span class="p">:</span>
+            <span class="n">pathtg</span> <span class="o">=</span> <span class="s">&quot;/&quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">_prefixb</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">blockid</span><span class="p">)</span><span class="o">+</span><span class="s">&quot;/observables/energies/timegrid_tot&quot;</span>
+            <span class="n">tg</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_srf</span><span class="p">[</span><span class="n">pathtg</span><span class="p">][:])</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">tg</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">tg</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">tg</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="load_energy"><a class="viewcode-back" href="../waveblocks_classes/IOM_plugin_energy.html#IOM_plugin_energy.load_energy">[docs]</a><span class="k">def</span> <span class="nf">load_energy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timestep</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">split</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">blockid</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="p">(</span><span class="s">&quot;kin&quot;</span><span class="p">,</span> <span class="s">&quot;pot&quot;</span><span class="p">)):</span>
+    <span class="sd">r&quot;&quot;&quot;Load the energy data.</span>
+
+<span class="sd">    :param timestep: Load only the data of this timestep.</span>
+<span class="sd">    :param split: Split the array into arrays for each component.</span>
+<span class="sd">    :param blockid: The ID of the data block to operate on.</span>
+<span class="sd">    :param key: Specify which energies to save. All are independent.</span>
+<span class="sd">    :type key: Tuple of valid identifier strings that are ``kin``, ``pot`` and ``tot``.</span>
+<span class="sd">               Default is ``(&quot;kin&quot;, &quot;pot&quot;)``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">key</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">item</span> <span class="o">==</span> <span class="s">&quot;kin&quot;</span><span class="p">:</span>
+            <span class="n">pathd</span> <span class="o">=</span> <span class="s">&quot;/&quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">_prefixb</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">blockid</span><span class="p">)</span><span class="o">+</span><span class="s">&quot;/observables/energies/kinetic&quot;</span>
+            <span class="n">pathtg</span> <span class="o">=</span> <span class="s">&quot;/&quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">_prefixb</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">blockid</span><span class="p">)</span><span class="o">+</span><span class="s">&quot;/observables/energies/timegrid_ek&quot;</span>
+        <span class="k">elif</span> <span class="n">item</span> <span class="o">==</span> <span class="s">&quot;pot&quot;</span><span class="p">:</span>
+            <span class="n">pathd</span> <span class="o">=</span> <span class="s">&quot;/&quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">_prefixb</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">blockid</span><span class="p">)</span><span class="o">+</span><span class="s">&quot;/observables/energies/potential&quot;</span>
+            <span class="n">pathtg</span> <span class="o">=</span> <span class="s">&quot;/&quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">_prefixb</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">blockid</span><span class="p">)</span><span class="o">+</span><span class="s">&quot;/observables/energies/timegrid_ep&quot;</span>
+        <span class="k">elif</span> <span class="n">item</span> <span class="o">==</span> <span class="s">&quot;tot&quot;</span><span class="p">:</span>
+            <span class="n">pathd</span> <span class="o">=</span> <span class="s">&quot;/&quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">_prefixb</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">blockid</span><span class="p">)</span><span class="o">+</span><span class="s">&quot;/observables/energies/total&quot;</span>
+            <span class="n">pathtg</span> <span class="o">=</span> <span class="s">&quot;/&quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">_prefixb</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">blockid</span><span class="p">)</span><span class="o">+</span><span class="s">&quot;/observables/energies/timegrid_et&quot;</span>
+
+        <span class="k">if</span> <span class="n">timestep</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_timestep_index</span><span class="p">(</span><span class="n">pathtg</span><span class="p">,</span> <span class="n">timestep</span><span class="p">)</span>
+            <span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">index</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="bp">None</span><span class="p">)</span>
+            <span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span>
+
+        <span class="k">if</span> <span class="n">split</span> <span class="ow">is</span> <span class="bp">True</span><span class="p">:</span>
+            <span class="n">energy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">split_data</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">_srf</span><span class="p">[</span><span class="n">pathd</span><span class="p">][</span><span class="n">index</span><span class="p">,</span><span class="o">...</span><span class="p">],</span> <span class="n">axis</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">energy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_srf</span><span class="p">[</span><span class="n">pathd</span><span class="p">][</span><span class="n">index</span><span class="p">,</span><span class="o">...</span><span class="p">]</span>
+
+        <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">energy</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">result</span><span class="p">)</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">WaveBlocksND devel documentation</a> &raquo;</li>
+          <li><a href="index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, R. Bourquin.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

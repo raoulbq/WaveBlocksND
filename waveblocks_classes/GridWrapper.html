@@ -1,0 +1,238 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>GridWrapper &mdash; WaveBlocksND devel documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     'devel',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="WaveBlocksND devel documentation" href="../index.html" />
+    <link rel="next" title="QuadratureRule" href="QuadratureRule.html" />
+    <link rel="prev" title="TensorProductGrid" href="TensorProductGrid.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="QuadratureRule.html" title="QuadratureRule"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="TensorProductGrid.html" title="TensorProductGrid"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">WaveBlocksND devel documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="gridwrapper">
+<h1>GridWrapper<a class="headerlink" href="#gridwrapper" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-WaveBlocksND">
+<span id="about-the-gridwrapper-class"></span><h2>About the <tt class="docutils literal"><span class="pre">GridWrapper</span></tt> class<a class="headerlink" href="#module-WaveBlocksND" title="Permalink to this headline">¶</a></h2>
+<p>The WaveBlocks Project</p>
+<p>&#64;author: R. Bourquin
+&#64;copyright: Copyright (C) 2010, 2011, 2012, 2013, 2014 R. Bourquin
+&#64;license: Modified BSD License</p>
+</div>
+<div class="section" id="inheritance-diagram">
+<h2>Inheritance diagram<a class="headerlink" href="#inheritance-diagram" title="Permalink to this headline">¶</a></h2>
+<p class="graphviz">
+<img src="../_images/inheritance-7a282b567bb15a07628c8408817620ea8322daef.png" alt="Inheritance diagram of GridWrapper" class="inheritance"/>
+</p>
+</div>
+<div class="section" id="class-documentation">
+<h2>Class documentation<a class="headerlink" href="#class-documentation" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="WaveBlocksND.GridWrapper">
+<em class="property">class </em><tt class="descclassname">WaveBlocksND.</tt><tt class="descname">GridWrapper</tt><big>(</big><em>anarray</em><big>)</big><a class="headerlink" href="#WaveBlocksND.GridWrapper" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class constructs a thin layer around an <tt class="docutils literal"><span class="pre">ndarray</span></tt> and wraps
+it as <tt class="xref py py-class docutils literal"><span class="pre">Grid</span></tt> subclass for API compatibility. The array must
+have a shape of <img class="math" src="../_images/math/2c38fe01a041f027a745eb2ae52a7e200ea30bed.png" alt="(D, N)"/> with <img class="math" src="../_images/math/fc97ef67268cd4e91bacdf12b8901d7036c9a056.png" alt="N"/> the overall number of nodes.</p>
+<p>Rather than using this class, one should try to eliminate the
+cases where it is used now.</p>
+<dl class="method">
+<dt id="WaveBlocksND.GridWrapper.get_dimension">
+<tt class="descname">get_dimension</tt><big>(</big><big>)</big><a class="headerlink" href="#WaveBlocksND.GridWrapper.get_dimension" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the dimension <img class="math" src="../_images/math/9ffb448918db29f2a72f8f87f421b3b3cad18f95.png" alt="D"/> of the grid.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="WaveBlocksND.GridWrapper.get_extensions">
+<tt class="descname">get_extensions</tt><big>(</big><em>axes=None</em><big>)</big><a class="headerlink" href="#WaveBlocksND.GridWrapper.get_extensions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the extensions (length of the edges) of the bounding box.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>axes</strong> (A single integer or a list of integers. If set
+to <tt class="docutils literal"><span class="pre">None</span></tt> (default) we return the extensions for all axes.) &#8211; The axes for which we want to get the extensions.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A list of <img class="math" src="../_images/math/8dcc5f626b5248f3dc675addee792d5263524c70.png" alt="|max_i-min_i|"/> values.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="WaveBlocksND.GridWrapper.get_limits">
+<tt class="descname">get_limits</tt><big>(</big><em>axes=None</em><big>)</big><a class="headerlink" href="#WaveBlocksND.GridWrapper.get_limits" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the limits of the bounding box.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>axes</strong> (A single integer or a list of integers. If set
+to <tt class="docutils literal"><span class="pre">None</span></tt> (default) we return the limits for all axes.) &#8211; The axes for which we want to get the limits.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A list of <img class="math" src="../_images/math/bc1da6279e08ebf5ee231638c81e38dff0496dd5.png" alt="(min_i, max_i)"/> ndarrays.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="WaveBlocksND.GridWrapper.get_nodes">
+<tt class="descname">get_nodes</tt><big>(</big><em>flat=True</em>, <em>split=False</em><big>)</big><a class="headerlink" href="#WaveBlocksND.GridWrapper.get_nodes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns all grid nodes.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>flat</strong> (Boolean, default is <tt class="docutils literal"><span class="pre">True</span></tt>.) &#8211; Whether to return the grid with a <cite>hypercubic</cite>
+<img class="math" src="../_images/math/a3f35e731f95cf0c5600bc24906feaa32dce3127.png" alt="(D, N_1, ..., N_D)"/> shape or a <cite>flat</cite>
+<img class="math" src="../_images/math/134dfd7cfdcefa46dfa50bb445d71073ea5a6fb6.png" alt="(D, \prod_i^D N_i)"/> shape. Note that the
+hypercubic shape is not implemented!</li>
+<li><strong>split</strong> (Boolean, default is <tt class="docutils literal"><span class="pre">False</span></tt>.) &#8211; Whether to return the different components, one for each
+dimension inside a single ndarray or a list with ndarrays,
+with one item per dimension.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Depends of the optional arguments.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="WaveBlocksND.GridWrapper.get_number_nodes">
+<tt class="descname">get_number_nodes</tt><big>(</big><em>overall=False</em><big>)</big><a class="headerlink" href="#WaveBlocksND.GridWrapper.get_number_nodes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the number of grid nodes.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>overall</strong> (Boolean, default is <tt class="docutils literal"><span class="pre">False</span></tt>) &#8211; Compute the product <img class="math" src="../_images/math/89fb27669ef041f768a24b73cf1baef80ed53341.png" alt="N = \prod_i^D N_i"/> of the
+number <img class="math" src="../_images/math/9f09d622cd7ebd49e20b2e20717869bf2ee2aa5a.png" alt="N_i"/> of grid nodes along each dimension
+<img class="math" src="../_images/math/34857b3ba74ce5cd8607f3ebd23e9015908ada71.png" alt="i"/> specified.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A list of <img class="math" src="../_images/math/9f09d622cd7ebd49e20b2e20717869bf2ee2aa5a.png" alt="N_i"/> values or a single value <img class="math" src="../_images/math/fc97ef67268cd4e91bacdf12b8901d7036c9a056.png" alt="N"/>.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">GridWrapper</a><ul>
+<li><a class="reference internal" href="#module-WaveBlocksND">About the <tt class="docutils literal"><span class="pre">GridWrapper</span></tt> class</a></li>
+<li><a class="reference internal" href="#inheritance-diagram">Inheritance diagram</a></li>
+<li><a class="reference internal" href="#class-documentation">Class documentation</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="TensorProductGrid.html"
+                        title="previous chapter">TensorProductGrid</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="QuadratureRule.html"
+                        title="next chapter">QuadratureRule</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/waveblocks_classes/GridWrapper.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="QuadratureRule.html" title="QuadratureRule"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="TensorProductGrid.html" title="TensorProductGrid"
+             >previous</a> |</li>
+        <li><a href="../index.html">WaveBlocksND devel documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, R. Bourquin.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

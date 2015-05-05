@@ -1,0 +1,1031 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Ready made Potentials &mdash; WaveBlocksND devel documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     'devel',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="WaveBlocksND devel documentation" href="../index.html" />
+    <link rel="next" title="ComplexMath" href="../waveblocks_classes/ComplexMath.html" />
+    <link rel="prev" title="Citation" href="../citation.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../waveblocks_classes/ComplexMath.html" title="ComplexMath"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../citation.html" title="Citation"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">WaveBlocksND devel documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="ready-made-potentials">
+<h1>Ready made Potentials<a class="headerlink" href="#ready-made-potentials" title="Permalink to this headline">¶</a></h1>
+<p>The following sections contain some potentials that are implemented in the potential
+library. The plots show the eigenvalues or energy surfaces. Some potentials
+have additional parameters, the default values for these are also Name.</p>
+<div class="section" id="potential-cos-osc">
+<h2>Potential <tt class="docutils literal"><span class="pre">cos_osc</span></tt><a class="headerlink" href="#potential-cos-osc" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Formula: <img class="math" src="../_images/math/3a46153762af601972f96fdc6f270e515f1f4ce1.png" alt="V(x) = a \left(- \cos{\left (b x \right )} + 1\right)"/></li>
+<li>Variables: <img class="math" src="../_images/math/26eeb5258ca5099acf8fe96b2a1049c48c89a5e6.png" alt="x"/></li>
+<li>Default values:<ul>
+<li><img class="math" src="../_images/math/c9a3248b4e4f78d199f46015406472063c8f1e98.png" alt="a = 0.07"/></li>
+<li><img class="math" src="../_images/math/ce5b589c3bd127e5417bd47f841ebe0c481ca125.png" alt="b = 1.0"/></li>
+</ul>
+</li>
+</ul>
+<img alt="../_images/cos_osc.png" src="../_images/cos_osc.png" style="width: 400px;" />
+</div>
+<div class="section" id="potential-cosh-osc">
+<h2>Potential <tt class="docutils literal"><span class="pre">cosh_osc</span></tt><a class="headerlink" href="#potential-cosh-osc" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Formula: <img class="math" src="../_images/math/40e901b4c8cd93491f2ff033929d0ba7276c5f83.png" alt="V(x) = a \cosh{\left (b x \right )}"/></li>
+<li>Variables: <img class="math" src="../_images/math/26eeb5258ca5099acf8fe96b2a1049c48c89a5e6.png" alt="x"/></li>
+<li>Default values:<ul>
+<li><img class="math" src="../_images/math/48d02444a59b917b64e8bd0963b88712fc7fa0a3.png" alt="a = 1"/></li>
+<li><img class="math" src="../_images/math/851b03ce92c3ad8da97daf2785cf4e103c7a8d66.png" alt="b = 1"/></li>
+</ul>
+</li>
+</ul>
+<img alt="../_images/cosh_osc.png" src="../_images/cosh_osc.png" style="width: 400px;" />
+</div>
+<div class="section" id="potential-double-well">
+<h2>Potential <tt class="docutils literal"><span class="pre">double_well</span></tt><a class="headerlink" href="#potential-double-well" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Formula: <img class="math" src="../_images/math/96fb803247f7710aca1fad0ce12317a7b005a722.png" alt="V(x) = \sigma \left(x^{2} - 1\right)^{2}"/></li>
+<li>Variables: <img class="math" src="../_images/math/26eeb5258ca5099acf8fe96b2a1049c48c89a5e6.png" alt="x"/></li>
+<li>Default values:<ul>
+<li><img class="math" src="../_images/math/1ce2a843a1917ff90480379a349baed419185551.png" alt="\sigma = 1.0"/></li>
+</ul>
+</li>
+</ul>
+<img alt="../_images/double_well.png" src="../_images/double_well.png" style="width: 400px;" />
+</div>
+<div class="section" id="potential-double-well2">
+<h2>Potential <tt class="docutils literal"><span class="pre">double_well2</span></tt><a class="headerlink" href="#potential-double-well2" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Formula: <img class="math" src="../_images/math/47fb1e7b695ebe43d8feddf0baea48705b3ea0d0.png" alt="V(x) = a x^{4} - b x^{2}"/></li>
+<li>Variables: <img class="math" src="../_images/math/26eeb5258ca5099acf8fe96b2a1049c48c89a5e6.png" alt="x"/></li>
+<li>Default values:<ul>
+<li><img class="math" src="../_images/math/a0fc146afc53ef0f7317c111e0494c295fc84239.png" alt="a = 1.0"/></li>
+<li><img class="math" src="../_images/math/ce5b589c3bd127e5417bd47f841ebe0c481ca125.png" alt="b = 1.0"/></li>
+</ul>
+</li>
+</ul>
+<img alt="../_images/double_well2.png" src="../_images/double_well2.png" style="width: 400px;" />
+</div>
+<div class="section" id="potential-eckart">
+<h2>Potential <tt class="docutils literal"><span class="pre">eckart</span></tt><a class="headerlink" href="#potential-eckart" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Formula: <img class="math" src="../_images/math/91c2a4713da106637f95f83d0047ca3cd0c6f0b2.png" alt="V(x) = \frac{\sigma}{\cosh^{2}{\left (\frac{x}{a} \right )}}"/></li>
+<li>Variables: <img class="math" src="../_images/math/26eeb5258ca5099acf8fe96b2a1049c48c89a5e6.png" alt="x"/></li>
+<li>Default values:<ul>
+<li><img class="math" src="../_images/math/ca33e9fc7150a38dbd25c23e45b04c723efcfda5.png" alt="a = 0.944858082316"/></li>
+<li><img class="math" src="../_images/math/cf4b2345c78edfdf20a239cc488f976bcf00bf77.png" alt="\sigma = 0.038088"/></li>
+</ul>
+</li>
+</ul>
+<img alt="../_images/eckart.png" src="../_images/eckart.png" style="width: 400px;" />
+</div>
+<div class="section" id="potential-free-particle">
+<h2>Potential <tt class="docutils literal"><span class="pre">free_particle</span></tt><a class="headerlink" href="#potential-free-particle" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Formula: <img class="math" src="../_images/math/c1747eb8f4f335012c045e324f2699bef8fa6115.png" alt="V(x) = c"/></li>
+<li>Variables: <img class="math" src="../_images/math/26eeb5258ca5099acf8fe96b2a1049c48c89a5e6.png" alt="x"/></li>
+<li>Default values:<ul>
+<li><img class="math" src="../_images/math/db496a2fade0867e2dedc83ca9cf6262560559a1.png" alt="c = 0"/></li>
+</ul>
+</li>
+</ul>
+<img alt="../_images/free_particle.png" src="../_images/free_particle.png" style="width: 400px;" />
+</div>
+<div class="section" id="potential-kratzer">
+<h2>Potential <tt class="docutils literal"><span class="pre">kratzer</span></tt><a class="headerlink" href="#potential-kratzer" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Formula: <img class="math" src="../_images/math/d3182d63c0ef3d8d6d78f07bcbc1d305ffe27204.png" alt="V(x) = \frac{b \left(b - 1\right)}{2 x^{2}} + \frac{x^{2}}{2}"/></li>
+<li>Variables: <img class="math" src="../_images/math/26eeb5258ca5099acf8fe96b2a1049c48c89a5e6.png" alt="x"/></li>
+<li>Default values:<ul>
+<li><img class="math" src="../_images/math/897625d4c81cc45a24a02936d18a3e21a328d291.png" alt="b = 2.0"/></li>
+</ul>
+</li>
+</ul>
+<img alt="../_images/kratzer.png" src="../_images/kratzer.png" style="width: 400px;" />
+</div>
+<div class="section" id="potential-morse">
+<h2>Potential <tt class="docutils literal"><span class="pre">morse</span></tt><a class="headerlink" href="#potential-morse" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Formula: <img class="math" src="../_images/math/35e45e9d1cbce9353c24819e188ba9d0976a87c8.png" alt="V(x) = D \left(1 - e^{- a \left(x - x_{0}\right)}\right)^{2}"/></li>
+<li>Variables: <img class="math" src="../_images/math/26eeb5258ca5099acf8fe96b2a1049c48c89a5e6.png" alt="x"/></li>
+<li>Default values:<ul>
+<li><img class="math" src="../_images/math/581e9747a1f7f7468baea523fc3821e058b40e31.png" alt="a = 0.5"/></li>
+<li><img class="math" src="../_images/math/a5d5a41d90850da5946bcc075b9d6c58c8fa4454.png" alt="x_{0} = 0.0"/></li>
+<li><img class="math" src="../_images/math/54d45aa7cb6833d441fb0d5460f61a9ca9fed6a8.png" alt="D = 3.0"/></li>
+</ul>
+</li>
+</ul>
+<img alt="../_images/morse.png" src="../_images/morse.png" style="width: 400px;" />
+</div>
+<div class="section" id="potential-morse-zero">
+<h2>Potential <tt class="docutils literal"><span class="pre">morse_zero</span></tt><a class="headerlink" href="#potential-morse-zero" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Formula: <img class="math" src="../_images/math/5e3801b6e4197e401e94edfb7885c7ba8755b8ee.png" alt="V(x) = D \left(- 2 e^{- a \left(x - x_{0}\right)} + e^{- 2 a \left(x - x_{0}\right)}\right)"/></li>
+<li>Variables: <img class="math" src="../_images/math/26eeb5258ca5099acf8fe96b2a1049c48c89a5e6.png" alt="x"/></li>
+<li>Default values:<ul>
+<li><img class="math" src="../_images/math/581e9747a1f7f7468baea523fc3821e058b40e31.png" alt="a = 0.5"/></li>
+<li><img class="math" src="../_images/math/a5d5a41d90850da5946bcc075b9d6c58c8fa4454.png" alt="x_{0} = 0.0"/></li>
+<li><img class="math" src="../_images/math/54d45aa7cb6833d441fb0d5460f61a9ca9fed6a8.png" alt="D = 3.0"/></li>
+</ul>
+</li>
+</ul>
+<img alt="../_images/morse_zero.png" src="../_images/morse_zero.png" style="width: 400px;" />
+</div>
+<div class="section" id="potential-morse-zero-2">
+<h2>Potential <tt class="docutils literal"><span class="pre">morse_zero_2</span></tt><a class="headerlink" href="#potential-morse-zero-2" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Formula: <img class="math" src="../_images/math/9687a444af8beb02ec5e119e877920855e30d63e.png" alt="V(x) = l^{2} \left(e^{- 2 x + 2 x_{0}} - 2 e^{- x + x_{0}}\right)"/></li>
+<li>Variables: <img class="math" src="../_images/math/26eeb5258ca5099acf8fe96b2a1049c48c89a5e6.png" alt="x"/></li>
+<li>Default values:<ul>
+<li><img class="math" src="../_images/math/a5d5a41d90850da5946bcc075b9d6c58c8fa4454.png" alt="x_{0} = 0.0"/></li>
+<li><img class="math" src="../_images/math/ab47c853f7980eb36697a8fc029a9c5ea82832ea.png" alt="l = 1.0"/></li>
+</ul>
+</li>
+</ul>
+<img alt="../_images/morse_zero_2.png" src="../_images/morse_zero_2.png" style="width: 400px;" />
+</div>
+<div class="section" id="potential-pert-quadratic">
+<h2>Potential <tt class="docutils literal"><span class="pre">pert_quadratic</span></tt><a class="headerlink" href="#potential-pert-quadratic" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Formula: <img class="math" src="../_images/math/027104774d26c4e1d4bd14b2c4e12c3034aec517.png" alt="V(x) = \frac{\delta^{2} x^{2}}{2} + \frac{\sigma x^{2}}{2}"/></li>
+<li>Variables: <img class="math" src="../_images/math/26eeb5258ca5099acf8fe96b2a1049c48c89a5e6.png" alt="x"/></li>
+<li>Default values:<ul>
+<li><img class="math" src="../_images/math/d9eea6c25e8fff097726d31688ac7d957854d42e.png" alt="\sigma = 0.05"/></li>
+<li><img class="math" src="../_images/math/70adae8463ba1dd7db923a02279b7486364c69a5.png" alt="\delta = 0.2"/></li>
+</ul>
+</li>
+</ul>
+<img alt="../_images/pert_quadratic.png" src="../_images/pert_quadratic.png" style="width: 400px;" />
+</div>
+<div class="section" id="potential-quadratic">
+<h2>Potential <tt class="docutils literal"><span class="pre">quadratic</span></tt><a class="headerlink" href="#potential-quadratic" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Formula: <img class="math" src="../_images/math/67d2ec898b173c50b1d485b973592bc748378b45.png" alt="V(x) = \frac{\sigma x^{2}}{2}"/></li>
+<li>Variables: <img class="math" src="../_images/math/26eeb5258ca5099acf8fe96b2a1049c48c89a5e6.png" alt="x"/></li>
+<li>Default values:<ul>
+<li><img class="math" src="../_images/math/5d6da809b0e00a061c6b8b930523f4934c7240fe.png" alt="\sigma = 1/2"/></li>
+</ul>
+</li>
+</ul>
+<img alt="../_images/quadratic.png" src="../_images/quadratic.png" style="width: 400px;" />
+</div>
+<div class="section" id="potential-quartic">
+<h2>Potential <tt class="docutils literal"><span class="pre">quartic</span></tt><a class="headerlink" href="#potential-quartic" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Formula: <img class="math" src="../_images/math/7cbfb3459d6fd1f332d0e89001ff6dc6b007375c.png" alt="V(x) = \frac{\sigma x^{4}}{4}"/></li>
+<li>Variables: <img class="math" src="../_images/math/26eeb5258ca5099acf8fe96b2a1049c48c89a5e6.png" alt="x"/></li>
+<li>Default values:<ul>
+<li><img class="math" src="../_images/math/d9eea6c25e8fff097726d31688ac7d957854d42e.png" alt="\sigma = 0.05"/></li>
+</ul>
+</li>
+</ul>
+<img alt="../_images/quartic.png" src="../_images/quartic.png" style="width: 400px;" />
+</div>
+<div class="section" id="potential-v-shape">
+<h2>Potential <tt class="docutils literal"><span class="pre">v_shape</span></tt><a class="headerlink" href="#potential-v-shape" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Formula: <img class="math" src="../_images/math/e5f0adf87aede1af709e751f0b58c788d1ac6039.png" alt="V(x) = \frac{1}{2} \sqrt{4 \delta^{2} + \tanh^{2}{\left (x \right )}}"/></li>
+<li>Variables: <img class="math" src="../_images/math/26eeb5258ca5099acf8fe96b2a1049c48c89a5e6.png" alt="x"/></li>
+<li>Default values:<ul>
+<li><img class="math" src="../_images/math/70adae8463ba1dd7db923a02279b7486364c69a5.png" alt="\delta = 0.2"/></li>
+</ul>
+</li>
+</ul>
+<img alt="../_images/v_shape.png" src="../_images/v_shape.png" style="width: 400px;" />
+</div>
+<div class="section" id="potential-wall">
+<h2>Potential <tt class="docutils literal"><span class="pre">wall</span></tt><a class="headerlink" href="#potential-wall" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Formula: <img class="math" src="../_images/math/84c1a1bad98502f57b6e382b2b283fc9dc92ef39.png" alt="V(x) = \operatorname{atan}{\left (\sigma x \right )} + \frac{\pi}{2}"/></li>
+<li>Variables: <img class="math" src="../_images/math/26eeb5258ca5099acf8fe96b2a1049c48c89a5e6.png" alt="x"/></li>
+<li>Default values:<ul>
+<li><img class="math" src="../_images/math/6b41993e4efe6f4faf136ac949ccd115c327eb3a.png" alt="\sigma = 10.0"/></li>
+</ul>
+</li>
+</ul>
+<img alt="../_images/wall.png" src="../_images/wall.png" style="width: 400px;" />
+</div>
+<div class="section" id="potential-delta-gap">
+<h2>Potential <tt class="docutils literal"><span class="pre">delta_gap</span></tt><a class="headerlink" href="#potential-delta-gap" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Formula: <img class="math" src="../_images/math/01844ab47642b3093a742be3ee359a0c363065a4.png" alt="V(x) = \left[\begin{matrix}\frac{1}{2} \tanh{\left (x \right )} &amp; \delta\\\delta &amp; - \frac{1}{2} \tanh{\left (x \right )}\end{matrix}\right]"/></li>
+<li>Variables: <img class="math" src="../_images/math/26eeb5258ca5099acf8fe96b2a1049c48c89a5e6.png" alt="x"/></li>
+<li>Default values:<ul>
+<li><img class="math" src="../_images/math/70adae8463ba1dd7db923a02279b7486364c69a5.png" alt="\delta = 0.2"/></li>
+</ul>
+</li>
+</ul>
+<img alt="../_images/delta_gap.png" src="../_images/delta_gap.png" style="width: 400px;" />
+</div>
+<div class="section" id="potential-delta-gap-diag">
+<h2>Potential <tt class="docutils literal"><span class="pre">delta_gap_diag</span></tt><a class="headerlink" href="#potential-delta-gap-diag" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Formula: <img class="math" src="../_images/math/f5daabb4e967df333845144bb2fa1cb43cc3f8e7.png" alt="V(x) = \left[\begin{matrix}\sqrt{\delta^{2} + \frac{1}{4} \tanh^{2}{\left (x \right )}} &amp; 0\\0 &amp; - \sqrt{\delta^{2} + \frac{1}{4} \tanh^{2}{\left (x \right )}}\end{matrix}\right]"/></li>
+<li>Variables: <img class="math" src="../_images/math/26eeb5258ca5099acf8fe96b2a1049c48c89a5e6.png" alt="x"/></li>
+</ul>
+<img alt="../_images/delta_gap_diag.png" src="../_images/delta_gap_diag.png" style="width: 400px;" />
+</div>
+<div class="section" id="potential-two-crossings">
+<h2>Potential <tt class="docutils literal"><span class="pre">two_crossings</span></tt><a class="headerlink" href="#potential-two-crossings" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Formula: <img class="math" src="../_images/math/19db737eec3e6a63fe65f3397fea6a29e6c1b35d.png" alt="V(x) = \left[\begin{matrix}\frac{1}{2} \tanh{\left (- \rho + x \right )} \tanh{\left (\rho + x \right )} &amp; \frac{\delta}{2}\\\frac{\delta}{2} &amp; - \frac{1}{2} \tanh{\left (- \rho + x \right )} \tanh{\left (\rho + x \right )}\end{matrix}\right]"/></li>
+<li>Variables: <img class="math" src="../_images/math/26eeb5258ca5099acf8fe96b2a1049c48c89a5e6.png" alt="x"/></li>
+<li>Default values:<ul>
+<li><img class="math" src="../_images/math/81494bcf7bbb7de6bc2985a39f7f752b4dce6cc1.png" alt="\rho = 3.0"/></li>
+</ul>
+</li>
+</ul>
+<img alt="../_images/two_crossings.png" src="../_images/two_crossings.png" style="width: 400px;" />
+</div>
+<div class="section" id="potential-two-quadratic">
+<h2>Potential <tt class="docutils literal"><span class="pre">two_quadratic</span></tt><a class="headerlink" href="#potential-two-quadratic" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Formula: <img class="math" src="../_images/math/981ef1b5a55fe6a4af88cf386d143af8c03cda21.png" alt="V(x) = \left[\begin{matrix}\frac{\sigma x^{2}}{2} &amp; 0\\0 &amp; \frac{\sigma x^{2}}{2}\end{matrix}\right]"/></li>
+<li>Variables: <img class="math" src="../_images/math/26eeb5258ca5099acf8fe96b2a1049c48c89a5e6.png" alt="x"/></li>
+<li>Default values:<ul>
+<li><img class="math" src="../_images/math/d9eea6c25e8fff097726d31688ac7d957854d42e.png" alt="\sigma = 0.05"/></li>
+</ul>
+</li>
+</ul>
+<img alt="../_images/two_quadratic.png" src="../_images/two_quadratic.png" style="width: 400px;" />
+</div>
+<div class="section" id="potential-two-quartic">
+<h2>Potential <tt class="docutils literal"><span class="pre">two_quartic</span></tt><a class="headerlink" href="#potential-two-quartic" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Formula: <img class="math" src="../_images/math/2312534185ab6f8b814ea01517f2f8667ffbf30f.png" alt="V(x) = \left[\begin{matrix}\frac{\sigma x^{4}}{4} &amp; 0\\0 &amp; \frac{\sigma x^{4}}{8}\end{matrix}\right]"/></li>
+<li>Variables: <img class="math" src="../_images/math/26eeb5258ca5099acf8fe96b2a1049c48c89a5e6.png" alt="x"/></li>
+<li>Default values:<ul>
+<li><img class="math" src="../_images/math/7e1991ff7bc4fdda43c1ff336c7dc535509971ba.png" alt="\sigma = 1"/></li>
+</ul>
+</li>
+</ul>
+<img alt="../_images/two_quartic.png" src="../_images/two_quartic.png" style="width: 400px;" />
+</div>
+<div class="section" id="potential-three-levels">
+<h2>Potential <tt class="docutils literal"><span class="pre">three_levels</span></tt><a class="headerlink" href="#potential-three-levels" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Formula: <img class="math" src="../_images/math/9371daab9fc28d126b518b391a9e9c2d1c4b0bef.png" alt="V(x) = \left[\begin{matrix}\tanh{\left (- \rho + x \right )} + \tanh{\left (\rho + x \right )} &amp; \delta_{1} &amp; \delta_{2}\\\delta_{1} &amp; - \tanh{\left (\rho + x \right )} &amp; 0\\\delta_{2} &amp; 0 &amp; - \tanh{\left (- \rho + x \right )} + 1\end{matrix}\right]"/></li>
+<li>Variables: <img class="math" src="../_images/math/26eeb5258ca5099acf8fe96b2a1049c48c89a5e6.png" alt="x"/></li>
+<li>Default values:<ul>
+<li><img class="math" src="../_images/math/81494bcf7bbb7de6bc2985a39f7f752b4dce6cc1.png" alt="\rho = 3.0"/></li>
+</ul>
+</li>
+</ul>
+<img alt="../_images/three_levels.png" src="../_images/three_levels.png" style="width: 400px;" />
+</div>
+<div class="section" id="potential-three-quadratic">
+<h2>Potential <tt class="docutils literal"><span class="pre">three_quadratic</span></tt><a class="headerlink" href="#potential-three-quadratic" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Formula: <img class="math" src="../_images/math/bd75bfc1c6c1e2e1def543f76fc7b9daa95f8306.png" alt="V(x) = \left[\begin{matrix}\frac{\sigma x^{2}}{2} &amp; 0 &amp; 0\\0 &amp; \frac{\sigma x^{2}}{2} &amp; 0\\0 &amp; 0 &amp; \frac{\sigma x^{2}}{2}\end{matrix}\right]"/></li>
+<li>Variables: <img class="math" src="../_images/math/26eeb5258ca5099acf8fe96b2a1049c48c89a5e6.png" alt="x"/></li>
+<li>Default values:<ul>
+<li><img class="math" src="../_images/math/d9eea6c25e8fff097726d31688ac7d957854d42e.png" alt="\sigma = 0.05"/></li>
+</ul>
+</li>
+</ul>
+<img alt="../_images/three_quadratic.png" src="../_images/three_quadratic.png" style="width: 400px;" />
+</div>
+<div class="section" id="potential-four-powers">
+<h2>Potential <tt class="docutils literal"><span class="pre">four_powers</span></tt><a class="headerlink" href="#potential-four-powers" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Formula: <img class="math" src="../_images/math/6a2cec46c8ba518f37359cabeb83eafa8b8ca86c.png" alt="V(x) = \left[\begin{matrix}\frac{\sigma x^{2}}{2} &amp; 0 &amp; 0 &amp; 0\\0 &amp; \frac{\sigma x^{4}}{4} &amp; 0 &amp; 0\\0 &amp; 0 &amp; \frac{\sigma x^{6}}{6} &amp; 0\\0 &amp; 0 &amp; 0 &amp; \frac{\sigma x^{8}}{8}\end{matrix}\right]"/></li>
+<li>Variables: <img class="math" src="../_images/math/26eeb5258ca5099acf8fe96b2a1049c48c89a5e6.png" alt="x"/></li>
+<li>Default values:<ul>
+<li><img class="math" src="../_images/math/d9eea6c25e8fff097726d31688ac7d957854d42e.png" alt="\sigma = 0.05"/></li>
+</ul>
+</li>
+</ul>
+<img alt="../_images/four_powers.png" src="../_images/four_powers.png" style="width: 400px;" />
+</div>
+<div class="section" id="potential-four-quadratic">
+<h2>Potential <tt class="docutils literal"><span class="pre">four_quadratic</span></tt><a class="headerlink" href="#potential-four-quadratic" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Formula: <img class="math" src="../_images/math/51e87188ce5fc177ae7c8290f7d64a4e126090a5.png" alt="V(x) = \left[\begin{matrix}\frac{\sigma x^{2}}{2} &amp; 0 &amp; 0 &amp; 0\\0 &amp; \frac{\sigma x^{2}}{2} &amp; 0 &amp; 0\\0 &amp; 0 &amp; \frac{\sigma x^{2}}{2} &amp; 0\\0 &amp; 0 &amp; 0 &amp; \frac{\sigma x^{2}}{2}\end{matrix}\right]"/></li>
+<li>Variables: <img class="math" src="../_images/math/26eeb5258ca5099acf8fe96b2a1049c48c89a5e6.png" alt="x"/></li>
+<li>Default values:<ul>
+<li><img class="math" src="../_images/math/d9eea6c25e8fff097726d31688ac7d957854d42e.png" alt="\sigma = 0.05"/></li>
+</ul>
+</li>
+</ul>
+<img alt="../_images/four_quadratic.png" src="../_images/four_quadratic.png" style="width: 400px;" />
+</div>
+<div class="section" id="potential-five-quadratic">
+<h2>Potential <tt class="docutils literal"><span class="pre">five_quadratic</span></tt><a class="headerlink" href="#potential-five-quadratic" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Formula: <img class="math" src="../_images/math/368c1bf56f371142d41cc14b919098247655690b.png" alt="V(x) = \left[\begin{matrix}\frac{\sigma x^{2}}{2} &amp; 0 &amp; 0 &amp; 0 &amp; 0\\0 &amp; \frac{\sigma x^{2}}{2} &amp; 0 &amp; 0 &amp; 0\\0 &amp; 0 &amp; \frac{\sigma x^{2}}{2} &amp; 0 &amp; 0\\0 &amp; 0 &amp; 0 &amp; \frac{\sigma x^{2}}{2} &amp; 0\\0 &amp; 0 &amp; 0 &amp; 0 &amp; \frac{\sigma x^{2}}{2}\end{matrix}\right]"/></li>
+<li>Variables: <img class="math" src="../_images/math/26eeb5258ca5099acf8fe96b2a1049c48c89a5e6.png" alt="x"/></li>
+<li>Default values:<ul>
+<li><img class="math" src="../_images/math/d9eea6c25e8fff097726d31688ac7d957854d42e.png" alt="\sigma = 0.05"/></li>
+</ul>
+</li>
+</ul>
+<img alt="../_images/five_quadratic.png" src="../_images/five_quadratic.png" style="width: 400px;" />
+</div>
+<div class="section" id="potential-channel-2d">
+<h2>Potential <tt class="docutils literal"><span class="pre">channel_2d</span></tt><a class="headerlink" href="#potential-channel-2d" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Formula: <img class="math" src="../_images/math/97fa36d591c62d7a2feca1e4fd984160cff0947a.png" alt="V(x) = sigmax x + \frac{sigmay y^{2}}{2}"/></li>
+<li>Variables: <img class="math" src="../_images/math/26eeb5258ca5099acf8fe96b2a1049c48c89a5e6.png" alt="x"/>, <img class="math" src="../_images/math/092e364e1d9d19ad5fffb0b46ef4cc7f2da02c1c.png" alt="y"/></li>
+<li>Default values:<ul>
+<li><img class="math" src="../_images/math/2bc055c9595d415dc376dbedafbba9e94eb21cb3.png" alt="sigmay = 0.45"/></li>
+<li><img class="math" src="../_images/math/064ba7e112f89c2c4d3235bc2b7b88ffbba08424.png" alt="sigmax = 0.0"/></li>
+</ul>
+</li>
+</ul>
+<img alt="../_images/channel_2d.png" src="../_images/channel_2d.png" style="width: 400px;" />
+</div>
+<div class="section" id="potential-circle-pit-2d">
+<h2>Potential <tt class="docutils literal"><span class="pre">circle_pit_2d</span></tt><a class="headerlink" href="#potential-circle-pit-2d" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Formula: <img class="math" src="../_images/math/2c14fd84b104a1055bb1d50fab08230138c8d3f0.png" alt="V(x) = \operatorname{atan}{\left (\sigma \left(- R + \sqrt{x^{2} + y^{2}}\right) \right )} + \frac{\pi}{2}"/></li>
+<li>Variables: <img class="math" src="../_images/math/26eeb5258ca5099acf8fe96b2a1049c48c89a5e6.png" alt="x"/>, <img class="math" src="../_images/math/092e364e1d9d19ad5fffb0b46ef4cc7f2da02c1c.png" alt="y"/></li>
+<li>Default values:<ul>
+<li><img class="math" src="../_images/math/22b4ae93a0c06575d50257bcc078b9c83a9915a1.png" alt="R = 8"/></li>
+<li><img class="math" src="../_images/math/15c167405149d7ebf9dd3ff4b8a2d9a03c54d72e.png" alt="\sigma = 10"/></li>
+</ul>
+</li>
+</ul>
+<img alt="../_images/circle_pit_2d.png" src="../_images/circle_pit_2d.png" style="width: 400px;" />
+</div>
+<div class="section" id="potential-corral-ring">
+<h2>Potential <tt class="docutils literal"><span class="pre">corral_ring</span></tt><a class="headerlink" href="#potential-corral-ring" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Formula: <img class="math" src="../_images/math/ddb884e325137c40797290503a96e06545f114fa.png" alt="V(x) = - \frac{1}{2} \sqrt{\delta^{2} + \tanh^{2}{\left (- R + \sqrt{x^{2} + y^{2}} \right )} \tanh^{2}{\left (R + \sqrt{x^{2} + y^{2}} \right )}}"/></li>
+<li>Variables: <img class="math" src="../_images/math/26eeb5258ca5099acf8fe96b2a1049c48c89a5e6.png" alt="x"/>, <img class="math" src="../_images/math/092e364e1d9d19ad5fffb0b46ef4cc7f2da02c1c.png" alt="y"/></li>
+<li>Default values:<ul>
+<li><img class="math" src="../_images/math/ab666c925878f82c031e80800817713ef8fb02c6.png" alt="R = 3"/></li>
+<li><img class="math" src="../_images/math/c5e3ae28b428ec02fedb62fa03695bd8fe6fd2a3.png" alt="\delta = 1"/></li>
+</ul>
+</li>
+</ul>
+<img alt="../_images/corral_ring.png" src="../_images/corral_ring.png" style="width: 400px;" />
+</div>
+<div class="section" id="potential-corral-rotsym-2d">
+<h2>Potential <tt class="docutils literal"><span class="pre">corral_rotsym_2d</span></tt><a class="headerlink" href="#potential-corral-rotsym-2d" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Formula: <img class="math" src="../_images/math/2c14fd84b104a1055bb1d50fab08230138c8d3f0.png" alt="V(x) = \operatorname{atan}{\left (\sigma \left(- R + \sqrt{x^{2} + y^{2}}\right) \right )} + \frac{\pi}{2}"/></li>
+<li>Variables: <img class="math" src="../_images/math/26eeb5258ca5099acf8fe96b2a1049c48c89a5e6.png" alt="x"/>, <img class="math" src="../_images/math/092e364e1d9d19ad5fffb0b46ef4cc7f2da02c1c.png" alt="y"/></li>
+<li>Default values:<ul>
+<li><img class="math" src="../_images/math/22b4ae93a0c06575d50257bcc078b9c83a9915a1.png" alt="R = 8"/></li>
+<li><img class="math" src="../_images/math/15c167405149d7ebf9dd3ff4b8a2d9a03c54d72e.png" alt="\sigma = 10"/></li>
+</ul>
+</li>
+</ul>
+<img alt="../_images/corral_rotsym_2d.png" src="../_images/corral_rotsym_2d.png" style="width: 400px;" />
+</div>
+<div class="section" id="potential-cos-osc-2d">
+<h2>Potential <tt class="docutils literal"><span class="pre">cos_osc_2d</span></tt><a class="headerlink" href="#potential-cos-osc-2d" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Formula: <img class="math" src="../_images/math/a2dc52e300009ce5251e6084a292d68e70e2167b.png" alt="V(x) = ax \left(- \cos{\left (bx x \right )} + 1\right) + ay \left(- \cos{\left (by y \right )} + 1\right)"/></li>
+<li>Variables: <img class="math" src="../_images/math/26eeb5258ca5099acf8fe96b2a1049c48c89a5e6.png" alt="x"/>, <img class="math" src="../_images/math/092e364e1d9d19ad5fffb0b46ef4cc7f2da02c1c.png" alt="y"/></li>
+<li>Default values:<ul>
+<li><img class="math" src="../_images/math/981b9e9f729d7804831bfc829beb18835ffb8b60.png" alt="ay = 1"/></li>
+<li><img class="math" src="../_images/math/61bb7aa38606d270753a53499f3bc7d1cb1bd99b.png" alt="ax = 1"/></li>
+<li><img class="math" src="../_images/math/ce6143640aa717fc98d875b7173f68e7f96867f4.png" alt="bx = 1"/></li>
+<li><img class="math" src="../_images/math/98d5867ebbfc251e9826d937cd1ebde97c6dd436.png" alt="by = 1"/></li>
+</ul>
+</li>
+</ul>
+<img alt="../_images/cos_osc_2d.png" src="../_images/cos_osc_2d.png" style="width: 400px;" />
+</div>
+<div class="section" id="potential-cos-osc-add-2d">
+<h2>Potential <tt class="docutils literal"><span class="pre">cos_osc_add_2d</span></tt><a class="headerlink" href="#potential-cos-osc-add-2d" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Formula: <img class="math" src="../_images/math/c1d3665d2fe6a4aefc590b3b8a542b1f8cdfb037.png" alt="V(x) = - \cos{\left (a x \right )} - \cos{\left (b y \right )}"/></li>
+<li>Variables: <img class="math" src="../_images/math/26eeb5258ca5099acf8fe96b2a1049c48c89a5e6.png" alt="x"/>, <img class="math" src="../_images/math/092e364e1d9d19ad5fffb0b46ef4cc7f2da02c1c.png" alt="y"/></li>
+<li>Default values:<ul>
+<li><img class="math" src="../_images/math/48d02444a59b917b64e8bd0963b88712fc7fa0a3.png" alt="a = 1"/></li>
+<li><img class="math" src="../_images/math/851b03ce92c3ad8da97daf2785cf4e103c7a8d66.png" alt="b = 1"/></li>
+</ul>
+</li>
+</ul>
+<img alt="../_images/cos_osc_add_2d.png" src="../_images/cos_osc_add_2d.png" style="width: 400px;" />
+</div>
+<div class="section" id="potential-cos-osc-mul-2d">
+<h2>Potential <tt class="docutils literal"><span class="pre">cos_osc_mul_2d</span></tt><a class="headerlink" href="#potential-cos-osc-mul-2d" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Formula: <img class="math" src="../_images/math/882f3bb8698d9054b44b50dc0c8228b3b85c13df.png" alt="V(x) = - \cos{\left (a x \right )} \cos{\left (b y \right )}"/></li>
+<li>Variables: <img class="math" src="../_images/math/26eeb5258ca5099acf8fe96b2a1049c48c89a5e6.png" alt="x"/>, <img class="math" src="../_images/math/092e364e1d9d19ad5fffb0b46ef4cc7f2da02c1c.png" alt="y"/></li>
+<li>Default values:<ul>
+<li><img class="math" src="../_images/math/48d02444a59b917b64e8bd0963b88712fc7fa0a3.png" alt="a = 1"/></li>
+<li><img class="math" src="../_images/math/851b03ce92c3ad8da97daf2785cf4e103c7a8d66.png" alt="b = 1"/></li>
+</ul>
+</li>
+</ul>
+<img alt="../_images/cos_osc_mul_2d.png" src="../_images/cos_osc_mul_2d.png" style="width: 400px;" />
+</div>
+<div class="section" id="potential-cos-osc-rotsym-2d">
+<h2>Potential <tt class="docutils literal"><span class="pre">cos_osc_rotsym_2d</span></tt><a class="headerlink" href="#potential-cos-osc-rotsym-2d" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Formula: <img class="math" src="../_images/math/482eb4d525feea5907ff571ff11af1767eddbdf7.png" alt="V(x) = - a \cos{\left (b \left(x^{2} + y^{2}\right) \right )}"/></li>
+<li>Variables: <img class="math" src="../_images/math/26eeb5258ca5099acf8fe96b2a1049c48c89a5e6.png" alt="x"/>, <img class="math" src="../_images/math/092e364e1d9d19ad5fffb0b46ef4cc7f2da02c1c.png" alt="y"/></li>
+<li>Default values:<ul>
+<li><img class="math" src="../_images/math/48d02444a59b917b64e8bd0963b88712fc7fa0a3.png" alt="a = 1"/></li>
+<li><img class="math" src="../_images/math/851b03ce92c3ad8da97daf2785cf4e103c7a8d66.png" alt="b = 1"/></li>
+</ul>
+</li>
+</ul>
+<img alt="../_images/cos_osc_rotsym_2d.png" src="../_images/cos_osc_rotsym_2d.png" style="width: 400px;" />
+</div>
+<div class="section" id="potential-cosh-osc-2d">
+<h2>Potential <tt class="docutils literal"><span class="pre">cosh_osc_2d</span></tt><a class="headerlink" href="#potential-cosh-osc-2d" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Formula: <img class="math" src="../_images/math/7f3056fa5341d610a6cc94c3954fd2afbc7e677b.png" alt="V(x) = ax \left(\cosh{\left (bx x \right )} + 1\right) + ay \left(\cosh{\left (by y \right )} + 1\right)"/></li>
+<li>Variables: <img class="math" src="../_images/math/26eeb5258ca5099acf8fe96b2a1049c48c89a5e6.png" alt="x"/>, <img class="math" src="../_images/math/092e364e1d9d19ad5fffb0b46ef4cc7f2da02c1c.png" alt="y"/></li>
+<li>Default values:<ul>
+<li><img class="math" src="../_images/math/981b9e9f729d7804831bfc829beb18835ffb8b60.png" alt="ay = 1"/></li>
+<li><img class="math" src="../_images/math/61bb7aa38606d270753a53499f3bc7d1cb1bd99b.png" alt="ax = 1"/></li>
+<li><img class="math" src="../_images/math/ce6143640aa717fc98d875b7173f68e7f96867f4.png" alt="bx = 1"/></li>
+<li><img class="math" src="../_images/math/98d5867ebbfc251e9826d937cd1ebde97c6dd436.png" alt="by = 1"/></li>
+</ul>
+</li>
+</ul>
+<img alt="../_images/cosh_osc_2d.png" src="../_images/cosh_osc_2d.png" style="width: 400px;" />
+</div>
+<div class="section" id="potential-cosh-osc-add-2d">
+<h2>Potential <tt class="docutils literal"><span class="pre">cosh_osc_add_2d</span></tt><a class="headerlink" href="#potential-cosh-osc-add-2d" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Formula: <img class="math" src="../_images/math/d6abbbe26d56b70710190ea931f841b80847a4bb.png" alt="V(x) = \cosh{\left (a x \right )} + \cosh{\left (b y \right )}"/></li>
+<li>Variables: <img class="math" src="../_images/math/26eeb5258ca5099acf8fe96b2a1049c48c89a5e6.png" alt="x"/>, <img class="math" src="../_images/math/092e364e1d9d19ad5fffb0b46ef4cc7f2da02c1c.png" alt="y"/></li>
+<li>Default values:<ul>
+<li><img class="math" src="../_images/math/48d02444a59b917b64e8bd0963b88712fc7fa0a3.png" alt="a = 1"/></li>
+<li><img class="math" src="../_images/math/851b03ce92c3ad8da97daf2785cf4e103c7a8d66.png" alt="b = 1"/></li>
+</ul>
+</li>
+</ul>
+<img alt="../_images/cosh_osc_add_2d.png" src="../_images/cosh_osc_add_2d.png" style="width: 400px;" />
+</div>
+<div class="section" id="potential-cosh-osc-mul-2d">
+<h2>Potential <tt class="docutils literal"><span class="pre">cosh_osc_mul_2d</span></tt><a class="headerlink" href="#potential-cosh-osc-mul-2d" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Formula: <img class="math" src="../_images/math/3a484680b620804fab2c439b0a7402158b65368a.png" alt="V(x) = \cosh{\left (a x \right )} \cosh{\left (b y \right )}"/></li>
+<li>Variables: <img class="math" src="../_images/math/26eeb5258ca5099acf8fe96b2a1049c48c89a5e6.png" alt="x"/>, <img class="math" src="../_images/math/092e364e1d9d19ad5fffb0b46ef4cc7f2da02c1c.png" alt="y"/></li>
+<li>Default values:<ul>
+<li><img class="math" src="../_images/math/48d02444a59b917b64e8bd0963b88712fc7fa0a3.png" alt="a = 1"/></li>
+<li><img class="math" src="../_images/math/851b03ce92c3ad8da97daf2785cf4e103c7a8d66.png" alt="b = 1"/></li>
+</ul>
+</li>
+</ul>
+<img alt="../_images/cosh_osc_mul_2d.png" src="../_images/cosh_osc_mul_2d.png" style="width: 400px;" />
+</div>
+<div class="section" id="potential-cosh-osc-rotsym-2d">
+<h2>Potential <tt class="docutils literal"><span class="pre">cosh_osc_rotsym_2d</span></tt><a class="headerlink" href="#potential-cosh-osc-rotsym-2d" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Formula: <img class="math" src="../_images/math/f03088afccbacfd15147b1051f164f8ec105c3fe.png" alt="V(x) = a \cosh{\left (b \sqrt{x^{2} + y^{2}} \right )}"/></li>
+<li>Variables: <img class="math" src="../_images/math/26eeb5258ca5099acf8fe96b2a1049c48c89a5e6.png" alt="x"/>, <img class="math" src="../_images/math/092e364e1d9d19ad5fffb0b46ef4cc7f2da02c1c.png" alt="y"/></li>
+<li>Default values:<ul>
+<li><img class="math" src="../_images/math/48d02444a59b917b64e8bd0963b88712fc7fa0a3.png" alt="a = 1"/></li>
+<li><img class="math" src="../_images/math/851b03ce92c3ad8da97daf2785cf4e103c7a8d66.png" alt="b = 1"/></li>
+</ul>
+</li>
+</ul>
+<img alt="../_images/cosh_osc_rotsym_2d.png" src="../_images/cosh_osc_rotsym_2d.png" style="width: 400px;" />
+</div>
+<div class="section" id="potential-double-well-2d">
+<h2>Potential <tt class="docutils literal"><span class="pre">double_well_2d</span></tt><a class="headerlink" href="#potential-double-well-2d" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Formula: <img class="math" src="../_images/math/e8a988b474d3ea6cb14303a97d71c5f4e9b8071b.png" alt="V(x) = ax x^{4} + ay y^{4} - bx x^{2} - by y^{2} - cx x - cy y"/></li>
+<li>Variables: <img class="math" src="../_images/math/26eeb5258ca5099acf8fe96b2a1049c48c89a5e6.png" alt="x"/>, <img class="math" src="../_images/math/092e364e1d9d19ad5fffb0b46ef4cc7f2da02c1c.png" alt="y"/></li>
+<li>Default values:<ul>
+<li><img class="math" src="../_images/math/9a3630996317cd14db21222c3fc15ac5a96a7025.png" alt="cy = 0.0"/></li>
+<li><img class="math" src="../_images/math/538ce9658625b3f08269025247c0f893f0c7c5d0.png" alt="cx = 0.0"/></li>
+<li><img class="math" src="../_images/math/674c445045eb12f6f6c9517122976b1cb7c5fdbd.png" alt="ay = 1.0"/></li>
+<li><img class="math" src="../_images/math/e91718342be9d224459c207f06f8a579de8a4dcd.png" alt="ax = 1.0"/></li>
+<li><img class="math" src="../_images/math/8c2f8ce453172014169c2e0ea65453202afbbd6d.png" alt="bx = 4.0"/></li>
+<li><img class="math" src="../_images/math/1e607cc4637daa1ef68e39603b8146fe2aeed36f.png" alt="by = 0.0"/></li>
+</ul>
+</li>
+</ul>
+<img alt="../_images/double_well_2d.png" src="../_images/double_well_2d.png" style="width: 400px;" />
+</div>
+<div class="section" id="potential-double-well-harmonic-2d">
+<h2>Potential <tt class="docutils literal"><span class="pre">double_well_harmonic_2d</span></tt><a class="headerlink" href="#potential-double-well-harmonic-2d" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Formula: <img class="math" src="../_images/math/e8a988b474d3ea6cb14303a97d71c5f4e9b8071b.png" alt="V(x) = ax x^{4} + ay y^{4} - bx x^{2} - by y^{2} - cx x - cy y"/></li>
+<li>Variables: <img class="math" src="../_images/math/26eeb5258ca5099acf8fe96b2a1049c48c89a5e6.png" alt="x"/>, <img class="math" src="../_images/math/092e364e1d9d19ad5fffb0b46ef4cc7f2da02c1c.png" alt="y"/></li>
+<li>Default values:<ul>
+<li><img class="math" src="../_images/math/9a3630996317cd14db21222c3fc15ac5a96a7025.png" alt="cy = 0.0"/></li>
+<li><img class="math" src="../_images/math/538ce9658625b3f08269025247c0f893f0c7c5d0.png" alt="cx = 0.0"/></li>
+<li><img class="math" src="../_images/math/a8cc5ad8721a5f38fe954599f4be839b40bec103.png" alt="ay = 0.0"/></li>
+<li><img class="math" src="../_images/math/e91718342be9d224459c207f06f8a579de8a4dcd.png" alt="ax = 1.0"/></li>
+<li><img class="math" src="../_images/math/8c2f8ce453172014169c2e0ea65453202afbbd6d.png" alt="bx = 4.0"/></li>
+<li><img class="math" src="../_images/math/57fbd71a7167e5b43c8b725ac8f0f014effa06bf.png" alt="by = -1.0"/></li>
+</ul>
+</li>
+</ul>
+<img alt="../_images/double_well_harmonic_2d.png" src="../_images/double_well_harmonic_2d.png" style="width: 400px;" />
+</div>
+<div class="section" id="potential-eckart-bn">
+<h2>Potential <tt class="docutils literal"><span class="pre">eckart_bn</span></tt><a class="headerlink" href="#potential-eckart-bn" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Formula: <img class="math" src="../_images/math/0da958813fc97e90247ef277024b15b0f6fde835.png" alt="V(x) = \frac{k y^{2}}{2} \left(- \sigma e^{- l x^{2}} + 1\right) + \frac{v_{0}}{\cosh^{2}{\left (a x \right )}}"/></li>
+<li>Variables: <img class="math" src="../_images/math/26eeb5258ca5099acf8fe96b2a1049c48c89a5e6.png" alt="x"/>, <img class="math" src="../_images/math/092e364e1d9d19ad5fffb0b46ef4cc7f2da02c1c.png" alt="y"/></li>
+<li>Default values:<ul>
+<li><img class="math" src="../_images/math/44b98d48524c37c187723e0dda0294d1f0216863.png" alt="v_{0} = 0.425"/></li>
+<li><img class="math" src="../_images/math/b96009bec73d0e29760018576bdf3c172fa19624.png" alt="a = 1.3624"/></li>
+<li><img class="math" src="../_images/math/718a3c7a348a7b1b4186bf233ed2725edfaf3f23.png" alt="k = 0.06784"/></li>
+<li><img class="math" src="../_images/math/7400b7c24dd4a58a7797930d01412790d146e63d.png" alt="\sigma = 0.5"/></li>
+<li><img class="math" src="../_images/math/5763af478c6e1aaa776b5fd1d3e36cb03fcd407d.png" alt="l = 0.25"/></li>
+</ul>
+</li>
+</ul>
+<img alt="../_images/eckart_bn.png" src="../_images/eckart_bn.png" style="width: 400px;" />
+</div>
+<div class="section" id="potential-gauss-hill-2d">
+<h2>Potential <tt class="docutils literal"><span class="pre">gauss_hill_2d</span></tt><a class="headerlink" href="#potential-gauss-hill-2d" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Formula: <img class="math" src="../_images/math/6449bc940674f05fcc81e01568dae5d74449a3fd.png" alt="V(x) = e^{- sigmax x^{2} - sigmay y^{2}}"/></li>
+<li>Variables: <img class="math" src="../_images/math/26eeb5258ca5099acf8fe96b2a1049c48c89a5e6.png" alt="x"/>, <img class="math" src="../_images/math/092e364e1d9d19ad5fffb0b46ef4cc7f2da02c1c.png" alt="y"/></li>
+<li>Default values:<ul>
+<li><img class="math" src="../_images/math/8ceaa3da38ff928b67faec069ed24c37df344f28.png" alt="sigmay = 1"/></li>
+<li><img class="math" src="../_images/math/11fac431bcec647c3e464c60e11fdd9fb2231883.png" alt="sigmax = 1"/></li>
+</ul>
+</li>
+</ul>
+<img alt="../_images/gauss_hill_2d.png" src="../_images/gauss_hill_2d.png" style="width: 400px;" />
+</div>
+<div class="section" id="potential-harmonic-channel">
+<h2>Potential <tt class="docutils literal"><span class="pre">harmonic_channel</span></tt><a class="headerlink" href="#potential-harmonic-channel" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Formula: <img class="math" src="../_images/math/d832e2f5230a8cdea7925b89e6c58d514c632831.png" alt="V(x) = \sigma y + \frac{w^{2} x^{2}}{2}"/></li>
+<li>Variables: <img class="math" src="../_images/math/26eeb5258ca5099acf8fe96b2a1049c48c89a5e6.png" alt="x"/>, <img class="math" src="../_images/math/092e364e1d9d19ad5fffb0b46ef4cc7f2da02c1c.png" alt="y"/></li>
+<li>Default values:<ul>
+<li><img class="math" src="../_images/math/2d52d2d37310a8881d00e3603b87f64c4b416053.png" alt="\sigma = -0.1"/></li>
+<li><img class="math" src="../_images/math/1537d4b16a2b4e350b37df4e749becf304ae0e84.png" alt="w = 1.0"/></li>
+</ul>
+</li>
+</ul>
+<img alt="../_images/harmonic_channel.png" src="../_images/harmonic_channel.png" style="width: 400px;" />
+</div>
+<div class="section" id="potential-henon-heiles">
+<h2>Potential <tt class="docutils literal"><span class="pre">henon_heiles</span></tt><a class="headerlink" href="#potential-henon-heiles" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Formula: <img class="math" src="../_images/math/10e528808db79487b8b444de39f6d082699ce51a.png" alt="V(x) = \frac{a}{2} \left(x^{2} + y^{2}\right) + b \left(x^{2} y - \frac{y^{3}}{3}\right)"/></li>
+<li>Variables: <img class="math" src="../_images/math/26eeb5258ca5099acf8fe96b2a1049c48c89a5e6.png" alt="x"/>, <img class="math" src="../_images/math/092e364e1d9d19ad5fffb0b46ef4cc7f2da02c1c.png" alt="y"/></li>
+<li>Default values:<ul>
+<li><img class="math" src="../_images/math/48d02444a59b917b64e8bd0963b88712fc7fa0a3.png" alt="a = 1"/></li>
+<li><img class="math" src="../_images/math/e00655acfa0e0ba15a3cdda028697def7de3c90b.png" alt="b = 1/2"/></li>
+</ul>
+</li>
+</ul>
+<img alt="../_images/henon_heiles.png" src="../_images/henon_heiles.png" style="width: 400px;" />
+</div>
+<div class="section" id="potential-morse-threefold">
+<h2>Potential <tt class="docutils literal"><span class="pre">morse_threefold</span></tt><a class="headerlink" href="#potential-morse-threefold" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Formula: <img class="math" src="../_images/math/ccee52f8088e2aa53517636d458aa62a3434b03a.png" alt="V(x) = \left(- e^{\left(- \sigma - \frac{1}{16} \left(- \cos{\left (3 \operatorname{atan_{2}}{\left (y,x \right )} \right )} + 1\right)^{2}\right) \left(x^{2} + y^{2}\right)} + 1\right)^{2}"/></li>
+<li>Variables: <img class="math" src="../_images/math/26eeb5258ca5099acf8fe96b2a1049c48c89a5e6.png" alt="x"/>, <img class="math" src="../_images/math/092e364e1d9d19ad5fffb0b46ef4cc7f2da02c1c.png" alt="y"/></li>
+<li>Default values:<ul>
+<li><img class="math" src="../_images/math/d9eea6c25e8fff097726d31688ac7d957854d42e.png" alt="\sigma = 0.05"/></li>
+</ul>
+</li>
+</ul>
+<img alt="../_images/morse_threefold.png" src="../_images/morse_threefold.png" style="width: 400px;" />
+</div>
+<div class="section" id="potential-morse-threefold-2">
+<h2>Potential <tt class="docutils literal"><span class="pre">morse_threefold_2</span></tt><a class="headerlink" href="#potential-morse-threefold-2" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Formula: <img class="math" src="../_images/math/e3695733a7a7d94f6350a913770c3ed989b90f46.png" alt="V(x) = \left(- e^{\frac{1}{16 \left(x^{2} + y^{2}\right)^{2}} \left(- 16 \sigma \left(x^{2} + y^{2}\right)^{3} - \left(x \left(x^{2} - 3 y^{2}\right) - \left(x^{2} + y^{2}\right)^{\frac{3}{2}}\right)^{2}\right)} + 1\right)^{2}"/></li>
+<li>Variables: <img class="math" src="../_images/math/26eeb5258ca5099acf8fe96b2a1049c48c89a5e6.png" alt="x"/>, <img class="math" src="../_images/math/092e364e1d9d19ad5fffb0b46ef4cc7f2da02c1c.png" alt="y"/></li>
+<li>Default values:<ul>
+<li><img class="math" src="../_images/math/d9eea6c25e8fff097726d31688ac7d957854d42e.png" alt="\sigma = 0.05"/></li>
+</ul>
+</li>
+</ul>
+<img alt="../_images/morse_threefold_2.png" src="../_images/morse_threefold_2.png" style="width: 400px;" />
+</div>
+<div class="section" id="potential-pullen-edmonds">
+<h2>Potential <tt class="docutils literal"><span class="pre">pullen_edmonds</span></tt><a class="headerlink" href="#potential-pullen-edmonds" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Formula: <img class="math" src="../_images/math/1ec6d589b07e7ded5027212c6d3aa4faa64abce4.png" alt="V(x) = a x^{2} y^{2} + \frac{b_{1} x^{2}}{2} + \frac{b_{2} y^{2}}{2}"/></li>
+<li>Variables: <img class="math" src="../_images/math/26eeb5258ca5099acf8fe96b2a1049c48c89a5e6.png" alt="x"/>, <img class="math" src="../_images/math/092e364e1d9d19ad5fffb0b46ef4cc7f2da02c1c.png" alt="y"/></li>
+<li>Default values:<ul>
+<li><img class="math" src="../_images/math/48d02444a59b917b64e8bd0963b88712fc7fa0a3.png" alt="a = 1"/></li>
+<li><img class="math" src="../_images/math/a556b5f8dbb0835f50a692282499cc05c989109c.png" alt="b_{1} = 1"/></li>
+<li><img class="math" src="../_images/math/2de36342b373e56136c2f3d48dfe0db3688df19e.png" alt="b_{2} = 1"/></li>
+</ul>
+</li>
+</ul>
+<img alt="../_images/pullen_edmonds.png" src="../_images/pullen_edmonds.png" style="width: 400px;" />
+</div>
+<div class="section" id="potential-quad-well">
+<h2>Potential <tt class="docutils literal"><span class="pre">quad_well</span></tt><a class="headerlink" href="#potential-quad-well" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Formula: <img class="math" src="../_images/math/e8a988b474d3ea6cb14303a97d71c5f4e9b8071b.png" alt="V(x) = ax x^{4} + ay y^{4} - bx x^{2} - by y^{2} - cx x - cy y"/></li>
+<li>Variables: <img class="math" src="../_images/math/26eeb5258ca5099acf8fe96b2a1049c48c89a5e6.png" alt="x"/>, <img class="math" src="../_images/math/092e364e1d9d19ad5fffb0b46ef4cc7f2da02c1c.png" alt="y"/></li>
+<li>Default values:<ul>
+<li><img class="math" src="../_images/math/9a3630996317cd14db21222c3fc15ac5a96a7025.png" alt="cy = 0.0"/></li>
+<li><img class="math" src="../_images/math/538ce9658625b3f08269025247c0f893f0c7c5d0.png" alt="cx = 0.0"/></li>
+<li><img class="math" src="../_images/math/674c445045eb12f6f6c9517122976b1cb7c5fdbd.png" alt="ay = 1.0"/></li>
+<li><img class="math" src="../_images/math/e91718342be9d224459c207f06f8a579de8a4dcd.png" alt="ax = 1.0"/></li>
+<li><img class="math" src="../_images/math/09cd072fb724bfa74f5df3e730f872682e0e680b.png" alt="bx = 3.0"/></li>
+<li><img class="math" src="../_images/math/8c89ccfc73d0951a4696b79812758bf989d29b4e.png" alt="by = 3.0"/></li>
+</ul>
+</li>
+</ul>
+<img alt="../_images/quad_well.png" src="../_images/quad_well.png" style="width: 400px;" />
+</div>
+<div class="section" id="potential-quadratic-2d">
+<h2>Potential <tt class="docutils literal"><span class="pre">quadratic_2d</span></tt><a class="headerlink" href="#potential-quadratic-2d" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Formula: <img class="math" src="../_images/math/897744cf00494b6bb7b0bc7397b49210f8e222e4.png" alt="V(x) = \frac{sigmax x^{2}}{2} + \frac{sigmay y^{2}}{2}"/></li>
+<li>Variables: <img class="math" src="../_images/math/26eeb5258ca5099acf8fe96b2a1049c48c89a5e6.png" alt="x"/>, <img class="math" src="../_images/math/092e364e1d9d19ad5fffb0b46ef4cc7f2da02c1c.png" alt="y"/></li>
+<li>Default values:<ul>
+<li><img class="math" src="../_images/math/6ef9d60c572ba2f77769e3d6cff28f7f6bfe0af6.png" alt="sigmay = 1/2"/></li>
+<li><img class="math" src="../_images/math/ddd85f407871452569b688b5d2b946cdaa234f30.png" alt="sigmax = 1/2"/></li>
+</ul>
+</li>
+</ul>
+<img alt="../_images/quadratic_2d.png" src="../_images/quadratic_2d.png" style="width: 400px;" />
+</div>
+<div class="section" id="potential-quartic-2d">
+<h2>Potential <tt class="docutils literal"><span class="pre">quartic_2d</span></tt><a class="headerlink" href="#potential-quartic-2d" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Formula: <img class="math" src="../_images/math/814b46b7c5064cfa498cac4856121fddf77664e7.png" alt="V(x) = sigmax x^{4} + sigmay y^{4}"/></li>
+<li>Variables: <img class="math" src="../_images/math/26eeb5258ca5099acf8fe96b2a1049c48c89a5e6.png" alt="x"/>, <img class="math" src="../_images/math/092e364e1d9d19ad5fffb0b46ef4cc7f2da02c1c.png" alt="y"/></li>
+<li>Default values:<ul>
+<li><img class="math" src="../_images/math/8ceaa3da38ff928b67faec069ed24c37df344f28.png" alt="sigmay = 1"/></li>
+<li><img class="math" src="../_images/math/11fac431bcec647c3e464c60e11fdd9fb2231883.png" alt="sigmax = 1"/></li>
+</ul>
+</li>
+</ul>
+<img alt="../_images/quartic_2d.png" src="../_images/quartic_2d.png" style="width: 400px;" />
+</div>
+<div class="section" id="potential-quartic-2d-rotsym">
+<h2>Potential <tt class="docutils literal"><span class="pre">quartic_2d_rotsym</span></tt><a class="headerlink" href="#potential-quartic-2d-rotsym" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Formula: <img class="math" src="../_images/math/140832f3ec8f69b4a73934aea1ec0e256ed652a3.png" alt="V(x) = sigmax^{2} x^{4} + 2 sigmax sigmay x^{2} y^{2} + sigmay^{2} y^{4}"/></li>
+<li>Variables: <img class="math" src="../_images/math/26eeb5258ca5099acf8fe96b2a1049c48c89a5e6.png" alt="x"/>, <img class="math" src="../_images/math/092e364e1d9d19ad5fffb0b46ef4cc7f2da02c1c.png" alt="y"/></li>
+<li>Default values:<ul>
+<li><img class="math" src="../_images/math/8ceaa3da38ff928b67faec069ed24c37df344f28.png" alt="sigmay = 1"/></li>
+<li><img class="math" src="../_images/math/11fac431bcec647c3e464c60e11fdd9fb2231883.png" alt="sigmax = 1"/></li>
+</ul>
+</li>
+</ul>
+<img alt="../_images/quartic_2d_rotsym.png" src="../_images/quartic_2d_rotsym.png" style="width: 400px;" />
+</div>
+<div class="section" id="potential-quartic-reg-2d">
+<h2>Potential <tt class="docutils literal"><span class="pre">quartic_reg_2d</span></tt><a class="headerlink" href="#potential-quartic-reg-2d" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Formula: <img class="math" src="../_images/math/4d69609fc433cb55451ec08eae4f76e26e81f37f.png" alt="V(x) = sigmax x^{4} + sigmay y^{4} + taux x^{2} + tauy y^{2}"/></li>
+<li>Variables: <img class="math" src="../_images/math/26eeb5258ca5099acf8fe96b2a1049c48c89a5e6.png" alt="x"/>, <img class="math" src="../_images/math/092e364e1d9d19ad5fffb0b46ef4cc7f2da02c1c.png" alt="y"/></li>
+<li>Default values:<ul>
+<li><img class="math" src="../_images/math/044b30b425e1f8a9d0aa6fb277f70cd59528408e.png" alt="taux = 1"/></li>
+<li><img class="math" src="../_images/math/1a795644484018b08bb0605c7fb5a12b02c5fa3b.png" alt="tauy = 1"/></li>
+<li><img class="math" src="../_images/math/8ceaa3da38ff928b67faec069ed24c37df344f28.png" alt="sigmay = 1"/></li>
+<li><img class="math" src="../_images/math/11fac431bcec647c3e464c60e11fdd9fb2231883.png" alt="sigmax = 1"/></li>
+</ul>
+</li>
+</ul>
+<img alt="../_images/quartic_reg_2d.png" src="../_images/quartic_reg_2d.png" style="width: 400px;" />
+</div>
+<div class="section" id="potential-quartic-rotsym-reg-2d">
+<h2>Potential <tt class="docutils literal"><span class="pre">quartic_rotsym_reg_2d</span></tt><a class="headerlink" href="#potential-quartic-rotsym-reg-2d" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Formula: <img class="math" src="../_images/math/8295dc9ddebc19f4773912ed139e588b5177e6d0.png" alt="V(x) = sigmax x^{4} + sigmay y^{4} + taux x^{2} + tauy y^{2} + 2 x^{2} y^{2} \sqrt{sigmax sigmay}"/></li>
+<li>Variables: <img class="math" src="../_images/math/26eeb5258ca5099acf8fe96b2a1049c48c89a5e6.png" alt="x"/>, <img class="math" src="../_images/math/092e364e1d9d19ad5fffb0b46ef4cc7f2da02c1c.png" alt="y"/></li>
+<li>Default values:<ul>
+<li><img class="math" src="../_images/math/044b30b425e1f8a9d0aa6fb277f70cd59528408e.png" alt="taux = 1"/></li>
+<li><img class="math" src="../_images/math/1a795644484018b08bb0605c7fb5a12b02c5fa3b.png" alt="tauy = 1"/></li>
+<li><img class="math" src="../_images/math/8ceaa3da38ff928b67faec069ed24c37df344f28.png" alt="sigmay = 1"/></li>
+<li><img class="math" src="../_images/math/11fac431bcec647c3e464c60e11fdd9fb2231883.png" alt="sigmax = 1"/></li>
+</ul>
+</li>
+</ul>
+<img alt="../_images/quartic_rotsym_reg_2d.png" src="../_images/quartic_rotsym_reg_2d.png" style="width: 400px;" />
+</div>
+<div class="section" id="potential-ring-valley">
+<h2>Potential <tt class="docutils literal"><span class="pre">ring_valley</span></tt><a class="headerlink" href="#potential-ring-valley" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Formula: <img class="math" src="../_images/math/f09b950032abcc0e2ee9ef381bd9583ff3d9d2dc.png" alt="V(x) = \frac{1}{2} \sqrt{\delta^{2} + \tanh^{2}{\left (- R + \sqrt{x^{2} + y^{2}} \right )} \tanh^{2}{\left (R + \sqrt{x^{2} + y^{2}} \right )}}"/></li>
+<li>Variables: <img class="math" src="../_images/math/26eeb5258ca5099acf8fe96b2a1049c48c89a5e6.png" alt="x"/>, <img class="math" src="../_images/math/092e364e1d9d19ad5fffb0b46ef4cc7f2da02c1c.png" alt="y"/></li>
+<li>Default values:<ul>
+<li><img class="math" src="../_images/math/ab666c925878f82c031e80800817713ef8fb02c6.png" alt="R = 3"/></li>
+<li><img class="math" src="../_images/math/c5e3ae28b428ec02fedb62fa03695bd8fe6fd2a3.png" alt="\delta = 1"/></li>
+</ul>
+</li>
+</ul>
+<img alt="../_images/ring_valley.png" src="../_images/ring_valley.png" style="width: 400px;" />
+</div>
+<div class="section" id="potential-sextic-2d">
+<h2>Potential <tt class="docutils literal"><span class="pre">sextic_2d</span></tt><a class="headerlink" href="#potential-sextic-2d" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Formula: <img class="math" src="../_images/math/435331f4c57e19dadfa20e822fed7eb9e8bcc14a.png" alt="V(x) = sigmax x^{6} + sigmay y^{6}"/></li>
+<li>Variables: <img class="math" src="../_images/math/26eeb5258ca5099acf8fe96b2a1049c48c89a5e6.png" alt="x"/>, <img class="math" src="../_images/math/092e364e1d9d19ad5fffb0b46ef4cc7f2da02c1c.png" alt="y"/></li>
+<li>Default values:<ul>
+<li><img class="math" src="../_images/math/8ceaa3da38ff928b67faec069ed24c37df344f28.png" alt="sigmay = 1"/></li>
+<li><img class="math" src="../_images/math/11fac431bcec647c3e464c60e11fdd9fb2231883.png" alt="sigmax = 1"/></li>
+</ul>
+</li>
+</ul>
+<img alt="../_images/sextic_2d.png" src="../_images/sextic_2d.png" style="width: 400px;" />
+</div>
+<div class="section" id="potential-sextic-reg-2d">
+<h2>Potential <tt class="docutils literal"><span class="pre">sextic_reg_2d</span></tt><a class="headerlink" href="#potential-sextic-reg-2d" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Formula: <img class="math" src="../_images/math/7c2645ddae13656d5bdbdb058f95a7ff44dec758.png" alt="V(x) = sigmax x^{6} + sigmay y^{6} + taux x^{2} + tauy y^{2}"/></li>
+<li>Variables: <img class="math" src="../_images/math/26eeb5258ca5099acf8fe96b2a1049c48c89a5e6.png" alt="x"/>, <img class="math" src="../_images/math/092e364e1d9d19ad5fffb0b46ef4cc7f2da02c1c.png" alt="y"/></li>
+<li>Default values:<ul>
+<li><img class="math" src="../_images/math/044b30b425e1f8a9d0aa6fb277f70cd59528408e.png" alt="taux = 1"/></li>
+<li><img class="math" src="../_images/math/1a795644484018b08bb0605c7fb5a12b02c5fa3b.png" alt="tauy = 1"/></li>
+<li><img class="math" src="../_images/math/8ceaa3da38ff928b67faec069ed24c37df344f28.png" alt="sigmay = 1"/></li>
+<li><img class="math" src="../_images/math/11fac431bcec647c3e464c60e11fdd9fb2231883.png" alt="sigmax = 1"/></li>
+</ul>
+</li>
+</ul>
+<img alt="../_images/sextic_reg_2d.png" src="../_images/sextic_reg_2d.png" style="width: 400px;" />
+</div>
+<div class="section" id="potential-sextic-rotsym-reg-2d">
+<h2>Potential <tt class="docutils literal"><span class="pre">sextic_rotsym_reg_2d</span></tt><a class="headerlink" href="#potential-sextic-rotsym-reg-2d" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Formula: <img class="math" src="../_images/math/bcdb10449a9f5ae251378a967bb3914a1cc2a523.png" alt="V(x) = ax^{3} x^{6} + 3 ax^{2} ay x^{4} y^{2} + 3 ax ay^{2} x^{2} y^{4} + ay^{3} y^{6} + taux x^{2} + tauy y^{2}"/></li>
+<li>Variables: <img class="math" src="../_images/math/26eeb5258ca5099acf8fe96b2a1049c48c89a5e6.png" alt="x"/>, <img class="math" src="../_images/math/092e364e1d9d19ad5fffb0b46ef4cc7f2da02c1c.png" alt="y"/></li>
+<li>Default values:<ul>
+<li><img class="math" src="../_images/math/981b9e9f729d7804831bfc829beb18835ffb8b60.png" alt="ay = 1"/></li>
+<li><img class="math" src="../_images/math/61bb7aa38606d270753a53499f3bc7d1cb1bd99b.png" alt="ax = 1"/></li>
+<li><img class="math" src="../_images/math/044b30b425e1f8a9d0aa6fb277f70cd59528408e.png" alt="taux = 1"/></li>
+<li><img class="math" src="../_images/math/1a795644484018b08bb0605c7fb5a12b02c5fa3b.png" alt="tauy = 1"/></li>
+</ul>
+</li>
+</ul>
+<img alt="../_images/sextic_rotsym_reg_2d.png" src="../_images/sextic_rotsym_reg_2d.png" style="width: 400px;" />
+</div>
+<div class="section" id="potential-sine-maar">
+<h2>Potential <tt class="docutils literal"><span class="pre">sine_maar</span></tt><a class="headerlink" href="#potential-sine-maar" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Formula: <img class="math" src="../_images/math/a8ae7cd6c25e4862b6766754de2190cf86d02c94.png" alt="V(x) = \alpha e^{- \sigma \left(x^{2} + y^{2}\right)} + \sin{\left (x^{2} + y^{2} \right )}"/></li>
+<li>Variables: <img class="math" src="../_images/math/26eeb5258ca5099acf8fe96b2a1049c48c89a5e6.png" alt="x"/>, <img class="math" src="../_images/math/092e364e1d9d19ad5fffb0b46ef4cc7f2da02c1c.png" alt="y"/></li>
+<li>Default values:<ul>
+<li><img class="math" src="../_images/math/33827d89cc1aff8617d25252cfd36e337d75ca94.png" alt="\alpha = 0.8"/></li>
+<li><img class="math" src="../_images/math/1ce2a843a1917ff90480379a349baed419185551.png" alt="\sigma = 1.0"/></li>
+</ul>
+</li>
+</ul>
+<img alt="../_images/sine_maar.png" src="../_images/sine_maar.png" style="width: 400px;" />
+</div>
+<div class="section" id="potential-conic">
+<h2>Potential <tt class="docutils literal"><span class="pre">conic</span></tt><a class="headerlink" href="#potential-conic" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Formula: <img class="math" src="../_images/math/36f448a0ba5dd8046d591c57517ae3ea01a8bd88.png" alt="V(x) = \left[\begin{matrix}x &amp; y\\y &amp; - x\end{matrix}\right]"/></li>
+<li>Variables: <img class="math" src="../_images/math/26eeb5258ca5099acf8fe96b2a1049c48c89a5e6.png" alt="x"/>, <img class="math" src="../_images/math/092e364e1d9d19ad5fffb0b46ef4cc7f2da02c1c.png" alt="y"/></li>
+</ul>
+<img alt="../_images/conic.png" src="../_images/conic.png" style="width: 400px;" />
+</div>
+<div class="section" id="potential-conic-avoided">
+<h2>Potential <tt class="docutils literal"><span class="pre">conic_avoided</span></tt><a class="headerlink" href="#potential-conic-avoided" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Formula: <img class="math" src="../_images/math/34051cfad0fffbe33184a0d436bf8638251e5757.png" alt="V(x) = \left[\begin{matrix}x &amp; \sqrt{\delta^{2} + y^{2}}\\\sqrt{\delta^{2} + y^{2}} &amp; - x\end{matrix}\right]"/></li>
+<li>Variables: <img class="math" src="../_images/math/26eeb5258ca5099acf8fe96b2a1049c48c89a5e6.png" alt="x"/>, <img class="math" src="../_images/math/092e364e1d9d19ad5fffb0b46ef4cc7f2da02c1c.png" alt="y"/></li>
+<li>Default values:<ul>
+<li><img class="math" src="../_images/math/f8a08bd7fa1421e58c31cdce598d0519f619b9f8.png" alt="\delta = 1.0"/></li>
+</ul>
+</li>
+</ul>
+<img alt="../_images/conic_avoided.png" src="../_images/conic_avoided.png" style="width: 400px;" />
+</div>
+<div class="section" id="potential-conic-avoided-c">
+<h2>Potential <tt class="docutils literal"><span class="pre">conic_avoided_c</span></tt><a class="headerlink" href="#potential-conic-avoided-c" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Formula: <img class="math" src="../_images/math/2e306022ad9a4cdb7327c47a8443a4694093cb43.png" alt="V(x) = \left[\begin{matrix}x &amp; i \delta + y\\- i \delta + y &amp; - x\end{matrix}\right]"/></li>
+<li>Variables: <img class="math" src="../_images/math/26eeb5258ca5099acf8fe96b2a1049c48c89a5e6.png" alt="x"/>, <img class="math" src="../_images/math/092e364e1d9d19ad5fffb0b46ef4cc7f2da02c1c.png" alt="y"/></li>
+</ul>
+<img alt="../_images/conic_avoided_c.png" src="../_images/conic_avoided_c.png" style="width: 400px;" />
+</div>
+<div class="section" id="potential-delta-gap-rotsym">
+<h2>Potential <tt class="docutils literal"><span class="pre">delta_gap_rotsym</span></tt><a class="headerlink" href="#potential-delta-gap-rotsym" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Formula: <img class="math" src="../_images/math/fd38746fa5204b1582380e2d934973a246bdb9cc.png" alt="V(x) = \left[\begin{matrix}\frac{1}{2} \tanh{\left (\sqrt{x^{2} + y^{2}} \right )} &amp; \delta\\\delta &amp; - \frac{1}{2} \tanh{\left (\sqrt{x^{2} + y^{2}} \right )}\end{matrix}\right]"/></li>
+<li>Variables: <img class="math" src="../_images/math/26eeb5258ca5099acf8fe96b2a1049c48c89a5e6.png" alt="x"/>, <img class="math" src="../_images/math/092e364e1d9d19ad5fffb0b46ef4cc7f2da02c1c.png" alt="y"/></li>
+</ul>
+<img alt="../_images/delta_gap_rotsym.png" src="../_images/delta_gap_rotsym.png" style="width: 400px;" />
+</div>
+<div class="section" id="potential-harmonic-tube">
+<h2>Potential <tt class="docutils literal"><span class="pre">harmonic_tube</span></tt><a class="headerlink" href="#potential-harmonic-tube" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Formula: <img class="math" src="../_images/math/cc94fa2acedb37754336a45eb73b0af7f1fe4152.png" alt="V(x) = \sigma z + \frac{wx^{2} x^{2}}{2} + \frac{wy^{2} y^{2}}{2}"/></li>
+<li>Variables: <img class="math" src="../_images/math/26eeb5258ca5099acf8fe96b2a1049c48c89a5e6.png" alt="x"/>, <img class="math" src="../_images/math/092e364e1d9d19ad5fffb0b46ef4cc7f2da02c1c.png" alt="y"/>, <img class="math" src="../_images/math/b13f21416d84e13708696f34dea81026cda583c9.png" alt="z"/></li>
+<li>Default values:<ul>
+<li><img class="math" src="../_images/math/2d52d2d37310a8881d00e3603b87f64c4b416053.png" alt="\sigma = -0.1"/></li>
+<li><img class="math" src="../_images/math/b308d56f37ba379ae180dc693a57e6d5da910439.png" alt="wy = 1.0"/></li>
+<li><img class="math" src="../_images/math/68bae33b497ad0fddfddc45f478d9a5bea3f0322.png" alt="wx = 1.0"/></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="potential-quadratic-3d">
+<h2>Potential <tt class="docutils literal"><span class="pre">quadratic_3d</span></tt><a class="headerlink" href="#potential-quadratic-3d" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Formula: <img class="math" src="../_images/math/4d2a3236f52ea64b9017f55251d60b35c4914d96.png" alt="V(x) = \frac{sigmax x^{2}}{2} + \frac{sigmay y^{2}}{2} + \frac{sigmaz z^{2}}{2}"/></li>
+<li>Variables: <img class="math" src="../_images/math/26eeb5258ca5099acf8fe96b2a1049c48c89a5e6.png" alt="x"/>, <img class="math" src="../_images/math/092e364e1d9d19ad5fffb0b46ef4cc7f2da02c1c.png" alt="y"/>, <img class="math" src="../_images/math/b13f21416d84e13708696f34dea81026cda583c9.png" alt="z"/></li>
+<li>Default values:<ul>
+<li><img class="math" src="../_images/math/6ef9d60c572ba2f77769e3d6cff28f7f6bfe0af6.png" alt="sigmay = 1/2"/></li>
+<li><img class="math" src="../_images/math/ddd85f407871452569b688b5d2b946cdaa234f30.png" alt="sigmax = 1/2"/></li>
+<li><img class="math" src="../_images/math/75f6a02a231398248f84ac269cb6bcb7d64dde78.png" alt="sigmaz = 1/2"/></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="potential-harmonic-hypertube">
+<h2>Potential <tt class="docutils literal"><span class="pre">harmonic_hypertube</span></tt><a class="headerlink" href="#potential-harmonic-hypertube" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Formula: <img class="math" src="../_images/math/9d2d61b99a8b8a530704bcd40bbcb1534fa03f6d.png" alt="V(x) = \sigma x_{4} + \frac{w_{1}^{2} x_{1}^{2}}{2} + \frac{w_{2}^{2} x_{2}^{2}}{2} + \frac{w_{3}^{2} x_{3}^{2}}{2}"/></li>
+<li>Variables: <img class="math" src="../_images/math/f742fa0e67547dbeffccff47a951855271de1348.png" alt="x_{1}"/>, <img class="math" src="../_images/math/5e8655384b71dbea96222803bcc8bdfa98299216.png" alt="x_{2}"/>, <img class="math" src="../_images/math/bdb5adb3ad4badb89175649cc81dae2913dea6cf.png" alt="x_{3}"/>, <img class="math" src="../_images/math/86627bdf7981dc4ff11ab6e42b72b8c7fa10744d.png" alt="x_{4}"/></li>
+<li>Default values:<ul>
+<li><img class="math" src="../_images/math/2d52d2d37310a8881d00e3603b87f64c4b416053.png" alt="\sigma = -0.1"/></li>
+<li><img class="math" src="../_images/math/389e16b8a96380010270fb444203fd8bd46c61ef.png" alt="w_{3} = 1.0"/></li>
+<li><img class="math" src="../_images/math/b7925d3adccb7e86aefac9bec9212dd73460fb30.png" alt="w_{2} = 1.0"/></li>
+<li><img class="math" src="../_images/math/957e3a818b0345ec8c9d59a8c2801a83f239d05d.png" alt="w_{1} = 1.0"/></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="potential-quadratic-4d">
+<h2>Potential <tt class="docutils literal"><span class="pre">quadratic_4d</span></tt><a class="headerlink" href="#potential-quadratic-4d" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Formula: <img class="math" src="../_images/math/372b4f6b8266cb469f6678ca479693a7567d10eb.png" alt="V(x) = \frac{\sigma_{1}}{2} + \frac{\sigma_{2} x_{2}^{2}}{2} + \frac{\sigma_{3} x_{3}^{2}}{2} + \frac{\sigma_{4} x_{4}^{2}}{2}"/></li>
+<li>Variables: <img class="math" src="../_images/math/f742fa0e67547dbeffccff47a951855271de1348.png" alt="x_{1}"/>, <img class="math" src="../_images/math/5e8655384b71dbea96222803bcc8bdfa98299216.png" alt="x_{2}"/>, <img class="math" src="../_images/math/bdb5adb3ad4badb89175649cc81dae2913dea6cf.png" alt="x_{3}"/>, <img class="math" src="../_images/math/86627bdf7981dc4ff11ab6e42b72b8c7fa10744d.png" alt="x_{4}"/></li>
+<li>Default values:<ul>
+<li><img class="math" src="../_images/math/568f70e081fc92c1214ddbc861450d173c1b7837.png" alt="\sigma_{4} = 1/2"/></li>
+<li><img class="math" src="../_images/math/052dc71d4ece53bd9c9199f37c0a23570acc57fc.png" alt="\sigma_{1} = 1/2"/></li>
+<li><img class="math" src="../_images/math/09fb511ee3ca8895ba22d723cdfed174e5ea839c.png" alt="\sigma_{3} = 1/2"/></li>
+<li><img class="math" src="../_images/math/206b60c3920f0d431fffe805c5822827a9c6d276.png" alt="\sigma_{2} = 1/2"/></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Ready made Potentials</a><ul>
+<li><a class="reference internal" href="#potential-cos-osc">Potential <tt class="docutils literal"><span class="pre">cos_osc</span></tt></a></li>
+<li><a class="reference internal" href="#potential-cosh-osc">Potential <tt class="docutils literal"><span class="pre">cosh_osc</span></tt></a></li>
+<li><a class="reference internal" href="#potential-double-well">Potential <tt class="docutils literal"><span class="pre">double_well</span></tt></a></li>
+<li><a class="reference internal" href="#potential-double-well2">Potential <tt class="docutils literal"><span class="pre">double_well2</span></tt></a></li>
+<li><a class="reference internal" href="#potential-eckart">Potential <tt class="docutils literal"><span class="pre">eckart</span></tt></a></li>
+<li><a class="reference internal" href="#potential-free-particle">Potential <tt class="docutils literal"><span class="pre">free_particle</span></tt></a></li>
+<li><a class="reference internal" href="#potential-kratzer">Potential <tt class="docutils literal"><span class="pre">kratzer</span></tt></a></li>
+<li><a class="reference internal" href="#potential-morse">Potential <tt class="docutils literal"><span class="pre">morse</span></tt></a></li>
+<li><a class="reference internal" href="#potential-morse-zero">Potential <tt class="docutils literal"><span class="pre">morse_zero</span></tt></a></li>
+<li><a class="reference internal" href="#potential-morse-zero-2">Potential <tt class="docutils literal"><span class="pre">morse_zero_2</span></tt></a></li>
+<li><a class="reference internal" href="#potential-pert-quadratic">Potential <tt class="docutils literal"><span class="pre">pert_quadratic</span></tt></a></li>
+<li><a class="reference internal" href="#potential-quadratic">Potential <tt class="docutils literal"><span class="pre">quadratic</span></tt></a></li>
+<li><a class="reference internal" href="#potential-quartic">Potential <tt class="docutils literal"><span class="pre">quartic</span></tt></a></li>
+<li><a class="reference internal" href="#potential-v-shape">Potential <tt class="docutils literal"><span class="pre">v_shape</span></tt></a></li>
+<li><a class="reference internal" href="#potential-wall">Potential <tt class="docutils literal"><span class="pre">wall</span></tt></a></li>
+<li><a class="reference internal" href="#potential-delta-gap">Potential <tt class="docutils literal"><span class="pre">delta_gap</span></tt></a></li>
+<li><a class="reference internal" href="#potential-delta-gap-diag">Potential <tt class="docutils literal"><span class="pre">delta_gap_diag</span></tt></a></li>
+<li><a class="reference internal" href="#potential-two-crossings">Potential <tt class="docutils literal"><span class="pre">two_crossings</span></tt></a></li>
+<li><a class="reference internal" href="#potential-two-quadratic">Potential <tt class="docutils literal"><span class="pre">two_quadratic</span></tt></a></li>
+<li><a class="reference internal" href="#potential-two-quartic">Potential <tt class="docutils literal"><span class="pre">two_quartic</span></tt></a></li>
+<li><a class="reference internal" href="#potential-three-levels">Potential <tt class="docutils literal"><span class="pre">three_levels</span></tt></a></li>
+<li><a class="reference internal" href="#potential-three-quadratic">Potential <tt class="docutils literal"><span class="pre">three_quadratic</span></tt></a></li>
+<li><a class="reference internal" href="#potential-four-powers">Potential <tt class="docutils literal"><span class="pre">four_powers</span></tt></a></li>
+<li><a class="reference internal" href="#potential-four-quadratic">Potential <tt class="docutils literal"><span class="pre">four_quadratic</span></tt></a></li>
+<li><a class="reference internal" href="#potential-five-quadratic">Potential <tt class="docutils literal"><span class="pre">five_quadratic</span></tt></a></li>
+<li><a class="reference internal" href="#potential-channel-2d">Potential <tt class="docutils literal"><span class="pre">channel_2d</span></tt></a></li>
+<li><a class="reference internal" href="#potential-circle-pit-2d">Potential <tt class="docutils literal"><span class="pre">circle_pit_2d</span></tt></a></li>
+<li><a class="reference internal" href="#potential-corral-ring">Potential <tt class="docutils literal"><span class="pre">corral_ring</span></tt></a></li>
+<li><a class="reference internal" href="#potential-corral-rotsym-2d">Potential <tt class="docutils literal"><span class="pre">corral_rotsym_2d</span></tt></a></li>
+<li><a class="reference internal" href="#potential-cos-osc-2d">Potential <tt class="docutils literal"><span class="pre">cos_osc_2d</span></tt></a></li>
+<li><a class="reference internal" href="#potential-cos-osc-add-2d">Potential <tt class="docutils literal"><span class="pre">cos_osc_add_2d</span></tt></a></li>
+<li><a class="reference internal" href="#potential-cos-osc-mul-2d">Potential <tt class="docutils literal"><span class="pre">cos_osc_mul_2d</span></tt></a></li>
+<li><a class="reference internal" href="#potential-cos-osc-rotsym-2d">Potential <tt class="docutils literal"><span class="pre">cos_osc_rotsym_2d</span></tt></a></li>
+<li><a class="reference internal" href="#potential-cosh-osc-2d">Potential <tt class="docutils literal"><span class="pre">cosh_osc_2d</span></tt></a></li>
+<li><a class="reference internal" href="#potential-cosh-osc-add-2d">Potential <tt class="docutils literal"><span class="pre">cosh_osc_add_2d</span></tt></a></li>
+<li><a class="reference internal" href="#potential-cosh-osc-mul-2d">Potential <tt class="docutils literal"><span class="pre">cosh_osc_mul_2d</span></tt></a></li>
+<li><a class="reference internal" href="#potential-cosh-osc-rotsym-2d">Potential <tt class="docutils literal"><span class="pre">cosh_osc_rotsym_2d</span></tt></a></li>
+<li><a class="reference internal" href="#potential-double-well-2d">Potential <tt class="docutils literal"><span class="pre">double_well_2d</span></tt></a></li>
+<li><a class="reference internal" href="#potential-double-well-harmonic-2d">Potential <tt class="docutils literal"><span class="pre">double_well_harmonic_2d</span></tt></a></li>
+<li><a class="reference internal" href="#potential-eckart-bn">Potential <tt class="docutils literal"><span class="pre">eckart_bn</span></tt></a></li>
+<li><a class="reference internal" href="#potential-gauss-hill-2d">Potential <tt class="docutils literal"><span class="pre">gauss_hill_2d</span></tt></a></li>
+<li><a class="reference internal" href="#potential-harmonic-channel">Potential <tt class="docutils literal"><span class="pre">harmonic_channel</span></tt></a></li>
+<li><a class="reference internal" href="#potential-henon-heiles">Potential <tt class="docutils literal"><span class="pre">henon_heiles</span></tt></a></li>
+<li><a class="reference internal" href="#potential-morse-threefold">Potential <tt class="docutils literal"><span class="pre">morse_threefold</span></tt></a></li>
+<li><a class="reference internal" href="#potential-morse-threefold-2">Potential <tt class="docutils literal"><span class="pre">morse_threefold_2</span></tt></a></li>
+<li><a class="reference internal" href="#potential-pullen-edmonds">Potential <tt class="docutils literal"><span class="pre">pullen_edmonds</span></tt></a></li>
+<li><a class="reference internal" href="#potential-quad-well">Potential <tt class="docutils literal"><span class="pre">quad_well</span></tt></a></li>
+<li><a class="reference internal" href="#potential-quadratic-2d">Potential <tt class="docutils literal"><span class="pre">quadratic_2d</span></tt></a></li>
+<li><a class="reference internal" href="#potential-quartic-2d">Potential <tt class="docutils literal"><span class="pre">quartic_2d</span></tt></a></li>
+<li><a class="reference internal" href="#potential-quartic-2d-rotsym">Potential <tt class="docutils literal"><span class="pre">quartic_2d_rotsym</span></tt></a></li>
+<li><a class="reference internal" href="#potential-quartic-reg-2d">Potential <tt class="docutils literal"><span class="pre">quartic_reg_2d</span></tt></a></li>
+<li><a class="reference internal" href="#potential-quartic-rotsym-reg-2d">Potential <tt class="docutils literal"><span class="pre">quartic_rotsym_reg_2d</span></tt></a></li>
+<li><a class="reference internal" href="#potential-ring-valley">Potential <tt class="docutils literal"><span class="pre">ring_valley</span></tt></a></li>
+<li><a class="reference internal" href="#potential-sextic-2d">Potential <tt class="docutils literal"><span class="pre">sextic_2d</span></tt></a></li>
+<li><a class="reference internal" href="#potential-sextic-reg-2d">Potential <tt class="docutils literal"><span class="pre">sextic_reg_2d</span></tt></a></li>
+<li><a class="reference internal" href="#potential-sextic-rotsym-reg-2d">Potential <tt class="docutils literal"><span class="pre">sextic_rotsym_reg_2d</span></tt></a></li>
+<li><a class="reference internal" href="#potential-sine-maar">Potential <tt class="docutils literal"><span class="pre">sine_maar</span></tt></a></li>
+<li><a class="reference internal" href="#potential-conic">Potential <tt class="docutils literal"><span class="pre">conic</span></tt></a></li>
+<li><a class="reference internal" href="#potential-conic-avoided">Potential <tt class="docutils literal"><span class="pre">conic_avoided</span></tt></a></li>
+<li><a class="reference internal" href="#potential-conic-avoided-c">Potential <tt class="docutils literal"><span class="pre">conic_avoided_c</span></tt></a></li>
+<li><a class="reference internal" href="#potential-delta-gap-rotsym">Potential <tt class="docutils literal"><span class="pre">delta_gap_rotsym</span></tt></a></li>
+<li><a class="reference internal" href="#potential-harmonic-tube">Potential <tt class="docutils literal"><span class="pre">harmonic_tube</span></tt></a></li>
+<li><a class="reference internal" href="#potential-quadratic-3d">Potential <tt class="docutils literal"><span class="pre">quadratic_3d</span></tt></a></li>
+<li><a class="reference internal" href="#potential-harmonic-hypertube">Potential <tt class="docutils literal"><span class="pre">harmonic_hypertube</span></tt></a></li>
+<li><a class="reference internal" href="#potential-quadratic-4d">Potential <tt class="docutils literal"><span class="pre">quadratic_4d</span></tt></a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../citation.html"
+                        title="previous chapter">Citation</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../waveblocks_classes/ComplexMath.html"
+                        title="next chapter">ComplexMath</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/potlib/potentials.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../waveblocks_classes/ComplexMath.html" title="ComplexMath"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../citation.html" title="Citation"
+             >previous</a> |</li>
+        <li><a href="../index.html">WaveBlocksND devel documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, R. Bourquin.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

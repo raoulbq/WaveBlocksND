@@ -1,0 +1,507 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>FileTools &mdash; WaveBlocksND devel documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     'devel',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="WaveBlocksND devel documentation" href="../index.html" />
+    <link rel="up" title="Module code" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">WaveBlocksND devel documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for FileTools</h1><div class="highlight"><pre>
+<span class="sd">&quot;&quot;&quot;The WaveBlocks Project</span>
+
+<span class="sd">This file contains various functions for finding and retrieving</span>
+<span class="sd">the files that contain parameter settings and simulation results.</span>
+<span class="sd">Note: The terms &#39;path&#39; and &#39;ID&#39; are used as synonyms here. Each simulation</span>
+<span class="sd">ID is just the base name of the path or the configuration file.</span>
+
+<span class="sd">@author: R. Bourquin</span>
+<span class="sd">@copyright: Copyright (C) 2010, 2011, 2012, 2013, 2014 R. Bourquin</span>
+<span class="sd">@license: Modified BSD License</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">operator</span> <span class="kn">as</span> <span class="nn">op</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">OrderedDict</span>
+
+<span class="kn">import</span> <span class="nn">GlobalDefaults</span> <span class="kn">as</span> <span class="nn">GD</span>
+
+
+<div class="viewcode-block" id="get_result_dirs"><a class="viewcode-back" href="../waveblocks_classes/FileTools.html#FileTools.get_result_dirs">[docs]</a><span class="k">def</span> <span class="nf">get_result_dirs</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+    <span class="sd">r&quot;&quot;&quot;Lists all simulations (IDs) that can be found under the given path.</span>
+
+<span class="sd">    :param path: The file system path under which we search for simulations.</span>
+<span class="sd">    :return: A list of simulation IDs.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">dirs</span> <span class="o">=</span> <span class="p">[</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">adir</span><span class="p">)</span> <span class="k">for</span> <span class="n">adir</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="p">]</span>
+    <span class="k">return</span> <span class="nb">filter</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">,</span> <span class="n">dirs</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="get_parameters_file"><a class="viewcode-back" href="../waveblocks_classes/FileTools.html#FileTools.get_parameters_file">[docs]</a><span class="k">def</span> <span class="nf">get_parameters_file</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">unpack</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+    <span class="sd">r&quot;&quot;&quot;Search for a configuration file containing the simulation parameters</span>
+<span class="sd">    under a given path. Note that in case there are more than one .py file</span>
+<span class="sd">    under the given path we return a list of all.</span>
+
+<span class="sd">    :parameter path: The path under which we search for a configuration file.</span>
+<span class="sd">    :param unpack: Whether to unpack a single unique result instead of returning it inside a list.</span>
+<span class="sd">    :type unpack: Boolean, default is ``True``.</span>
+<span class="sd">    :return: The path (file name) of the configuration file.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">parameters_files</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">afile</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">afile</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s">&quot;.py&quot;</span><span class="p">):</span>
+            <span class="n">parameters_files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">afile</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">parameters_files</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s">&quot;No configuration .py file found!&quot;</span><span class="p">)</span>
+
+    <span class="n">parameters_files</span> <span class="o">=</span> <span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">rf</span><span class="p">)</span> <span class="k">for</span> <span class="n">rf</span> <span class="ow">in</span> <span class="n">parameters_files</span> <span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">unpack</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">parameters_files</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">parameters_files</span> <span class="o">=</span> <span class="n">parameters_files</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">parameters_files</span>
+
+</div>
+<div class="viewcode-block" id="get_results_file"><a class="viewcode-back" href="../waveblocks_classes/FileTools.html#FileTools.get_results_file">[docs]</a><span class="k">def</span> <span class="nf">get_results_file</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">fileext</span><span class="o">=</span><span class="n">GD</span><span class="o">.</span><span class="n">ext_resultdatafile</span><span class="p">,</span> <span class="n">unpack</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+    <span class="sd">r&quot;&quot;&quot;Search for a file containing the simulation results under a given path.</span>
+<span class="sd">    Note that in case there are more than one .hdf5 file under the given path</span>
+<span class="sd">    we return a list of all.</span>
+
+<span class="sd">    :param path: The path under which we search for a output file.</span>
+<span class="sd">    :param unpack: Whether to unpack a single unique result instead of returning it inside a list.</span>
+<span class="sd">    :type unpack: Boolean, default is ``True``.</span>
+<span class="sd">    :return: The path (file name) of the output file.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">results_files</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">afile</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">afile</span><span class="p">))</span> <span class="ow">and</span> <span class="n">afile</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">fileext</span><span class="p">):</span>
+            <span class="n">results_files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">afile</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">results_files</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s">&quot;No results .hdf5 file found!&quot;</span><span class="p">)</span>
+
+    <span class="n">results_files</span> <span class="o">=</span> <span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">rf</span><span class="p">)</span> <span class="k">for</span> <span class="n">rf</span> <span class="ow">in</span> <span class="n">results_files</span> <span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">unpack</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">results_files</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">results_files</span> <span class="o">=</span> <span class="n">results_files</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">results_files</span>
+
+</div>
+<div class="viewcode-block" id="get_number_simulations"><a class="viewcode-back" href="../waveblocks_classes/FileTools.html#FileTools.get_number_simulations">[docs]</a><span class="k">def</span> <span class="nf">get_number_simulations</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+    <span class="sd">r&quot;&quot;&quot;Get the number of simulations at hand below the given path.</span>
+
+<span class="sd">    :param path: The path under which we search for a output file.</span>
+<span class="sd">    :return: The number of simulations result directories.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ids</span> <span class="o">=</span> <span class="n">get_result_dirs</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">ids</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="name_contains"><a class="viewcode-back" href="../waveblocks_classes/FileTools.html#FileTools.name_contains">[docs]</a><span class="k">def</span> <span class="nf">name_contains</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">pattern</span><span class="p">):</span>
+    <span class="sd">r&quot;&quot;&quot;Checks if a simulation ID contains a given pattern.</span>
+
+<span class="sd">    :param name: The full simulation ID.</span>
+<span class="sd">    :param pattern: The pattern in question.</span>
+<span class="sd">    :return: A boolean answer.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">pattern</span> <span class="ow">in</span> <span class="n">name</span>
+
+</div>
+<div class="viewcode-block" id="gather_all"><a class="viewcode-back" href="../waveblocks_classes/FileTools.html#FileTools.gather_all">[docs]</a><span class="k">def</span> <span class="nf">gather_all</span><span class="p">(</span><span class="n">stringlist</span><span class="p">,</span> <span class="n">pattern</span><span class="p">):</span>
+    <span class="sd">r&quot;&quot;&quot;Collects all simulation IDs which contain a specific pattern from a given list.</span>
+
+<span class="sd">    :param stringlist: A list with the simulation IDs.</span>
+<span class="sd">    :param pattern: The pattern.</span>
+<span class="sd">    :return: A list of simulation IDs that contain the given pattern.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">gathered</span> <span class="o">=</span> <span class="p">[</span> <span class="n">s</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">stringlist</span> <span class="k">if</span> <span class="n">name_contains</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">pattern</span><span class="p">)</span> <span class="p">]</span>
+    <span class="k">return</span> <span class="n">gathered</span>
+
+</div>
+<div class="viewcode-block" id="compare_by"><a class="viewcode-back" href="../waveblocks_classes/FileTools.html#FileTools.compare_by">[docs]</a><span class="k">def</span> <span class="nf">compare_by</span><span class="p">(</span><span class="n">namea</span><span class="p">,</span> <span class="n">nameb</span><span class="p">,</span> <span class="n">pattern</span><span class="p">,</span> <span class="n">ldel</span><span class="o">=</span><span class="n">GD</span><span class="o">.</span><span class="n">kvp_ldel</span><span class="p">,</span> <span class="n">mdel</span><span class="o">=</span><span class="n">GD</span><span class="o">.</span><span class="n">kvp_mdel</span><span class="p">,</span> <span class="n">rdel</span><span class="o">=</span><span class="n">GD</span><span class="o">.</span><span class="n">kvp_rdel</span><span class="p">,</span> <span class="n">as_string</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+    <span class="sd">r&quot;&quot;&quot;Compare two simulation IDs with respect to a (numerical) value in the ID.</span>
+
+<span class="sd">    :param namea: The first name in the comparison.</span>
+<span class="sd">    :param nameb: The second name in the comparison.</span>
+<span class="sd">    :param pattern: The pattern whose (numerical) value is used for sorting.</span>
+<span class="sd">    :param ldel: Left delimiter of the pattern.</span>
+<span class="sd">    :param mdel: Middle delimiter of the pattern.</span>
+<span class="sd">    :param rdel: Right delimiter of the pattern.</span>
+<span class="sd">    :param as_string: Determines if the values for ``pattern`` get converted to floats.</span>
+<span class="sd">    :return: A boolean answer if the IDs are the same w.r.t the pattern.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">part1</span> <span class="o">=</span> <span class="n">namea</span><span class="o">.</span><span class="n">partition</span><span class="p">(</span><span class="n">ldel</span> <span class="o">+</span> <span class="n">pattern</span> <span class="o">+</span> <span class="n">mdel</span><span class="p">)</span>
+    <span class="n">part2</span> <span class="o">=</span> <span class="n">nameb</span><span class="o">.</span><span class="n">partition</span><span class="p">(</span><span class="n">ldel</span> <span class="o">+</span> <span class="n">pattern</span> <span class="o">+</span> <span class="n">mdel</span><span class="p">)</span>
+
+    <span class="n">part1</span> <span class="o">=</span> <span class="n">part1</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">part1</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">partition</span><span class="p">(</span><span class="n">rdel</span><span class="p">)</span>
+    <span class="n">part2</span> <span class="o">=</span> <span class="n">part2</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">part2</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">partition</span><span class="p">(</span><span class="n">rdel</span><span class="p">)</span>
+
+    <span class="c"># Convert values to float for comparisons</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">as_string</span><span class="p">:</span>
+        <span class="n">part1</span> <span class="o">=</span> <span class="n">part1</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">part1</span><span class="p">[</span><span class="mi">2</span><span class="p">]),)</span> <span class="o">+</span> <span class="n">part1</span><span class="p">[</span><span class="mi">3</span><span class="p">:]</span>
+        <span class="n">part2</span> <span class="o">=</span> <span class="n">part2</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">part2</span><span class="p">[</span><span class="mi">2</span><span class="p">]),)</span> <span class="o">+</span> <span class="n">part2</span><span class="p">[</span><span class="mi">3</span><span class="p">:]</span>
+
+    <span class="k">return</span> <span class="n">part1</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="n">part2</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+
+</div>
+<div class="viewcode-block" id="group_by"><a class="viewcode-back" href="../waveblocks_classes/FileTools.html#FileTools.group_by">[docs]</a><span class="k">def</span> <span class="nf">group_by</span><span class="p">(</span><span class="n">stringlist</span><span class="p">,</span> <span class="n">pattern</span><span class="p">,</span> <span class="n">ldel</span><span class="o">=</span><span class="n">GD</span><span class="o">.</span><span class="n">kvp_ldel</span><span class="p">,</span> <span class="n">mdel</span><span class="o">=</span><span class="n">GD</span><span class="o">.</span><span class="n">kvp_mdel</span><span class="p">,</span> <span class="n">rdel</span><span class="o">=</span><span class="n">GD</span><span class="o">.</span><span class="n">kvp_rdel</span><span class="p">,</span> <span class="n">as_string</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+    <span class="sd">r&quot;&quot;&quot;Groups simulation IDs with respect to a pattern.</span>
+
+<span class="sd">    :param stringlist: A list with the simulation IDs.</span>
+<span class="sd">    :param pattern: The pattern used for grouping.</span>
+<span class="sd">    :param ldel: Left delimiter of the pattern.</span>
+<span class="sd">    :param mdel: Middle delimiter of the pattern.</span>
+<span class="sd">    :param rdel: Right delimiter of the pattern.</span>
+<span class="sd">    :param as_string: Determines if the values for ``pattern`` get converted to floats. Not used here.</span>
+<span class="sd">    :return: A list of groups of simulation IDs.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">tmp</span> <span class="o">=</span> <span class="p">[</span> <span class="n">s</span><span class="o">.</span><span class="n">partition</span><span class="p">(</span><span class="n">ldel</span> <span class="o">+</span> <span class="n">pattern</span> <span class="o">+</span> <span class="n">mdel</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">stringlist</span> <span class="p">]</span>
+    <span class="n">tmp</span> <span class="o">=</span> <span class="p">[</span> <span class="n">s</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">s</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">partition</span><span class="p">(</span><span class="n">rdel</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">tmp</span> <span class="p">]</span>
+
+    <span class="n">distinct_vals</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">OrderedDict</span><span class="o">.</span><span class="n">fromkeys</span><span class="p">([</span> <span class="n">s</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">tmp</span> <span class="p">]))</span>
+
+    <span class="n">groups</span> <span class="o">=</span> <span class="p">[</span> <span class="p">[]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">distinct_vals</span><span class="p">))</span> <span class="p">]</span>
+
+    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">tmp</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">distinct_vals</span><span class="p">):</span>
+            <span class="c"># Yes, we compare the strings here and not the floats</span>
+            <span class="c"># to avoid representation errors when converting to floats.</span>
+            <span class="k">if</span> <span class="n">item</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="n">val</span><span class="p">:</span>
+                <span class="c"># Concatenate the fragments again</span>
+                <span class="n">groups</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">reduce</span><span class="p">(</span><span class="n">op</span><span class="o">.</span><span class="n">add</span><span class="p">,</span> <span class="n">item</span><span class="p">))</span>
+                <span class="k">break</span>
+
+    <span class="k">return</span> <span class="n">groups</span>
+
+</div>
+<div class="viewcode-block" id="intersect_by"><a class="viewcode-back" href="../waveblocks_classes/FileTools.html#FileTools.intersect_by">[docs]</a><span class="k">def</span> <span class="nf">intersect_by</span><span class="p">(</span><span class="n">lista</span><span class="p">,</span> <span class="n">listb</span><span class="p">,</span> <span class="n">pattern</span><span class="p">,</span> <span class="n">ldel</span><span class="o">=</span><span class="n">GD</span><span class="o">.</span><span class="n">kvp_ldel</span><span class="p">,</span> <span class="n">mdel</span><span class="o">=</span><span class="n">GD</span><span class="o">.</span><span class="n">kvp_mdel</span><span class="p">,</span> <span class="n">rdel</span><span class="o">=</span><span class="n">GD</span><span class="o">.</span><span class="n">kvp_rdel</span><span class="p">,</span> <span class="n">as_string</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+    <span class="sd">r&quot;&quot;&quot;Find the intersection of two lists containing simulation IDs.</span>
+
+<span class="sd">    :param lista: A first list with the simulation IDs.</span>
+<span class="sd">    :param listb: A second list with the simulation IDs.</span>
+<span class="sd">    :param pattern: The pattern whose numerical value is used for sorting.</span>
+<span class="sd">    :param ldel: Left delimiter of the pattern.</span>
+<span class="sd">    :param mdel: Middle delimiter of the pattern.</span>
+<span class="sd">    :param rdel: Right delimiter of the pattern.</span>
+<span class="sd">    :param as_string: Determines if the values for ``pattern`` get converted to floats.</span>
+<span class="sd">    :return: A sorted list of simulation IDs.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">namea</span> <span class="ow">in</span> <span class="n">lista</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">nameb</span> <span class="ow">in</span> <span class="n">listb</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">compare_by</span><span class="p">(</span><span class="n">namea</span><span class="p">,</span> <span class="n">nameb</span><span class="p">,</span> <span class="n">pattern</span><span class="p">,</span> <span class="n">ldel</span><span class="o">=</span><span class="n">ldel</span><span class="p">,</span> <span class="n">mdel</span><span class="o">=</span><span class="n">mdel</span><span class="p">,</span> <span class="n">rdel</span><span class="o">=</span><span class="n">rdel</span><span class="p">,</span> <span class="n">as_string</span><span class="o">=</span><span class="n">as_string</span><span class="p">):</span>
+                <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">namea</span><span class="p">)</span>
+                <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nameb</span><span class="p">)</span>
+
+    <span class="c"># Remove possible duplicates</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">result</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">result</span>
+
+</div>
+<div class="viewcode-block" id="exclude"><a class="viewcode-back" href="../waveblocks_classes/FileTools.html#FileTools.exclude">[docs]</a><span class="k">def</span> <span class="nf">exclude</span><span class="p">(</span><span class="n">lista</span><span class="p">,</span> <span class="n">listb</span><span class="p">):</span>
+    <span class="sd">r&quot;&quot;&quot;Remove from a list of simulation IDs another such list of IDs.</span>
+
+<span class="sd">    :param lista: A first list with the simulation IDs.</span>
+<span class="sd">    :param listb: A second list with the simulation IDs.</span>
+<span class="sd">    :return: A list of all simulation IDs present in `lista` but not in `listb`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">lista</span><span class="p">)</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">listb</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">result</span>
+
+</div>
+<div class="viewcode-block" id="sort_by"><a class="viewcode-back" href="../waveblocks_classes/FileTools.html#FileTools.sort_by">[docs]</a><span class="k">def</span> <span class="nf">sort_by</span><span class="p">(</span><span class="n">stringlist</span><span class="p">,</span> <span class="n">pattern</span><span class="p">,</span> <span class="n">ldel</span><span class="o">=</span><span class="n">GD</span><span class="o">.</span><span class="n">kvp_ldel</span><span class="p">,</span> <span class="n">mdel</span><span class="o">=</span><span class="n">GD</span><span class="o">.</span><span class="n">kvp_mdel</span><span class="p">,</span> <span class="n">rdel</span><span class="o">=</span><span class="n">GD</span><span class="o">.</span><span class="n">kvp_rdel</span><span class="p">,</span> <span class="n">as_string</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+    <span class="sd">r&quot;&quot;&quot;Sorts simulation IDs with respect to a (numerical) value in the ID.</span>
+
+<span class="sd">    :param stringlist: A list with the simulation IDs.</span>
+<span class="sd">    :param pattern: The pattern whose (numerical) value is used for sorting.</span>
+<span class="sd">    :param ldel: Left delimiter of the pattern.</span>
+<span class="sd">    :param mdel: Middle delimiter of the pattern.</span>
+<span class="sd">    :param rdel: Right delimiter of the pattern.</span>
+<span class="sd">    :param as_string: Determines if the values for ``pattern`` get converted to floats.</span>
+<span class="sd">    :return: A sorted list of simulation IDs.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">tmp</span> <span class="o">=</span> <span class="p">[</span> <span class="n">s</span><span class="o">.</span><span class="n">partition</span><span class="p">(</span><span class="n">ldel</span> <span class="o">+</span> <span class="n">pattern</span> <span class="o">+</span> <span class="n">mdel</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">stringlist</span> <span class="p">]</span>
+    <span class="n">tmp</span> <span class="o">=</span> <span class="p">[</span> <span class="n">s</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">s</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">partition</span><span class="p">(</span><span class="n">rdel</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">tmp</span> <span class="p">]</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">as_string</span><span class="p">:</span>
+        <span class="c"># Convert to float and append numeric values to the splitted IDs</span>
+        <span class="n">tmp</span> <span class="o">=</span> <span class="p">[</span> <span class="n">s</span> <span class="o">+</span> <span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="mi">2</span><span class="p">]),)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">tmp</span> <span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c"># Use string in comparison, allows sorting</span>
+        <span class="n">tmp</span> <span class="o">=</span> <span class="p">[</span> <span class="n">s</span> <span class="o">+</span> <span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="mi">2</span><span class="p">],)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">tmp</span> <span class="p">]</span>
+
+    <span class="c"># Define a custom order relation</span>
+    <span class="k">def</span> <span class="nf">compare</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">x</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">y</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="k">return</span> <span class="mi">1</span>
+        <span class="k">elif</span> <span class="n">y</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">x</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">0</span>
+
+    <span class="c"># Sort w.r.t. the numerical value</span>
+    <span class="n">tmp</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="nb">cmp</span><span class="o">=</span><span class="n">compare</span><span class="p">)</span>
+
+    <span class="c"># Remove numeric value and concatenate the fragments again</span>
+    <span class="n">sorted_list</span> <span class="o">=</span> <span class="p">[</span> <span class="nb">reduce</span><span class="p">(</span><span class="n">op</span><span class="o">.</span><span class="n">add</span><span class="p">,</span> <span class="n">s</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">tmp</span> <span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">sorted_list</span>
+
+</div>
+<div class="viewcode-block" id="sort_and_group_by"><a class="viewcode-back" href="../waveblocks_classes/FileTools.html#FileTools.sort_and_group_by">[docs]</a><span class="k">def</span> <span class="nf">sort_and_group_by</span><span class="p">(</span><span class="n">stringlist</span><span class="p">,</span> <span class="n">pattern</span><span class="p">,</span> <span class="n">ldel</span><span class="o">=</span><span class="n">GD</span><span class="o">.</span><span class="n">kvp_ldel</span><span class="p">,</span> <span class="n">mdel</span><span class="o">=</span><span class="n">GD</span><span class="o">.</span><span class="n">kvp_mdel</span><span class="p">,</span> <span class="n">rdel</span><span class="o">=</span><span class="n">GD</span><span class="o">.</span><span class="n">kvp_rdel</span><span class="p">,</span> <span class="n">as_string</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+    <span class="sd">r&quot;&quot;&quot;Sorts and groups simulation IDs with respect to a pattern.</span>
+
+<span class="sd">    :param stringlist: A list with the simulation IDs.</span>
+<span class="sd">    :param pattern: The pattern used for sorting and grouping.</span>
+<span class="sd">    :param ldel: Left delimiter of the pattern.</span>
+<span class="sd">    :param mdel: Middle delimiter of the pattern.</span>
+<span class="sd">    :param rdel: Right delimiter of the pattern.</span>
+<span class="sd">    :param as_string: Determines if the values for ``pattern`` get converted to floats. Not used here.</span>
+<span class="sd">    :return: A list of groups of simulation IDs.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">group_by</span><span class="p">(</span><span class="n">sort_by</span><span class="p">(</span><span class="n">stringlist</span><span class="p">,</span> <span class="n">pattern</span><span class="p">,</span> <span class="n">ldel</span><span class="o">=</span><span class="n">ldel</span><span class="p">,</span> <span class="n">mdel</span><span class="o">=</span><span class="n">mdel</span><span class="p">,</span> <span class="n">rdel</span><span class="o">=</span><span class="n">rdel</span><span class="p">,</span> <span class="n">as_string</span><span class="o">=</span><span class="n">as_string</span><span class="p">),</span>
+                    <span class="n">pattern</span><span class="p">,</span> <span class="n">ldel</span><span class="o">=</span><span class="n">ldel</span><span class="p">,</span> <span class="n">mdel</span><span class="o">=</span><span class="n">mdel</span><span class="p">,</span> <span class="n">rdel</span><span class="o">=</span><span class="n">rdel</span><span class="p">,</span> <span class="n">as_string</span><span class="o">=</span><span class="n">as_string</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="get_max_by"><a class="viewcode-back" href="../waveblocks_classes/FileTools.html#FileTools.get_max_by">[docs]</a><span class="k">def</span> <span class="nf">get_max_by</span><span class="p">(</span><span class="n">stringlist</span><span class="p">,</span> <span class="n">pattern</span><span class="p">,</span> <span class="n">ldel</span><span class="o">=</span><span class="n">GD</span><span class="o">.</span><span class="n">kvp_ldel</span><span class="p">,</span> <span class="n">mdel</span><span class="o">=</span><span class="n">GD</span><span class="o">.</span><span class="n">kvp_mdel</span><span class="p">,</span> <span class="n">rdel</span><span class="o">=</span><span class="n">GD</span><span class="o">.</span><span class="n">kvp_rdel</span><span class="p">,</span> <span class="n">as_string</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+    <span class="sd">r&quot;&quot;&quot;Get the maximum of a list with simulation IDs with respect to a (numerical) value in the ID.</span>
+<span class="sd">    This is just a simple convenience function so that the user needs not to remember if the</span>
+<span class="sd">    sort order is ascending or descending which plays no role for iteration.</span>
+
+<span class="sd">    :param stringlist: A list with the simulation IDs.</span>
+<span class="sd">    :param pattern: The pattern whose (numerical) value is used for sorting.</span>
+<span class="sd">    :param ldel: Left delimiter of the pattern.</span>
+<span class="sd">    :param mdel: Middle delimiter of the pattern.</span>
+<span class="sd">    :param rdel: Right delimiter of the pattern.</span>
+<span class="sd">    :param as_string: Determines if the values for ``pattern`` get converted to floats.</span>
+<span class="sd">    :return: A sorted list of simulation IDs.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">sortedlist</span> <span class="o">=</span> <span class="n">sort_by</span><span class="p">(</span><span class="n">stringlist</span><span class="p">,</span> <span class="n">pattern</span><span class="p">,</span> <span class="n">ldel</span><span class="o">=</span><span class="n">ldel</span><span class="p">,</span> <span class="n">mdel</span><span class="o">=</span><span class="n">mdel</span><span class="p">,</span> <span class="n">rdel</span><span class="o">=</span><span class="n">rdel</span><span class="p">,</span> <span class="n">as_string</span><span class="o">=</span><span class="n">as_string</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">sortedlist</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+</div>
+<div class="viewcode-block" id="get_min_by"><a class="viewcode-back" href="../waveblocks_classes/FileTools.html#FileTools.get_min_by">[docs]</a><span class="k">def</span> <span class="nf">get_min_by</span><span class="p">(</span><span class="n">stringlist</span><span class="p">,</span> <span class="n">pattern</span><span class="p">,</span> <span class="n">ldel</span><span class="o">=</span><span class="n">GD</span><span class="o">.</span><span class="n">kvp_ldel</span><span class="p">,</span> <span class="n">mdel</span><span class="o">=</span><span class="n">GD</span><span class="o">.</span><span class="n">kvp_mdel</span><span class="p">,</span> <span class="n">rdel</span><span class="o">=</span><span class="n">GD</span><span class="o">.</span><span class="n">kvp_rdel</span><span class="p">,</span> <span class="n">as_string</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+    <span class="sd">r&quot;&quot;&quot;Get the minimum of a list with simulation IDs with respect to a (numerical) value in the ID.</span>
+<span class="sd">    This is just a simple convenience function so that the user needs not to remember if the</span>
+<span class="sd">    sort order is ascending or descending which plays no role for iteration.</span>
+
+<span class="sd">    :param stringlist: A list with the simulation IDs.</span>
+<span class="sd">    :param pattern: The pattern whose (numerical) value is used for sorting.</span>
+<span class="sd">    :param ldel: Left delimiter of the pattern.</span>
+<span class="sd">    :param mdel: Middle delimiter of the pattern.</span>
+<span class="sd">    :param rdel: Right delimiter of the pattern.</span>
+<span class="sd">    :param as_string: Determines if the values for ``pattern`` get converted to floats.</span>
+<span class="sd">    :return: A sorted list of simulation IDs.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">sortedlist</span> <span class="o">=</span> <span class="n">sort_by</span><span class="p">(</span><span class="n">stringlist</span><span class="p">,</span> <span class="n">pattern</span><span class="p">,</span> <span class="n">ldel</span><span class="o">=</span><span class="n">ldel</span><span class="p">,</span> <span class="n">mdel</span><span class="o">=</span><span class="n">mdel</span><span class="p">,</span> <span class="n">rdel</span><span class="o">=</span><span class="n">rdel</span><span class="p">,</span> <span class="n">as_string</span><span class="o">=</span><span class="n">as_string</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">sortedlist</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+</div>
+<div class="viewcode-block" id="get_items"><a class="viewcode-back" href="../waveblocks_classes/FileTools.html#FileTools.get_items">[docs]</a><span class="k">def</span> <span class="nf">get_items</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">ldel</span><span class="o">=</span><span class="n">GD</span><span class="o">.</span><span class="n">kvp_ldel</span><span class="p">,</span> <span class="n">mdel</span><span class="o">=</span><span class="n">GD</span><span class="o">.</span><span class="n">kvp_mdel</span><span class="p">,</span> <span class="n">rdel</span><span class="o">=</span><span class="n">GD</span><span class="o">.</span><span class="n">kvp_rdel</span><span class="p">):</span>
+    <span class="sd">r&quot;&quot;&quot;Get a list of all the ``key=value`` items in the name.</span>
+
+<span class="sd">    :param name: The name from which to get the items.</span>
+<span class="sd">    :return: A list of all ``key=value`` items present in the ``name``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">parts</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">ldel</span><span class="p">)</span>
+    <span class="n">items</span> <span class="o">=</span> <span class="p">[</span> <span class="n">ldel</span><span class="o">+</span><span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">parts</span> <span class="k">if</span> <span class="n">rdel</span> <span class="ow">in</span> <span class="n">p</span> <span class="p">]</span>
+    <span class="k">return</span> <span class="n">items</span>
+
+</div>
+<div class="viewcode-block" id="get_item"><a class="viewcode-back" href="../waveblocks_classes/FileTools.html#FileTools.get_item">[docs]</a><span class="k">def</span> <span class="nf">get_item</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">pattern</span><span class="p">,</span> <span class="n">ldel</span><span class="o">=</span><span class="n">GD</span><span class="o">.</span><span class="n">kvp_ldel</span><span class="p">,</span> <span class="n">mdel</span><span class="o">=</span><span class="n">GD</span><span class="o">.</span><span class="n">kvp_mdel</span><span class="p">,</span> <span class="n">rdel</span><span class="o">=</span><span class="n">GD</span><span class="o">.</span><span class="n">kvp_rdel</span><span class="p">,</span> <span class="n">unpack</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+    <span class="sd">r&quot;&quot;&quot;Get a single ``key=value`` item out of the name.</span>
+<span class="sd">    The ``pattern`` specifies the ``key`` part.</span>
+
+<span class="sd">    :param name: The name from which to get the item.</span>
+<span class="sd">    :param pattern: The pattern whose value is used for ``key``.</span>
+<span class="sd">    :param unpack: Whether to unpack a single unique result instead of returning it inside a list.</span>
+<span class="sd">    :type unpack: Boolean, default is ``True``.</span>
+<span class="sd">    :return: A (list of the) item(s) whose ``key`` part matches ``pattern``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">items</span> <span class="o">=</span> <span class="n">get_items</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">ldel</span><span class="o">=</span><span class="n">ldel</span><span class="p">,</span> <span class="n">mdel</span><span class="o">=</span><span class="n">mdel</span><span class="p">,</span> <span class="n">rdel</span><span class="o">=</span><span class="n">rdel</span><span class="p">)</span>
+    <span class="n">searchfor</span> <span class="o">=</span> <span class="n">ldel</span> <span class="o">+</span> <span class="n">pattern</span> <span class="o">+</span> <span class="n">mdel</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">item</span><span class="p">:</span> <span class="n">searchfor</span> <span class="ow">in</span> <span class="n">item</span><span class="p">,</span> <span class="n">items</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&quot;Warning: pattern &#39;&quot;</span><span class="o">+</span><span class="n">pattern</span><span class="o">+</span><span class="s">&quot;&#39; not found in: &quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">name</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">unpack</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">result</span>
+
+</div>
+<div class="viewcode-block" id="get_by_item"><a class="viewcode-back" href="../waveblocks_classes/FileTools.html#FileTools.get_by_item">[docs]</a><span class="k">def</span> <span class="nf">get_by_item</span><span class="p">(</span><span class="n">stringlist</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+    <span class="sd">r&quot;&quot;&quot;Get a filtered list of simulation IDs containing a given ``key=value`` item.</span>
+
+<span class="sd">    :param stringlist: A list with the simulation IDs.</span>
+<span class="sd">    :param item: The ``key=value`` item to search for.</span>
+<span class="sd">    :return: A list of simulation IDs.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="p">[</span> <span class="n">name</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">stringlist</span> <span class="k">if</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">name</span> <span class="p">]</span>
+    <span class="k">return</span> <span class="n">result</span>
+
+</div>
+<div class="viewcode-block" id="get_value"><a class="viewcode-back" href="../waveblocks_classes/FileTools.html#FileTools.get_value">[docs]</a><span class="k">def</span> <span class="nf">get_value</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">ldel</span><span class="o">=</span><span class="n">GD</span><span class="o">.</span><span class="n">kvp_ldel</span><span class="p">,</span> <span class="n">mdel</span><span class="o">=</span><span class="n">GD</span><span class="o">.</span><span class="n">kvp_mdel</span><span class="p">,</span> <span class="n">rdel</span><span class="o">=</span><span class="n">GD</span><span class="o">.</span><span class="n">kvp_rdel</span><span class="p">):</span>
+    <span class="sd">r&quot;&quot;&quot;Get the ``value`` part of a given ``key=value`` pair.</span>
+
+<span class="sd">    :param item: The ``key=value`` item.</span>
+<span class="sd">    :param ldel: Left delimiter of the pattern.</span>
+<span class="sd">    :param mdel: Middle delimiter of the pattern.</span>
+<span class="sd">    :param rdel: Right delimiter of the pattern.</span>
+<span class="sd">    :return: The ``value`` part of the given item.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">rightpart</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">partition</span><span class="p">(</span><span class="n">mdel</span><span class="p">)</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="n">rightpart</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">partition</span><span class="p">(</span><span class="n">rdel</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+</div>
+<div class="viewcode-block" id="get_by_value"><a class="viewcode-back" href="../waveblocks_classes/FileTools.html#FileTools.get_by_value">[docs]</a><span class="k">def</span> <span class="nf">get_by_value</span><span class="p">(</span><span class="n">stringlist</span><span class="p">,</span> <span class="n">pattern</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">ldel</span><span class="o">=</span><span class="n">GD</span><span class="o">.</span><span class="n">kvp_ldel</span><span class="p">,</span> <span class="n">mdel</span><span class="o">=</span><span class="n">GD</span><span class="o">.</span><span class="n">kvp_mdel</span><span class="p">,</span> <span class="n">rdel</span><span class="o">=</span><span class="n">GD</span><span class="o">.</span><span class="n">kvp_rdel</span><span class="p">):</span>
+    <span class="sd">r&quot;&quot;&quot;Get a filtered list of simulation IDs by specifying the ``key``</span>
+<span class="sd">    and ``value`` of some ``key=value`` pair.</span>
+
+<span class="sd">    :param stringlist: A list with the simulation IDs.</span>
+<span class="sd">    :param pattern: The pattern that is used for ``key``.</span>
+<span class="sd">    :param value: The value that is used for ``value``.</span>
+<span class="sd">    :param ldel: Left delimiter of the pattern.</span>
+<span class="sd">    :param mdel: Middle delimiter of the pattern.</span>
+<span class="sd">    :param rdel: Right delimiter of the pattern.</span>
+<span class="sd">    :return: A list of IDs that contain a ``key`` with given ``value``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">stringlist</span><span class="p">:</span>
+        <span class="n">items</span> <span class="o">=</span> <span class="n">get_item</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">pattern</span><span class="p">,</span> <span class="n">unpack</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">items</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">&quot;Warning: ambiguous pattern &#39;&quot;</span><span class="o">+</span><span class="n">pattern</span><span class="o">+</span><span class="s">&quot;&#39; in: &quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">name</span><span class="p">))</span>
+
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">items</span><span class="p">:</span>
+            <span class="n">val</span> <span class="o">=</span> <span class="n">get_value</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">ldel</span><span class="o">=</span><span class="n">ldel</span><span class="p">,</span> <span class="n">mdel</span><span class="o">=</span><span class="n">mdel</span><span class="p">,</span> <span class="n">rdel</span><span class="o">=</span><span class="n">rdel</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="o">==</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+                <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+                <span class="k">break</span>
+
+    <span class="k">return</span> <span class="n">result</span>
+
+</div>
+<div class="viewcode-block" id="get_value_of"><a class="viewcode-back" href="../waveblocks_classes/FileTools.html#FileTools.get_value_of">[docs]</a><span class="k">def</span> <span class="nf">get_value_of</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">pattern</span><span class="p">,</span> <span class="n">ldel</span><span class="o">=</span><span class="n">GD</span><span class="o">.</span><span class="n">kvp_ldel</span><span class="p">,</span> <span class="n">mdel</span><span class="o">=</span><span class="n">GD</span><span class="o">.</span><span class="n">kvp_mdel</span><span class="p">,</span> <span class="n">rdel</span><span class="o">=</span><span class="n">GD</span><span class="o">.</span><span class="n">kvp_rdel</span><span class="p">,</span> <span class="n">unpack</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+    <span class="sd">r&quot;&quot;&quot;Get the ``value`` part corresponding to a given ``key`` of an item.</span>
+
+<span class="sd">    :param name: The name from which to get the value.</span>
+<span class="sd">    :param pattern: The pattern whose value is used for ``key``.</span>
+<span class="sd">    :param ldel: Left delimiter of the pattern.</span>
+<span class="sd">    :param mdel: Middle delimiter of the pattern.</span>
+<span class="sd">    :param rdel: Right delimiter of the pattern.</span>
+<span class="sd">    :param unpack: Whether to unpack a single unique result instead of returning it inside a list.</span>
+<span class="sd">    :type unpack: Boolean, default is ``True``.</span>
+<span class="sd">    :return: The ``value`` part of the found item. (If there</span>
+<span class="sd">             are multiple matching items, return all values.)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">items</span> <span class="o">=</span> <span class="n">get_item</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">pattern</span><span class="p">,</span> <span class="n">ldel</span><span class="o">=</span><span class="n">ldel</span><span class="p">,</span> <span class="n">mdel</span><span class="o">=</span><span class="n">mdel</span><span class="p">,</span> <span class="n">rdel</span><span class="o">=</span><span class="n">rdel</span><span class="p">,</span> <span class="n">unpack</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    <span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="n">get_value</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">ldel</span><span class="o">=</span><span class="n">ldel</span><span class="p">,</span> <span class="n">mdel</span><span class="o">=</span><span class="n">mdel</span><span class="p">,</span> <span class="n">rdel</span><span class="o">=</span><span class="n">rdel</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">items</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">unpack</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">values</span>
+
+</div>
+<div class="viewcode-block" id="split_list"><a class="viewcode-back" href="../waveblocks_classes/FileTools.html#FileTools.split_list">[docs]</a><span class="k">def</span> <span class="nf">split_list</span><span class="p">(</span><span class="n">alist</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+    <span class="sd">r&quot;&quot;&quot;Split a list into :math:`n` parts.</span>
+
+<span class="sd">    :param alist: The list to split.</span>
+<span class="sd">    :param n: The number of parts.</span>
+<span class="sd">    :return: A list containing the pieces of the original list.</span>
+
+<span class="sd">    .. note:: The pieces are *not* continuous sublists of the given list.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">alist</span><span class="p">),</span> <span class="n">n</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">[</span> <span class="n">alist</span><span class="p">[</span><span class="n">i</span><span class="p">::</span><span class="n">n</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="p">]</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">WaveBlocksND devel documentation</a> &raquo;</li>
+          <li><a href="index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, R. Bourquin.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

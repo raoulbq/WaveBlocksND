@@ -1,0 +1,221 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Extending WaveBlocks &mdash; WaveBlocksND devel documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     'devel',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="WaveBlocksND devel documentation" href="../index.html" />
+    <link rel="next" title="Citation" href="../citation.html" />
+    <link rel="prev" title="Computing Eigenstates" href="example_eigenstates/example_eigenstates.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../citation.html" title="Citation"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="example_eigenstates/example_eigenstates.html" title="Computing Eigenstates"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">WaveBlocksND devel documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="extending-waveblocks">
+<h1>Extending <tt class="docutils literal"><span class="pre">WaveBlocks</span></tt><a class="headerlink" href="#extending-waveblocks" title="Permalink to this headline">¶</a></h1>
+<p>In this chapter we describe the steps to extend the <tt class="docutils literal"><span class="pre">WaveBlocks</span></tt> code base with
+respect to various central aspects. The most important aspect is probably the
+possibility to add new potentials of whatever kind. The other topics include
+the question of how to save more data and what it takes to implement new
+simulation algorithms.</p>
+<div class="section" id="structure-of-potential-definitions">
+<h2>Structure of potential definitions<a class="headerlink" href="#structure-of-potential-definitions" title="Permalink to this headline">¶</a></h2>
+<p>Performing a simulation with a new potential that is not (yet) part of the
+<tt class="docutils literal"><span class="pre">PotentialLibrary</span></tt> is not difficult. All potentials are specified as a python
+dict. An simple example of a potential definition could look like:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">quadratic</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">quadratic</span><span class="p">[</span><span class="s">&quot;potential&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&quot;1/2 * sigma * x**2&quot;</span>
+<span class="n">quadratic</span><span class="p">[</span><span class="s">&quot;defaults&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s">&quot;sigma&quot;</span><span class="p">:</span><span class="s">&quot;1/2&quot;</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>We see that this is nothing else than a python dict (here assigned to the variable
+<tt class="docutils literal"><span class="pre">quadratic</span></tt>). This dict must have a key <tt class="docutils literal"><span class="pre">potential</span></tt> and the corresponding value
+is the analytic potential formula. This formula must contain the variable <tt class="docutils literal"><span class="pre">x</span></tt> which
+is the position space variable. It may optionally have an arbitrary number of
+parameters, here for example the <tt class="docutils literal"><span class="pre">sigma</span></tt>.</p>
+<p>The dict may have a further key called <tt class="docutils literal"><span class="pre">defaults</span></tt> whose value is another dict
+containing default values for the parameters. These values are used if you do
+not specify a value for a parameter in the simulation configuration file. You
+may omit the defaults here, then you always have to provide a value in the
+simulation configuration. Values given in the simulation configuration always
+precede default values.</p>
+<p>The analytic potential formula is given as a string. This string is parsed by
+the <tt class="docutils literal"><span class="pre">sympify</span></tt> function of <tt class="docutils literal"><span class="pre">Sympy</span></tt>. You can use many of the usual mathematical
+operations and functions, for example (fractional) powers (<tt class="docutils literal"><span class="pre">**</span></tt>), roots (<tt class="docutils literal"><span class="pre">sqrt()</span></tt>),
+trigonometric and hyperbolic functions and their inverse functions (but remem-
+ber, it&#8217;s <tt class="docutils literal"><span class="pre">atan</span></tt> and not <tt class="docutils literal"><span class="pre">arctan</span></tt> etc) and also some constants like <tt class="docutils literal"><span class="pre">pi</span></tt>.
+Please refer to the <tt class="docutils literal"><span class="pre">Sympy</span></tt> manual for a more thorough description of <tt class="docutils literal"><span class="pre">sympify</span></tt>.
+The most important point is to make sure that the formula finally yields a scalar
+expression in <tt class="docutils literal"><span class="pre">x</span></tt>.</p>
+<p>A more complicated potential could be given by the following python code:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">delta_gap</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">delta_gap</span><span class="p">[</span><span class="s">&quot;potential&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[[</span><span class="s">&quot;1/2 * tanh(x)&quot;</span><span class="p">,</span> <span class="s">&quot;delta&quot;</span>         <span class="p">],</span>
+                          <span class="p">[</span><span class="s">&quot;delta&quot;</span><span class="p">,</span>         <span class="s">&quot;-1/2 * tanh(x)&quot;</span><span class="p">]]</span>
+</pre></div>
+</div>
+<p>This potential has two energy levels and is given by a <img class="math" src="../_images/math/7901356dd65ec4da1b694937cc4ffc663e90d800.png" alt="2\times 2"/> matrix.
+The matrix is constructed as two nested python lists. Each entry is a single string
+as above. Note also that this potential does not specify a default for <tt class="docutils literal"><span class="pre">delta</span></tt>,
+you have to assign a scalar float value to a variable called <tt class="docutils literal"><span class="pre">delta</span></tt> in the simulation
+configuration. You may specify potentials with as many energy levels as you like.</p>
+<p>A final word on the strings representing formulae and parameter values: any
+string that <cite>only</cite> consists of a numerical constant my be replaced by a float. But
+be careful with divisions, in python 2.x, <tt class="docutils literal"><span class="pre">1/2</span></tt> is <tt class="docutils literal"><span class="pre">0</span></tt>!</p>
+</div>
+<div class="section" id="adding-new-potentials">
+<h2>Adding new potentials<a class="headerlink" href="#adding-new-potentials" title="Permalink to this headline">¶</a></h2>
+<p>After we have seen the general structure of a potential definition in the last
+section, let&#8217;s now look at how to add and use a new potential. For new potentials
+you have basically two options. Either place the potential definition in the
+<tt class="docutils literal"><span class="pre">PotentialLibrary.py</span></tt> file. Make sure your variable name (for example
+<tt class="docutils literal"><span class="pre">delta_gap</span></tt>) is unique. If you decide to go this way, you can use the new potential
+by referring to it in the simulation configuration as:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">potential</span> <span class="o">=</span> <span class="s">&quot;delta_gap&quot;</span>
+</pre></div>
+</div>
+<p>The other option is to place the <cite>whole</cite> potential definition inside the simulation
+configuration file. Then this would look like:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">potential</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">potential</span><span class="p">[</span><span class="s">&quot;potential&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[[</span><span class="s">&quot;1/2 * tanh(x)&quot;</span><span class="p">,</span> <span class="s">&quot;delta&quot;</span>         <span class="p">],</span>
+                          <span class="p">[</span><span class="s">&quot;delta&quot;</span><span class="p">,</span>         <span class="s">&quot;-1/2 * tanh(x)&quot;</span><span class="p">]]</span>
+</pre></div>
+</div>
+<p>This time you must name the dict <tt class="docutils literal"><span class="pre">potential</span></tt> because that&#8217;s the variable name
+where the <tt class="docutils literal"><span class="pre">ParameterLoader</span></tt> looks for a potential. For the first time
+it might be confusing that the dict as well as its main key both bear the name
+<tt class="docutils literal"><span class="pre">potential</span></tt> but this is correct. Of course you can specify default values here too,
+but probably it has no real use case.</p>
+<p>As a small side note, here is an example of a custom potential when we create the
+configurations by the <tt class="docutils literal"><span class="pre">ConfigurationGenerator</span></tt>. (This is only a small excerpt
+of a metaconfiguration file.)</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># A custom potential without a default for &quot; alpha &quot;</span>
+<span class="n">GP</span><span class="p">[</span><span class="s">&quot;potential&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">GP</span><span class="p">[</span><span class="s">&quot;potential[</span><span class="se">\&quot;</span><span class="s">potential</span><span class="se">\&quot;</span><span class="s">]&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&quot;</span><span class="se">\&quot;</span><span class="s">cosh(alpha*x)</span><span class="se">\&quot;</span><span class="s">&quot;</span>
+<span class="c"># Different values for &quot;alpha&quot; in each simulation</span>
+<span class="n">LP</span><span class="p">[</span><span class="s">&quot;alpha&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.1</span><span class="o">*</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">5</span><span class="p">)]</span>
+</pre></div>
+</div>
+<p>Please note the escaped quotes, it’s essential to do this correct here.</p>
+</div>
+<div class="section" id="compute-and-store-more-data">
+<h2>Compute and store more data<a class="headerlink" href="#compute-and-store-more-data" title="Permalink to this headline">¶</a></h2>
+<p><tt class="docutils literal"><span class="pre">IOM</span></tt> and <tt class="docutils literal"><span class="pre">IOM</span></tt> Plugins, how to teach the <tt class="docutils literal"><span class="pre">IOM</span></tt> to store more/other data.</p>
+</div>
+<div class="section" id="new-propagation-algorithms">
+<h2>New propagation algorithms<a class="headerlink" href="#new-propagation-algorithms" title="Permalink to this headline">¶</a></h2>
+<p>Implementing the <tt class="docutils literal"><span class="pre">SimulationLoop</span></tt> and <tt class="docutils literal"><span class="pre">Propagator</span></tt> interfaces</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Extending <tt class="docutils literal"><span class="pre">WaveBlocks</span></tt></a><ul>
+<li><a class="reference internal" href="#structure-of-potential-definitions">Structure of potential definitions</a></li>
+<li><a class="reference internal" href="#adding-new-potentials">Adding new potentials</a></li>
+<li><a class="reference internal" href="#compute-and-store-more-data">Compute and store more data</a></li>
+<li><a class="reference internal" href="#new-propagation-algorithms">New propagation algorithms</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="example_eigenstates/example_eigenstates.html"
+                        title="previous chapter">Computing Eigenstates</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../citation.html"
+                        title="next chapter">Citation</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/manual/extending_waveblocks.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../citation.html" title="Citation"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="example_eigenstates/example_eigenstates.html" title="Computing Eigenstates"
+             >previous</a> |</li>
+        <li><a href="../index.html">WaveBlocksND devel documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, R. Bourquin.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

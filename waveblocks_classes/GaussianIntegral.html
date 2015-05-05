@@ -1,0 +1,365 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>GaussianIntegral &mdash; WaveBlocksND devel documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     'devel',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="WaveBlocksND devel documentation" href="../index.html" />
+    <link rel="next" title="SymbolicIntegral0" href="SymbolicIntegral0.html" />
+    <link rel="prev" title="DirectInhomogeneousQuadrature" href="DirectInhomogeneousQuadrature.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="SymbolicIntegral0.html" title="SymbolicIntegral0"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="DirectInhomogeneousQuadrature.html" title="DirectInhomogeneousQuadrature"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">WaveBlocksND devel documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="gaussianintegral">
+<h1>GaussianIntegral<a class="headerlink" href="#gaussianintegral" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-WaveBlocksND">
+<span id="about-the-gaussianintegral-class"></span><h2>About the <tt class="docutils literal"><span class="pre">GaussianIntegral</span></tt> class<a class="headerlink" href="#module-WaveBlocksND" title="Permalink to this headline">¶</a></h2>
+<p>The WaveBlocks Project</p>
+<p>&#64;author: R. Bourquin
+&#64;copyright: Copyright (C) 2010, 2011, 2012, 2013, 2014 R. Bourquin
+&#64;license: Modified BSD License</p>
+</div>
+<div class="section" id="inheritance-diagram">
+<h2>Inheritance diagram<a class="headerlink" href="#inheritance-diagram" title="Permalink to this headline">¶</a></h2>
+<p class="graphviz">
+<img src="../_images/inheritance-da40f3d8fd89058df8bec411d21407bbbfb66c6c.png" alt="Inheritance diagram of GaussianIntegral" class="inheritance"/>
+</p>
+</div>
+<div class="section" id="class-documentation">
+<h2>Class documentation<a class="headerlink" href="#class-documentation" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="WaveBlocksND.GaussianIntegral">
+<em class="property">class </em><tt class="descclassname">WaveBlocksND.</tt><tt class="descname">GaussianIntegral</tt><big>(</big><em>*unused</em>, <em>**kunused</em><big>)</big><a class="headerlink" href="#WaveBlocksND.GaussianIntegral" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="WaveBlocksND.GaussianIntegral.exact_result_gauss">
+<tt class="descname">exact_result_gauss</tt><big>(</big><em>Pibra</em>, <em>Piket</em>, <em>D</em>, <em>eps</em><big>)</big><a class="headerlink" href="#WaveBlocksND.GaussianIntegral.exact_result_gauss" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the overlap integral <img class="math" src="../_images/math/46928223a06e0b954c0c4267cafd850dff5e4a19.png" alt="\langle \phi_{\underline{0}} | \phi_{\underline{0}} \rangle"/>
+of the groundstate <img class="math" src="../_images/math/67d977cfcf1e4b7afbe2e4d51b98020b9e67152b.png" alt="\phi_{\underline{0}}"/> by using the symbolic formula:</p>
+<div class="math">
+<p><img src="../_images/math/f2f6e7cb68c9a47d34d36a0fdcbd87848b421c69.png" alt="\langle \phi_{\underline{0}} | \phi_{\underline{0}} \rangle
+&amp; = \int C \exp\left(-\frac{1}{2} \underline{x}^{\mathrm{T}} \mathbf{A} \underline{x}
+               +\underline{b}^{\mathrm{T}} \underline{x}
+               + c
+         \right) \mathrm{d}\underline{x} \\
+&amp; = C \sqrt{\frac{\left(2\pi\right)^D}{\det \mathbf{A}}}
+  \exp\left(-\frac{1}{2} \underline{b}^{\mathrm{T}} \mathbf{A}^{-\mathrm{H}} \underline{b}\right)
+  \exp\left(c\right)"/></p>
+</div><p>In a first step we combine the exponential parts of both wavepackets into
+<img class="math" src="../_images/math/e556dd03d39453f128869ff04a5099ef36838912.png" alt="\underline{x}^{\mathrm{H}} \mathbf{A} \underline{x} + \underline{b}^{\mathrm{T}} \underline{x} + c"/>.
+Then we transform <img class="math" src="../_images/math/f3e830722dede854af533bfa96d549c68ed5997f.png" alt="\mathbf{A}"/>, <img class="math" src="../_images/math/d56cd1d33703c2415169af21967a9cdc3a65b622.png" alt="\underline{b}"/> and <img class="math" src="../_images/math/3372c1cb6d68cf97c2d231acc0b47b95a9ed04cc.png" alt="c"/>
+such that this matches the integrand above. The necessary transformations read:</p>
+<div class="math">
+<p><img src="../_images/math/ffdd1f485cf4efe52e9cf82e515bd2b42f68514d.png" alt="\mathbf{A}^{\prime} &amp;= -2 \frac{i}{\varepsilon^2} \mathbf{A} \\
+\underline{b}^{\prime} &amp;= \frac{i}{\varepsilon^2} \underline{b} \\
+c &amp;= \frac{i}{\varepsilon^2} c"/></p>
+</div><p>Note that this is an internal method and usually there is no
+reason to call it from outside.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>Pibra</strong> &#8211; The parameter set <img class="math" src="../_images/math/dc0a7d610b102d49d9ea52e4e525404b383cd1c9.png" alt="\Pi = \{q_1,p_1,Q_1,P_1\}"/> of the bra <img class="math" src="../_images/math/fc7947c5545134abcf971ae8dc8964ec2e127067.png" alt="\langle \phi_0 |"/>.</li>
+<li><strong>Piket</strong> &#8211; The parameter set <img class="math" src="../_images/math/9fe1d9a02a6f2d21b8d4a5e640569ac59841ca58.png" alt="\Pi^\prime = \{q_2,p_2,Q_2,P_2\}"/> of the ket <img class="math" src="../_images/math/45ecf9388ad2253c511af1f6758cbad4344cfa37.png" alt="| \phi_0 \rangle"/>.</li>
+<li><strong>D</strong> &#8211; The space dimension <img class="math" src="../_images/math/9ffb448918db29f2a72f8f87f421b3b3cad18f95.png" alt="D"/> the packets have.</li>
+<li><strong>eps</strong> &#8211; The semi-classical scaling parameter <img class="math" src="../_images/math/e2a63918a6fa75b62ad87ad17aaf65f782d71546.png" alt="\varepsilon"/>.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The value of the integral <img class="math" src="../_images/math/46928223a06e0b954c0c4267cafd850dff5e4a19.png" alt="\langle \phi_{\underline{0}} | \phi_{\underline{0}} \rangle"/>.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="WaveBlocksND.GaussianIntegral.get_description">
+<tt class="descname">get_description</tt><big>(</big><big>)</big><a class="headerlink" href="#WaveBlocksND.GaussianIntegral.get_description" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a description of this integral object.
+A description is a <tt class="docutils literal"><span class="pre">dict</span></tt> containing all key-value pairs
+necessary to reconstruct the current instance. A description
+never contains any data.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="WaveBlocksND.GaussianIntegral.get_qr">
+<tt class="descname">get_qr</tt><big>(</big><big>)</big><a class="headerlink" href="#WaveBlocksND.GaussianIntegral.get_qr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the <a class="reference internal" href="QuadratureRule.html#WaveBlocksND.QuadratureRule" title="WaveBlocksND.QuadratureRule"><tt class="xref py py-class docutils literal"><span class="pre">QuadratureRule</span></tt></a> subclass instance used for quadrature.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The current instance of the quadrature rule.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="WaveBlocksND.GaussianIntegral.initialize_operator">
+<tt class="descname">initialize_operator</tt><big>(</big><em>operator=None</em>, <em>matrix=False</em>, <em>eval_at_once=False</em><big>)</big><a class="headerlink" href="#WaveBlocksND.GaussianIntegral.initialize_operator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Provide the operator part of the inner product to evaluate.
+This function initializes the operator used for quadratures
+and for building matrices.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The symbolic Gaussian integral formula can not handle
+operators at all.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>operator</strong> &#8211; The operator of the inner product.
+If <tt class="docutils literal"><span class="pre">None</span></tt> a suitable identity is used.</li>
+<li><strong>matrix</strong> &#8211; Set this to <tt class="docutils literal"><span class="pre">True</span></tt> (Default is <tt class="docutils literal"><span class="pre">False</span></tt>) in case
+we want to compute the matrix elements.
+For nasty technical reasons we can not yet unify
+the operator call syntax.</li>
+<li><strong>eval_at_once</strong> (Boolean, default is <tt class="docutils literal"><span class="pre">False</span></tt>.) &#8211; Flag to tell whether the operator supports the <tt class="docutils literal"><span class="pre">entry=(r,c)</span></tt> call syntax.
+Since we do not support operators at all, it has no effect.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="WaveBlocksND.GaussianIntegral.initialize_packet">
+<tt class="descname">initialize_packet</tt><big>(</big><em>pacbra</em>, <em>packet=None</em><big>)</big><a class="headerlink" href="#WaveBlocksND.GaussianIntegral.initialize_packet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Provide the wavepacket parts of the inner product to evaluate.
+Since the formula is for the inhomogeneous case explicitly, different
+wavepackets can be used for the &#8216;bra&#8217; as well as the &#8216;ket&#8217; part.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>pacbra</strong> &#8211; The packet that is used for the &#8216;bra&#8217; part.</li>
+<li><strong>packet</strong> &#8211; The packet that is used for the &#8216;ket&#8217; part.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="WaveBlocksND.GaussianIntegral.perform_build_matrix">
+<tt class="descname">perform_build_matrix</tt><big>(</big><em>row</em>, <em>col</em><big>)</big><a class="headerlink" href="#WaveBlocksND.GaussianIntegral.perform_build_matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the matrix elements <img class="math" src="../_images/math/4b2b4880902cdf2895aaf792c7579d7d9fa888ef.png" alt="\langle\Phi_i |\Phi^\prime_j\rangle"/>
+by an exact symbolic formula.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">This method does only take into account the ground state
+basis components <img class="math" src="../_images/math/67d977cfcf1e4b7afbe2e4d51b98020b9e67152b.png" alt="\phi_{\underline{0}}"/> from both,
+the &#8216;bra&#8217; and the &#8216;ket&#8217;. If the wavepacket <img class="math" src="../_images/math/b85bbfb165b853d6f5f9734be4cdabbb453f4e43.png" alt="\Phi"/>
+contains higher order basis functions <img class="math" src="../_images/math/31f630cbb883e322f18099d263834a8dbbf569a1.png" alt="\phi_{\underline{k}}"/>
+with non-zero coefficients <img class="math" src="../_images/math/e7370b36da0eef5309c309fa81e8c742f709205e.png" alt="c_{\underline{k}}"/>, the inner products
+computed are wrong! There is also no warning about that.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>row</strong> &#8211; The index <img class="math" src="../_images/math/34857b3ba74ce5cd8607f3ebd23e9015908ada71.png" alt="i"/> of the component <img class="math" src="../_images/math/1a1372729059cb0703afe57f9402c351b5bf0e2d.png" alt="\Phi_i"/> of <img class="math" src="../_images/math/866f0204648be9ca6b10e14dd72295295dd53a79.png" alt="\Psi"/>.</li>
+<li><strong>row</strong> &#8211; The index <img class="math" src="../_images/math/8122aa89ea6e80784c6513d22787ad86e36ad0cc.png" alt="j"/> of the component <img class="math" src="../_images/math/98f130cebb4aa36b7dad3e83d1f8e748b47f8002.png" alt="\Phi^\prime_j"/> of <img class="math" src="../_images/math/ed0eb7d94f64ded093e1e0a8159ca93be0ffb20d.png" alt="\Psi^\prime"/>.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A complex valued matrix of shape <img class="math" src="../_images/math/c09d000f17e4e101ea23830d12328f6bb3b50220.png" alt="|\mathfrak{K}_i| \times |\mathfrak{K}^\prime_j|"/>.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="WaveBlocksND.GaussianIntegral.perform_quadrature">
+<tt class="descname">perform_quadrature</tt><big>(</big><em>row</em>, <em>col</em><big>)</big><a class="headerlink" href="#WaveBlocksND.GaussianIntegral.perform_quadrature" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluates the integral <img class="math" src="../_images/math/18016f56a75a1ef67ffffddb003d6553bdf325e9.png" alt="\langle \Phi_i | \Phi^\prime_j \rangle"/>
+by an exact symbolic formula.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">This method does only take into account the ground state
+basis components <img class="math" src="../_images/math/67d977cfcf1e4b7afbe2e4d51b98020b9e67152b.png" alt="\phi_{\underline{0}}"/> from both,
+the &#8216;bra&#8217; and the &#8216;ket&#8217;. If the wavepacket <img class="math" src="../_images/math/b85bbfb165b853d6f5f9734be4cdabbb453f4e43.png" alt="\Phi"/>
+contains higher order basis functions <img class="math" src="../_images/math/31f630cbb883e322f18099d263834a8dbbf569a1.png" alt="\phi_{\underline{k}}"/>
+with non-zero coefficients <img class="math" src="../_images/math/e7370b36da0eef5309c309fa81e8c742f709205e.png" alt="c_{\underline{k}}"/>, the inner products
+computed are wrong! There is also no warning about that.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>row</strong> &#8211; The index <img class="math" src="../_images/math/34857b3ba74ce5cd8607f3ebd23e9015908ada71.png" alt="i"/> of the component <img class="math" src="../_images/math/1a1372729059cb0703afe57f9402c351b5bf0e2d.png" alt="\Phi_i"/> of <img class="math" src="../_images/math/866f0204648be9ca6b10e14dd72295295dd53a79.png" alt="\Psi"/>.</li>
+<li><strong>row</strong> &#8211; The index <img class="math" src="../_images/math/8122aa89ea6e80784c6513d22787ad86e36ad0cc.png" alt="j"/> of the component <img class="math" src="../_images/math/98f130cebb4aa36b7dad3e83d1f8e748b47f8002.png" alt="\Phi^\prime_j"/> of <img class="math" src="../_images/math/ed0eb7d94f64ded093e1e0a8159ca93be0ffb20d.png" alt="\Psi^\prime"/>.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A single complex floating point number.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="WaveBlocksND.GaussianIntegral.prepare">
+<tt class="descname">prepare</tt><big>(</big><em>rows</em>, <em>cols</em><big>)</big><a class="headerlink" href="#WaveBlocksND.GaussianIntegral.prepare" title="Permalink to this definition">¶</a></dt>
+<dd><p>Precompute some values needed for evaluating the integral
+<img class="math" src="../_images/math/18016f56a75a1ef67ffffddb003d6553bdf325e9.png" alt="\langle \Phi_i | \Phi^\prime_j \rangle"/> or the corresponding
+matrix over the basis functions of <img class="math" src="../_images/math/1a1372729059cb0703afe57f9402c351b5bf0e2d.png" alt="\Phi_i"/> and <img class="math" src="../_images/math/98f130cebb4aa36b7dad3e83d1f8e748b47f8002.png" alt="\Phi^\prime_j"/>.
+Note that this function does nothing in the current implementation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>rows</strong> &#8211; A list of all <img class="math" src="../_images/math/34857b3ba74ce5cd8607f3ebd23e9015908ada71.png" alt="i"/> with <img class="math" src="../_images/math/1fbdc3f84fab4719570e6b6299cccc3edae6ee9d.png" alt="0 \leq i \leq N"/>
+selecting the <img class="math" src="../_images/math/1a1372729059cb0703afe57f9402c351b5bf0e2d.png" alt="\Phi_i"/> for which we precompute values.</li>
+<li><strong>cols</strong> &#8211; A list of all <img class="math" src="../_images/math/8122aa89ea6e80784c6513d22787ad86e36ad0cc.png" alt="j"/> with <img class="math" src="../_images/math/860d6b2c72824bd731c4cb8ec520b50fa9c8ca56.png" alt="0 \leq j \leq N"/>
+selecting the <img class="math" src="../_images/math/98f130cebb4aa36b7dad3e83d1f8e748b47f8002.png" alt="\Phi^\prime_j"/> for which we precompute values.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="WaveBlocksND.GaussianIntegral.set_qr">
+<tt class="descname">set_qr</tt><big>(</big><em>QR</em><big>)</big><a class="headerlink" href="#WaveBlocksND.GaussianIntegral.set_qr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the <a class="reference internal" href="QuadratureRule.html#WaveBlocksND.QuadratureRule" title="WaveBlocksND.QuadratureRule"><tt class="xref py py-class docutils literal"><span class="pre">QuadratureRule</span></tt></a> subclass instance used for quadrature.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>QR</strong> &#8211; The new <a class="reference internal" href="QuadratureRule.html#WaveBlocksND.QuadratureRule" title="WaveBlocksND.QuadratureRule"><tt class="xref py py-class docutils literal"><span class="pre">QuadratureRule</span></tt></a> instance.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">GaussianIntegral</a><ul>
+<li><a class="reference internal" href="#module-WaveBlocksND">About the <tt class="docutils literal"><span class="pre">GaussianIntegral</span></tt> class</a></li>
+<li><a class="reference internal" href="#inheritance-diagram">Inheritance diagram</a></li>
+<li><a class="reference internal" href="#class-documentation">Class documentation</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="DirectInhomogeneousQuadrature.html"
+                        title="previous chapter">DirectInhomogeneousQuadrature</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="SymbolicIntegral0.html"
+                        title="next chapter">SymbolicIntegral0</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/waveblocks_classes/GaussianIntegral.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="SymbolicIntegral0.html" title="SymbolicIntegral0"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="DirectInhomogeneousQuadrature.html" title="DirectInhomogeneousQuadrature"
+             >previous</a> |</li>
+        <li><a href="../index.html">WaveBlocksND devel documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, R. Bourquin.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

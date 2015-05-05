@@ -1,1 +1,394 @@
-WaveBlocks Reference Page
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Welcome to WaveBlocksND’s documentation! &mdash; WaveBlocksND devel documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     'devel',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="WaveBlocksND devel documentation" href="#" />
+    <link rel="next" title="A first glance" href="manual/first_glance.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="manual/first_glance.html" title="A first glance"
+             accesskey="N">next</a> |</li>
+        <li><a href="#">WaveBlocksND devel documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="welcome-to-waveblocksnd-s-documentation">
+<h1>Welcome to WaveBlocksND&#8217;s documentation!<a class="headerlink" href="#welcome-to-waveblocksnd-s-documentation" title="Permalink to this headline">¶</a></h1>
+<img alt="_images/waveblocks.png" src="_images/waveblocks.png" />
+<p>Reusable building blocks for simulations with semiclassical wavepackets for
+solving the time-dependent Schrödinger equation.</p>
+</div>
+<div class="section" id="user-manual">
+<h1>User Manual<a class="headerlink" href="#user-manual" title="Permalink to this headline">¶</a></h1>
+<p>Please note that some sections of the manual are still outdated.
+The source code documentation below is actually up to date.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="manual/first_glance.html">A first glance</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="manual/first_glance.html#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="manual/first_glance.html#download">Download</a></li>
+<li class="toctree-l2"><a class="reference internal" href="manual/first_glance.html#dependencies">Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="manual/first_glance.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="manual/first_glance.html#supported-computing-platforms">Supported computing platforms</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="manual/performing_simulations.html">Using <cite>WaveBlocks</cite> for performing simulations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="manual/performing_simulations.html#set-up-and-run-a-simulation">Set up and run a simulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="manual/performing_simulations.html#running-multiple-simulations">Running multiple simulations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="manual/performing_simulations.html#computing-more-data">Computing more data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="manual/performing_simulations.html#visualisation">Visualisation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="manual/performing_simulations.html#comparing-data-across-simulations">Comparing data across Simulations</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="manual/the_core.html">The Core and User scripts</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="manual/the_core.html#the-big-picture">The big picture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="manual/the_core.html#in-the-core">In the Core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="manual/the_core.html#time-propagation-algorithms">Time propagation algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="manual/the_core.html#specifying-initial-values">Specifying initial values</a></li>
+<li class="toctree-l2"><a class="reference internal" href="manual/the_core.html#required-parameter-sets">Required parameter sets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="manual/the_core.html#data-storage">Data storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="manual/the_core.html#user-scripts">User scripts</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="manual/interactive_use.html">Interactive use</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="manual/example_tunneling/example_tunneling.html">Computing tunneling probabilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="manual/example_eigenstates/example_eigenstates.html">Computing Eigenstates</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="manual/extending_waveblocks.html">Extending <tt class="docutils literal"><span class="pre">WaveBlocks</span></tt></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="manual/extending_waveblocks.html#structure-of-potential-definitions">Structure of potential definitions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="manual/extending_waveblocks.html#adding-new-potentials">Adding new potentials</a></li>
+<li class="toctree-l2"><a class="reference internal" href="manual/extending_waveblocks.html#compute-and-store-more-data">Compute and store more data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="manual/extending_waveblocks.html#new-propagation-algorithms">New propagation algorithms</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="citation.html">Citation</a></li>
+</ul>
+</div>
+</div>
+<div class="section" id="potential-library">
+<h1>Potential Library<a class="headerlink" href="#potential-library" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="potlib/potentials.html">Ready made Potentials</a></li>
+</ul>
+</div>
+</div>
+<div class="section" id="source-code-documentation">
+<h1>Source code documentation<a class="headerlink" href="#source-code-documentation" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="waveblocks-classes">
+<h2>WaveBlocks Classes<a class="headerlink" href="#waveblocks-classes" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="basic-numerics">
+<h3>Basic numerics<a class="headerlink" href="#basic-numerics" title="Permalink to this headline">¶</a></h3>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="waveblocks_classes/ComplexMath.html">ComplexMath</a></li>
+<li class="toctree-l1"><a class="reference internal" href="waveblocks_classes/Grid.html">AbstractGrid</a></li>
+<li class="toctree-l1"><a class="reference internal" href="waveblocks_classes/DenseGrid.html">DenseGrid</a></li>
+<li class="toctree-l1"><a class="reference internal" href="waveblocks_classes/TensorProductGrid.html">TensorProductGrid</a></li>
+<li class="toctree-l1"><a class="reference internal" href="waveblocks_classes/GridWrapper.html">GridWrapper</a></li>
+<li class="toctree-l1"><a class="reference internal" href="waveblocks_classes/QuadratureRule.html">QuadratureRule</a></li>
+<li class="toctree-l1"><a class="reference internal" href="waveblocks_classes/TrapezoidalQR.html">TrapezoidalQR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="waveblocks_classes/GaussHermiteOriginalQR.html">GaussHermiteOriginalQR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="waveblocks_classes/GaussHermiteQR.html">GaussHermiteQR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="waveblocks_classes/GaussLaguerreQR.html">GaussLaguerreQR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="waveblocks_classes/TensorProductQR.html">TensorProductQR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="waveblocks_classes/SmolyakQR.html">SmolyakQR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="waveblocks_classes/GenzKeisterOriginalQR.html">GenzKeisterOriginalQR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="waveblocks_classes/GenzKeisterQR.html">GenzKeisterQR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="waveblocks_classes/MatrixExponential.html">MatrixExponential</a></li>
+<li class="toctree-l1"><a class="reference internal" href="waveblocks_classes/Utils.html">Utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="waveblocks_classes/PhaseSpaceLattice.html">PhaseSpaceLattice</a></li>
+</ul>
+</div>
+</div>
+<div class="section" id="basic-quantum-mechanics">
+<h3>Basic quantum mechanics<a class="headerlink" href="#basic-quantum-mechanics" title="Permalink to this headline">¶</a></h3>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="waveblocks_classes/WaveFunction.html">WaveFunction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="waveblocks_classes/MatrixPotential.html">MatrixPotential</a></li>
+<li class="toctree-l1"><a class="reference internal" href="waveblocks_classes/MatrixPotential1S.html">MatrixPotential1S</a></li>
+<li class="toctree-l1"><a class="reference internal" href="waveblocks_classes/MatrixPotential2S.html">MatrixPotential2S</a></li>
+<li class="toctree-l1"><a class="reference internal" href="waveblocks_classes/MatrixPotentialMS.html">MatrixPotentialMS</a></li>
+</ul>
+</div>
+</div>
+<div class="section" id="wavepackets">
+<h3>Wavepackets<a class="headerlink" href="#wavepackets" title="Permalink to this headline">¶</a></h3>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="waveblocks_classes/BasisShape.html">BasisShape</a></li>
+<li class="toctree-l1"><a class="reference internal" href="waveblocks_classes/HyperCubicShape.html">HyperCubicShape</a></li>
+<li class="toctree-l1"><a class="reference internal" href="waveblocks_classes/HyperbolicCutShape.html">HyperbolicCutShape</a></li>
+<li class="toctree-l1"><a class="reference internal" href="waveblocks_classes/LimitedHyperbolicCutShape.html">LimitedHyperbolicCutShape</a></li>
+<li class="toctree-l1"><a class="reference internal" href="waveblocks_classes/Wavepacket.html">Wavepacket</a></li>
+<li class="toctree-l1"><a class="reference internal" href="waveblocks_classes/HagedornWavepacketBase.html">HagedornWavepacketBase</a></li>
+<li class="toctree-l1"><a class="reference internal" href="waveblocks_classes/HagedornWavepacket.html">HagedornWavepacket</a></li>
+<li class="toctree-l1"><a class="reference internal" href="waveblocks_classes/HagedornWavepacketInhomogeneous.html">HagedornWavepacketInhomogeneous</a></li>
+<li class="toctree-l1"><a class="reference internal" href="waveblocks_classes/Gradient.html">Gradient</a></li>
+<li class="toctree-l1"><a class="reference internal" href="waveblocks_classes/GradientHAWP.html">GradientHAWP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="waveblocks_classes/BasisTransformation.html">BasisTransformation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="waveblocks_classes/BasisTransformationWF.html">BasisTransformationWF</a></li>
+<li class="toctree-l1"><a class="reference internal" href="waveblocks_classes/BasisTransformationHAWP.html">BasisTransformationHAWP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="waveblocks_classes/LinearCombinationOfWavepackets.html">LinearCombinationOfWavepackets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="waveblocks_classes/LinearCombinationOfWPs.html">LinearCombinationOfWPs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="waveblocks_classes/LinearCombinationOfHAWPs.html">LinearCombinationOfHAWPs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="waveblocks_classes/GradientLCWP.html">GradientLCWP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="waveblocks_classes/GradientLinearCombinationHAWP.html">GradientLinearCombinationHAWP</a></li>
+</ul>
+</div>
+</div>
+<div class="section" id="inner-products">
+<h3>Inner Products<a class="headerlink" href="#inner-products" title="Permalink to this headline">¶</a></h3>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="waveblocks_classes/InnerProduct.html">InnerProduct</a></li>
+<li class="toctree-l1"><a class="reference internal" href="waveblocks_classes/HomogeneousInnerProduct.html">HomogeneousInnerProduct</a></li>
+<li class="toctree-l1"><a class="reference internal" href="waveblocks_classes/InhomogeneousInnerProduct.html">InhomogeneousInnerProduct</a></li>
+<li class="toctree-l1"><a class="reference internal" href="waveblocks_classes/HomogeneousInnerProductLCWP.html">HomogeneousInnerProductLCWP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="waveblocks_classes/InhomogeneousInnerProductLCWP.html">InhomogeneousInnerProductLCWP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="waveblocks_classes/Quadrature.html">Quadrature</a></li>
+<li class="toctree-l1"><a class="reference internal" href="waveblocks_classes/DirectQuadrature.html">DirectQuadrature</a></li>
+<li class="toctree-l1"><a class="reference internal" href="waveblocks_classes/DirectHomogeneousQuadrature.html">DirectHomogeneousQuadrature</a></li>
+<li class="toctree-l1"><a class="reference internal" href="waveblocks_classes/DirectInhomogeneousQuadrature.html">DirectInhomogeneousQuadrature</a></li>
+<li class="toctree-l1"><a class="reference internal" href="waveblocks_classes/GaussianIntegral.html">GaussianIntegral</a></li>
+<li class="toctree-l1"><a class="reference internal" href="waveblocks_classes/SymbolicIntegral0.html">SymbolicIntegral0</a></li>
+<li class="toctree-l1"><a class="reference internal" href="waveblocks_classes/SymbolicIntegral.html">SymbolicIntegral</a></li>
+<li class="toctree-l1"><a class="reference internal" href="waveblocks_classes/NSDInhomogeneous.html">NSDInhomogeneous</a></li>
+<li class="toctree-l1"><a class="reference internal" href="waveblocks_classes/SparsityOracle.html">SparsityOracle</a></li>
+<li class="toctree-l1"><a class="reference internal" href="waveblocks_classes/SparsityOracleTrue.html">SparsityOracleTrue</a></li>
+<li class="toctree-l1"><a class="reference internal" href="waveblocks_classes/SparsityOraclePSHAWP.html">SparsityOraclePSHAWP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="waveblocks_classes/SparsityOracleGIHAWP.html">SparsityOracleGIHAWP</a></li>
+</ul>
+</div>
+</div>
+<div class="section" id="observables">
+<h3>Observables<a class="headerlink" href="#observables" title="Permalink to this headline">¶</a></h3>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="waveblocks_classes/Observables.html">Observables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="waveblocks_classes/ObservablesHAWP.html">ObservablesHAWP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="waveblocks_classes/ObservablesMixedHAWP.html">ObservablesMixedHAWP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="waveblocks_classes/ObservablesLCWP.html">ObservablesLCWP</a></li>
+</ul>
+</div>
+</div>
+<div class="section" id="time-propagation">
+<h3>Time propagation<a class="headerlink" href="#time-propagation" title="Permalink to this headline">¶</a></h3>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="waveblocks_classes/KineticOperator.html">KineticOperator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="waveblocks_classes/SplittingParameters.html">SplittingParameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="waveblocks_classes/PerturbedSplittingParameters.html">PerturbedSplittingParameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="waveblocks_classes/ProcessingSplittingParameters.html">ProcessingSplittingParameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="waveblocks_classes/Propagator.html">Propagator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="waveblocks_classes/FourierPropagator.html">FourierPropagator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="waveblocks_classes/HagedornPropagator.html">HagedornPropagator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="waveblocks_classes/HagedornPropagatorInhomogeneous.html">HagedornPropagatorInhomogeneous</a></li>
+<li class="toctree-l1"><a class="reference internal" href="waveblocks_classes/MagnusPropagator.html">MagnusPropagator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="waveblocks_classes/SemiclassicalPropagator.html">SemiclassicalPropagator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="waveblocks_classes/SimulationLoop.html">SimulationLoop</a></li>
+<li class="toctree-l1"><a class="reference internal" href="waveblocks_classes/SimulationLoopFourier.html">SimulationLoopFourier</a></li>
+<li class="toctree-l1"><a class="reference internal" href="waveblocks_classes/SimulationLoopHagedorn.html">SimulationLoopHagedorn</a></li>
+<li class="toctree-l1"><a class="reference internal" href="waveblocks_classes/SimulationLoopHagedornInhomogeneous.html">SimulationLoopHagedornInhomogeneous</a></li>
+</ul>
+</div>
+</div>
+<div class="section" id="simulation-result-storage-i-o">
+<h3>Simulation result storage I/O<a class="headerlink" href="#simulation-result-storage-i-o" title="Permalink to this headline">¶</a></h3>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="waveblocks_classes/IOManager.html">IOManager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="waveblocks_classes/IOM_plugin_parameters.html">IOM_plugin_parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="waveblocks_classes/IOM_plugin_grid.html">IOM_plugin_grid</a></li>
+<li class="toctree-l1"><a class="reference internal" href="waveblocks_classes/IOM_plugin_wavefunction.html">IOM_plugin_wavefunction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="waveblocks_classes/IOM_plugin_fourieroperators.html">IOM_plugin_fourieroperators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="waveblocks_classes/IOM_plugin_wavepacket.html">IOM_plugin_wavepacket</a></li>
+<li class="toctree-l1"><a class="reference internal" href="waveblocks_classes/IOM_plugin_inhomogwavepacket.html">IOM_plugin_inhomogwavepacket</a></li>
+<li class="toctree-l1"><a class="reference internal" href="waveblocks_classes/IOM_plugin_lincombwp.html">IOM_plugin_lincombwp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="waveblocks_classes/IOM_plugin_lincombhawp.html">IOM_plugin_lincombhawp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="waveblocks_classes/IOM_plugin_overlaplcwp.html">IOM_plugin_overlaplcwp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="waveblocks_classes/IOM_plugin_norm.html">IOM_plugin_norm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="waveblocks_classes/IOM_plugin_energy.html">IOM_plugin_energy</a></li>
+</ul>
+</div>
+</div>
+<div class="section" id="other-classes-and-functions">
+<h3>Other classes and functions<a class="headerlink" href="#other-classes-and-functions" title="Permalink to this headline">¶</a></h3>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="waveblocks_classes/GlobalDefaults.html">GlobalDefaults</a></li>
+<li class="toctree-l1"><a class="reference internal" href="waveblocks_classes/ParameterLoader.html">ParameterLoader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="waveblocks_classes/ParameterProvider.html">ParameterProvider</a></li>
+<li class="toctree-l1"><a class="reference internal" href="waveblocks_classes/TimeManager.html">TimeManager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="waveblocks_classes/FileTools.html">FileTools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="waveblocks_classes/BlockFactory.html">BlockFactory</a></li>
+</ul>
+</div>
+</div>
+<div class="section" id="plot">
+<h3>Plot<a class="headerlink" href="#plot" title="Permalink to this headline">¶</a></h3>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="waveblocks_classes/plot/plot.html">Plot</a></li>
+<li class="toctree-l1"><a class="reference internal" href="waveblocks_classes/plot3d/plot3d.html">Plot 3D</a></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="etc">
+<h1>Etc<a class="headerlink" href="#etc" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="citation.html">Citation</a></li>
+</ul>
+</div>
+</div>
+<div class="section" id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><a class="reference internal" href="genindex.html"><em>Index</em></a></li>
+<li><a class="reference internal" href="search.html"><em>Search Page</em></a></li>
+</ul>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="#">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Welcome to WaveBlocksND&#8217;s documentation!</a></li>
+<li><a class="reference internal" href="#user-manual">User Manual</a><ul>
+</ul>
+</li>
+<li><a class="reference internal" href="#potential-library">Potential Library</a><ul>
+</ul>
+</li>
+<li><a class="reference internal" href="#source-code-documentation">Source code documentation</a><ul>
+<li><a class="reference internal" href="#waveblocks-classes">WaveBlocks Classes</a><ul>
+<li><a class="reference internal" href="#basic-numerics">Basic numerics</a><ul>
+</ul>
+</li>
+<li><a class="reference internal" href="#basic-quantum-mechanics">Basic quantum mechanics</a><ul>
+</ul>
+</li>
+<li><a class="reference internal" href="#wavepackets">Wavepackets</a><ul>
+</ul>
+</li>
+<li><a class="reference internal" href="#inner-products">Inner Products</a><ul>
+</ul>
+</li>
+<li><a class="reference internal" href="#observables">Observables</a><ul>
+</ul>
+</li>
+<li><a class="reference internal" href="#time-propagation">Time propagation</a><ul>
+</ul>
+</li>
+<li><a class="reference internal" href="#simulation-result-storage-i-o">Simulation result storage I/O</a><ul>
+</ul>
+</li>
+<li><a class="reference internal" href="#other-classes-and-functions">Other classes and functions</a><ul>
+</ul>
+</li>
+<li><a class="reference internal" href="#plot">Plot</a><ul>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#etc">Etc</a><ul>
+</ul>
+</li>
+<li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
+</ul>
+
+  <h4>Next topic</h4>
+  <p class="topless"><a href="manual/first_glance.html"
+                        title="next chapter">A first glance</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/index.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="manual/first_glance.html" title="A first glance"
+             >next</a> |</li>
+        <li><a href="#">WaveBlocksND devel documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, R. Bourquin.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

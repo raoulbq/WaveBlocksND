@@ -1,0 +1,288 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>TensorProductGrid &mdash; WaveBlocksND devel documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     'devel',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="WaveBlocksND devel documentation" href="../index.html" />
+    <link rel="next" title="GridWrapper" href="GridWrapper.html" />
+    <link rel="prev" title="DenseGrid" href="DenseGrid.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="GridWrapper.html" title="GridWrapper"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="DenseGrid.html" title="DenseGrid"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">WaveBlocksND devel documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="tensorproductgrid">
+<h1>TensorProductGrid<a class="headerlink" href="#tensorproductgrid" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-WaveBlocksND">
+<span id="about-the-tensorproductgrid-class"></span><h2>About the <tt class="docutils literal"><span class="pre">TensorProductGrid</span></tt> class<a class="headerlink" href="#module-WaveBlocksND" title="Permalink to this headline">¶</a></h2>
+<p>The WaveBlocks Project</p>
+<p>&#64;author: R. Bourquin
+&#64;copyright: Copyright (C) 2010, 2011, 2012, 2013, 2014 R. Bourquin
+&#64;license: Modified BSD License</p>
+</div>
+<div class="section" id="inheritance-diagram">
+<h2>Inheritance diagram<a class="headerlink" href="#inheritance-diagram" title="Permalink to this headline">¶</a></h2>
+<p class="graphviz">
+<img src="../_images/inheritance-4efb31d30b718ba9bb70c81e5bcc8d630d846ebc.png" alt="Inheritance diagram of TensorProductGrid" class="inheritance"/>
+</p>
+</div>
+<div class="section" id="class-documentation">
+<h2>Class documentation<a class="headerlink" href="#class-documentation" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="WaveBlocksND.TensorProductGrid">
+<em class="property">class </em><tt class="descclassname">WaveBlocksND.</tt><tt class="descname">TensorProductGrid</tt><big>(</big><em>limits</em>, <em>number_nodes</em><big>)</big><a class="headerlink" href="#WaveBlocksND.TensorProductGrid" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class represents a dense tensor product grid. It can
+have an arbitrary dimension <img class="math" src="../_images/math/9ffb448918db29f2a72f8f87f421b3b3cad18f95.png" alt="D"/>. The grid nodes are
+enclosed in a hypercubic bounding box. This box can have
+different limits <img class="math" src="../_images/math/959de402b3d4d9c6eb5205ddd2dcae083171b603.png" alt="min_i"/>, <img class="math" src="../_images/math/6ef4de8b9e6d3ffdbc2ecda3f86235d95655ea5d.png" alt="max_i"/> along each
+axis <img class="math" src="../_images/math/67bc6daa9d6b964201d6cef60cbeb1ac5fd26ead.png" alt="x_i"/>. In each of these intervals we place
+<img class="math" src="../_images/math/9f09d622cd7ebd49e20b2e20717869bf2ee2aa5a.png" alt="N_i"/> grid nodes. Note that the point <img class="math" src="../_images/math/6ef4de8b9e6d3ffdbc2ecda3f86235d95655ea5d.png" alt="max_i"/>
+is not part of the grid. The grid interior is build as the
+tensor product of all the grid nodes along all the axes.</p>
+<dl class="method">
+<dt id="WaveBlocksND.TensorProductGrid.get_axes">
+<tt class="descname">get_axes</tt><big>(</big><em>axes=None</em><big>)</big><a class="headerlink" href="#WaveBlocksND.TensorProductGrid.get_axes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the one-dimensional grids along the axes.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>axes</strong> (A single integer or a list of integers. If set
+to <tt class="docutils literal"><span class="pre">None</span></tt> (default) we return the data for all axes.) &#8211; The axes for which we want to get the grid.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A list of ndarrays, each having a shape of <img class="math" src="../_images/math/08a03aa1b4b08a53856dc9d09d8b6b13c2748fc1.png" alt="(1,...,N_i,...,1)"/>.
+We return a list even if it contains just a single element.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="WaveBlocksND.TensorProductGrid.get_dimension">
+<tt class="descname">get_dimension</tt><big>(</big><big>)</big><a class="headerlink" href="#WaveBlocksND.TensorProductGrid.get_dimension" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the dimension <img class="math" src="../_images/math/9ffb448918db29f2a72f8f87f421b3b3cad18f95.png" alt="D"/> of the grid.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="WaveBlocksND.TensorProductGrid.get_extensions">
+<tt class="descname">get_extensions</tt><big>(</big><em>axes=None</em><big>)</big><a class="headerlink" href="#WaveBlocksND.TensorProductGrid.get_extensions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the extensions (length of the edges) of the bounding box.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>axes</strong> (A single integer or a list of integers. If set
+to <tt class="docutils literal"><span class="pre">None</span></tt> (default) we return the extensions for all axes.) &#8211; The axes for which we want to get the extensions.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A list of <img class="math" src="../_images/math/8dcc5f626b5248f3dc675addee792d5263524c70.png" alt="|max_i-min_i|"/> values.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="WaveBlocksND.TensorProductGrid.get_limits">
+<tt class="descname">get_limits</tt><big>(</big><em>axes=None</em><big>)</big><a class="headerlink" href="#WaveBlocksND.TensorProductGrid.get_limits" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the limits of the bounding box.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>axes</strong> (A single integer or a list of integers. If set
+to <tt class="docutils literal"><span class="pre">None</span></tt> (default) we return the limits for all axes.) &#8211; The axes for which we want to get the limits.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A list of <img class="math" src="../_images/math/bc1da6279e08ebf5ee231638c81e38dff0496dd5.png" alt="(min_i, max_i)"/> ndarrays.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="WaveBlocksND.TensorProductGrid.get_meshwidths">
+<tt class="descname">get_meshwidths</tt><big>(</big><em>axes=None</em><big>)</big><a class="headerlink" href="#WaveBlocksND.TensorProductGrid.get_meshwidths" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the meshwidths of the grid.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>axes</strong> (A single integer or a list of integers. If set
+to <tt class="docutils literal"><span class="pre">None</span></tt> (default) we return the data for all axes.) &#8211; The axes for which we want to get the meshwidths.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A list of <img class="math" src="../_images/math/07945693f849dc8a95b0317cbe2da5486feea0fc.png" alt="h_i"/> values or a single value.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="WaveBlocksND.TensorProductGrid.get_nodes">
+<tt class="descname">get_nodes</tt><big>(</big><em>flat=True</em>, <em>split=False</em><big>)</big><a class="headerlink" href="#WaveBlocksND.TensorProductGrid.get_nodes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns all grid nodes of the full tensor product grid.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>flat</strong> (Boolean, default is <tt class="docutils literal"><span class="pre">True</span></tt>.) &#8211; Whether to return the grid with a <cite>hypercubic</cite>
+<img class="math" src="../_images/math/a3f35e731f95cf0c5600bc24906feaa32dce3127.png" alt="(D, N_1, ..., N_D)"/> shape or a <cite>flat</cite>
+<img class="math" src="../_images/math/134dfd7cfdcefa46dfa50bb445d71073ea5a6fb6.png" alt="(D, \prod_i^D N_i)"/> shape.</li>
+<li><strong>split</strong> (Boolean, default is <tt class="docutils literal"><span class="pre">False</span></tt>.) &#8211; Whether to return the different components, one for each
+dimension inside a single ndarray or a list with ndarrays,
+with one item per dimension.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Depends of the optional arguments.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="WaveBlocksND.TensorProductGrid.get_number_nodes">
+<tt class="descname">get_number_nodes</tt><big>(</big><em>axes=None</em>, <em>overall=False</em><big>)</big><a class="headerlink" href="#WaveBlocksND.TensorProductGrid.get_number_nodes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the number of grid nodes along a set of axes.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>axes</strong> (A single integer or a list of integers. If set
+to <tt class="docutils literal"><span class="pre">None</span></tt> (default) we return the data for all axes.) &#8211; The axes for which we want to get the number of nodes.</li>
+<li><strong>overall</strong> (Boolean, default is <tt class="docutils literal"><span class="pre">False</span></tt>) &#8211; Compute the product <img class="math" src="../_images/math/916eec4efe914eeaddf32b2610192918fc211ed7.png" alt="\prod_i^D N_i"/> of the
+number <img class="math" src="../_images/math/9f09d622cd7ebd49e20b2e20717869bf2ee2aa5a.png" alt="N_i"/> of grid nodes along each axis
+<img class="math" src="../_images/math/34857b3ba74ce5cd8607f3ebd23e9015908ada71.png" alt="i"/> specified.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A list of <img class="math" src="../_images/math/9f09d622cd7ebd49e20b2e20717869bf2ee2aa5a.png" alt="N_i"/> values or a single value <img class="math" src="../_images/math/fc97ef67268cd4e91bacdf12b8901d7036c9a056.png" alt="N"/>.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="WaveBlocksND.TensorProductGrid.is_regular">
+<tt class="descname">is_regular</tt><big>(</big><big>)</big><a class="headerlink" href="#WaveBlocksND.TensorProductGrid.is_regular" title="Permalink to this definition">¶</a></dt>
+<dd><p>Answers the question if the grid spacing is regular.
+(It can still be different along each axis!)</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">TensorProductGrid</a><ul>
+<li><a class="reference internal" href="#module-WaveBlocksND">About the <tt class="docutils literal"><span class="pre">TensorProductGrid</span></tt> class</a></li>
+<li><a class="reference internal" href="#inheritance-diagram">Inheritance diagram</a></li>
+<li><a class="reference internal" href="#class-documentation">Class documentation</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="DenseGrid.html"
+                        title="previous chapter">DenseGrid</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="GridWrapper.html"
+                        title="next chapter">GridWrapper</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/waveblocks_classes/TensorProductGrid.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="GridWrapper.html" title="GridWrapper"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="DenseGrid.html" title="DenseGrid"
+             >previous</a> |</li>
+        <li><a href="../index.html">WaveBlocksND devel documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, R. Bourquin.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

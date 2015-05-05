@@ -1,0 +1,468 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>IOM_plugin_lincombwp &mdash; WaveBlocksND devel documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     'devel',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="WaveBlocksND devel documentation" href="../index.html" />
+    <link rel="up" title="Module code" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">WaveBlocksND devel documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for IOM_plugin_lincombwp</h1><div class="highlight"><pre>
+<span class="sd">&quot;&quot;&quot;The WaveBlocks Project</span>
+
+<span class="sd">IOM plugin providing functions for handling</span>
+<span class="sd">linear combinations of general wavepackets.</span>
+
+<span class="sd">@author: R. Bourquin</span>
+<span class="sd">@copyright: Copyright (C) 2013 R. Bourquin</span>
+<span class="sd">@license: Modified BSD License</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">pickle</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+
+
+<div class="viewcode-block" id="add_lincombwp"><a class="viewcode-back" href="../waveblocks_classes/IOM_plugin_lincombwp.html#IOM_plugin_lincombwp.add_lincombwp">[docs]</a><span class="k">def</span> <span class="nf">add_lincombwp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parameters</span><span class="p">,</span> <span class="n">timeslots</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">lincombsize</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span><span class="n">blockid</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="sd">r&quot;&quot;&quot;Add storage for the linear combination of general wavepackets.</span>
+
+<span class="sd">    :param parameters: An :py:class:`ParameterProvider` instance with at</span>
+<span class="sd">                       least the key ``ncomponents``.</span>
+<span class="sd">    :param timeslots: The number of time slots we need. Can be set to ``None``</span>
+<span class="sd">                      to get automatically growing datasets.</span>
+<span class="sd">    :param lincombsize: The (maximal) size ``J`` of the linear combination of wavepackets. If specified</span>
+<span class="sd">                        this remains fixed for all timeslots. Can be set to ``None`` (default)</span>
+<span class="sd">                        to get automatically growing datasets.</span>
+<span class="sd">    :param blockid: The ID of the data block to operate on.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">N</span> <span class="o">=</span> <span class="n">parameters</span><span class="p">[</span><span class="s">&quot;ncomponents&quot;</span><span class="p">]</span>
+    <span class="c"># TODO: Handle multi-component packets</span>
+    <span class="k">assert</span> <span class="n">N</span> <span class="o">==</span> <span class="mi">1</span>
+
+    <span class="k">if</span> <span class="n">timeslots</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">T</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">Ts</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">T</span> <span class="o">=</span> <span class="n">timeslots</span>
+        <span class="n">Ts</span> <span class="o">=</span> <span class="n">timeslots</span>
+
+    <span class="k">if</span> <span class="n">lincombsize</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">J</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">Js</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="n">csJs</span> <span class="o">=</span> <span class="mi">32</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">J</span> <span class="o">=</span> <span class="n">lincombsize</span>
+        <span class="n">Js</span> <span class="o">=</span> <span class="n">lincombsize</span>
+        <span class="n">csJs</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="n">Js</span><span class="p">)</span>
+
+    <span class="c"># The overall group containing all lincombwp data</span>
+    <span class="n">grp_lc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_srf</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_prefixb</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">blockid</span><span class="p">)]</span><span class="o">.</span><span class="n">require_group</span><span class="p">(</span><span class="s">&quot;lincombwp&quot;</span><span class="p">)</span>
+
+    <span class="c"># Create the dataset with appropriate parameters</span>
+    <span class="n">daset_tg_c</span> <span class="o">=</span> <span class="n">grp_lc</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="s">&quot;timegrid_coefficients&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">T</span><span class="p">,),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">integer</span><span class="p">,</span> <span class="n">chunks</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">maxshape</span><span class="o">=</span><span class="p">(</span><span class="n">Ts</span><span class="p">,),</span> <span class="n">fillvalue</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">daset_tg_p</span> <span class="o">=</span> <span class="n">grp_lc</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="s">&quot;timegrid_packets&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">T</span><span class="p">,),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">integer</span><span class="p">,</span> <span class="n">chunks</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">maxshape</span><span class="o">=</span><span class="p">(</span><span class="n">Ts</span><span class="p">,),</span> <span class="n">fillvalue</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">grp_lc</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="s">&quot;lincomb_size&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">T</span><span class="p">,),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">integer</span><span class="p">,</span> <span class="n">chunks</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">maxshape</span><span class="o">=</span><span class="p">(</span><span class="n">Ts</span><span class="p">,))</span>
+    <span class="c"># Coefficients</span>
+    <span class="n">grp_lc</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="s">&quot;coefficients&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">J</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">complexfloating</span><span class="p">,</span> <span class="n">chunks</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">csJs</span><span class="p">),</span> <span class="n">maxshape</span><span class="o">=</span><span class="p">(</span><span class="n">Ts</span><span class="p">,</span><span class="n">Js</span><span class="p">))</span>
+    <span class="c"># Packet IDs</span>
+    <span class="n">daset_refs</span> <span class="o">=</span> <span class="n">grp_lc</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="s">&quot;packet_refs&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">J</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">((</span><span class="nb">str</span><span class="p">,</span><span class="mi">32</span><span class="p">)),</span> <span class="n">chunks</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">csJs</span><span class="p">),</span> <span class="n">maxshape</span><span class="o">=</span><span class="p">(</span><span class="n">Ts</span><span class="p">,</span><span class="n">Js</span><span class="p">))</span>
+
+    <span class="n">gid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_group</span><span class="p">(</span><span class="n">groupid</span><span class="o">=</span><span class="s">&quot;wavepacketsLCblock&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">blockid</span><span class="p">))</span>
+    <span class="n">daset_refs</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s">&quot;packet_gid&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">gid</span>
+
+    <span class="c"># Attach pointer to timegrid</span>
+    <span class="n">daset_tg_c</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s">&quot;pointer&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">daset_tg_p</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s">&quot;pointer&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+
+</div>
+<div class="viewcode-block" id="delete_lincombwp"><a class="viewcode-back" href="../waveblocks_classes/IOM_plugin_lincombwp.html#IOM_plugin_lincombwp.delete_lincombwp">[docs]</a><span class="k">def</span> <span class="nf">delete_lincombwp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">blockid</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="sd">r&quot;&quot;&quot;Remove the stored linear combination.</span>
+
+<span class="sd">    :param blockid: The ID of the data block to operate on.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_srf</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_prefixb</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">blockid</span><span class="p">)</span><span class="o">+</span><span class="s">&quot;/lincombwp&quot;</span><span class="p">]</span>
+    <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+        <span class="k">pass</span>
+
+</div>
+<div class="viewcode-block" id="has_lincombwp"><a class="viewcode-back" href="../waveblocks_classes/IOM_plugin_lincombwp.html#IOM_plugin_lincombwp.has_lincombwp">[docs]</a><span class="k">def</span> <span class="nf">has_lincombwp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">blockid</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="sd">r&quot;&quot;&quot;Ask if the specified data block has the desired data tensor.</span>
+
+<span class="sd">    :param blockid: The ID of the data block to operate on.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="s">&quot;lincombwp&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_srf</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_prefixb</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">blockid</span><span class="p">)]</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+
+</div>
+<div class="viewcode-block" id="save_lincombwp_description"><a class="viewcode-back" href="../waveblocks_classes/IOM_plugin_lincombwp.html#IOM_plugin_lincombwp.save_lincombwp_description">[docs]</a><span class="k">def</span> <span class="nf">save_lincombwp_description</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">descr</span><span class="p">,</span> <span class="n">blockid</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="sd">r&quot;&quot;&quot;Save the description of this linear combination.</span>
+
+<span class="sd">    :param descr: The description.</span>
+<span class="sd">    :param blockid: The ID of the data block to operate on.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">pathd</span> <span class="o">=</span> <span class="s">&quot;/&quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">_prefixb</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">blockid</span><span class="p">)</span><span class="o">+</span><span class="s">&quot;/lincombwp&quot;</span>
+    <span class="c"># Save the description</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">descr</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+        <span class="c"># Store all the values as pickled strings because hdf can</span>
+        <span class="c"># only store strings or ndarrays as attributes.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_srf</span><span class="p">[</span><span class="n">pathd</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="save_lincombwp_coefficients"><a class="viewcode-back" href="../waveblocks_classes/IOM_plugin_lincombwp.html#IOM_plugin_lincombwp.save_lincombwp_coefficients">[docs]</a><span class="k">def</span> <span class="nf">save_lincombwp_coefficients</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coefficients</span><span class="p">,</span> <span class="n">timestep</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">blockid</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="sd">r&quot;&quot;&quot;Save the coefficients of the linear combination to a file.</span>
+
+<span class="sd">    :param coefficients: The coefficients of the linear combination of wavepackets.</span>
+<span class="sd">    :type coefficients: A single, suitable :py:class:`ndarray`.</span>
+<span class="sd">    :param timestep: The timestep at which we save the data.</span>
+<span class="sd">    :param blockid: The ID of the data block to operate on.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">pathtg</span> <span class="o">=</span> <span class="s">&quot;/&quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">_prefixb</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">blockid</span><span class="p">)</span><span class="o">+</span><span class="s">&quot;/lincombwp/timegrid_coefficients&quot;</span>
+    <span class="n">pathlcs</span> <span class="o">=</span> <span class="s">&quot;/&quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">_prefixb</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">blockid</span><span class="p">)</span><span class="o">+</span><span class="s">&quot;/lincombwp/lincomb_size&quot;</span>
+    <span class="n">pathd</span> <span class="o">=</span> <span class="s">&quot;/&quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">_prefixb</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">blockid</span><span class="p">)</span><span class="o">+</span><span class="s">&quot;/lincombwp/coefficients&quot;</span>
+
+    <span class="n">timeslot</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_srf</span><span class="p">[</span><span class="n">pathtg</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s">&quot;pointer&quot;</span><span class="p">]</span>
+
+    <span class="c"># Write the data</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">must_resize</span><span class="p">(</span><span class="n">pathlcs</span><span class="p">,</span> <span class="n">timeslot</span><span class="p">)</span>
+    <span class="n">J</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">coefficients</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_srf</span><span class="p">[</span><span class="n">pathlcs</span><span class="p">][</span><span class="n">timeslot</span><span class="p">]</span> <span class="o">=</span> <span class="n">J</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">must_resize</span><span class="p">(</span><span class="n">pathd</span><span class="p">,</span> <span class="n">timeslot</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">J</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">must_resize</span><span class="p">(</span><span class="n">pathd</span><span class="p">,</span> <span class="n">J</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_srf</span><span class="p">[</span><span class="n">pathd</span><span class="p">][</span><span class="n">timeslot</span><span class="p">,:</span><span class="n">J</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">coefficients</span><span class="p">)</span>
+
+    <span class="c"># Write the timestep to which the stored values belong into the timegrid</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">must_resize</span><span class="p">(</span><span class="n">pathtg</span><span class="p">,</span> <span class="n">timeslot</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_srf</span><span class="p">[</span><span class="n">pathtg</span><span class="p">][</span><span class="n">timeslot</span><span class="p">]</span> <span class="o">=</span> <span class="n">timestep</span>
+
+    <span class="c"># Update the pointer</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_srf</span><span class="p">[</span><span class="n">pathtg</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s">&quot;pointer&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+
+</div>
+<div class="viewcode-block" id="save_lincombwp_wavepackets"><a class="viewcode-back" href="../waveblocks_classes/IOM_plugin_lincombwp.html#IOM_plugin_lincombwp.save_lincombwp_wavepackets">[docs]</a><span class="k">def</span> <span class="nf">save_lincombwp_wavepackets</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">packetlist</span><span class="p">,</span> <span class="n">timestep</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">blockid</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="sd">r&quot;&quot;&quot;Save the wavepackets being part of this linear combination.</span>
+
+<span class="sd">    .. warning:: This is quite an expensive operation.</span>
+
+<span class="sd">    :param timestep: Load only the data of this timestep.</span>
+<span class="sd">    :param blockid: The ID of the data block to operate on.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">pathtg</span> <span class="o">=</span> <span class="s">&quot;/&quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">_prefixb</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">blockid</span><span class="p">)</span><span class="o">+</span><span class="s">&quot;/lincombwp/timegrid_packets&quot;</span>
+    <span class="n">pathd</span> <span class="o">=</span> <span class="s">&quot;/&quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">_prefixb</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">blockid</span><span class="p">)</span><span class="o">+</span><span class="s">&quot;/lincombwp/packet_refs&quot;</span>
+    <span class="n">gid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_srf</span><span class="p">[</span><span class="n">pathd</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s">&quot;packet_gid&quot;</span><span class="p">]</span>
+
+    <span class="n">timeslot</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_srf</span><span class="p">[</span><span class="n">pathtg</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s">&quot;pointer&quot;</span><span class="p">]</span>
+
+    <span class="c"># Book keeping</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">must_resize</span><span class="p">(</span><span class="n">pathd</span><span class="p">,</span> <span class="n">timeslot</span><span class="p">)</span>
+    <span class="n">K</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">packetlist</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">K</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">must_resize</span><span class="p">(</span><span class="n">pathd</span><span class="p">,</span> <span class="n">K</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="c"># Save the packets</span>
+    <span class="n">known_packets</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_block_ids</span><span class="p">(</span><span class="n">groupid</span><span class="o">=</span><span class="n">gid</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">packet</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">packetlist</span><span class="p">):</span>
+        <span class="n">bid</span> <span class="o">=</span> <span class="s">&quot;LC&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">blockid</span><span class="p">)</span><span class="o">+</span><span class="s">&quot;WP&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">packet</span><span class="o">.</span><span class="n">get_id</span><span class="p">())</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">bid</span> <span class="ow">in</span> <span class="n">known_packets</span><span class="p">:</span>
+            <span class="n">bid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_block</span><span class="p">(</span><span class="n">blockid</span><span class="o">=</span><span class="n">bid</span><span class="p">,</span> <span class="n">groupid</span><span class="o">=</span><span class="n">gid</span><span class="p">)</span>
+            <span class="n">descr</span> <span class="o">=</span> <span class="n">packet</span><span class="o">.</span><span class="n">get_description</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_genericwp</span><span class="p">(</span><span class="n">descr</span><span class="p">,</span> <span class="n">blockid</span><span class="o">=</span><span class="n">bid</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">save_genericwp</span><span class="p">(</span><span class="n">packet</span><span class="p">,</span> <span class="n">timestep</span><span class="o">=</span><span class="n">timestep</span><span class="p">,</span> <span class="n">blockid</span><span class="o">=</span><span class="n">bid</span><span class="p">)</span>
+
+        <span class="c"># Book keeping</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_srf</span><span class="p">[</span><span class="n">pathd</span><span class="p">][</span><span class="n">timeslot</span><span class="p">,</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">packet</span><span class="o">.</span><span class="n">get_id</span><span class="p">()</span>
+
+    <span class="c"># Write the timestep to which the stored packets belong into the timegrid</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">must_resize</span><span class="p">(</span><span class="n">pathtg</span><span class="p">,</span> <span class="n">timeslot</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_srf</span><span class="p">[</span><span class="n">pathtg</span><span class="p">][</span><span class="n">timeslot</span><span class="p">]</span> <span class="o">=</span> <span class="n">timestep</span>
+
+    <span class="c"># Update the pointer</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_srf</span><span class="p">[</span><span class="n">pathtg</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s">&quot;pointer&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+
+</div>
+<div class="viewcode-block" id="load_lincombwp_description"><a class="viewcode-back" href="../waveblocks_classes/IOM_plugin_lincombwp.html#IOM_plugin_lincombwp.load_lincombwp_description">[docs]</a><span class="k">def</span> <span class="nf">load_lincombwp_description</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">blockid</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="sd">r&quot;&quot;&quot;Load the description of this linear combination.</span>
+
+<span class="sd">    :param blockid: The ID of the data block to operate on.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">pathd</span> <span class="o">=</span> <span class="s">&quot;/&quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">_prefixb</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">blockid</span><span class="p">)</span><span class="o">+</span><span class="s">&quot;/lincombwp&quot;</span>
+
+    <span class="c"># Load and return all descriptions available</span>
+    <span class="n">descr</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_srf</span><span class="p">[</span><span class="n">pathd</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+        <span class="n">descr</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">descr</span>
+
+</div>
+<div class="viewcode-block" id="load_lincombwp_timegrid"><a class="viewcode-back" href="../waveblocks_classes/IOM_plugin_lincombwp.html#IOM_plugin_lincombwp.load_lincombwp_timegrid">[docs]</a><span class="k">def</span> <span class="nf">load_lincombwp_timegrid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">blockid</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="p">(</span><span class="s">&quot;coeffs&quot;</span><span class="p">,</span> <span class="s">&quot;packets&quot;</span><span class="p">)):</span>
+    <span class="sd">r&quot;&quot;&quot;Load the timegrid of this linear combination.</span>
+
+<span class="sd">    :param blockid: The ID of the data block to operate on.</span>
+<span class="sd">    :param key: Specify which linear combination timegrids to load. All are independent.</span>
+<span class="sd">    :type key: Tuple of valid identifier strings that are ``coeffs`` and ``packets``.</span>
+<span class="sd">               Default is ``(&quot;coeffs&quot;, &quot;packets&quot;)``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">tg</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">key</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">item</span> <span class="o">==</span> <span class="s">&quot;coeffs&quot;</span><span class="p">:</span>
+            <span class="n">pathtg</span> <span class="o">=</span> <span class="s">&quot;/&quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">_prefixb</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">blockid</span><span class="p">)</span><span class="o">+</span><span class="s">&quot;/lincombwp/timegrid_coefficients&quot;</span>
+            <span class="n">tg</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_srf</span><span class="p">[</span><span class="n">pathtg</span><span class="p">][:])</span>
+        <span class="k">elif</span> <span class="n">item</span> <span class="o">==</span> <span class="s">&quot;packets&quot;</span><span class="p">:</span>
+            <span class="n">pathtg</span> <span class="o">=</span> <span class="s">&quot;/&quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">_prefixb</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">blockid</span><span class="p">)</span><span class="o">+</span><span class="s">&quot;/lincombwp/timegrid_packets&quot;</span>
+            <span class="n">tg</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_srf</span><span class="p">[</span><span class="n">pathtg</span><span class="p">][:])</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">tg</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">tg</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">tg</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="load_lincombwp_size"><a class="viewcode-back" href="../waveblocks_classes/IOM_plugin_lincombwp.html#IOM_plugin_lincombwp.load_lincombwp_size">[docs]</a><span class="k">def</span> <span class="nf">load_lincombwp_size</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timestep</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">blockid</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="sd">r&quot;&quot;&quot;Load the size (number of packets) of this linear combination.</span>
+
+<span class="sd">    :param timestep: Load only the data of this timestep.</span>
+<span class="sd">    :param blockid: The ID of the data block to operate on.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">pathtg</span> <span class="o">=</span> <span class="s">&quot;/&quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">_prefixb</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">blockid</span><span class="p">)</span><span class="o">+</span><span class="s">&quot;/lincombwp/timegrid_coefficients&quot;</span>
+    <span class="n">pathlcs</span> <span class="o">=</span> <span class="s">&quot;/&quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">_prefixb</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">blockid</span><span class="p">)</span><span class="o">+</span><span class="s">&quot;/lincombwp/lincomb_size&quot;</span>
+
+    <span class="k">if</span> <span class="n">timestep</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_timestep_index</span><span class="p">(</span><span class="n">pathtg</span><span class="p">,</span> <span class="n">timestep</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_srf</span><span class="p">[</span><span class="n">pathlcs</span><span class="p">][</span><span class="n">index</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="bp">None</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_srf</span><span class="p">[</span><span class="n">pathlcs</span><span class="p">][</span><span class="n">index</span><span class="p">]</span>
+
+</div>
+<div class="viewcode-block" id="load_lincombwp_coefficients"><a class="viewcode-back" href="../waveblocks_classes/IOM_plugin_lincombwp.html#IOM_plugin_lincombwp.load_lincombwp_coefficients">[docs]</a><span class="k">def</span> <span class="nf">load_lincombwp_coefficients</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timestep</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">blockid</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="sd">r&quot;&quot;&quot;Load the coefficients of this linear combination.</span>
+
+<span class="sd">    :param timestep: Load only the data of this timestep.</span>
+<span class="sd">    :param blockid: The ID of the data block to operate on.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">pathtg</span> <span class="o">=</span> <span class="s">&quot;/&quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">_prefixb</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">blockid</span><span class="p">)</span><span class="o">+</span><span class="s">&quot;/lincombwp/timegrid_coefficients&quot;</span>
+    <span class="n">pathlcs</span> <span class="o">=</span> <span class="s">&quot;/&quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">_prefixb</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">blockid</span><span class="p">)</span><span class="o">+</span><span class="s">&quot;/lincombwp/lincomb_size&quot;</span>
+    <span class="n">pathd</span> <span class="o">=</span> <span class="s">&quot;/&quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">_prefixb</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">blockid</span><span class="p">)</span><span class="o">+</span><span class="s">&quot;/lincombwp/coefficients&quot;</span>
+
+    <span class="k">if</span> <span class="n">timestep</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_timestep_index</span><span class="p">(</span><span class="n">pathtg</span><span class="p">,</span> <span class="n">timestep</span><span class="p">)</span>
+        <span class="n">J</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_srf</span><span class="p">[</span><span class="n">pathlcs</span><span class="p">][</span><span class="n">index</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_srf</span><span class="p">[</span><span class="n">pathd</span><span class="p">][</span><span class="n">index</span><span class="p">,:</span><span class="n">J</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="bp">None</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_srf</span><span class="p">[</span><span class="n">pathd</span><span class="p">][</span><span class="n">index</span><span class="p">,:]</span>
+
+</div>
+<div class="viewcode-block" id="load_lincombwp_wavepackets"><a class="viewcode-back" href="../waveblocks_classes/IOM_plugin_lincombwp.html#IOM_plugin_lincombwp.load_lincombwp_wavepackets">[docs]</a><span class="k">def</span> <span class="nf">load_lincombwp_wavepackets</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timestep</span><span class="p">,</span> <span class="n">packetindex</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">blockid</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="sd">r&quot;&quot;&quot;Load the wavepackets being part of this linear combination.</span>
+
+<span class="sd">    Note that this is quite an expensive operation.</span>
+
+<span class="sd">    :param timestep: Load only the data of this timestep.</span>
+<span class="sd">    :param packetindex: Load only the packet with this index. If ``None``</span>
+<span class="sd">                        then load all packets for the given timestep.</span>
+<span class="sd">    :param blockid: The ID of the data block to operate on.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">pathtg</span> <span class="o">=</span> <span class="s">&quot;/&quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">_prefixb</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">blockid</span><span class="p">)</span><span class="o">+</span><span class="s">&quot;/lincombwp/timegrid_packets&quot;</span>
+    <span class="n">pathlcs</span> <span class="o">=</span> <span class="s">&quot;/&quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">_prefixb</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">blockid</span><span class="p">)</span><span class="o">+</span><span class="s">&quot;/lincombwp/lincomb_size&quot;</span>
+    <span class="n">pathd</span> <span class="o">=</span> <span class="s">&quot;/&quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">_prefixb</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">blockid</span><span class="p">)</span><span class="o">+</span><span class="s">&quot;/lincombwp/packet_refs&quot;</span>
+
+    <span class="n">index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_timestep_index</span><span class="p">(</span><span class="n">pathtg</span><span class="p">,</span> <span class="n">timestep</span><span class="p">)</span>
+    <span class="n">J</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_srf</span><span class="p">[</span><span class="n">pathlcs</span><span class="p">][</span><span class="n">index</span><span class="p">]</span>
+    <span class="n">refs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_srf</span><span class="p">[</span><span class="n">pathd</span><span class="p">][</span><span class="n">index</span><span class="p">,:</span><span class="n">J</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">packetindex</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">packets</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">ref</span> <span class="ow">in</span> <span class="n">refs</span><span class="p">:</span>
+            <span class="n">bid</span> <span class="o">=</span> <span class="s">&quot;LC&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">blockid</span><span class="p">)</span><span class="o">+</span><span class="s">&quot;WP&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">ref</span><span class="p">)</span>
+            <span class="n">packets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">load_genericwp</span><span class="p">(</span><span class="n">timestep</span><span class="o">=</span><span class="n">timestep</span><span class="p">,</span> <span class="n">blockid</span><span class="o">=</span><span class="n">bid</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">packets</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">packetindex</span> <span class="o">&gt;=</span> <span class="n">J</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Packet index is invalid.&quot;</span><span class="p">)</span>
+
+        <span class="n">bid</span> <span class="o">=</span> <span class="s">&quot;LC&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">blockid</span><span class="p">)</span><span class="o">+</span><span class="s">&quot;WP&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">refs</span><span class="p">[</span><span class="n">packetindex</span><span class="p">])</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_genericwp</span><span class="p">(</span><span class="n">timestep</span><span class="o">=</span><span class="n">timestep</span><span class="p">,</span> <span class="n">blockid</span><span class="o">=</span><span class="n">bid</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="load_lincombwp_wavepacket_refs"><a class="viewcode-back" href="../waveblocks_classes/IOM_plugin_lincombwp.html#IOM_plugin_lincombwp.load_lincombwp_wavepacket_refs">[docs]</a><span class="k">def</span> <span class="nf">load_lincombwp_wavepacket_refs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timestep</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">blockid</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="sd">r&quot;&quot;&quot;Load the references of the wavepackets being part of</span>
+<span class="sd">    this linear combination. References can be used as ``blockid``</span>
+<span class="sd">    for loading selected wavepackets manually. If for example a</span>
+<span class="sd">    ``ref`` obtained through this method is:</span>
+
+<span class="sd">    &gt;&gt;&gt; refs = anIom.load_lincombwp_wavepacket_refs(timestep=4)</span>
+<span class="sd">    &gt;&gt;&gt; refs</span>
+<span class="sd">    array([&#39;673290fd36a0fa80f28973ae31f10378&#39;,</span>
+<span class="sd">           &#39;075dc9d7d2c558c97608e2fe08a7d53d&#39;,</span>
+<span class="sd">           &#39;0aed8bf3e21b5894bf89ef894d3f7d0c&#39;],</span>
+<span class="sd">           dtype=&#39;|S32&#39;)</span>
+
+<span class="sd">    &gt;&gt;&gt; ref = refs[0]</span>
+<span class="sd">    &#39;673290fd36a0fa80f28973ae31f10378&#39;</span>
+
+<span class="sd">    the the corresponding block ID is:</span>
+
+<span class="sd">    &gt;&gt;&gt; bid = &quot;LC&quot; + str(blockid) + &quot;WP&quot; + ref</span>
+<span class="sd">    &#39;LC0WP673290fd36a0fa80f28973ae31f10378&#39;</span>
+
+<span class="sd">    with ``blockid`` the block ID where the linear combination</span>
+<span class="sd">    was stored. With that ``bid`` we can now for example load</span>
+<span class="sd">    data of a selected wavepacket:</span>
+
+<span class="sd">    &gt;&gt;&gt; Pi = anIom.load_wavepacket_parameters(timestep=4, blockid=bid)</span>
+
+<span class="sd">    in case of a Hagedorn wavepacket.</span>
+
+<span class="sd">    :param timestep: Load only the data of this timestep.</span>
+<span class="sd">    :param blockid: The ID of the data block to operate on.</span>
+<span class="sd">    :return: A :py:class:`ndarray` of strings.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">pathtg</span> <span class="o">=</span> <span class="s">&quot;/&quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">_prefixb</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">blockid</span><span class="p">)</span><span class="o">+</span><span class="s">&quot;/lincombwp/timegrid_packets&quot;</span>
+    <span class="n">pathd</span> <span class="o">=</span> <span class="s">&quot;/&quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">_prefixb</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">blockid</span><span class="p">)</span><span class="o">+</span><span class="s">&quot;/lincombwp/packet_refs&quot;</span>
+
+    <span class="k">if</span> <span class="n">timestep</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_timestep_index</span><span class="p">(</span><span class="n">pathtg</span><span class="p">,</span> <span class="n">timestep</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="bp">None</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_srf</span><span class="p">[</span><span class="n">pathd</span><span class="p">][</span><span class="n">index</span><span class="p">,:]</span>
+
+
+<span class="c">#</span>
+<span class="c"># The following two methods are only for convenience and are NOT particularly efficient.</span>
+<span class="c">#</span>
+
+</div>
+<div class="viewcode-block" id="load_lincombwp"><a class="viewcode-back" href="../waveblocks_classes/IOM_plugin_lincombwp.html#IOM_plugin_lincombwp.load_lincombwp">[docs]</a><span class="k">def</span> <span class="nf">load_lincombwp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timestep</span><span class="p">,</span> <span class="n">blockid</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="sd">r&quot;&quot;&quot;Load a linear combination at a given timestep and return a fully configured</span>
+<span class="sd">    :py:class:`LinearCombinationOfWPs` instance. This method just calls some other</span>
+<span class="sd">    :py:class:`IOManager` methods in the correct order. It is included only for</span>
+<span class="sd">    convenience and is not particularly efficient.</span>
+
+<span class="sd">    :param timestep: The timestep :math:`n` we load the wavepacket.</span>
+<span class="sd">    :param blockid: The ID of the data block to operate on.</span>
+<span class="sd">    :return: A :py:class:`LinearCombinationOfWPs` instance.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span> <span class="nn">LinearCombinationOfWPs</span> <span class="kn">import</span> <span class="n">LinearCombinationOfWPs</span>
+
+    <span class="n">descr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_lincombwp_description</span><span class="p">(</span><span class="n">blockid</span><span class="o">=</span><span class="n">blockid</span><span class="p">)</span>
+
+    <span class="n">J</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_lincombwp_size</span><span class="p">(</span><span class="n">timestep</span><span class="o">=</span><span class="n">timestep</span><span class="p">,</span> <span class="n">blockid</span><span class="o">=</span><span class="n">blockid</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">J</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">None</span>
+
+    <span class="c"># Load the data</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_lincombwp_coefficients</span><span class="p">(</span><span class="n">timestep</span><span class="o">=</span><span class="n">timestep</span><span class="p">,</span> <span class="n">blockid</span><span class="o">=</span><span class="n">blockid</span><span class="p">)</span>
+    <span class="n">psi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_lincombwp_wavepackets</span><span class="p">(</span><span class="n">timestep</span><span class="o">=</span><span class="n">timestep</span><span class="p">,</span> <span class="n">blockid</span><span class="o">=</span><span class="n">blockid</span><span class="p">)</span>
+
+    <span class="c"># Assemble the linear combination</span>
+    <span class="n">LC</span> <span class="o">=</span> <span class="n">LinearCombinationOfWPs</span><span class="p">(</span><span class="n">descr</span><span class="p">[</span><span class="s">&quot;dimension&quot;</span><span class="p">],</span> <span class="n">descr</span><span class="p">[</span><span class="s">&quot;ncomponents&quot;</span><span class="p">])</span>
+    <span class="n">LC</span><span class="o">.</span><span class="n">add_wavepackets</span><span class="p">(</span><span class="n">psi</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">LC</span>
+
+</div>
+<div class="viewcode-block" id="save_lincombwp"><a class="viewcode-back" href="../waveblocks_classes/IOM_plugin_lincombwp.html#IOM_plugin_lincombwp.save_lincombwp">[docs]</a><span class="k">def</span> <span class="nf">save_lincombwp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lincomb</span><span class="p">,</span> <span class="n">timestep</span><span class="p">,</span> <span class="n">blockid</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="sd">r&quot;&quot;&quot;Save a linear combination of general wavepackets at a given timestep and read</span>
+<span class="sd">    all data to save from the :py:class:`LinearCombinationOfWPs` instance provided. This</span>
+<span class="sd">    method just calls some other :py:class:`IOManager` methods in the correct order.</span>
+<span class="sd">    It is included only for convenience and is not particularly efficient. We assume</span>
+<span class="sd">    the linear combination is already set up with the correct :py:meth:`add_lincombwp`</span>
+<span class="sd">    method call.</span>
+
+<span class="sd">    :param lincomb: The :py:class:`LinearCombinationOfWPs` instance we want to save.</span>
+<span class="sd">    :param timestep: The timestep :math:`n` at which we save the linear combination.</span>
+<span class="sd">    :param blockid: The ID of the data block to operate on.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c"># Description</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">save_lincombwp_description</span><span class="p">(</span><span class="n">lincomb</span><span class="o">.</span><span class="n">get_description</span><span class="p">(),</span> <span class="n">blockid</span><span class="o">=</span><span class="n">blockid</span><span class="p">)</span>
+    <span class="c"># Wavepackets</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">save_lincombwp_wavepackets</span><span class="p">(</span><span class="n">lincomb</span><span class="o">.</span><span class="n">get_wavepackets</span><span class="p">(),</span> <span class="n">timestep</span><span class="o">=</span><span class="n">timestep</span><span class="p">,</span> <span class="n">blockid</span><span class="o">=</span><span class="n">blockid</span><span class="p">)</span>
+    <span class="c"># Coefficients</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">save_lincombwp_coefficients</span><span class="p">(</span><span class="n">lincomb</span><span class="o">.</span><span class="n">get_coefficients</span><span class="p">(),</span> <span class="n">timestep</span><span class="o">=</span><span class="n">timestep</span><span class="p">,</span> <span class="n">blockid</span><span class="o">=</span><span class="n">blockid</span><span class="p">)</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">WaveBlocksND devel documentation</a> &raquo;</li>
+          <li><a href="index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, R. Bourquin.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

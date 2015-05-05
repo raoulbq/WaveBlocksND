@@ -1,0 +1,182 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>SparsityOracleTrue &mdash; WaveBlocksND devel documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     'devel',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="WaveBlocksND devel documentation" href="../index.html" />
+    <link rel="next" title="SparsityOraclePSHAWP" href="SparsityOraclePSHAWP.html" />
+    <link rel="prev" title="SparsityOracle" href="SparsityOracle.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="SparsityOraclePSHAWP.html" title="SparsityOraclePSHAWP"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="SparsityOracle.html" title="SparsityOracle"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">WaveBlocksND devel documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="sparsityoracletrue">
+<h1>SparsityOracleTrue<a class="headerlink" href="#sparsityoracletrue" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-WaveBlocksND">
+<span id="about-the-sparsityoracletrue-class"></span><h2>About the <tt class="docutils literal"><span class="pre">SparsityOracleTrue</span></tt> class<a class="headerlink" href="#module-WaveBlocksND" title="Permalink to this headline">¶</a></h2>
+<p>The WaveBlocks Project</p>
+<p>&#64;author: R. Bourquin
+&#64;copyright: Copyright (C) 2010, 2011, 2012, 2013, 2014 R. Bourquin
+&#64;license: Modified BSD License</p>
+</div>
+<div class="section" id="inheritance-diagram">
+<h2>Inheritance diagram<a class="headerlink" href="#inheritance-diagram" title="Permalink to this headline">¶</a></h2>
+<p class="graphviz">
+<img src="../_images/inheritance-9acc86e379c2d8ec91813dab83588eca0e46764c.png" alt="Inheritance diagram of SparsityOracleTrue" class="inheritance"/>
+</p>
+</div>
+<div class="section" id="class-documentation">
+<h2>Class documentation<a class="headerlink" href="#class-documentation" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="WaveBlocksND.SparsityOracleTrue">
+<em class="property">class </em><tt class="descclassname">WaveBlocksND.</tt><tt class="descname">SparsityOracleTrue</tt><a class="headerlink" href="#WaveBlocksND.SparsityOracleTrue" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class implements an oracle always saying
+the integrals are non-zero.</p>
+<dl class="method">
+<dt id="WaveBlocksND.SparsityOracleTrue.__init__">
+<tt class="descname">__init__</tt><big>(</big><big>)</big><a class="headerlink" href="#WaveBlocksND.SparsityOracleTrue.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize an oracle for estimating if a specific overlap integral
+<img class="math" src="../_images/math/5ee12211b5a4bf055fe52c00dd38c17b4f0e6b31.png" alt="\langle \Psi_k | \Psi_l \rangle"/> is approximately zero. This
+oracle always returns <tt class="docutils literal"><span class="pre">False</span></tt>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="WaveBlocksND.SparsityOracleTrue.is_not_zero">
+<tt class="descname">is_not_zero</tt><big>(</big><em>pacbra</em>, <em>packet</em>, <em>component=None</em><big>)</big><a class="headerlink" href="#WaveBlocksND.SparsityOracleTrue.is_not_zero" title="Permalink to this definition">¶</a></dt>
+<dd><p>Try to estimate if the overlap integral <img class="math" src="../_images/math/5ee12211b5a4bf055fe52c00dd38c17b4f0e6b31.png" alt="\langle \Psi_k | \Psi_l \rangle"/>
+is zero or at least negligible.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>pacbra</strong> &#8211; The packet <img class="math" src="../_images/math/f76b3949e23879c7cbb0dc98467513e6bc641533.png" alt="\Psi_k"/> that is used for the &#8216;bra&#8217; part.</li>
+<li><strong>packet</strong> &#8211; The packet <img class="math" src="../_images/math/4ec8b6e2f6fc0e44a018fdd47204524070282e7f.png" alt="\Psi_l"/> that is used for the &#8216;ket&#8217; part.</li>
+<li><strong>component</strong> &#8211; The component of the packet that is considered.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><tt class="docutils literal"><span class="pre">True</span></tt> independent of any input or condition.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">SparsityOracleTrue</a><ul>
+<li><a class="reference internal" href="#module-WaveBlocksND">About the <tt class="docutils literal"><span class="pre">SparsityOracleTrue</span></tt> class</a></li>
+<li><a class="reference internal" href="#inheritance-diagram">Inheritance diagram</a></li>
+<li><a class="reference internal" href="#class-documentation">Class documentation</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="SparsityOracle.html"
+                        title="previous chapter">SparsityOracle</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="SparsityOraclePSHAWP.html"
+                        title="next chapter">SparsityOraclePSHAWP</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/waveblocks_classes/SparsityOracleTrue.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="SparsityOraclePSHAWP.html" title="SparsityOraclePSHAWP"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="SparsityOracle.html" title="SparsityOracle"
+             >previous</a> |</li>
+        <li><a href="../index.html">WaveBlocksND devel documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, R. Bourquin.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

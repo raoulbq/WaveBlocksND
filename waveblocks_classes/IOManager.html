@@ -1,0 +1,331 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>IOManager &mdash; WaveBlocksND devel documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     'devel',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="WaveBlocksND devel documentation" href="../index.html" />
+    <link rel="next" title="IOM_plugin_parameters" href="IOM_plugin_parameters.html" />
+    <link rel="prev" title="SimulationLoopHagedornInhomogeneous" href="SimulationLoopHagedornInhomogeneous.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="IOM_plugin_parameters.html" title="IOM_plugin_parameters"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="SimulationLoopHagedornInhomogeneous.html" title="SimulationLoopHagedornInhomogeneous"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">WaveBlocksND devel documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="iomanager">
+<h1>IOManager<a class="headerlink" href="#iomanager" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-WaveBlocksND">
+<span id="about-the-iomanager-class"></span><h2>About the <tt class="docutils literal"><span class="pre">IOManager</span></tt> class<a class="headerlink" href="#module-WaveBlocksND" title="Permalink to this headline">¶</a></h2>
+<p>The WaveBlocks Project</p>
+<p>&#64;author: R. Bourquin
+&#64;copyright: Copyright (C) 2010, 2011, 2012, 2013, 2014 R. Bourquin
+&#64;license: Modified BSD License</p>
+</div>
+<div class="section" id="inheritance-diagram">
+<h2>Inheritance diagram<a class="headerlink" href="#inheritance-diagram" title="Permalink to this headline">¶</a></h2>
+<p class="graphviz">
+<img src="../_images/inheritance-b1b545818960a41cbf7abcc418df616dc046da35.png" alt="Inheritance diagram of IOManager" class="inheritance"/>
+</p>
+</div>
+<div class="section" id="class-documentation">
+<h2>Class documentation<a class="headerlink" href="#class-documentation" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="WaveBlocksND.IOManager">
+<em class="property">class </em><tt class="descclassname">WaveBlocksND.</tt><tt class="descname">IOManager</tt><a class="headerlink" href="#WaveBlocksND.IOManager" title="Permalink to this definition">¶</a></dt>
+<dd><p>An IOManager class that can save various simulation results into data
+files. For storing the data we use the well established HDF5 file format.
+An IOManager instance abstracts the input and output operations and translates
+requests into low-level operations.</p>
+<dl class="method">
+<dt id="WaveBlocksND.IOManager.create_block">
+<tt class="descname">create_block</tt><big>(</big><em>blockid=None</em>, <em>groupid='global'</em><big>)</big><a class="headerlink" href="#WaveBlocksND.IOManager.create_block" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a data block with the specified block ID. Each data block can
+store several chunks of information, and there can be an arbitrary number
+of data blocks per file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>blockid</strong> &#8211; The ID for the new data block. If not given the blockid will
+be choosen automatically. The block ID has to be unique.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The block ID of the created block.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="WaveBlocksND.IOManager.create_file">
+<tt class="descname">create_file</tt><big>(</big><em>filename='simulation_results.hdf5'</em><big>)</big><a class="headerlink" href="#WaveBlocksND.IOManager.create_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set up a new <a class="reference internal" href="#WaveBlocksND.IOManager" title="WaveBlocksND.IOManager"><tt class="xref py py-class docutils literal"><span class="pre">IOManager</span></tt></a> instance. The output file is created and opened.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> &#8211; The filename (optionally with filepath) of the file we try to create.
+If not given the default value from <cite>GlobalDefaults</cite> is used.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="WaveBlocksND.IOManager.create_group">
+<tt class="descname">create_group</tt><big>(</big><em>groupid=None</em><big>)</big><a class="headerlink" href="#WaveBlocksND.IOManager.create_group" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a data group with the specified group ID. Each data group can
+contain an arbitrary number of data blocks, and there can be an arbitrary
+number of data groups per file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>groupid</strong> &#8211; The ID for the new data group. If not given the group ID will
+be chosen automatically. The group ID has to be unique.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The group ID of the created group.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="WaveBlocksND.IOManager.finalize">
+<tt class="descname">finalize</tt><big>(</big><big>)</big><a class="headerlink" href="#WaveBlocksND.IOManager.finalize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Close the open output file and reset the internal information.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="WaveBlocksND.IOManager.find_timestep_index">
+<tt class="descname">find_timestep_index</tt><big>(</big><em>timegridpath</em>, <em>timestep</em><big>)</big><a class="headerlink" href="#WaveBlocksND.IOManager.find_timestep_index" title="Permalink to this definition">¶</a></dt>
+<dd><p>Lookup the index for a given timestep. This assumes the timegrid
+array is strictly monotone.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="WaveBlocksND.IOManager.get_block_ids">
+<tt class="descname">get_block_ids</tt><big>(</big><em>groupid=None</em>, <em>grouped=False</em><big>)</big><a class="headerlink" href="#WaveBlocksND.IOManager.get_block_ids" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a list containing the IDs for all blocks in the current file structure.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>groupid</strong> &#8211; An optional group ID. If given we return only block IDs for blocks
+which are a member of this group. If it is <tt class="docutils literal"><span class="pre">None</span></tt> we return all block IDs.</li>
+<li><strong>grouped</strong> &#8211; If <tt class="docutils literal"><span class="pre">True</span></tt> we group the block IDs by their group into lists.
+This option is only relevant in case the <cite>groupid</cite> is not given.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="WaveBlocksND.IOManager.get_group_ids">
+<tt class="descname">get_group_ids</tt><big>(</big><em>exclude=</em><span class="optional">[</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#WaveBlocksND.IOManager.get_group_ids" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a list containing the IDs for all groups in the current file structure.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>exclude</strong> &#8211; A list of group IDs to exclude. Per default no group is excluded.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="WaveBlocksND.IOManager.get_group_of_block">
+<tt class="descname">get_group_of_block</tt><big>(</big><em>blockid</em><big>)</big><a class="headerlink" href="#WaveBlocksND.IOManager.get_group_of_block" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the ID of the group a given block belongs to or <tt class="docutils literal"><span class="pre">None</span></tt>
+if there is no such data block.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>blockid</strong> &#8211; The ID of the given block.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="WaveBlocksND.IOManager.get_number_blocks">
+<tt class="descname">get_number_blocks</tt><big>(</big><em>groupid=None</em><big>)</big><a class="headerlink" href="#WaveBlocksND.IOManager.get_number_blocks" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the number of data blocks in the current file structure.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>groupid</strong> &#8211; An optional group ID. If given we count only data blocks which are a
+member of this group. If it is <tt class="docutils literal"><span class="pre">None</span></tt> (default) we count all data blocks.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="WaveBlocksND.IOManager.get_number_groups">
+<tt class="descname">get_number_groups</tt><big>(</big><big>)</big><a class="headerlink" href="#WaveBlocksND.IOManager.get_number_groups" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the number of data block groups in the current file structure.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="WaveBlocksND.IOManager.must_resize">
+<tt class="descname">must_resize</tt><big>(</big><em>path</em>, <em>size</em>, <em>axis=0</em><big>)</big><a class="headerlink" href="#WaveBlocksND.IOManager.must_resize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if we must resize a given dataset and if yes, resize it.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="WaveBlocksND.IOManager.open_file">
+<tt class="descname">open_file</tt><big>(</big><em>filename='simulation_results.hdf5'</em><big>)</big><a class="headerlink" href="#WaveBlocksND.IOManager.open_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load a given file that contains the results from another simulation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> &#8211; The filename (optionally with filepath) of the file we try to load.
+If not given the default value from <cite>GlobalDefaults</cite> is used.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="WaveBlocksND.IOManager.split_data">
+<tt class="descname">split_data</tt><big>(</big><em>data</em>, <em>axis</em><big>)</big><a class="headerlink" href="#WaveBlocksND.IOManager.split_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Split a multi-dimensional data block into slabs along a given axis.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>data</strong> &#8211; The data tensor given.</li>
+<li><strong>axis</strong> &#8211; The axis along which to split the data.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A list of slices.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">IOManager</a><ul>
+<li><a class="reference internal" href="#module-WaveBlocksND">About the <tt class="docutils literal"><span class="pre">IOManager</span></tt> class</a></li>
+<li><a class="reference internal" href="#inheritance-diagram">Inheritance diagram</a></li>
+<li><a class="reference internal" href="#class-documentation">Class documentation</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="SimulationLoopHagedornInhomogeneous.html"
+                        title="previous chapter">SimulationLoopHagedornInhomogeneous</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="IOM_plugin_parameters.html"
+                        title="next chapter">IOM_plugin_parameters</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/waveblocks_classes/IOManager.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="IOM_plugin_parameters.html" title="IOM_plugin_parameters"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="SimulationLoopHagedornInhomogeneous.html" title="SimulationLoopHagedornInhomogeneous"
+             >previous</a> |</li>
+        <li><a href="../index.html">WaveBlocksND devel documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, R. Bourquin.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

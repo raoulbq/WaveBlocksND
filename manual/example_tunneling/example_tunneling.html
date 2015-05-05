@@ -1,0 +1,286 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Computing tunneling probabilities &mdash; WaveBlocksND devel documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     'devel',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="WaveBlocksND devel documentation" href="../../index.html" />
+    <link rel="up" title="Interactive use" href="../interactive_use.html" />
+    <link rel="next" title="Computing Eigenstates" href="../example_eigenstates/example_eigenstates.html" />
+    <link rel="prev" title="Interactive use" href="../interactive_use.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../example_eigenstates/example_eigenstates.html" title="Computing Eigenstates"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../interactive_use.html" title="Interactive use"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">WaveBlocksND devel documentation</a> &raquo;</li>
+          <li><a href="../interactive_use.html" accesskey="U">Interactive use</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="computing-tunneling-probabilities">
+<h1>Computing tunneling probabilities<a class="headerlink" href="#computing-tunneling-probabilities" title="Permalink to this headline">¶</a></h1>
+<p>Assume we performed a simulation with the Eckart potential and an initial
+Gaussian wavepacket coming from the far left. There is a ready-made example
+setup bundled with WaveBlocks. The Eckart potential models some kind of
+tunneling at a smooth barrier. It is therefore natural to ask for the tunneling
+probability in dependence of time. The maximum of the potential <img class="math" src="../../_images/math/2e93af720b470a88780063377da0dd4f28e4a9f5.png" alt="V(x)"/>
+is at 0 and we compute the norm of the part of <img class="math" src="../../_images/math/4f0854145c40beaf4d1a86d91a94d02626d99081.png" alt="\Psi(x,t)"/> that tunneled
+onto the right side:</p>
+<div class="math">
+<p><img src="../../_images/math/48c16502abd9c10709ea9a358f84f1533434492a.png" alt="P(t) = \int_0^\infty \overline{\Psi(x)} \Psi(x) \mathrm{d} x"/></p>
+</div><p>There is no generic python script doing this for us. The script <tt class="docutils literal"><span class="pre">ComputeNorms.py</span></tt>
+only computes the integral over the whole space. This is clearly not applicable
+here. But with a few lines of python code, possibly entered at an interactive python
+shell or ipython notebook we can find <img class="math" src="../../_images/math/db78b95eb8ad3b90e7a653cd85be93e20ec984d9.png" alt="P(t)"/>. In the following we show
+step by step how to do it.</p>
+<p>First load the scientific libraries and <tt class="docutils literal"><span class="pre">WaveBlocksND</span></tt>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="kn">from</span> <span class="nn">WaveBlocksND</span> <span class="kn">import</span> <span class="o">*</span>
+</pre></div>
+</div>
+<p>Then assume the simulation result file is located at <tt class="docutils literal"><span class="pre">~/Eckart_Tunneling/paper/phi0/simulation_results.hdf5</span></tt>.
+We create an <tt class="xref py py-class docutils literal"><span class="pre">IOManager</span></tt> instance and open the file</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">IOM</span> <span class="o">=</span> <span class="n">IOManager</span><span class="p">()</span>
+<span class="n">IOM</span><span class="o">.</span><span class="n">open_file</span><span class="p">(</span><span class="s">&quot;~/Eckart_Tunneling/paper/phi0/simulation_results.hdf5&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Load the simulation parameters, this is essentially the content of the configuration script:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">PA</span> <span class="o">=</span> <span class="n">IOM</span><span class="o">.</span><span class="n">load_parameters</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Next we get a fresh <tt class="xref py py-class docutils literal"><span class="pre">BlockFactory</span></tt> instance allowing us to easily create
+some of the more complicated objects, given the simulation parameters:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">BF</span> <span class="o">=</span> <span class="n">BlockFactory</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>An empty new wavepacket with the initial values set for <img class="math" src="../../_images/math/e2a63918a6fa75b62ad87ad17aaf65f782d71546.png" alt="\varepsilon"/>, the parameter
+set <img class="math" src="../../_images/math/c3e77f8dac39bd44cff4ca15469c871bab27c02e.png" alt="\Pi"/> and the coefficients <img class="math" src="../../_images/math/3372c1cb6d68cf97c2d231acc0b47b95a9ed04cc.png" alt="c"/>. Note that the block factory automatically
+creates the necessary <tt class="xref py py-class docutils literal"><span class="pre">BasisShape</span></tt> that matches the initial values:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">HAWP</span> <span class="o">=</span> <span class="n">BF</span><span class="o">.</span><span class="n">create_wavepacket</span><span class="p">(</span><span class="n">PA</span><span class="p">[</span><span class="s">&quot;wp0&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>Our integration domain:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">x</span> <span class="o">=</span> <span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">2</span><span class="o">**</span><span class="mi">11</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>A new <tt class="xref py py-class docutils literal"><span class="pre">WaveFunction</span></tt> object. We will use its <tt class="xref py py-func docutils literal"><span class="pre">norm()</span></tt> method
+for evaluating the integral. At this point we can attach the grid to it:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">WF</span> <span class="o">=</span> <span class="n">WaveFunction</span><span class="p">({</span><span class="s">&quot;dimension&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span> <span class="s">&quot;ncomponents&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">})</span>
+<span class="n">WF</span><span class="o">.</span><span class="n">set_grid</span><span class="p">(</span><span class="n">GridWrapper</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Load the so called <cite>time grid</cite>, this is an array with all time steps at which
+saved the simulation:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">tg</span> <span class="o">=</span> <span class="n">IOM</span><span class="o">.</span><span class="n">load_wavepacket_timegrid</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Storage space for the tunneling norms at each time step:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">tun_no</span> <span class="o">=</span> <span class="p">[]</span>
+</pre></div>
+</div>
+<p>Now loop over all time steps, First load and set the wavepacket parameters <img class="math" src="../../_images/math/0885abbb221e809d50bec7acb7cbedb8b0ade464.png" alt="\Pi(t)"/>
+and coefficients <img class="math" src="../../_images/math/5697d0050641c0c8ec7565c04878edbdf56e673b.png" alt="c(t)"/>, then evaluate the wavepacket of our truncated computational
+domain <tt class="docutils literal"><span class="pre">x</span></tt>. Put these values into the <tt class="docutils literal"><span class="pre">WF</span></tt> object and tell it to compute the norm:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">for</span> <span class="n">step</span> <span class="ow">in</span> <span class="n">tg</span><span class="p">:</span>
+    <span class="n">Pi</span> <span class="o">=</span> <span class="n">IOM</span><span class="o">.</span><span class="n">load_wavepacket_parameters</span><span class="p">(</span><span class="n">timestep</span><span class="o">=</span><span class="n">step</span><span class="p">)</span>
+    <span class="n">Ci</span> <span class="o">=</span> <span class="n">IOM</span><span class="o">.</span><span class="n">load_wavepacket_coefficients</span><span class="p">(</span><span class="n">timestep</span><span class="o">=</span><span class="n">step</span><span class="p">)</span>
+    <span class="n">HAWP</span><span class="o">.</span><span class="n">set_parameters</span><span class="p">(</span><span class="n">Pi</span><span class="p">)</span>
+    <span class="n">HAWP</span><span class="o">.</span><span class="n">set_coefficients</span><span class="p">(</span><span class="n">Ci</span><span class="p">)</span>
+
+    <span class="n">psi</span> <span class="o">=</span> <span class="n">HAWP</span><span class="o">.</span><span class="n">evaluate_at</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">prefactor</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">WF</span><span class="o">.</span><span class="n">set_values</span><span class="p">(</span><span class="n">psi</span><span class="p">)</span>
+    <span class="n">no</span> <span class="o">=</span> <span class="n">WF</span><span class="o">.</span><span class="n">norm</span><span class="p">()</span>
+
+    <span class="n">tun_no</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">no</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Convert the python list to a numpy array for easier handling:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">tun_no</span> <span class="o">=</span> <span class="n">array</span><span class="p">(</span><span class="n">tun_no</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>At this point we have computed all the values <img class="math" src="../../_images/math/db78b95eb8ad3b90e7a653cd85be93e20ec984d9.png" alt="P(t)"/>. What remains
+is plotting. But first we create a <tt class="xref py py-class docutils literal"><span class="pre">TimeManager</span></tt> such that we can
+easily compute the physical times corresponding to out time steps it <tt class="docutils literal"><span class="pre">tg</span></tt>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">TM</span> <span class="o">=</span> <span class="n">TimeManager</span><span class="p">(</span><span class="n">PA</span><span class="p">)</span>
+<span class="n">time</span> <span class="o">=</span> <span class="n">TM</span><span class="o">.</span><span class="n">compute_time</span><span class="p">(</span><span class="n">tg</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Ok, let&#8217;s plot the values:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">figure</span><span class="p">()</span>
+<span class="n">plot</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="n">tun_no</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">grid</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">xlabel</span><span class="p">(</span><span class="s">r&quot;$t$&quot;</span><span class="p">)</span>
+<span class="n">ylabel</span><span class="p">(</span><span class="s">r&quot;$\int_0^\infty \overline{\Psi(x)} \Psi(x) \mathrm{d}x$&quot;</span><span class="p">)</span>
+<span class="n">savefig</span><span class="p">(</span><span class="s">&quot;tunneling_probability_packet.png&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>And do not forget to close the <tt class="docutils literal"><span class="pre">hdf5</span></tt> file at the end:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">IOM</span><span class="o">.</span><span class="n">finalize</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>This is the plot we got:</p>
+<img alt="../../_images/tunneling_probability_packet.png" src="../../_images/tunneling_probability_packet.png" />
+<p>The values could make sense given how the wavefunction looks like at time <img class="math" src="../../_images/math/7815ac51fced47db2b62407b3e6f41792a0e3628.png" alt="t = 50"/>:</p>
+<a class="reference internal image-reference" href="../../_images/wavefunction_block0_0010000.png"><img alt="../../_images/wavefunction_block0_0010000.png" src="../../_images/wavefunction_block0_0010000.png" style="width: 600.0px; height: 450.0px;" /></a>
+<p>If we use the <tt class="docutils literal"><span class="pre">fourier</span></tt> algorithm instead of wavepackets to perform the same simulation,
+then the process would differ in a few aspects. We show here the script performing the
+same computation as above:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">WaveBlocksND</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="n">IOM</span> <span class="o">=</span> <span class="n">IOManager</span><span class="p">()</span>
+<span class="n">IOM</span><span class="o">.</span><span class="n">open_file</span><span class="p">(</span><span class="s">&quot;~/Eckart_Tunneling/paper/phi0/simulation_results.hdf5&quot;</span><span class="p">)</span>
+
+<span class="n">PA</span> <span class="o">=</span> <span class="n">IOM</span><span class="o">.</span><span class="n">load_parameters</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Load the grid we used for representing the wavefunction during the simulation:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">G</span> <span class="o">=</span> <span class="n">IOM</span><span class="o">.</span><span class="n">load_grid</span><span class="p">(</span><span class="n">blockid</span><span class="o">=</span><span class="s">&quot;global&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Get all grid nodes <img class="math" src="../../_images/math/cae4fd68f44ac9b909f8d91f9d498de5759bb45b.png" alt="x &gt; 0"/> by some numpy magic:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">indices</span> <span class="o">=</span> <span class="n">G</span> <span class="o">&gt;=</span> <span class="mi">0</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">G</span><span class="p">[</span><span class="n">indices</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>This <tt class="xref py py-class docutils literal"><span class="pre">WaveFunction</span></tt> object will hold the tunneled part:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">WFhalf</span> <span class="o">=</span> <span class="n">WaveFunction</span><span class="p">({</span><span class="s">&quot;dimension&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span> <span class="s">&quot;ncomponents&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">})</span>
+<span class="n">WFhalf</span><span class="o">.</span><span class="n">set_grid</span><span class="p">(</span><span class="n">GridWrapper</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Now loop over all time steps, load the wavefunction, cut off the
+part corresponding to the negative grid nodes and compute the
+norm:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">tun_no</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">step</span> <span class="ow">in</span> <span class="n">tg</span><span class="p">:</span>
+    <span class="n">values</span> <span class="o">=</span> <span class="n">IOM</span><span class="o">.</span><span class="n">load_wavefunction</span><span class="p">(</span><span class="n">timestep</span><span class="o">=</span><span class="n">step</span><span class="p">)</span>
+    <span class="n">values_tun</span> <span class="o">=</span> <span class="n">values</span><span class="p">[:,</span><span class="n">indices</span><span class="p">]</span>
+
+    <span class="n">WFhalf</span><span class="o">.</span><span class="n">set_values</span><span class="p">(</span><span class="n">values_tun</span><span class="p">)</span>
+    <span class="n">no</span> <span class="o">=</span> <span class="n">WFhalf</span><span class="o">.</span><span class="n">norm</span><span class="p">()</span>
+
+    <span class="n">tun_no</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">no</span><span class="p">)</span>
+
+<span class="n">tun_no</span> <span class="o">=</span> <span class="n">array</span><span class="p">(</span><span class="n">tun_no</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Finally, plot the values:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">TM</span> <span class="o">=</span> <span class="n">TimeManager</span><span class="p">(</span><span class="n">PA</span><span class="p">)</span>
+<span class="n">time</span> <span class="o">=</span> <span class="n">TM</span><span class="o">.</span><span class="n">compute_time</span><span class="p">(</span><span class="n">tg</span><span class="p">)</span>
+
+<span class="n">figure</span><span class="p">()</span>
+<span class="n">plot</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="n">tun_no</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">grid</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">xlabel</span><span class="p">(</span><span class="s">r&quot;$t$&quot;</span><span class="p">)</span>
+<span class="n">ylabel</span><span class="p">(</span><span class="s">r&quot;$\int_0^\infty \overline{\Psi(x)} \Psi(x) \mathrm{d}x$&quot;</span><span class="p">)</span>
+<span class="n">savefig</span><span class="p">(</span><span class="s">&quot;tunneling_probability_fourier.png&quot;</span><span class="p">)</span>
+
+<span class="n">IOM</span><span class="o">.</span><span class="n">finalize</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>and get:</p>
+<img alt="../../_images/tunneling_probability_fourier.png" src="../../_images/tunneling_probability_fourier.png" />
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../interactive_use.html"
+                        title="previous chapter">Interactive use</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../example_eigenstates/example_eigenstates.html"
+                        title="next chapter">Computing Eigenstates</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../_sources/manual/example_tunneling/example_tunneling.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../example_eigenstates/example_eigenstates.html" title="Computing Eigenstates"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../interactive_use.html" title="Interactive use"
+             >previous</a> |</li>
+        <li><a href="../../index.html">WaveBlocksND devel documentation</a> &raquo;</li>
+          <li><a href="../interactive_use.html" >Interactive use</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, R. Bourquin.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,343 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>DirectHomogeneousQuadrature &mdash; WaveBlocksND devel documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     'devel',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="WaveBlocksND devel documentation" href="../index.html" />
+    <link rel="next" title="DirectInhomogeneousQuadrature" href="DirectInhomogeneousQuadrature.html" />
+    <link rel="prev" title="DirectQuadrature" href="DirectQuadrature.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="DirectInhomogeneousQuadrature.html" title="DirectInhomogeneousQuadrature"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="DirectQuadrature.html" title="DirectQuadrature"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">WaveBlocksND devel documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="directhomogeneousquadrature">
+<h1>DirectHomogeneousQuadrature<a class="headerlink" href="#directhomogeneousquadrature" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-WaveBlocksND">
+<span id="about-the-directhomogeneousquadrature-class"></span><h2>About the <tt class="docutils literal"><span class="pre">DirectHomogeneousQuadrature</span></tt> class<a class="headerlink" href="#module-WaveBlocksND" title="Permalink to this headline">¶</a></h2>
+<p>The WaveBlocks Project</p>
+<p>&#64;author: R. Bourquin
+&#64;copyright: Copyright (C) 2010, 2011, 2012, 2013, 2014 R. Bourquin
+&#64;license: Modified BSD License</p>
+</div>
+<div class="section" id="inheritance-diagram">
+<h2>Inheritance diagram<a class="headerlink" href="#inheritance-diagram" title="Permalink to this headline">¶</a></h2>
+<p class="graphviz">
+<img src="../_images/inheritance-de87baed8a27cab850edc278453c7de5fd7e694d.png" alt="Inheritance diagram of DirectHomogeneousQuadrature" class="inheritance"/>
+</p>
+</div>
+<div class="section" id="class-documentation">
+<h2>Class documentation<a class="headerlink" href="#class-documentation" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="WaveBlocksND.DirectHomogeneousQuadrature">
+<em class="property">class </em><tt class="descclassname">WaveBlocksND.</tt><tt class="descname">DirectHomogeneousQuadrature</tt><big>(</big><em>QR=None</em><big>)</big><a class="headerlink" href="#WaveBlocksND.DirectHomogeneousQuadrature" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="WaveBlocksND.DirectHomogeneousQuadrature.do_quadrature">
+<tt class="descname">do_quadrature</tt><big>(</big><em>row</em>, <em>col</em><big>)</big><a class="headerlink" href="#WaveBlocksND.DirectHomogeneousQuadrature.do_quadrature" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluates by standard quadrature the integral
+<img class="math" src="../_images/math/ac48a47c300720526ac9a198c6bb9c0be6c77c2d.png" alt="\langle \Phi_i | f | \Phi_j \rangle"/> for a polynomial
+function <img class="math" src="../_images/math/c96dd6ec1dc4ad7520fbdc78fcdbec9edd068d0c.png" alt="f(x)"/> with <img class="math" src="../_images/math/f85da18535db12c4e7f18590bcd375be0cd399eb.png" alt="x \in \mathbb{R}^D"/>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>row</strong> &#8211; The index <img class="math" src="../_images/math/34857b3ba74ce5cd8607f3ebd23e9015908ada71.png" alt="i"/> of the component <img class="math" src="../_images/math/1a1372729059cb0703afe57f9402c351b5bf0e2d.png" alt="\Phi_i"/> of <img class="math" src="../_images/math/866f0204648be9ca6b10e14dd72295295dd53a79.png" alt="\Psi"/>.</li>
+<li><strong>row</strong> &#8211; The index <img class="math" src="../_images/math/8122aa89ea6e80784c6513d22787ad86e36ad0cc.png" alt="j"/> of the component <img class="math" src="../_images/math/50b214d63eebc044875a6a505f0d6f7577456d05.png" alt="\Phi_j"/> of <img class="math" src="../_images/math/866f0204648be9ca6b10e14dd72295295dd53a79.png" alt="\Psi"/>.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A complex valued matrix of shape <img class="math" src="../_images/math/a8205625d4c6b47eef16150bc830fb61e7b1fd3a.png" alt="|\mathfrak{K}_i| \times |\mathfrak{K}_j|"/>.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="WaveBlocksND.DirectHomogeneousQuadrature.get_description">
+<tt class="descname">get_description</tt><big>(</big><big>)</big><a class="headerlink" href="#WaveBlocksND.DirectHomogeneousQuadrature.get_description" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a description of this quadrature object.
+A description is a <tt class="docutils literal"><span class="pre">dict</span></tt> containing all key-value pairs
+necessary to reconstruct the current instance. A description
+never contains any data.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="WaveBlocksND.DirectHomogeneousQuadrature.get_qr">
+<tt class="descname">get_qr</tt><big>(</big><big>)</big><a class="headerlink" href="#WaveBlocksND.DirectHomogeneousQuadrature.get_qr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the <a class="reference internal" href="QuadratureRule.html#WaveBlocksND.QuadratureRule" title="WaveBlocksND.QuadratureRule"><tt class="xref py py-class docutils literal"><span class="pre">QuadratureRule</span></tt></a> subclass instance used for quadrature.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The current instance of the quadrature rule.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="WaveBlocksND.DirectHomogeneousQuadrature.initialize_operator">
+<tt class="descname">initialize_operator</tt><big>(</big><em>operator=None</em>, <em>matrix=False</em>, <em>eval_at_once=False</em><big>)</big><a class="headerlink" href="#WaveBlocksND.DirectHomogeneousQuadrature.initialize_operator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Provide the operator part of the inner product to evaluate.
+This function initializes the operator used for quadratures
+and for building matrices.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>operator</strong> &#8211; The operator of the inner product.
+If <tt class="docutils literal"><span class="pre">None</span></tt> a suitable identity is used.</li>
+<li><strong>matrix</strong> &#8211; Set this to <tt class="docutils literal"><span class="pre">True</span></tt> (Default is <tt class="docutils literal"><span class="pre">False</span></tt>) in case
+we want to compute the matrix elements.
+For nasty technical reasons we can not yet unify
+the operator call syntax.</li>
+<li><strong>eval_at_once</strong> (Boolean, default is <tt class="docutils literal"><span class="pre">False</span></tt>.) &#8211; Flag to tell whether the operator supports the <tt class="docutils literal"><span class="pre">entry=(r,c)</span></tt> call syntax.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="WaveBlocksND.DirectHomogeneousQuadrature.initialize_packet">
+<tt class="descname">initialize_packet</tt><big>(</big><em>packet</em><big>)</big><a class="headerlink" href="#WaveBlocksND.DirectHomogeneousQuadrature.initialize_packet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Provide the wavepacket part of the inner product to evaluate.
+Since the quadrature is homogeneous the same wavepacket is used
+for the &#8216;bra&#8217; as well as the &#8216;ket&#8217; part.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>packet</strong> &#8211; The packet that is used for the &#8216;bra&#8217; and &#8216;ket&#8217; part.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="WaveBlocksND.DirectHomogeneousQuadrature.perform_build_matrix">
+<tt class="descname">perform_build_matrix</tt><big>(</big><em>row</em>, <em>col</em><big>)</big><a class="headerlink" href="#WaveBlocksND.DirectHomogeneousQuadrature.perform_build_matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes by standard quadrature the matrix elements
+<img class="math" src="../_images/math/8f302c1e71313669e03904673a2f90b914ae46ba.png" alt="\langle\Phi_i | f |\Phi^\prime_j\rangle"/> for a general function
+<img class="math" src="../_images/math/c96dd6ec1dc4ad7520fbdc78fcdbec9edd068d0c.png" alt="f(x)"/> with <img class="math" src="../_images/math/f85da18535db12c4e7f18590bcd375be0cd399eb.png" alt="x \in \mathbb{R}^D"/>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>row</strong> &#8211; The index <img class="math" src="../_images/math/34857b3ba74ce5cd8607f3ebd23e9015908ada71.png" alt="i"/> of the component <img class="math" src="../_images/math/1a1372729059cb0703afe57f9402c351b5bf0e2d.png" alt="\Phi_i"/> of <img class="math" src="../_images/math/866f0204648be9ca6b10e14dd72295295dd53a79.png" alt="\Psi"/>.</li>
+<li><strong>row</strong> &#8211; The index <img class="math" src="../_images/math/8122aa89ea6e80784c6513d22787ad86e36ad0cc.png" alt="j"/> of the component <img class="math" src="../_images/math/98f130cebb4aa36b7dad3e83d1f8e748b47f8002.png" alt="\Phi^\prime_j"/> of <img class="math" src="../_images/math/ed0eb7d94f64ded093e1e0a8159ca93be0ffb20d.png" alt="\Psi^\prime"/>.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A complex valued matrix of shape <img class="math" src="../_images/math/c09d000f17e4e101ea23830d12328f6bb3b50220.png" alt="|\mathfrak{K}_i| \times |\mathfrak{K}^\prime_j|"/>.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="WaveBlocksND.DirectHomogeneousQuadrature.perform_quadrature">
+<tt class="descname">perform_quadrature</tt><big>(</big><em>row</em>, <em>col</em><big>)</big><a class="headerlink" href="#WaveBlocksND.DirectHomogeneousQuadrature.perform_quadrature" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluates by numerical steepest descent the integral
+<img class="math" src="../_images/math/59d1674b8959786e57b6f1d8d9abf1c4c4c6dd5f.png" alt="\langle \Phi_i | f | \Phi^\prime_j \rangle"/> for a polynomial
+function <img class="math" src="../_images/math/c96dd6ec1dc4ad7520fbdc78fcdbec9edd068d0c.png" alt="f(x)"/> with <img class="math" src="../_images/math/f85da18535db12c4e7f18590bcd375be0cd399eb.png" alt="x \in \mathbb{R}^D"/>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>row</strong> &#8211; The index <img class="math" src="../_images/math/34857b3ba74ce5cd8607f3ebd23e9015908ada71.png" alt="i"/> of the component <img class="math" src="../_images/math/1a1372729059cb0703afe57f9402c351b5bf0e2d.png" alt="\Phi_i"/> of <img class="math" src="../_images/math/866f0204648be9ca6b10e14dd72295295dd53a79.png" alt="\Psi"/>.</li>
+<li><strong>row</strong> &#8211; The index <img class="math" src="../_images/math/8122aa89ea6e80784c6513d22787ad86e36ad0cc.png" alt="j"/> of the component <img class="math" src="../_images/math/98f130cebb4aa36b7dad3e83d1f8e748b47f8002.png" alt="\Phi^\prime_j"/> of <img class="math" src="../_images/math/ed0eb7d94f64ded093e1e0a8159ca93be0ffb20d.png" alt="\Psi^\prime"/>.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A single complex floating point number.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="WaveBlocksND.DirectHomogeneousQuadrature.prepare">
+<tt class="descname">prepare</tt><big>(</big><em>rows</em>, <em>cols</em><big>)</big><a class="headerlink" href="#WaveBlocksND.DirectHomogeneousQuadrature.prepare" title="Permalink to this definition">¶</a></dt>
+<dd><p>Precompute some values needed for evaluating the quadrature
+<img class="math" src="../_images/math/b942471cdf69239e596e20611849b3916f504a94.png" alt="\langle \Phi_i | f(x) | \Phi_j \rangle"/> or the corresponding
+matrix over the basis functions of <img class="math" src="../_images/math/1a1372729059cb0703afe57f9402c351b5bf0e2d.png" alt="\Phi_i"/> and <img class="math" src="../_images/math/50b214d63eebc044875a6a505f0d6f7577456d05.png" alt="\Phi_j"/>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>rows</strong> &#8211; A list of all <img class="math" src="../_images/math/34857b3ba74ce5cd8607f3ebd23e9015908ada71.png" alt="i"/> with <img class="math" src="../_images/math/1fbdc3f84fab4719570e6b6299cccc3edae6ee9d.png" alt="0 \leq i \leq N"/>
+selecting the <img class="math" src="../_images/math/1a1372729059cb0703afe57f9402c351b5bf0e2d.png" alt="\Phi_i"/> for which we precompute values.</li>
+<li><strong>cols</strong> &#8211; A list of all <img class="math" src="../_images/math/8122aa89ea6e80784c6513d22787ad86e36ad0cc.png" alt="j"/> with <img class="math" src="../_images/math/860d6b2c72824bd731c4cb8ec520b50fa9c8ca56.png" alt="0 \leq j \leq N"/>
+selecting the <img class="math" src="../_images/math/50b214d63eebc044875a6a505f0d6f7577456d05.png" alt="\Phi_j"/> for which we precompute values.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="WaveBlocksND.DirectHomogeneousQuadrature.set_qr">
+<tt class="descname">set_qr</tt><big>(</big><em>QR</em><big>)</big><a class="headerlink" href="#WaveBlocksND.DirectHomogeneousQuadrature.set_qr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the <a class="reference internal" href="QuadratureRule.html#WaveBlocksND.QuadratureRule" title="WaveBlocksND.QuadratureRule"><tt class="xref py py-class docutils literal"><span class="pre">QuadratureRule</span></tt></a> subclass instance used for quadrature.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>QR</strong> &#8211; The new <a class="reference internal" href="QuadratureRule.html#WaveBlocksND.QuadratureRule" title="WaveBlocksND.QuadratureRule"><tt class="xref py py-class docutils literal"><span class="pre">QuadratureRule</span></tt></a> instance.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="WaveBlocksND.DirectHomogeneousQuadrature.transform_nodes">
+<tt class="descname">transform_nodes</tt><big>(</big><em>Pi</em>, <em>eps</em>, <em>QR=None</em><big>)</big><a class="headerlink" href="#WaveBlocksND.DirectHomogeneousQuadrature.transform_nodes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transform the quadrature nodes <img class="math" src="../_images/math/66981fa3920210c6ad8dbe5e968783d5dd7520c3.png" alt="\gamma"/> such that they
+fit the given wavepacket <img class="math" src="../_images/math/97e0a848fdfd154fd2473200c3f36178192a20c7.png" alt="\Phi\left[\Pi\right]"/>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>Pi</strong> &#8211; The parameter set <img class="math" src="../_images/math/c3e77f8dac39bd44cff4ca15469c871bab27c02e.png" alt="\Pi"/> of the wavepacket.</li>
+<li><strong>eps</strong> &#8211; The value of <img class="math" src="../_images/math/e2a63918a6fa75b62ad87ad17aaf65f782d71546.png" alt="\varepsilon"/> of the wavepacket.</li>
+<li><strong>QR</strong> &#8211; An optional quadrature rule <img class="math" src="../_images/math/e9e5a10197befc592d996ab016d50c11ce2384c4.png" alt="\Gamma = (\gamma, \omega)"/> providing
+the nodes. If not given the internal quadrature rule will be used.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A two-dimensional ndarray of shape <img class="math" src="../_images/math/65386017ecf42bb0ef1872b47350d2d05d532fe7.png" alt="(D, |\Gamma|)"/> where
+<img class="math" src="../_images/math/d85b78a13008f6b5839107bb086798bf5b6a37ae.png" alt="|\Gamma|"/> denotes the total number of quadrature nodes.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">DirectHomogeneousQuadrature</a><ul>
+<li><a class="reference internal" href="#module-WaveBlocksND">About the <tt class="docutils literal"><span class="pre">DirectHomogeneousQuadrature</span></tt> class</a></li>
+<li><a class="reference internal" href="#inheritance-diagram">Inheritance diagram</a></li>
+<li><a class="reference internal" href="#class-documentation">Class documentation</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="DirectQuadrature.html"
+                        title="previous chapter">DirectQuadrature</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="DirectInhomogeneousQuadrature.html"
+                        title="next chapter">DirectInhomogeneousQuadrature</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/waveblocks_classes/DirectHomogeneousQuadrature.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="DirectInhomogeneousQuadrature.html" title="DirectInhomogeneousQuadrature"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="DirectQuadrature.html" title="DirectQuadrature"
+             >previous</a> |</li>
+        <li><a href="../index.html">WaveBlocksND devel documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, R. Bourquin.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

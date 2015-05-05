@@ -1,0 +1,318 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Plot &mdash; WaveBlocksND devel documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     'devel',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="WaveBlocksND devel documentation" href="../../index.html" />
+    <link rel="next" title="Plot 3D" href="../plot3d/plot3d.html" />
+    <link rel="prev" title="BlockFactory" href="../BlockFactory.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../plot3d/plot3d.html" title="Plot 3D"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../BlockFactory.html" title="BlockFactory"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">WaveBlocksND devel documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="plot">
+<h1>Plot<a class="headerlink" href="#plot" title="Permalink to this headline">¶</a></h1>
+<p>The following plot function need only matplotlib for plotting.</p>
+<div class="section" id="plotcf">
+<h2><tt class="docutils literal"><span class="pre">plotcf</span></tt><a class="headerlink" href="#plotcf" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="WaveBlocksND.Plot.plotcf">
+<tt class="descclassname">WaveBlocksND.Plot.</tt><tt class="descname">plotcf</tt><big>(</big><em>grid</em>, <em>phase</em>, <em>modulus</em>, <em>darken=None</em>, <em>axes=None</em>, <em>linestylep='solid'</em>, <em>linewidthp=1</em>, <em>color='k'</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#WaveBlocksND.Plot.plotcf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot the modulus of a complex valued function
+<img class="math" src="../../_images/math/2781a81f7c5b725b914015c6f986c429935cabfe.png" alt="f:\mathbb{R} \rightarrow \mathbb{C}"/>
+together with its phase in a color coded fashion.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>grid</strong> &#8211; The grid nodes of the real domain R</li>
+<li><strong>phase</strong> &#8211; The phase of the complex domain result f(grid)</li>
+<li><strong>modulus</strong> &#8211; The modulus of the complex domain result f(grid)</li>
+<li><strong>darken</strong> &#8211; Whether to take into account the modulus of the data to darken colors.</li>
+<li><strong>axes</strong> &#8211; The axes instance used for plotting.</li>
+<li><strong>linestylep</strong> &#8211; The line style of the phase curve.</li>
+<li><strong>linewidthp</strong> &#8211; The line width of the phase curve.</li>
+<li><strong>color</strong> &#8211; The color of the phase curve.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="plotcm">
+<h2><tt class="docutils literal"><span class="pre">plotcm</span></tt><a class="headerlink" href="#plotcm" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="WaveBlocksND.Plot.plotcm">
+<tt class="descclassname">WaveBlocksND.Plot.</tt><tt class="descname">plotcm</tt><big>(</big><em>matrix</em>, <em>phase=None</em>, <em>modulus=None</em>, <em>darken=None</em>, <em>axes=None</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#WaveBlocksND.Plot.plotcm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot complex matrices with the phase of the entries encoded into the usual color code.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>matrix</strong> &#8211; The matrix data.</li>
+<li><strong>phase</strong> &#8211; The phase of the entries, if not given they are computed.</li>
+<li><strong>modulus</strong> &#8211; The modulus of the entries, if not given they are computed.</li>
+<li><strong>darken</strong> &#8211; Whether to take into account the modulus of the data to darken colors.</li>
+<li><strong>axes</strong> &#8211; The axes instance used for plotting.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Note that the additional keyword arguments are passed to the plot function.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="stemcf">
+<h2><tt class="docutils literal"><span class="pre">stemcf</span></tt><a class="headerlink" href="#stemcf" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="WaveBlocksND.Plot.stemcf">
+<tt class="descclassname">WaveBlocksND.Plot.</tt><tt class="descname">stemcf</tt><big>(</big><em>grid</em>, <em>phase</em>, <em>modulus</em>, <em>darken=None</em>, <em>axes=None</em>, <em>linestylep='solid'</em>, <em>linewidthp=2</em>, <em>color=None</em>, <em>markerp='o'</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#WaveBlocksND.Plot.stemcf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stemplot the modulus of a complex valued function <img class="math" src="../../_images/math/3e5f2ecbaefceb6ae401849764955435eda90525.png" alt="f:I -&gt; \mathbb{C}"/> together with its phase in a color coded fashion.
+Additional keyword arguments are passed to the plot function.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>grid</strong> &#8211; The grid nodes of the real domain grid <img class="math" src="../../_images/math/913e49ea63c6c130bb8d9d1c3556b052ecc404f8.png" alt="\Gamma"/></li>
+<li><strong>phase</strong> &#8211; The phase of the complex domain result <img class="math" src="../../_images/math/c36eef2ba879a0aeef6ea1185633c315f811ca0f.png" alt="f(\Gamma)"/></li>
+<li><strong>modulus</strong> &#8211; The modulus of the complex domain result <img class="math" src="../../_images/math/c36eef2ba879a0aeef6ea1185633c315f811ca0f.png" alt="f(\Gamma)"/></li>
+<li><strong>darken</strong> &#8211; Whether to take into account the modulus of the data to darken colors.</li>
+<li><strong>axes</strong> &#8211; The axes instance used for plotting.</li>
+<li><strong>linestylep</strong> &#8211; The line style of the phase curve.</li>
+<li><strong>linewidthp</strong> &#8211; The line width of the phase curve.</li>
+<li><strong>color</strong> &#8211; The color of the stemmed markers.</li>
+<li><strong>markerp</strong> &#8211; The shape of the stemmed markers.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="plotcf2d">
+<h2><tt class="docutils literal"><span class="pre">plotcf2d</span></tt><a class="headerlink" href="#plotcf2d" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="WaveBlocksND.Plot.plotcf2d">
+<tt class="descclassname">WaveBlocksND.Plot.</tt><tt class="descname">plotcf2d</tt><big>(</big><em>x</em>, <em>y</em>, <em>z</em>, <em>darken=None</em>, <em>axes=None</em>, <em>limits=None</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#WaveBlocksND.Plot.plotcf2d" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot complex valued functions <img class="math" src="../../_images/math/af268c88603a9e6e30c2b44f9adffa6c32cdf291.png" alt="\mathbb{R}^2 \rightarrow \mathbb{C}"/>
+with the usual color code.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>x</strong> &#8211; The <img class="math" src="../../_images/math/26eeb5258ca5099acf8fe96b2a1049c48c89a5e6.png" alt="x"/> values.</li>
+<li><strong>x</strong> &#8211; The <img class="math" src="../../_images/math/092e364e1d9d19ad5fffb0b46ef4cc7f2da02c1c.png" alt="y"/> values.</li>
+<li><strong>z</strong> &#8211; The values <img class="math" src="../../_images/math/c45f4d6822ca0dd7ea528041bf7079ff62ba3afb.png" alt="z = f(x,y)"/>.</li>
+<li><strong>darken</strong> (Float or <tt class="docutils literal"><span class="pre">None</span></tt> to disable darkening of colors. Default is <img class="math" src="../../_images/math/fbbb858c2acdeafb6a9453e945cf394282272a69.png" alt="R = 1.0"/>.) &#8211; How strong to take into account the modulus of the data to darken colors.
+Values with <img class="math" src="../../_images/math/45f89ca2805e88c72d526ae82ff1c7455766f646.png" alt="|z| = R"/> will get fully saturated colors
+while <img class="math" src="../../_images/math/fa3d810d2aa2c40e88b6a57652d3ac14f6b31d9e.png" alt="|z| = 0"/> is black and <img class="math" src="../../_images/math/6ecfff25e8d77efe3adf19c64312adb789354644.png" alt="|z| \rightarrow \infty"/>
+get whiter and whiter.</li>
+<li><strong>axes</strong> &#8211; The axes instance used for plotting.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="contourcf">
+<h2><tt class="docutils literal"><span class="pre">contourcf</span></tt><a class="headerlink" href="#contourcf" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="WaveBlocksND.Plot.contourcf">
+<tt class="descclassname">WaveBlocksND.Plot.</tt><tt class="descname">contourcf</tt><big>(</big><em>gridx</em>, <em>gridy</em>, <em>values</em>, <em>leveldist=0.02</em>, <em>ax=None</em><big>)</big><a class="headerlink" href="#WaveBlocksND.Plot.contourcf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot a function <img class="math" src="../../_images/math/4bafd2ddd835d217757f07d13ce9fd7b0ca8392d.png" alt="f:I^2 
+ightarrow C"/> with contour levels.
+Put levels in linear and fixed distances on the third axis.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>gridx</strong> &#8211; The grid nodes along the <img class="math" src="../../_images/math/26eeb5258ca5099acf8fe96b2a1049c48c89a5e6.png" alt="x"/> axis of the real domain <img class="math" src="../../_images/math/62623d70eaa11458b42450ab31277cc88f4dbd6b.png" alt="R^2"/></li>
+<li><strong>gridy</strong> &#8211; The grid nodes along the <img class="math" src="../../_images/math/092e364e1d9d19ad5fffb0b46ef4cc7f2da02c1c.png" alt="y"/> axis of the real domain <img class="math" src="../../_images/math/62623d70eaa11458b42450ab31277cc88f4dbd6b.png" alt="R^2"/></li>
+<li><strong>values</strong> &#8211; The values <img class="math" src="../../_images/math/f6fa69bf141527c27a71998fbb0bfd4a8493fce6.png" alt="f(x,y)"/> of the function.</li>
+<li><strong>leveldist</strong> &#8211; The distance between the contour levels. Default is 0.02.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="stem3d">
+<h2><tt class="docutils literal"><span class="pre">stem3d</span></tt><a class="headerlink" href="#stem3d" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="WaveBlocksND.Plot.stem3d">
+<tt class="descclassname">WaveBlocksND.Plot.</tt><tt class="descname">stem3d</tt><big>(</big><em>u</em>, <em>v</em>, <em>w</em>, <em>fig=None</em>, <em>markerp='o'</em><big>)</big><a class="headerlink" href="#WaveBlocksND.Plot.stem3d" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function makes a three dimensional stem plot.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="stemcf3d">
+<h2><tt class="docutils literal"><span class="pre">stemcf3d</span></tt><a class="headerlink" href="#stemcf3d" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="WaveBlocksND.Plot.stemcf3d">
+<tt class="descclassname">WaveBlocksND.Plot.</tt><tt class="descname">stemcf3d</tt><big>(</big><em>gridu</em>, <em>gridv</em>, <em>phase</em>, <em>modulus</em>, <em>darken=None</em>, <em>fig=None</em>, <em>markerp='o'</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#WaveBlocksND.Plot.stemcf3d" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stemplot the modulus of a complex valued function <img class="math" src="../../_images/math/3dd9d84c99951fcdece11eb9ac5943741b3e0266.png" alt="f:I\times I -&gt; \mathbb{C}"/> together with its
+phase in a color coded fashion. Additional keyword arguments are passed to the plot function.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>gridu</strong> &#8211; The x components of the grid nodes of the real domain grid <img class="math" src="../../_images/math/913e49ea63c6c130bb8d9d1c3556b052ecc404f8.png" alt="\Gamma"/></li>
+<li><strong>gridv</strong> &#8211; The y components of the grid nodes of the real domain grid <img class="math" src="../../_images/math/913e49ea63c6c130bb8d9d1c3556b052ecc404f8.png" alt="\Gamma"/></li>
+<li><strong>phase</strong> &#8211; The phase of the complex domain result <img class="math" src="../../_images/math/c36eef2ba879a0aeef6ea1185633c315f811ca0f.png" alt="f(\Gamma)"/></li>
+<li><strong>modulus</strong> &#8211; The modulus of the complex domain result <img class="math" src="../../_images/math/c36eef2ba879a0aeef6ea1185633c315f811ca0f.png" alt="f(\Gamma)"/></li>
+<li><strong>darken</strong> &#8211; Whether to take into account the modulus of the data to darken colors.</li>
+<li><strong>fig</strong> &#8211; The figure instance used for plotting.</li>
+<li><strong>markerp</strong> &#8211; The shape of the stemmed markers.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="legend">
+<h2><tt class="docutils literal"><span class="pre">legend</span></tt><a class="headerlink" href="#legend" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="WaveBlocksND.Plot.legend">
+<tt class="descclassname">WaveBlocksND.Plot.</tt><tt class="descname">legend</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#WaveBlocksND.Plot.legend" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overwrites the pylab legend function.</p>
+<p>It adds another location identfier &#8216;outer right&#8217;
+which locates the legend on the right side of the plot</p>
+<p>The args and kwargs are forwarded to the pylab legend function</p>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Plot</a><ul>
+<li><a class="reference internal" href="#plotcf"><tt class="docutils literal"><span class="pre">plotcf</span></tt></a></li>
+<li><a class="reference internal" href="#plotcm"><tt class="docutils literal"><span class="pre">plotcm</span></tt></a></li>
+<li><a class="reference internal" href="#stemcf"><tt class="docutils literal"><span class="pre">stemcf</span></tt></a></li>
+<li><a class="reference internal" href="#plotcf2d"><tt class="docutils literal"><span class="pre">plotcf2d</span></tt></a></li>
+<li><a class="reference internal" href="#contourcf"><tt class="docutils literal"><span class="pre">contourcf</span></tt></a></li>
+<li><a class="reference internal" href="#stem3d"><tt class="docutils literal"><span class="pre">stem3d</span></tt></a></li>
+<li><a class="reference internal" href="#stemcf3d"><tt class="docutils literal"><span class="pre">stemcf3d</span></tt></a></li>
+<li><a class="reference internal" href="#legend"><tt class="docutils literal"><span class="pre">legend</span></tt></a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../BlockFactory.html"
+                        title="previous chapter">BlockFactory</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../plot3d/plot3d.html"
+                        title="next chapter">Plot 3D</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../_sources/waveblocks_classes/plot/plot.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../plot3d/plot3d.html" title="Plot 3D"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../BlockFactory.html" title="BlockFactory"
+             >previous</a> |</li>
+        <li><a href="../../index.html">WaveBlocksND devel documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, R. Bourquin.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,214 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>TrapezoidalQR &mdash; WaveBlocksND devel documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     'devel',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="WaveBlocksND devel documentation" href="../index.html" />
+    <link rel="next" title="GaussHermiteOriginalQR" href="GaussHermiteOriginalQR.html" />
+    <link rel="prev" title="QuadratureRule" href="QuadratureRule.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="GaussHermiteOriginalQR.html" title="GaussHermiteOriginalQR"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="QuadratureRule.html" title="QuadratureRule"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">WaveBlocksND devel documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="trapezoidalqr">
+<h1>TrapezoidalQR<a class="headerlink" href="#trapezoidalqr" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-WaveBlocksND">
+<span id="about-the-trapezoidalqr-class"></span><h2>About the <tt class="docutils literal"><span class="pre">TrapezoidalQR</span></tt> class<a class="headerlink" href="#module-WaveBlocksND" title="Permalink to this headline">¶</a></h2>
+<p>The WaveBlocks Project</p>
+<p>&#64;author: R. Bourquin
+&#64;copyright: Copyright (C) 2010, 2011, 2012, 2013, 2014 R. Bourquin
+&#64;license: Modified BSD License</p>
+</div>
+<div class="section" id="inheritance-diagram">
+<h2>Inheritance diagram<a class="headerlink" href="#inheritance-diagram" title="Permalink to this headline">¶</a></h2>
+<p class="graphviz">
+<img src="../_images/inheritance-b83c1bd80f5cee493d585a487b04331a65a55827.png" alt="Inheritance diagram of TrapezoidalQR" class="inheritance"/>
+</p>
+</div>
+<div class="section" id="class-documentation">
+<h2>Class documentation<a class="headerlink" href="#class-documentation" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="WaveBlocksND.TrapezoidalQR">
+<em class="property">class </em><tt class="descclassname">WaveBlocksND.</tt><tt class="descname">TrapezoidalQR</tt><big>(</big><em>left</em>, <em>right</em>, <em>number_nodes</em>, <em>options={}</em><big>)</big><a class="headerlink" href="#WaveBlocksND.TrapezoidalQR" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class implements a trapezoidal quadrature rule.</p>
+<dl class="method">
+<dt id="WaveBlocksND.TrapezoidalQR.get_description">
+<tt class="descname">get_description</tt><big>(</big><big>)</big><a class="headerlink" href="#WaveBlocksND.TrapezoidalQR.get_description" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a description of this quadrature rule object.
+A description is a <tt class="docutils literal"><span class="pre">dict</span></tt> containing all key-value pairs
+necessary to reconstruct the current instance. A description
+never contains any data.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="WaveBlocksND.TrapezoidalQR.get_dimension">
+<tt class="descname">get_dimension</tt><big>(</big><big>)</big><a class="headerlink" href="#WaveBlocksND.TrapezoidalQR.get_dimension" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The space dimension <img class="math" src="../_images/math/9ffb448918db29f2a72f8f87f421b3b3cad18f95.png" alt="D"/> of the quadrature rule.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="WaveBlocksND.TrapezoidalQR.get_nodes">
+<tt class="descname">get_nodes</tt><big>(</big><big>)</big><a class="headerlink" href="#WaveBlocksND.TrapezoidalQR.get_nodes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the quadrature nodes <img class="math" src="../_images/math/08090c52f275458c98d6e3fd1f9baf8bfd91cfe9.png" alt="\gamma_i"/>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">An array containing the quadrature nodes <img class="math" src="../_images/math/08090c52f275458c98d6e3fd1f9baf8bfd91cfe9.png" alt="\gamma_i"/>.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="WaveBlocksND.TrapezoidalQR.get_number_nodes">
+<tt class="descname">get_number_nodes</tt><big>(</big><big>)</big><a class="headerlink" href="#WaveBlocksND.TrapezoidalQR.get_number_nodes" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The number of quadrature nodes denoted by <img class="math" src="../_images/math/d85b78a13008f6b5839107bb086798bf5b6a37ae.png" alt="|\Gamma|"/> that are
+part of this quadrature rule <img class="math" src="../_images/math/e9e5a10197befc592d996ab016d50c11ce2384c4.png" alt="\Gamma = (\gamma, \omega)"/>.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="WaveBlocksND.TrapezoidalQR.get_weights">
+<tt class="descname">get_weights</tt><big>(</big><big>)</big><a class="headerlink" href="#WaveBlocksND.TrapezoidalQR.get_weights" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the quadrature weights <img class="math" src="../_images/math/8fc80d5e036efbaf3de0e9dab053194a1e6676ee.png" alt="\omega_i"/>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">An array containing the quadrature weights <img class="math" src="../_images/math/8fc80d5e036efbaf3de0e9dab053194a1e6676ee.png" alt="\omega_i"/>.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">TrapezoidalQR</a><ul>
+<li><a class="reference internal" href="#module-WaveBlocksND">About the <tt class="docutils literal"><span class="pre">TrapezoidalQR</span></tt> class</a></li>
+<li><a class="reference internal" href="#inheritance-diagram">Inheritance diagram</a></li>
+<li><a class="reference internal" href="#class-documentation">Class documentation</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="QuadratureRule.html"
+                        title="previous chapter">QuadratureRule</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="GaussHermiteOriginalQR.html"
+                        title="next chapter">GaussHermiteOriginalQR</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/waveblocks_classes/TrapezoidalQR.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="GaussHermiteOriginalQR.html" title="GaussHermiteOriginalQR"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="QuadratureRule.html" title="QuadratureRule"
+             >previous</a> |</li>
+        <li><a href="../index.html">WaveBlocksND devel documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, R. Bourquin.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

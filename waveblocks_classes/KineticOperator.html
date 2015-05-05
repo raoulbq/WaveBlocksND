@@ -1,0 +1,240 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>KineticOperator &mdash; WaveBlocksND devel documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     'devel',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="WaveBlocksND devel documentation" href="../index.html" />
+    <link rel="next" title="SplittingParameters" href="SplittingParameters.html" />
+    <link rel="prev" title="ObservablesLCWP" href="ObservablesLCWP.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="SplittingParameters.html" title="SplittingParameters"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="ObservablesLCWP.html" title="ObservablesLCWP"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">WaveBlocksND devel documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="kineticoperator">
+<h1>KineticOperator<a class="headerlink" href="#kineticoperator" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-WaveBlocksND">
+<span id="about-the-kineticoperator-class"></span><h2>About the <tt class="docutils literal"><span class="pre">KineticOperator</span></tt> class<a class="headerlink" href="#module-WaveBlocksND" title="Permalink to this headline">¶</a></h2>
+<p>The WaveBlocks Project</p>
+<p>&#64;author: R. Bourquin
+&#64;copyright: Copyright (C) 2010, 2011, 2012, 2013, 2014 R. Bourquin
+&#64;license: Modified BSD License</p>
+</div>
+<div class="section" id="inheritance-diagram">
+<h2>Inheritance diagram<a class="headerlink" href="#inheritance-diagram" title="Permalink to this headline">¶</a></h2>
+<p class="graphviz">
+<img src="../_images/inheritance-67205f63006dcb5746df01dfdc009e11d289261b.png" alt="Inheritance diagram of KineticOperator" class="inheritance"/>
+</p>
+</div>
+<div class="section" id="class-documentation">
+<h2>Class documentation<a class="headerlink" href="#class-documentation" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="WaveBlocksND.KineticOperator">
+<em class="property">class </em><tt class="descclassname">WaveBlocksND.</tt><tt class="descname">KineticOperator</tt><big>(</big><em>grid</em>, <em>eps=None</em><big>)</big><a class="headerlink" href="#WaveBlocksND.KineticOperator" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class represents the kinetic operator <img class="math" src="../_images/math/2554b6496c3b678897e9b060ef00aa9f0a7d7ece.png" alt="T"/> in Fourier space.</p>
+<dl class="method">
+<dt id="WaveBlocksND.KineticOperator.__init__">
+<tt class="descname">__init__</tt><big>(</big><em>grid</em>, <em>eps=None</em><big>)</big><a class="headerlink" href="#WaveBlocksND.KineticOperator.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the Fourier transformation of the position space representation
+of the kinetic operator <img class="math" src="../_images/math/2554b6496c3b678897e9b060ef00aa9f0a7d7ece.png" alt="T"/>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>grid</strong> &#8211; The position space grid <img class="math" src="../_images/math/913e49ea63c6c130bb8d9d1c3556b052ecc404f8.png" alt="\Gamma"/> of which we compute
+its Fourier transform <img class="math" src="../_images/math/9e2b196e9b7e57d1ec99f6534c581ea9759d2170.png" alt="\Omega"/>.</li>
+<li><strong>eps</strong> &#8211; The semi-classical scaling parameter <img class="math" src="../_images/math/e2a63918a6fa75b62ad87ad17aaf65f782d71546.png" alt="\varepsilon"/>. (optional)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="WaveBlocksND.KineticOperator.calculate_exponential">
+<tt class="descname">calculate_exponential</tt><big>(</big><em>factor=1.0</em><big>)</big><a class="headerlink" href="#WaveBlocksND.KineticOperator.calculate_exponential" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the exponential <img class="math" src="../_images/math/a91993fd48732e100ce5dedd9a24b37c1d71c81b.png" alt="\exp(\alpha \underline{\omega} \cdot \underline{\omega})"/>
+used in the Strang splitting.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>factor</strong> &#8211; The prefactor <img class="math" src="../_images/math/10f32377ac67d94f764f12a15ea987e88c85d3e1.png" alt="\alpha"/>. It defaults to 1 but is
+usually set to <img class="math" src="../_images/math/73705d466860e799a12e02778d2624e6352d93b9.png" alt="-\frac{i}{2} \varepsilon^2 \tau"/>
+by the caller.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="WaveBlocksND.KineticOperator.calculate_operator">
+<tt class="descname">calculate_operator</tt><big>(</big><em>eps=None</em><big>)</big><a class="headerlink" href="#WaveBlocksND.KineticOperator.calculate_operator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the kinetic operator <img class="math" src="../_images/math/1a6a1282deb3344ac9bd031eb208a586a3cf3d69.png" alt="\hat{T} = \frac{\varepsilon^4}{2} \underline{\omega} \cdot \underline{\omega}"/>
+in Fourier space.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>eps</strong> &#8211; The semi-classical scaling parameter <img class="math" src="../_images/math/e2a63918a6fa75b62ad87ad17aaf65f782d71546.png" alt="\varepsilon"/>. It has to
+be given here or during the initialization of the current instance.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="WaveBlocksND.KineticOperator.evaluate_at">
+<tt class="descname">evaluate_at</tt><big>(</big><em>grid=None</em><big>)</big><a class="headerlink" href="#WaveBlocksND.KineticOperator.evaluate_at" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluate the kinetic operator <img class="math" src="../_images/math/1a6a1282deb3344ac9bd031eb208a586a3cf3d69.png" alt="\hat{T} = \frac{\varepsilon^4}{2} \underline{\omega} \cdot \underline{\omega}"/>
+in Fourier space. This returns an numpy <tt class="docutils literal"><span class="pre">ndarray</span></tt> by using a specific <img class="math" src="../_images/math/cd1cef58ddd9c874e9d5bcdc608b0001224f972f.png" alt="\underline{\omega}"/>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>grid</strong> &#8211; Unused dummy parameter.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="WaveBlocksND.KineticOperator.evaluate_exponential_at">
+<tt class="descname">evaluate_exponential_at</tt><big>(</big><em>grid=None</em><big>)</big><a class="headerlink" href="#WaveBlocksND.KineticOperator.evaluate_exponential_at" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluate the exponential <img class="math" src="../_images/math/727854aa4d6849929bcd9a8ae57af01d1e31e084.png" alt="\exp(\alpha \hat{T})"/> in Fourier space.
+This returns a numpy <tt class="docutils literal"><span class="pre">ndarray</span></tt> by using a specific <img class="math" src="../_images/math/cd1cef58ddd9c874e9d5bcdc608b0001224f972f.png" alt="\underline{\omega}"/>.
+The factor <img class="math" src="../_images/math/10f32377ac67d94f764f12a15ea987e88c85d3e1.png" alt="\alpha"/> can be set by the corresponding method.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>grid</strong> &#8211; Unused dummy parameter.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="WaveBlocksND.KineticOperator.get_fourier_grid_axes">
+<tt class="descname">get_fourier_grid_axes</tt><big>(</big><big>)</big><a class="headerlink" href="#WaveBlocksND.KineticOperator.get_fourier_grid_axes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the grid axes of the Fourier space grid <img class="math" src="../_images/math/9e2b196e9b7e57d1ec99f6534c581ea9759d2170.png" alt="\Omega"/>.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">KineticOperator</a><ul>
+<li><a class="reference internal" href="#module-WaveBlocksND">About the <tt class="docutils literal"><span class="pre">KineticOperator</span></tt> class</a></li>
+<li><a class="reference internal" href="#inheritance-diagram">Inheritance diagram</a></li>
+<li><a class="reference internal" href="#class-documentation">Class documentation</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="ObservablesLCWP.html"
+                        title="previous chapter">ObservablesLCWP</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="SplittingParameters.html"
+                        title="next chapter">SplittingParameters</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/waveblocks_classes/KineticOperator.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="SplittingParameters.html" title="SplittingParameters"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="ObservablesLCWP.html" title="ObservablesLCWP"
+             >previous</a> |</li>
+        <li><a href="../index.html">WaveBlocksND devel documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, R. Bourquin.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

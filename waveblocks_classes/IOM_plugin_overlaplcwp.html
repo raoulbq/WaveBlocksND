@@ -1,0 +1,319 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>IOM_plugin_overlaplcwp &mdash; WaveBlocksND devel documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     'devel',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="WaveBlocksND devel documentation" href="../index.html" />
+    <link rel="next" title="IOM_plugin_norm" href="IOM_plugin_norm.html" />
+    <link rel="prev" title="IOM_plugin_lincombhawp" href="IOM_plugin_lincombhawp.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="IOM_plugin_norm.html" title="IOM_plugin_norm"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="IOM_plugin_lincombhawp.html" title="IOM_plugin_lincombhawp"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">WaveBlocksND devel documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="iom-plugin-overlaplcwp">
+<h1>IOM_plugin_overlaplcwp<a class="headerlink" href="#iom-plugin-overlaplcwp" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-WaveBlocksND">
+<span id="about-the-iom-plugin-overlaplcwp-class"></span><h2>About the <tt class="docutils literal"><span class="pre">IOM_plugin_overlaplcwp</span></tt> class<a class="headerlink" href="#module-WaveBlocksND" title="Permalink to this headline">¶</a></h2>
+<p>The WaveBlocks Project</p>
+<p>&#64;author: R. Bourquin
+&#64;copyright: Copyright (C) 2010, 2011, 2012, 2013, 2014 R. Bourquin
+&#64;license: Modified BSD License</p>
+</div>
+<div class="section" id="module-IOM_plugin_overlaplcwp">
+<span id="class-documentation"></span><h2>Class documentation<a class="headerlink" href="#module-IOM_plugin_overlaplcwp" title="Permalink to this headline">¶</a></h2>
+<p>The WaveBlocks Project</p>
+<p>IOM plugin providing functions for handling various
+overlap matrices of linear combinations of general
+wavepackets.</p>
+<p>&#64;author: R. Bourquin
+&#64;copyright: Copyright (C) 2013 R. Bourquin
+&#64;license: Modified BSD License</p>
+<dl class="function">
+<dt id="IOM_plugin_overlaplcwp.add_overlaplcwp">
+<tt class="descclassname">IOM_plugin_overlaplcwp.</tt><tt class="descname">add_overlaplcwp</tt><big>(</big><em>self</em>, <em>parameters</em>, <em>timeslots=None</em>, <em>matrixsize=None</em>, <em>blockid=0</em>, <em>key=('ov'</em>, <em>'ovkin'</em>, <em>'ovpot')</em><big>)</big><a class="reference internal" href="../_modules/IOM_plugin_overlaplcwp.html#add_overlaplcwp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#IOM_plugin_overlaplcwp.add_overlaplcwp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add storage for various overlap matrices. We can store one matrix type
+per key.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="87%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Key name</th>
+<th class="head">Matrix</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">ov</span></tt></td>
+<td><img class="math" src="../_images/math/9709d4c44c5596f290f3ddcdc9d8740b5ef9ef5c.png" alt="\langle\Upsilon | \Upsilon\rangle"/></td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">ovkin</span></tt></td>
+<td><img class="math" src="../_images/math/f2799d38f0a9677a65fb0efeb4158e20df99e912.png" alt="\langle\Upsilon | T | \Upsilon\rangle"/></td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">ovpot</span></tt></td>
+<td><img class="math" src="../_images/math/419a5612106900953e74d83be981434134ba8105.png" alt="\langle\Upsilon | V(\underline{x}) | \Upsilon\rangle"/></td>
+</tr>
+</tbody>
+</table>
+<p>Note that &#8216;strange&#8217; errors occur if we later try to load or save
+matrices for a key we did not initialise with this function.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>parameters</strong> &#8211; A <tt class="xref py py-class docutils literal"><span class="pre">ParameterProvider</span></tt> instance. It can
+be empty and is not used at the moment.</li>
+<li><strong>timeslots</strong> &#8211; The number of time slots we need. Can be set to <tt class="docutils literal"><span class="pre">None</span></tt>
+to get automatically growing datasets.</li>
+<li><strong>matrixsize</strong> (Pair of integers or <tt class="docutils literal"><span class="pre">None</span></tt>.) &#8211; The (maximal) size of each of the overlap matrices. If specified
+this remains fixed for all timeslots. Can be set to <tt class="docutils literal"><span class="pre">None</span></tt> (default)
+to get automatically growing datasets.</li>
+<li><strong>blockid</strong> &#8211; The ID of the data block to operate on.</li>
+<li><strong>key</strong> (Tuple of valid identifier strings that are <tt class="docutils literal"><span class="pre">ov</span></tt>, <tt class="docutils literal"><span class="pre">ovkin</span></tt> and <tt class="docutils literal"><span class="pre">ovpot</span></tt>.
+Default is <tt class="docutils literal"><span class="pre">(&quot;ov&quot;,</span> <span class="pre">&quot;ovkin&quot;,</span> <span class="pre">&quot;ovpot&quot;)</span></tt>.) &#8211; Specify which overlap matrices to save. All are independent.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="IOM_plugin_overlaplcwp.delete_overlaplcwp">
+<tt class="descclassname">IOM_plugin_overlaplcwp.</tt><tt class="descname">delete_overlaplcwp</tt><big>(</big><em>self</em>, <em>blockid=0</em><big>)</big><a class="reference internal" href="../_modules/IOM_plugin_overlaplcwp.html#delete_overlaplcwp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#IOM_plugin_overlaplcwp.delete_overlaplcwp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove the stored overlap matrices.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>blockid</strong> &#8211; The ID of the data block to operate on.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="IOM_plugin_overlaplcwp.has_overlaplcwp">
+<tt class="descclassname">IOM_plugin_overlaplcwp.</tt><tt class="descname">has_overlaplcwp</tt><big>(</big><em>self</em>, <em>blockid=0</em>, <em>key=('ov'</em>, <em>'ovkin'</em>, <em>'ovpot')</em><big>)</big><a class="reference internal" href="../_modules/IOM_plugin_overlaplcwp.html#has_overlaplcwp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#IOM_plugin_overlaplcwp.has_overlaplcwp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Ask if the specified data block has the desired data tensor.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>blockid</strong> &#8211; The ID of the data block to operate on.</li>
+<li><strong>key</strong> (Tuple of valid identifier strings that are <tt class="docutils literal"><span class="pre">ov</span></tt>, <tt class="docutils literal"><span class="pre">ovkin</span></tt> and <tt class="docutils literal"><span class="pre">ovpot</span></tt>.
+Default is <tt class="docutils literal"><span class="pre">(&quot;ov&quot;,</span> <span class="pre">&quot;ovkin&quot;,</span> <span class="pre">&quot;ovpot&quot;)</span></tt>.) &#8211; Specify which overlap matrices to save. All are independent.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="IOM_plugin_overlaplcwp.load_overlaplcwp">
+<tt class="descclassname">IOM_plugin_overlaplcwp.</tt><tt class="descname">load_overlaplcwp</tt><big>(</big><em>self</em>, <em>timestep=None</em>, <em>blockid=0</em>, <em>key=('ov'</em>, <em>'ovkin'</em>, <em>'ovpot')</em><big>)</big><a class="reference internal" href="../_modules/IOM_plugin_overlaplcwp.html#load_overlaplcwp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#IOM_plugin_overlaplcwp.load_overlaplcwp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load overlap matrices of linear combinations of general wavepackets.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>timestep</strong> &#8211; Load only the data of this timestep.</li>
+<li><strong>split</strong> &#8211; Split the data array into one array for each component.</li>
+<li><strong>blockid</strong> &#8211; The ID of the data block to operate on.</li>
+<li><strong>key</strong> (Tuple of valid identifier strings that are <tt class="docutils literal"><span class="pre">ov</span></tt>, <tt class="docutils literal"><span class="pre">ovkin</span></tt> and <tt class="docutils literal"><span class="pre">ovpot</span></tt>.
+Default is <tt class="docutils literal"><span class="pre">(&quot;ov&quot;,</span> <span class="pre">&quot;ovkin&quot;,</span> <span class="pre">&quot;ovpot&quot;)</span></tt>.) &#8211; Specify which overlap matrices to save. All are independent.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A list of <tt class="xref py py-class docutils literal"><span class="pre">ndarray</span></tt> items. Their shapes depend on the
+exact value of the above arguments.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="IOM_plugin_overlaplcwp.load_overlaplcwp_shape">
+<tt class="descclassname">IOM_plugin_overlaplcwp.</tt><tt class="descname">load_overlaplcwp_shape</tt><big>(</big><em>self</em>, <em>blockid=0</em>, <em>key=('ov'</em>, <em>'ovkin'</em>, <em>'ovpot')</em><big>)</big><a class="reference internal" href="../_modules/IOM_plugin_overlaplcwp.html#load_overlaplcwp_shape"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#IOM_plugin_overlaplcwp.load_overlaplcwp_shape" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load the shape of the overlap matrices specified.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>blockid</strong> &#8211; The ID of the data block to operate on.</li>
+<li><strong>key</strong> (Tuple of valid identifier strings that are <tt class="docutils literal"><span class="pre">ov</span></tt>, <tt class="docutils literal"><span class="pre">ovkin</span></tt> and <tt class="docutils literal"><span class="pre">ovpot</span></tt>.
+Default is <tt class="docutils literal"><span class="pre">(&quot;ov&quot;,</span> <span class="pre">&quot;ovkin&quot;,</span> <span class="pre">&quot;ovpot&quot;)</span></tt>.) &#8211; Specify which overlap matrices to save. All are independent.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A list of <tt class="xref py py-class docutils literal"><span class="pre">ndarray</span></tt> each having two columns.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="IOM_plugin_overlaplcwp.load_overlaplcwp_timegrid">
+<tt class="descclassname">IOM_plugin_overlaplcwp.</tt><tt class="descname">load_overlaplcwp_timegrid</tt><big>(</big><em>self</em>, <em>blockid=0</em>, <em>key=('ov'</em>, <em>'ovkin'</em>, <em>'ovpot')</em><big>)</big><a class="reference internal" href="../_modules/IOM_plugin_overlaplcwp.html#load_overlaplcwp_timegrid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#IOM_plugin_overlaplcwp.load_overlaplcwp_timegrid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load the timegrid corresponding to the overlap matrices specified.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>blockid</strong> &#8211; The ID of the data block to operate on.</li>
+<li><strong>key</strong> (Tuple of valid identifier strings that are <tt class="docutils literal"><span class="pre">ov</span></tt>, <tt class="docutils literal"><span class="pre">ovkin</span></tt> and <tt class="docutils literal"><span class="pre">ovpot</span></tt>.
+Default is <tt class="docutils literal"><span class="pre">(&quot;ov&quot;,</span> <span class="pre">&quot;ovkin&quot;,</span> <span class="pre">&quot;ovpot&quot;)</span></tt>.) &#8211; Specify which overlap matrices to load. All are independent.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A list of <tt class="xref py py-class docutils literal"><span class="pre">ndarray</span></tt> each having one column.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="IOM_plugin_overlaplcwp.save_overlaplcwp">
+<tt class="descclassname">IOM_plugin_overlaplcwp.</tt><tt class="descname">save_overlaplcwp</tt><big>(</big><em>self</em>, <em>data</em>, <em>timestep=None</em>, <em>blockid=0</em>, <em>key=('ov'</em>, <em>'ovkin'</em>, <em>'ovpot')</em><big>)</big><a class="reference internal" href="../_modules/IOM_plugin_overlaplcwp.html#save_overlaplcwp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#IOM_plugin_overlaplcwp.save_overlaplcwp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save overlap matrices of linear combinations of general wavepackets.
+In principle this function also supports non-square matrices.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>data</strong> (A list of <tt class="xref py py-class docutils literal"><span class="pre">ndarray</span></tt> entries.) &#8211; The data matrices to save.</li>
+<li><strong>timestep</strong> &#8211; The timestep at which we save the data.</li>
+<li><strong>blockid</strong> &#8211; The ID of the data block to operate on.</li>
+<li><strong>key</strong> (Tuple of valid identifier strings that are <tt class="docutils literal"><span class="pre">ov</span></tt>, <tt class="docutils literal"><span class="pre">ovkin</span></tt> and <tt class="docutils literal"><span class="pre">ovpot</span></tt>.
+Default is <tt class="docutils literal"><span class="pre">(&quot;ov&quot;,</span> <span class="pre">&quot;ovkin&quot;,</span> <span class="pre">&quot;ovpot&quot;)</span></tt>.) &#8211; Specify which overlap matrices to save. All are independent.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">IOM_plugin_overlaplcwp</a><ul>
+<li><a class="reference internal" href="#module-WaveBlocksND">About the <tt class="docutils literal"><span class="pre">IOM_plugin_overlaplcwp</span></tt> class</a></li>
+<li><a class="reference internal" href="#module-IOM_plugin_overlaplcwp">Class documentation</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="IOM_plugin_lincombhawp.html"
+                        title="previous chapter">IOM_plugin_lincombhawp</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="IOM_plugin_norm.html"
+                        title="next chapter">IOM_plugin_norm</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/waveblocks_classes/IOM_plugin_overlaplcwp.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="IOM_plugin_norm.html" title="IOM_plugin_norm"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="IOM_plugin_lincombhawp.html" title="IOM_plugin_lincombhawp"
+             >previous</a> |</li>
+        <li><a href="../index.html">WaveBlocksND devel documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, R. Bourquin.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

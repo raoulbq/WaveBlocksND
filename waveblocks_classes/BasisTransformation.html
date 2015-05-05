@@ -1,0 +1,180 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>BasisTransformation &mdash; WaveBlocksND devel documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     'devel',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="WaveBlocksND devel documentation" href="../index.html" />
+    <link rel="next" title="BasisTransformationWF" href="BasisTransformationWF.html" />
+    <link rel="prev" title="GradientHAWP" href="GradientHAWP.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="BasisTransformationWF.html" title="BasisTransformationWF"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="GradientHAWP.html" title="GradientHAWP"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">WaveBlocksND devel documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="basistransformation">
+<h1>BasisTransformation<a class="headerlink" href="#basistransformation" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-WaveBlocksND">
+<span id="about-the-basistransformation-class"></span><h2>About the <tt class="docutils literal"><span class="pre">BasisTransformation</span></tt> class<a class="headerlink" href="#module-WaveBlocksND" title="Permalink to this headline">¶</a></h2>
+<p>The WaveBlocks Project</p>
+<p>&#64;author: R. Bourquin
+&#64;copyright: Copyright (C) 2010, 2011, 2012, 2013, 2014 R. Bourquin
+&#64;license: Modified BSD License</p>
+</div>
+<div class="section" id="inheritance-diagram">
+<h2>Inheritance diagram<a class="headerlink" href="#inheritance-diagram" title="Permalink to this headline">¶</a></h2>
+<p class="graphviz">
+<img src="../_images/inheritance-d6e5e3525fdbd3fcea8d484ac6515019266175c1.png" alt="Inheritance diagram of BasisTransformation" class="inheritance"/>
+</p>
+</div>
+<div class="section" id="class-documentation">
+<h2>Class documentation<a class="headerlink" href="#class-documentation" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="WaveBlocksND.BasisTransformation">
+<em class="property">class </em><tt class="descclassname">WaveBlocksND.</tt><tt class="descname">BasisTransformation</tt><big>(</big><em>potential</em><big>)</big><a class="headerlink" href="#WaveBlocksND.BasisTransformation" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class is the interface definition for general basis transformation
+procedures. The transformation switches between the canonical basis of the
+potential <img class="math" src="../_images/math/2e93af720b470a88780063377da0dd4f28e4a9f5.png" alt="V(x)"/> and its eigenbasis <img class="math" src="../_images/math/3222e2e8733d4e10d63bf38486a6cd0ca73821c0.png" alt="\Lambda(x)"/> consisting
+of the energy levels <img class="math" src="../_images/math/2512a3a003f8eba5e1d11a910056030caa5117ca.png" alt="\lambda_i(x)"/> with <img class="math" src="../_images/math/dbc57a15af5186529207f9e3df5882092997e94d.png" alt="i \in [0, \ldots, N]"/>.</p>
+<dl class="method">
+<dt id="WaveBlocksND.BasisTransformation.__init__">
+<tt class="descname">__init__</tt><big>(</big><em>potential</em><big>)</big><a class="headerlink" href="#WaveBlocksND.BasisTransformation.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new <a class="reference internal" href="#WaveBlocksND.BasisTransformation" title="WaveBlocksND.BasisTransformation"><tt class="xref py py-class docutils literal"><span class="pre">BasisTransformation</span></tt></a> instance for a given potential
+matrix <img class="math" src="../_images/math/2e93af720b470a88780063377da0dd4f28e4a9f5.png" alt="V(x)"/>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>potential</strong> (A <a class="reference internal" href="MatrixPotential.html#WaveBlocksND.MatrixPotential" title="WaveBlocksND.MatrixPotential"><tt class="xref py py-class docutils literal"><span class="pre">MatrixPotential</span></tt></a> instance.) &#8211; The potential underlying the basis transformation.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="WaveBlocksND.BasisTransformation.transform_to_canonical">
+<tt class="descname">transform_to_canonical</tt><big>(</big><em>transformable</em><big>)</big><a class="headerlink" href="#WaveBlocksND.BasisTransformation.transform_to_canonical" title="Permalink to this definition">¶</a></dt>
+<dd><p>Do nothing, implement an identity transformation.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="WaveBlocksND.BasisTransformation.transform_to_eigen">
+<tt class="descname">transform_to_eigen</tt><big>(</big><em>transformable</em><big>)</big><a class="headerlink" href="#WaveBlocksND.BasisTransformation.transform_to_eigen" title="Permalink to this definition">¶</a></dt>
+<dd><p>Do nothing, implement an identity transformation.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">BasisTransformation</a><ul>
+<li><a class="reference internal" href="#module-WaveBlocksND">About the <tt class="docutils literal"><span class="pre">BasisTransformation</span></tt> class</a></li>
+<li><a class="reference internal" href="#inheritance-diagram">Inheritance diagram</a></li>
+<li><a class="reference internal" href="#class-documentation">Class documentation</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="GradientHAWP.html"
+                        title="previous chapter">GradientHAWP</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="BasisTransformationWF.html"
+                        title="next chapter">BasisTransformationWF</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/waveblocks_classes/BasisTransformation.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="BasisTransformationWF.html" title="BasisTransformationWF"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="GradientHAWP.html" title="GradientHAWP"
+             >previous</a> |</li>
+        <li><a href="../index.html">WaveBlocksND devel documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, R. Bourquin.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

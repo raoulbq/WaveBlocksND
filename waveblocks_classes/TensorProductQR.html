@@ -1,0 +1,259 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>TensorProductQR &mdash; WaveBlocksND devel documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     'devel',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="WaveBlocksND devel documentation" href="../index.html" />
+    <link rel="next" title="SmolyakQR" href="SmolyakQR.html" />
+    <link rel="prev" title="GaussLaguerreQR" href="GaussLaguerreQR.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="SmolyakQR.html" title="SmolyakQR"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="GaussLaguerreQR.html" title="GaussLaguerreQR"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">WaveBlocksND devel documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="tensorproductqr">
+<h1>TensorProductQR<a class="headerlink" href="#tensorproductqr" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-WaveBlocksND">
+<span id="about-the-tensorproductqr-class"></span><h2>About the <tt class="docutils literal"><span class="pre">TensorProductQR</span></tt> class<a class="headerlink" href="#module-WaveBlocksND" title="Permalink to this headline">¶</a></h2>
+<p>The WaveBlocks Project</p>
+<p>&#64;author: R. Bourquin
+&#64;copyright: Copyright (C) 2010, 2011, 2012, 2013, 2014 R. Bourquin
+&#64;license: Modified BSD License</p>
+</div>
+<div class="section" id="inheritance-diagram">
+<h2>Inheritance diagram<a class="headerlink" href="#inheritance-diagram" title="Permalink to this headline">¶</a></h2>
+<p class="graphviz">
+<img src="../_images/inheritance-5a136ac021df6de32c354853276147dfe81063cf.png" alt="Inheritance diagram of TensorProductQR" class="inheritance"/>
+</p>
+</div>
+<div class="section" id="class-documentation">
+<h2>Class documentation<a class="headerlink" href="#class-documentation" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="WaveBlocksND.TensorProductQR">
+<em class="property">class </em><tt class="descclassname">WaveBlocksND.</tt><tt class="descname">TensorProductQR</tt><big>(</big><em>rules</em>, <em>options={}</em><big>)</big><a class="headerlink" href="#WaveBlocksND.TensorProductQR" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class implements the construction of high dimensional
+quadrature rules from one-dimensional ones by taking tensor products.</p>
+<dl class="method">
+<dt id="WaveBlocksND.TensorProductQR.__init__">
+<tt class="descname">__init__</tt><big>(</big><em>rules</em>, <em>options={}</em><big>)</big><a class="headerlink" href="#WaveBlocksND.TensorProductQR.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize a <a class="reference internal" href="#WaveBlocksND.TensorProductQR" title="WaveBlocksND.TensorProductQR"><tt class="xref py py-class docutils literal"><span class="pre">TensorProductQR</span></tt></a> instance.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>rules</strong> &#8211; A list of <a class="reference internal" href="QuadratureRule.html#WaveBlocksND.QuadratureRule" title="WaveBlocksND.QuadratureRule"><tt class="xref py py-class docutils literal"><span class="pre">QuadratureRule</span></tt></a> subclass instances. Their
+nodes and weights will be used to compute the tensor product.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="WaveBlocksND.TensorProductQR.construct_rule">
+<tt class="descname">construct_rule</tt><big>(</big><big>)</big><a class="headerlink" href="#WaveBlocksND.TensorProductQR.construct_rule" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the tensor product of the given quadrature rules.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This is an internal method and there should be no reason
+to explicitely call it manually.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The nodes <img class="math" src="../_images/math/6e8d7600cbbeb6cc9754abf60be6a1e5e8c1edc1.png" alt="\{\gamma_i\}_i"/> and weights <img class="math" src="../_images/math/92c31058dda53919e52954724ff370cd42cce430.png" alt="\{\omega_i\}_i"/>
+of the tensor product quadrature rule. The array of all
+nodes has a shape of <img class="math" src="../_images/math/65386017ecf42bb0ef1872b47350d2d05d532fe7.png" alt="(D, |\Gamma|)"/> and the
+array of weights is of shape <img class="math" src="../_images/math/8d6f234e3a56736068d2a65845af023f3ca3b5dc.png" alt="(|\Gamma|)"/>.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="WaveBlocksND.TensorProductQR.get_description">
+<tt class="descname">get_description</tt><big>(</big><big>)</big><a class="headerlink" href="#WaveBlocksND.TensorProductQR.get_description" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a description of this quadrature rule object.
+A description is a <tt class="docutils literal"><span class="pre">dict</span></tt> containing all key-value pairs
+necessary to reconstruct the current instance. A description
+never contains any data.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="WaveBlocksND.TensorProductQR.get_dimension">
+<tt class="descname">get_dimension</tt><big>(</big><big>)</big><a class="headerlink" href="#WaveBlocksND.TensorProductQR.get_dimension" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The space dimension <img class="math" src="../_images/math/9ffb448918db29f2a72f8f87f421b3b3cad18f95.png" alt="D"/> of the quadrature rule.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="WaveBlocksND.TensorProductQR.get_nodes">
+<tt class="descname">get_nodes</tt><big>(</big><em>flat=True</em>, <em>split=False</em><big>)</big><a class="headerlink" href="#WaveBlocksND.TensorProductQR.get_nodes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the quadrature nodes <img class="math" src="../_images/math/6e8d7600cbbeb6cc9754abf60be6a1e5e8c1edc1.png" alt="\{\gamma_i\}_i"/>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>flat</strong> (Boolean, default is <tt class="docutils literal"><span class="pre">True</span></tt>.) &#8211; Dummy parameter for API compatibility with Grids.</li>
+<li><strong>split</strong> (Boolean, default is <tt class="docutils literal"><span class="pre">False</span></tt>.) &#8211; Dummy parameter for API compatibility with Grids.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">An <tt class="xref py py-class docutils literal"><span class="pre">ndarray</span></tt> containing the quadrature nodes <img class="math" src="../_images/math/6e8d7600cbbeb6cc9754abf60be6a1e5e8c1edc1.png" alt="\{\gamma_i\}_i"/>.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="WaveBlocksND.TensorProductQR.get_number_nodes">
+<tt class="descname">get_number_nodes</tt><big>(</big><big>)</big><a class="headerlink" href="#WaveBlocksND.TensorProductQR.get_number_nodes" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The number of quadrature nodes denoted by <img class="math" src="../_images/math/d85b78a13008f6b5839107bb086798bf5b6a37ae.png" alt="|\Gamma|"/> that are
+part of this quadrature rule <img class="math" src="../_images/math/e9e5a10197befc592d996ab016d50c11ce2384c4.png" alt="\Gamma = (\gamma, \omega)"/>.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="WaveBlocksND.TensorProductQR.get_weights">
+<tt class="descname">get_weights</tt><big>(</big><big>)</big><a class="headerlink" href="#WaveBlocksND.TensorProductQR.get_weights" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the quadrature weights <img class="math" src="../_images/math/92c31058dda53919e52954724ff370cd42cce430.png" alt="\{\omega_i\}_i"/>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">An <tt class="xref py py-class docutils literal"><span class="pre">ndarray</span></tt> containing the quadrature weights <img class="math" src="../_images/math/92c31058dda53919e52954724ff370cd42cce430.png" alt="\{\omega_i\}_i"/>.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">TensorProductQR</a><ul>
+<li><a class="reference internal" href="#module-WaveBlocksND">About the <tt class="docutils literal"><span class="pre">TensorProductQR</span></tt> class</a></li>
+<li><a class="reference internal" href="#inheritance-diagram">Inheritance diagram</a></li>
+<li><a class="reference internal" href="#class-documentation">Class documentation</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="GaussLaguerreQR.html"
+                        title="previous chapter">GaussLaguerreQR</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="SmolyakQR.html"
+                        title="next chapter">SmolyakQR</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/waveblocks_classes/TensorProductQR.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="SmolyakQR.html" title="SmolyakQR"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="GaussLaguerreQR.html" title="GaussLaguerreQR"
+             >previous</a> |</li>
+        <li><a href="../index.html">WaveBlocksND devel documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, R. Bourquin.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

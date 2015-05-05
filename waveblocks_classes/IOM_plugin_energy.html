@@ -1,0 +1,260 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>IOM_plugin_energy &mdash; WaveBlocksND devel documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     'devel',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="WaveBlocksND devel documentation" href="../index.html" />
+    <link rel="next" title="GlobalDefaults" href="GlobalDefaults.html" />
+    <link rel="prev" title="IOM_plugin_norm" href="IOM_plugin_norm.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="GlobalDefaults.html" title="GlobalDefaults"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="IOM_plugin_norm.html" title="IOM_plugin_norm"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">WaveBlocksND devel documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="iom-plugin-energy">
+<h1>IOM_plugin_energy<a class="headerlink" href="#iom-plugin-energy" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-WaveBlocksND">
+<span id="about-the-iom-plugin-energy-class"></span><h2>About the <tt class="docutils literal"><span class="pre">IOM_plugin_energy</span></tt> class<a class="headerlink" href="#module-WaveBlocksND" title="Permalink to this headline">¶</a></h2>
+<p>The WaveBlocks Project</p>
+<p>&#64;author: R. Bourquin
+&#64;copyright: Copyright (C) 2010, 2011, 2012, 2013, 2014 R. Bourquin
+&#64;license: Modified BSD License</p>
+</div>
+<div class="section" id="module-IOM_plugin_energy">
+<span id="class-documentation"></span><h2>Class documentation<a class="headerlink" href="#module-IOM_plugin_energy" title="Permalink to this headline">¶</a></h2>
+<p>The WaveBlocks Project</p>
+<p>IOM plugin providing functions for handling energy data.</p>
+<p>&#64;author: R. Bourquin
+&#64;copyright: Copyright (C) 2010, 2011, 2012, 2013 R. Bourquin
+&#64;license: Modified BSD License</p>
+<dl class="function">
+<dt id="IOM_plugin_energy.add_energy">
+<tt class="descclassname">IOM_plugin_energy.</tt><tt class="descname">add_energy</tt><big>(</big><em>self</em>, <em>parameters</em>, <em>timeslots=None</em>, <em>blockid=0</em>, <em>key=('kin'</em>, <em>'pot')</em><big>)</big><a class="reference internal" href="../_modules/IOM_plugin_energy.html#add_energy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#IOM_plugin_energy.add_energy" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>parameters</strong> &#8211; A <tt class="xref py py-class docutils literal"><span class="pre">ParameterProvider</span></tt> instance containing
+at least the key <cite>ncomponents</cite>.</li>
+<li><strong>timeslots</strong> &#8211; The number of time slots we need. Can be set to <tt class="docutils literal"><span class="pre">None</span></tt>
+to get automatically growing datasets.</li>
+<li><strong>blockid</strong> &#8211; The ID of the data block to operate on.</li>
+<li><strong>key</strong> (Tuple of valid identifier strings that are <tt class="docutils literal"><span class="pre">kin</span></tt>, <tt class="docutils literal"><span class="pre">pot</span></tt> and <tt class="docutils literal"><span class="pre">tot</span></tt>.
+Default is <tt class="docutils literal"><span class="pre">(&quot;kin&quot;,</span> <span class="pre">&quot;pot&quot;)</span></tt>.) &#8211; Specify which energies to save. All are independent.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="IOM_plugin_energy.delete_energy">
+<tt class="descclassname">IOM_plugin_energy.</tt><tt class="descname">delete_energy</tt><big>(</big><em>self</em>, <em>blockid=0</em><big>)</big><a class="reference internal" href="../_modules/IOM_plugin_energy.html#delete_energy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#IOM_plugin_energy.delete_energy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove the stored energies</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>blockid</strong> &#8211; The ID of the data block to operate on.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="IOM_plugin_energy.has_energy">
+<tt class="descclassname">IOM_plugin_energy.</tt><tt class="descname">has_energy</tt><big>(</big><em>self</em>, <em>blockid=0</em>, <em>key=('kin'</em>, <em>'pot')</em><big>)</big><a class="reference internal" href="../_modules/IOM_plugin_energy.html#has_energy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#IOM_plugin_energy.has_energy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Ask if the specified data block has the desired data tensor.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>blockid</strong> &#8211; The ID of the data block to operate on.</li>
+<li><strong>key</strong> (Tuple of valid identifier strings that are <tt class="docutils literal"><span class="pre">kin</span></tt>, <tt class="docutils literal"><span class="pre">pot</span></tt> and <tt class="docutils literal"><span class="pre">tot</span></tt>.
+Default is <tt class="docutils literal"><span class="pre">(&quot;kin&quot;,</span> <span class="pre">&quot;pot&quot;)</span></tt>.) &#8211; Specify which energies to save. All are independent.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="IOM_plugin_energy.load_energy">
+<tt class="descclassname">IOM_plugin_energy.</tt><tt class="descname">load_energy</tt><big>(</big><em>self</em>, <em>timestep=None</em>, <em>split=False</em>, <em>blockid=0</em>, <em>key=('kin'</em>, <em>'pot')</em><big>)</big><a class="reference internal" href="../_modules/IOM_plugin_energy.html#load_energy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#IOM_plugin_energy.load_energy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load the energy data.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>timestep</strong> &#8211; Load only the data of this timestep.</li>
+<li><strong>split</strong> &#8211; Split the array into arrays for each component.</li>
+<li><strong>blockid</strong> &#8211; The ID of the data block to operate on.</li>
+<li><strong>key</strong> (Tuple of valid identifier strings that are <tt class="docutils literal"><span class="pre">kin</span></tt>, <tt class="docutils literal"><span class="pre">pot</span></tt> and <tt class="docutils literal"><span class="pre">tot</span></tt>.
+Default is <tt class="docutils literal"><span class="pre">(&quot;kin&quot;,</span> <span class="pre">&quot;pot&quot;)</span></tt>.) &#8211; Specify which energies to save. All are independent.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="IOM_plugin_energy.load_energy_timegrid">
+<tt class="descclassname">IOM_plugin_energy.</tt><tt class="descname">load_energy_timegrid</tt><big>(</big><em>self</em>, <em>blockid=0</em>, <em>key=('kin'</em>, <em>'pot')</em><big>)</big><a class="reference internal" href="../_modules/IOM_plugin_energy.html#load_energy_timegrid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#IOM_plugin_energy.load_energy_timegrid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load the time grid for specified energies.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>blockid</strong> &#8211; The ID of the data block to operate on.</li>
+<li><strong>key</strong> (Tuple of valid identifier strings that are <tt class="docutils literal"><span class="pre">kin</span></tt>, <tt class="docutils literal"><span class="pre">pot</span></tt> and <tt class="docutils literal"><span class="pre">tot</span></tt>.
+Default is <tt class="docutils literal"><span class="pre">(&quot;kin&quot;,</span> <span class="pre">&quot;pot&quot;)</span></tt>.) &#8211; Specify which energy timegrids to load. All are independent.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="IOM_plugin_energy.save_energy">
+<tt class="descclassname">IOM_plugin_energy.</tt><tt class="descname">save_energy</tt><big>(</big><em>self</em>, <em>energies</em>, <em>timestep=None</em>, <em>blockid=0</em>, <em>key=('kin'</em>, <em>'pot')</em><big>)</big><a class="reference internal" href="../_modules/IOM_plugin_energy.html#save_energy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#IOM_plugin_energy.save_energy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save the kinetic and potential energies to a file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>energies</strong> &#8211; A tuple containing the energies. The order is important,
+it has to match the order in the <tt class="docutils literal"><span class="pre">key</span></tt> argument. Per default
+the order has to be <img class="math" src="../_images/math/f4c65395291310136da0159fa082f3ca55458f8d.png" alt="(E_\text{kin}, E_\text{pot})"/>.</li>
+<li><strong>timestep</strong> &#8211; The timestep at which we save the data.</li>
+<li><strong>blockid</strong> &#8211; The ID of the data block to operate on.</li>
+<li><strong>key</strong> (Tuple of valid identifier strings that are <tt class="docutils literal"><span class="pre">kin</span></tt>, <tt class="docutils literal"><span class="pre">pot</span></tt> and <tt class="docutils literal"><span class="pre">tot</span></tt>.
+Default is <tt class="docutils literal"><span class="pre">(&quot;kin&quot;,</span> <span class="pre">&quot;pot&quot;)</span></tt>.) &#8211; Specify which energies to save. All are independent.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">IOM_plugin_energy</a><ul>
+<li><a class="reference internal" href="#module-WaveBlocksND">About the <tt class="docutils literal"><span class="pre">IOM_plugin_energy</span></tt> class</a></li>
+<li><a class="reference internal" href="#module-IOM_plugin_energy">Class documentation</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="IOM_plugin_norm.html"
+                        title="previous chapter">IOM_plugin_norm</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="GlobalDefaults.html"
+                        title="next chapter">GlobalDefaults</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/waveblocks_classes/IOM_plugin_energy.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="GlobalDefaults.html" title="GlobalDefaults"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="IOM_plugin_norm.html" title="IOM_plugin_norm"
+             >previous</a> |</li>
+        <li><a href="../index.html">WaveBlocksND devel documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, R. Bourquin.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

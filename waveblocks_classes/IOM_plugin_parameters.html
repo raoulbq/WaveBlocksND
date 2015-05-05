@@ -1,0 +1,234 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>IOM_plugin_parameters &mdash; WaveBlocksND devel documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     'devel',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="WaveBlocksND devel documentation" href="../index.html" />
+    <link rel="next" title="IOM_plugin_grid" href="IOM_plugin_grid.html" />
+    <link rel="prev" title="IOManager" href="IOManager.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="IOM_plugin_grid.html" title="IOM_plugin_grid"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="IOManager.html" title="IOManager"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">WaveBlocksND devel documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="iom-plugin-parameters">
+<h1>IOM_plugin_parameters<a class="headerlink" href="#iom-plugin-parameters" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-WaveBlocksND">
+<span id="about-the-iom-plugin-parameters-class"></span><h2>About the <tt class="docutils literal"><span class="pre">IOM_plugin_parameters</span></tt> class<a class="headerlink" href="#module-WaveBlocksND" title="Permalink to this headline">¶</a></h2>
+<p>The WaveBlocks Project</p>
+<p>&#64;author: R. Bourquin
+&#64;copyright: Copyright (C) 2010, 2011, 2012, 2013, 2014 R. Bourquin
+&#64;license: Modified BSD License</p>
+</div>
+<div class="section" id="module-IOM_plugin_parameters">
+<span id="class-documentation"></span><h2>Class documentation<a class="headerlink" href="#module-IOM_plugin_parameters" title="Permalink to this headline">¶</a></h2>
+<p>The WaveBlocks Project</p>
+<p>IOM plugin providing functions for handling simulation parameter data.</p>
+<p>&#64;author: R. Bourquin
+&#64;copyright: Copyright (C) 2011, 2012 R. Bourquin
+&#64;license: Modified BSD License</p>
+<dl class="function">
+<dt id="IOM_plugin_parameters.add_parameters">
+<tt class="descclassname">IOM_plugin_parameters.</tt><tt class="descname">add_parameters</tt><big>(</big><em>self</em>, <em>blockid='global'</em><big>)</big><a class="reference internal" href="../_modules/IOM_plugin_parameters.html#add_parameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#IOM_plugin_parameters.add_parameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add storage for the simulation parameters.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>blockid</strong> &#8211; The ID of the data block to operate on.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="IOM_plugin_parameters.delete_parameters">
+<tt class="descclassname">IOM_plugin_parameters.</tt><tt class="descname">delete_parameters</tt><big>(</big><em>self</em>, <em>blockid='global'</em><big>)</big><a class="reference internal" href="../_modules/IOM_plugin_parameters.html#delete_parameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#IOM_plugin_parameters.delete_parameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove the stored simulation parameters.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>blockid</strong> &#8211; The ID of the data block to operate on.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="IOM_plugin_parameters.has_parameters">
+<tt class="descclassname">IOM_plugin_parameters.</tt><tt class="descname">has_parameters</tt><big>(</big><em>self</em>, <em>blockid='global'</em><big>)</big><a class="reference internal" href="../_modules/IOM_plugin_parameters.html#has_parameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#IOM_plugin_parameters.has_parameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Ask if the specified data block has the desired data tensor.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>blockid</strong> &#8211; The ID of the data block to operate on.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="IOM_plugin_parameters.load_parameters">
+<tt class="descclassname">IOM_plugin_parameters.</tt><tt class="descname">load_parameters</tt><big>(</big><em>self</em>, <em>blockid='global'</em><big>)</big><a class="reference internal" href="../_modules/IOM_plugin_parameters.html#load_parameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#IOM_plugin_parameters.load_parameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load the simulation parameters.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>blockid</strong> &#8211; The ID of the data block to operate on.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="IOM_plugin_parameters.save_parameters">
+<tt class="descclassname">IOM_plugin_parameters.</tt><tt class="descname">save_parameters</tt><big>(</big><em>self</em>, <em>parameters</em>, <em>blockid='global'</em><big>)</big><a class="reference internal" href="../_modules/IOM_plugin_parameters.html#save_parameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#IOM_plugin_parameters.save_parameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save the simulation parameters.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>parameters</strong> &#8211; The simulation parameters to store.</li>
+<li><strong>blockid</strong> &#8211; The ID of the data block to operate on.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="IOM_plugin_parameters.update_parameters">
+<tt class="descclassname">IOM_plugin_parameters.</tt><tt class="descname">update_parameters</tt><big>(</big><em>self</em>, <em>parameters</em>, <em>blockid='global'</em><big>)</big><a class="reference internal" href="../_modules/IOM_plugin_parameters.html#update_parameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#IOM_plugin_parameters.update_parameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update the parameters by some new values.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>parameters</strong> &#8211; The parameters containing updated values.</li>
+<li><strong>blockid</strong> &#8211; The ID of the data block to operate on.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">IOM_plugin_parameters</a><ul>
+<li><a class="reference internal" href="#module-WaveBlocksND">About the <tt class="docutils literal"><span class="pre">IOM_plugin_parameters</span></tt> class</a></li>
+<li><a class="reference internal" href="#module-IOM_plugin_parameters">Class documentation</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="IOManager.html"
+                        title="previous chapter">IOManager</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="IOM_plugin_grid.html"
+                        title="next chapter">IOM_plugin_grid</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/waveblocks_classes/IOM_plugin_parameters.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="IOM_plugin_grid.html" title="IOM_plugin_grid"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="IOManager.html" title="IOManager"
+             >previous</a> |</li>
+        <li><a href="../index.html">WaveBlocksND devel documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, R. Bourquin.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

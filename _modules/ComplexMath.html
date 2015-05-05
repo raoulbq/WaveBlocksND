@@ -1,0 +1,196 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>ComplexMath &mdash; WaveBlocksND devel documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     'devel',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="WaveBlocksND devel documentation" href="../index.html" />
+    <link rel="up" title="Module code" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">WaveBlocksND devel documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for ComplexMath</h1><div class="highlight"><pre>
+<span class="sd">&quot;&quot;&quot;The WaveBlocks Project</span>
+
+<span class="sd">Some selected functions for complex math.</span>
+
+<span class="sd">@author: R. Bourquin</span>
+<span class="sd">@copyright: Copyright (C) 2011, 2012, 2015 R. Bourquin</span>
+<span class="sd">@license: Modified BSD License</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">array</span><span class="p">,</span> <span class="n">hstack</span><span class="p">,</span> <span class="n">cumsum</span><span class="p">,</span> <span class="n">diff</span><span class="p">,</span> <span class="n">around</span><span class="p">,</span> <span class="nb">abs</span><span class="p">,</span> <span class="n">angle</span><span class="p">,</span> <span class="n">exp</span><span class="p">,</span> <span class="n">sqrt</span><span class="p">,</span> <span class="n">pi</span><span class="p">,</span> <span class="n">squeeze</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;continuate&quot;</span><span class="p">,</span> <span class="s">&quot;cont_angle&quot;</span><span class="p">,</span> <span class="s">&quot;cont_sqrt&quot;</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="continuate"><a class="viewcode-back" href="../waveblocks_classes/ComplexMath.html#ComplexMath.continuate">[docs]</a><span class="k">def</span> <span class="nf">continuate</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">jump</span><span class="o">=</span><span class="mf">2.0</span><span class="o">*</span><span class="n">pi</span><span class="p">,</span> <span class="n">reference</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
+    <span class="sd">r&quot;&quot;&quot;Make the given data continuous by removing all jumps of size :math:`k\cdot\text{jump}`</span>
+<span class="sd">    but not touching jumps of any other size. This can be used to overcome issues with</span>
+<span class="sd">    the branch cut along the negative axis. There may be arise problems with jumps that</span>
+<span class="sd">    are of size nearly :math:`k\cdot\text{jump}`.</span>
+
+<span class="sd">    :param data: An array with the input data.</span>
+<span class="sd">    :param jump: The basic size of jumps which will be removed. Default is :math:`2 \pi`.</span>
+<span class="sd">    :param reference: This value allows the specify the starting point for continuation</span>
+<span class="sd">                       explicitly. It can be used together with ``data``.</span>
+<span class="sd">    :type reference: A single float number.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="n">squeeze</span><span class="p">(</span><span class="n">reference</span><span class="p">)</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="s">&quot;The &#39;reference&#39; must be a scalar value.&quot;</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">hstack</span><span class="p">([</span><span class="n">array</span><span class="p">(</span><span class="n">reference</span><span class="p">),</span> <span class="n">array</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)])</span>
+    <span class="n">offsets</span> <span class="o">=</span> <span class="n">cumsum</span><span class="p">(</span><span class="n">around</span><span class="p">(</span><span class="n">diff</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mf">1.0</span><span class="o">*</span><span class="n">jump</span><span class="p">)))</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">data</span> <span class="o">-</span> <span class="n">jump</span><span class="o">*</span><span class="n">hstack</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">offsets</span><span class="p">]))[</span><span class="mi">1</span><span class="p">:]</span>
+
+</div>
+<div class="viewcode-block" id="cont_angle"><a class="viewcode-back" href="../waveblocks_classes/ComplexMath.html#ComplexMath.cont_angle">[docs]</a><span class="k">def</span> <span class="nf">cont_angle</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">reference</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">r&quot;&quot;&quot;Compute the angle of a complex number *not* constrained to</span>
+<span class="sd">    the principal value and avoiding discontinuities at the branch cut.</span>
+<span class="sd">    This function just applies &#39;continuate(.)&#39; to the complex phase.</span>
+
+<span class="sd">    :param data: An array with the input data.</span>
+<span class="sd">    :param reference: This value allows the specify the starting point for</span>
+<span class="sd">                      continuation explicitly. It can be used together with ``data``.</span>
+<span class="sd">    :type reference: A single float number.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">reference</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="c"># Return just cont_f(x)</span>
+        <span class="k">return</span> <span class="n">continuate</span><span class="p">(</span><span class="n">angle</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c"># Return a 2-tuple (cont_f(x), new_reference)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">continuate</span><span class="p">(</span><span class="n">angle</span><span class="p">(</span><span class="n">data</span><span class="p">),</span> <span class="n">reference</span><span class="o">=</span><span class="n">reference</span><span class="p">)</span>
+        <span class="n">reference</span> <span class="o">=</span> <span class="n">result</span>
+        <span class="k">return</span> <span class="n">result</span><span class="p">,</span> <span class="n">reference</span>
+
+</div>
+<div class="viewcode-block" id="cont_sqrt"><a class="viewcode-back" href="../waveblocks_classes/ComplexMath.html#ComplexMath.cont_sqrt">[docs]</a><span class="k">def</span> <span class="nf">cont_sqrt</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">reference</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">r&quot;&quot;&quot;Compute the complex square root (following the Riemann surface)</span>
+<span class="sd">    yields a result *not* constrained to the principal value and avoiding</span>
+<span class="sd">    discontinuities at the branch cut. This function applies &#39;continuate(.)&#39;</span>
+<span class="sd">    to the complex phase and computes for</span>
+<span class="sd">    :math:`z = r \exp \left(i \phi \right)` the complex square root</span>
+<span class="sd">    its square root according to the formula</span>
+<span class="sd">    :math:`\sqrt{z} = \sqrt{r} \exp \left(i \frac{\phi}{2} \right)`.</span>
+
+<span class="sd">    :param data: An array with the input data.</span>
+<span class="sd">    :param reference: This value allows the specify the starting point for</span>
+<span class="sd">                      continuation explicitly. It can be used together with ``data``.</span>
+<span class="sd">    :type reference: A single float number.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">reference</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="c"># Return just cont_f(x)</span>
+        <span class="k">return</span> <span class="n">sqrt</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">data</span><span class="p">))</span> <span class="o">*</span> <span class="n">exp</span><span class="p">(</span><span class="mf">0.5j</span><span class="o">*</span><span class="n">continuate</span><span class="p">(</span><span class="n">angle</span><span class="p">(</span><span class="n">data</span><span class="p">)))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c"># Return a 2-tuple (cont_f(x), new_reference)</span>
+        <span class="n">phi</span> <span class="o">=</span> <span class="n">continuate</span><span class="p">(</span><span class="n">angle</span><span class="p">(</span><span class="n">data</span><span class="p">),</span> <span class="n">reference</span><span class="o">=</span><span class="n">reference</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">sqrt</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">data</span><span class="p">))</span> <span class="o">*</span> <span class="n">exp</span><span class="p">(</span><span class="mf">0.5j</span><span class="o">*</span><span class="n">phi</span><span class="p">)</span>
+        <span class="n">reference</span> <span class="o">=</span> <span class="n">phi</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="c"># TODO: Rethink what &#39;reference&#39; to return for an array of input values.</span>
+        <span class="k">return</span> <span class="n">result</span><span class="p">,</span> <span class="n">reference</span>
+
+</div>
+<span class="k">class</span> <span class="nc">ContinuousSqrt</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">r&quot;&quot;&quot;Class for computing continuous square roots.</span>
+<span class="sd">    All implementation details about referencing is</span>
+<span class="sd">    hidden from the user. The class is side-effect free.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reference</span><span class="o">=</span><span class="mf">0.0j</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">reference</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">clone</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">ContinuousSqrt</span><span class="p">(</span><span class="n">reference</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_reference</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">radicand</span><span class="p">):</span>
+        <span class="c"># Updating the reference is idempotent for identical radicands.</span>
+        <span class="n">root</span><span class="p">,</span> <span class="n">reference</span> <span class="o">=</span> <span class="n">cont_sqrt</span><span class="p">(</span><span class="n">radicand</span><span class="p">,</span> <span class="n">reference</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_reference</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_reference</span> <span class="o">=</span> <span class="n">reference</span>
+        <span class="k">return</span> <span class="n">root</span>
+
+    <span class="k">def</span> <span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reference</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="n">squeeze</span><span class="p">(</span><span class="n">reference</span><span class="p">)</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="s">&quot;The &#39;reference&#39; must be a scalar value.&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_reference</span> <span class="o">=</span> <span class="n">array</span><span class="p">(</span><span class="n">reference</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reference</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">WaveBlocksND devel documentation</a> &raquo;</li>
+          <li><a href="index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, R. Bourquin.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

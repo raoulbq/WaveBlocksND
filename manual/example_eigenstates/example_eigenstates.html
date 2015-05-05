@@ -1,0 +1,340 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Computing Eigenstates &mdash; WaveBlocksND devel documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     'devel',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="WaveBlocksND devel documentation" href="../../index.html" />
+    <link rel="up" title="Interactive use" href="../interactive_use.html" />
+    <link rel="next" title="Extending WaveBlocks" href="../extending_waveblocks.html" />
+    <link rel="prev" title="Computing tunneling probabilities" href="../example_tunneling/example_tunneling.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../extending_waveblocks.html" title="Extending WaveBlocks"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../example_tunneling/example_tunneling.html" title="Computing tunneling probabilities"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">WaveBlocksND devel documentation</a> &raquo;</li>
+          <li><a href="../interactive_use.html" accesskey="U">Interactive use</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="computing-eigenstates">
+<h1>Computing Eigenstates<a class="headerlink" href="#computing-eigenstates" title="Permalink to this headline">¶</a></h1>
+<p>In this section we show how to compute eigenstates on the
+example of the Henon-Heiles potential. This two-dimensional
+potential in the variables <img class="math" src="../../_images/math/26eeb5258ca5099acf8fe96b2a1049c48c89a5e6.png" alt="x"/> and <img class="math" src="../../_images/math/092e364e1d9d19ad5fffb0b46ef4cc7f2da02c1c.png" alt="y"/> is given by:</p>
+<div class="math">
+<p><img src="../../_images/math/1ccd385359a64e7d86f71d8110771942f436abea.png" alt="V(x) = \frac{a}{2} \left(x^{2} + y^{2}\right) + b \left(x^{2} y - \frac{y^{3}}{3}\right)"/></p>
+</div><p>where we set <img class="math" src="../../_images/math/48d02444a59b917b64e8bd0963b88712fc7fa0a3.png" alt="a = 1"/> and  <img class="math" src="../../_images/math/e00655acfa0e0ba15a3cdda028697def7de3c90b.png" alt="b = 1/2"/>. To compute the
+eigenstates we write a configuration file <tt class="docutils literal"><span class="pre">eigenstates.py</span></tt> like:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">dimension</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">ncomponents</span> <span class="o">=</span> <span class="mi">1</span>
+
+<span class="n">potential</span> <span class="o">=</span> <span class="s">&quot;henon_heiles&quot;</span>
+
+<span class="n">eigenstate_of_level</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="n">eigenstates_indices</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">14</span><span class="p">]</span>
+
+<span class="n">starting_point</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">]</span>
+
+<span class="n">eps</span> <span class="o">=</span> <span class="mf">0.25</span>
+
+<span class="n">hawp_template</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">&quot;type&quot;</span> <span class="p">:</span> <span class="s">&quot;HagedornWavepacket&quot;</span><span class="p">,</span>
+    <span class="s">&quot;dimension&quot;</span> <span class="p">:</span> <span class="n">dimension</span><span class="p">,</span>
+    <span class="s">&quot;ncomponents&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="s">&quot;eps&quot;</span> <span class="p">:</span> <span class="n">eps</span><span class="p">,</span>
+    <span class="s">&quot;basis_shapes&quot;</span> <span class="p">:</span> <span class="p">[{</span>
+            <span class="s">&quot;type&quot;</span> <span class="p">:</span> <span class="s">&quot;HyperbolicCutShape&quot;</span><span class="p">,</span>
+            <span class="s">&quot;K&quot;</span> <span class="p">:</span> <span class="mi">24</span><span class="p">,</span>
+            <span class="s">&quot;dimension&quot;</span> <span class="p">:</span> <span class="n">dimension</span>
+            <span class="p">}]</span>
+    <span class="p">}</span>
+
+<span class="n">innerproduct</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">&quot;type&quot;</span> <span class="p">:</span> <span class="s">&quot;HomogeneousInnerProduct&quot;</span><span class="p">,</span>
+    <span class="s">&quot;delegate&quot;</span> <span class="p">:</span> <span class="p">{</span>
+        <span class="s">&quot;type&quot;</span> <span class="p">:</span> <span class="s">&quot;DirectHomogeneousQuadrature&quot;</span><span class="p">,</span>
+        <span class="s">&#39;qr&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="s">&#39;TensorProductQR&#39;</span><span class="p">,</span>
+            <span class="s">&#39;dimension&#39;</span><span class="p">:</span> <span class="n">dimension</span><span class="p">,</span>
+            <span class="s">&#39;qr_rules&#39;</span><span class="p">:</span> <span class="p">[{</span><span class="s">&#39;dimension&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">&#39;order&#39;</span><span class="p">:</span> <span class="mi">32</span><span class="p">,</span> <span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="s">&#39;GaussHermiteQR&#39;</span><span class="p">},</span>
+                         <span class="p">{</span><span class="s">&#39;dimension&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">&#39;order&#39;</span><span class="p">:</span> <span class="mi">32</span><span class="p">,</span> <span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="s">&#39;GaussHermiteQR&#39;</span><span class="p">}]</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>We compute the first 15 eigenstates <img class="math" src="../../_images/math/7d1919245b3cd2b8fccbdd84d03b1a86e34e8e00.png" alt="\Psi_0"/> up to <img class="math" src="../../_images/math/d9395a42d52f0008d42f6b25a2cfa00a89d5fbf6.png" alt="\Psi_{14}"/>.
+The parameter <tt class="docutils literal"><span class="pre">starting_point</span></tt> sets the starting value for the minimization
+of the potential surface. This value is choosen such to stay in the local minimum
+we are interested in. The basis consists of the space spanned by all wavepackets
+indexed in the hyperbolic cut having sparsity <img class="math" src="../../_images/math/b9d31c8c8cd465ac27fdc7d417c3f612654fe7de.png" alt="K=24"/>. The actual computation
+is done by using the script <tt class="docutils literal"><span class="pre">ComputeEigenstates.py</span></tt>:</p>
+<div class="highlight-python"><pre>python ComputeEigenstates.py eigenstates.py</pre>
+</div>
+<p>and will print some output:</p>
+<div class="highlight-python"><pre>Using configuration from file: eigenstates.py
+Requested function: add_parameters
+Plugin to load: IOM_plugin_parameters
+Optimization terminated successfully.
+         Current function value: 0.000000
+         Iterations: 98
+         Function evaluations: 189
+----------------------------------------------------------------------
+Parameter values are:
+---------------------
+ q0:
+[[  2.24608505e-13]
+ [  3.33457394e-13]]
+ p0:
+[[ 0.]
+ [ 0.]]
+ Q0:
+[[  1.00000000e+00+0.j  -5.62327962e-14-0.j]
+ [ -5.62883073e-14+0.j   1.00000000e+00+0.j]]
+ P0:
+[[ 0. +1.00000000e+00j  0. +5.62327962e-14j]
+ [ 0. +5.62883073e-14j  0. +1.00000000e+00j]]
+ Consistency check:
+   P^T Q - Q^T P  =?=  0
+[[ 0. +0.00000000e+00j  0. +1.11022302e-16j]
+ [ 0. -1.11022302e-16j  0. +0.00000000e+00j]]
+   Q^H P - P^H Q  =?=  2i
+[[ 0. +2.00000000e+00j  0. +1.26217745e-29j]
+ [ 0. +1.26217745e-29j  0. +2.00000000e+00j]]
+Warning: no inner product specified!
+----------------------------------------------------------------------
+State: 0
+Energy: 0.0623898880123
+Coefficients:
+
+[  9.99697146e-01+0.j   7.06667357e-09+0.j   1.88119658e-03+0.j
+   1.22024364e-02+0.j   8.31557109e-04+0.j   1.61933847e-04+0.j
+   3.51763774e-04+0.j   6.28914248e-05+0.j   1.48819058e-05+0.j
+   1.53830363e-05+0.j   4.64872426e-06+0.j   1.40044195e-06+0.j
+   9.48658758e-07+0.j   3.83630231e-07+0.j   1.42241989e-07+0.j
+   7.84302527e-08+0.j   3.66375058e-08+0.j   1.58225631e-08+0.j
+...</pre>
+</div>
+<p>and produce an <cite>eigenstates.hdf5</cite> file containing all the wavepackets computed.
+Next we compute norms and energies of these states by:</p>
+<div class="highlight-python"><pre>python ComputeNorms.py -d eigenstates.hdf5
+python ComputeEnergies.py -d eigenstates.hdf5</pre>
+</div>
+<p>We could also evaluate and plot the packets or call any other
+post-processing script. But we like to do some custom computations
+and therefore switch to an interactive python session now:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">BF</span> <span class="o">=</span> <span class="n">BlockFactory</span><span class="p">()</span>
+<span class="n">IOM</span> <span class="o">=</span> <span class="n">IOManager</span><span class="p">()</span>
+
+<span class="n">IOM</span><span class="o">.</span><span class="n">open_file</span><span class="p">(</span><span class="s">&quot;eigenstates.hdf5&quot;</span><span class="p">)</span>
+<span class="n">PA</span> <span class="o">=</span> <span class="n">IOM</span><span class="o">.</span><span class="n">load_parameters</span><span class="p">()</span>
+
+<span class="n">V</span> <span class="o">=</span> <span class="n">BF</span><span class="o">.</span><span class="n">create_potential</span><span class="p">(</span><span class="n">PA</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Load the wavepackets:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">packets</span> <span class="o">=</span> <span class="p">[</span><span class="n">IOM</span><span class="o">.</span><span class="n">load_wavepacket</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">blockid</span><span class="o">=</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="mi">15</span><span class="p">)]</span>
+</pre></div>
+</div>
+<p>Set up a grid for evaluation:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">x</span> <span class="o">=</span> <span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">500</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">500</span><span class="p">)</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <span class="n">meshgrid</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="n">M</span> <span class="o">=</span> <span class="n">row_stack</span><span class="p">([</span><span class="n">X</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">Y</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">)])</span>
+</pre></div>
+</div>
+<p>and evaluate potential as well as eigenstates on this grid:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">v</span> <span class="o">=</span> <span class="n">V</span><span class="o">.</span><span class="n">evaluate_at</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">entry</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">))</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">500</span><span class="p">,</span><span class="mi">500</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+
+<span class="n">psis</span> <span class="o">=</span> <span class="p">[</span><span class="n">hawp</span><span class="o">.</span><span class="n">evaluate_at</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">prefactor</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">component</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">500</span><span class="p">,</span><span class="mi">500</span><span class="p">)</span> <span class="k">for</span> <span class="n">hawp</span> <span class="ow">in</span> <span class="n">packets</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Plot the eigenstates together with the potential contour lines:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">18</span><span class="p">,</span><span class="mi">30</span><span class="p">))</span>
+
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">psi</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">psis</span><span class="p">):</span>
+
+    <span class="n">subplot</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">plotcf2d</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">psi</span><span class="p">,</span> <span class="n">darken</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+    <span class="n">contour</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">linspace</span><span class="p">(</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">colors</span><span class="o">=</span><span class="s">&quot;gray&quot;</span><span class="p">)</span>
+    <span class="n">title</span><span class="p">(</span><span class="s">r&quot;$\psi_{</span><span class="si">%d</span><span class="s">}$&quot;</span> <span class="o">%</span> <span class="n">i</span><span class="p">)</span>
+
+<span class="n">savefig</span><span class="p">(</span><span class="s">&quot;henon_heiles_eigenstates.png&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="../../_images/henon_heiles_eigenstates.png" src="../../_images/henon_heiles_eigenstates.png" />
+<p>We check that the eigenstates are properly normalized:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">N</span> <span class="o">=</span> <span class="p">[</span><span class="n">IOM</span><span class="o">.</span><span class="n">load_norm</span><span class="p">(</span><span class="n">blockid</span><span class="o">=</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="mi">15</span><span class="p">)]</span>
+<span class="n">N</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">[</span><span class="n">array</span><span class="p">([[</span> <span class="mf">1.</span><span class="p">]]),</span>
+ <span class="n">array</span><span class="p">([[</span> <span class="mf">1.</span><span class="p">]]),</span>
+ <span class="n">array</span><span class="p">([[</span> <span class="mf">1.</span><span class="p">]]),</span>
+ <span class="n">array</span><span class="p">([[</span> <span class="mf">1.</span><span class="p">]]),</span>
+ <span class="n">array</span><span class="p">([[</span> <span class="mf">1.</span><span class="p">]]),</span>
+ <span class="n">array</span><span class="p">([[</span> <span class="mf">1.</span><span class="p">]]),</span>
+ <span class="n">array</span><span class="p">([[</span> <span class="mf">1.</span><span class="p">]]),</span>
+ <span class="n">array</span><span class="p">([[</span> <span class="mf">1.</span><span class="p">]]),</span>
+ <span class="n">array</span><span class="p">([[</span> <span class="mf">1.</span><span class="p">]]),</span>
+ <span class="n">array</span><span class="p">([[</span> <span class="mf">1.</span><span class="p">]]),</span>
+ <span class="n">array</span><span class="p">([[</span> <span class="mf">1.</span><span class="p">]]),</span>
+ <span class="n">array</span><span class="p">([[</span> <span class="mf">1.</span><span class="p">]]),</span>
+ <span class="n">array</span><span class="p">([[</span> <span class="mf">1.</span><span class="p">]]),</span>
+ <span class="n">array</span><span class="p">([[</span> <span class="mf">1.</span><span class="p">]]),</span>
+ <span class="n">array</span><span class="p">([[</span> <span class="mf">1.</span><span class="p">]])]</span>
+</pre></div>
+</div>
+<p>Finally, look at the energies of these states:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">E</span> <span class="o">=</span> <span class="n">squeeze</span><span class="p">(</span><span class="n">array</span><span class="p">([</span><span class="n">IOM</span><span class="o">.</span><span class="n">load_energy</span><span class="p">(</span><span class="n">blockid</span><span class="o">=</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="mi">15</span><span class="p">)]))</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">array</span><span class="p">([[</span> <span class="mf">0.03113906</span><span class="p">,</span>  <span class="mf">0.03125083</span><span class="p">],</span>
+       <span class="p">[</span> <span class="mf">0.06171018</span><span class="p">,</span>  <span class="mf">0.06251042</span><span class="p">],</span>
+       <span class="p">[</span> <span class="mf">0.06171017</span><span class="p">,</span>  <span class="mf">0.06251044</span><span class="p">],</span>
+       <span class="p">[</span> <span class="mf">0.09028264</span><span class="p">,</span>  <span class="mf">0.09378443</span><span class="p">],</span>
+       <span class="p">[</span> <span class="mf">0.09254484</span><span class="p">,</span>  <span class="mf">0.09379187</span><span class="p">],</span>
+       <span class="p">[</span> <span class="mf">0.09254101</span><span class="p">,</span>  <span class="mf">0.0937974</span> <span class="p">],</span>
+       <span class="p">[</span> <span class="mf">0.11912411</span><span class="p">,</span>  <span class="mf">0.12505747</span><span class="p">],</span>
+       <span class="p">[</span> <span class="mf">0.11914656</span><span class="p">,</span>  <span class="mf">0.12503636</span><span class="p">],</span>
+       <span class="p">[</span> <span class="mf">0.12341898</span><span class="p">,</span>  <span class="mf">0.12514402</span><span class="p">],</span>
+       <span class="p">[</span> <span class="mf">0.12387966</span><span class="p">,</span>  <span class="mf">0.12501247</span><span class="p">],</span>
+       <span class="p">[</span> <span class="mf">0.14693627</span><span class="p">,</span>  <span class="mf">0.15548814</span><span class="p">],</span>
+       <span class="p">[</span> <span class="mf">0.14879932</span><span class="p">,</span>  <span class="mf">0.15576321</span><span class="p">],</span>
+       <span class="p">[</span> <span class="mf">0.14824844</span><span class="p">,</span>  <span class="mf">0.15631414</span><span class="p">],</span>
+       <span class="p">[</span> <span class="mf">0.15502718</span><span class="p">,</span>  <span class="mf">0.156359</span>  <span class="p">],</span>
+       <span class="p">[</span> <span class="mf">0.15527243</span><span class="p">,</span>  <span class="mf">0.15615653</span><span class="p">]])</span>
+</pre></div>
+</div>
+<p>and then plot the energy levels:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">figure</span><span class="p">()</span>
+<span class="n">plot</span><span class="p">(</span><span class="n">arange</span><span class="p">(</span><span class="mi">15</span><span class="p">),</span> <span class="n">E</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="s">&quot;-o&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">r&quot;kinetic&quot;</span><span class="p">)</span>
+<span class="n">plot</span><span class="p">(</span><span class="n">arange</span><span class="p">(</span><span class="mi">15</span><span class="p">),</span> <span class="n">E</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="s">&quot;-o&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">r&quot;potential&quot;</span><span class="p">)</span>
+<span class="n">grid</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s">&quot;lower right&quot;</span><span class="p">)</span>
+<span class="n">xlabel</span><span class="p">(</span><span class="s">r&quot;$k$&quot;</span><span class="p">)</span>
+<span class="n">ylabel</span><span class="p">(</span><span class="s">r&quot;$E_k$&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="../../_images/henon_heiles_energy_levels.png" src="../../_images/henon_heiles_energy_levels.png" />
+<p>We can also easily compute the total energy:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">Etot</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">E</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">array</span><span class="p">([</span> <span class="mf">0.06238989</span><span class="p">,</span>  <span class="mf">0.12422061</span><span class="p">,</span>  <span class="mf">0.12422061</span><span class="p">,</span>  <span class="mf">0.18406707</span><span class="p">,</span>  <span class="mf">0.18633672</span><span class="p">,</span>
+        <span class="mf">0.18633841</span><span class="p">,</span>  <span class="mf">0.24418158</span><span class="p">,</span>  <span class="mf">0.24418292</span><span class="p">,</span>  <span class="mf">0.248563</span>  <span class="p">,</span>  <span class="mf">0.24889214</span><span class="p">,</span>
+        <span class="mf">0.3024244</span> <span class="p">,</span>  <span class="mf">0.30456252</span><span class="p">,</span>  <span class="mf">0.30456258</span><span class="p">,</span>  <span class="mf">0.31138619</span><span class="p">,</span>  <span class="mf">0.31142895</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>and again plot the energy levels based on these data:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">figure</span><span class="p">()</span>
+<span class="n">plot</span><span class="p">(</span><span class="n">arange</span><span class="p">(</span><span class="mi">15</span><span class="p">),</span> <span class="n">Etot</span><span class="p">,</span> <span class="s">&quot;-o&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">r&quot;total&quot;</span><span class="p">)</span>
+<span class="n">grid</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">xlabel</span><span class="p">(</span><span class="s">r&quot;$k$&quot;</span><span class="p">)</span>
+<span class="n">ylabel</span><span class="p">(</span><span class="s">r&quot;$E_k$&quot;</span><span class="p">)</span>
+<span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s">&quot;lower right&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="../../_images/henon_heiles_energy_levels_total.png" src="../../_images/henon_heiles_energy_levels_total.png" />
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../example_tunneling/example_tunneling.html"
+                        title="previous chapter">Computing tunneling probabilities</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../extending_waveblocks.html"
+                        title="next chapter">Extending <tt class="docutils literal"><span class="pre">WaveBlocks</span></tt></a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../_sources/manual/example_eigenstates/example_eigenstates.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../extending_waveblocks.html" title="Extending WaveBlocks"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../example_tunneling/example_tunneling.html" title="Computing tunneling probabilities"
+             >previous</a> |</li>
+        <li><a href="../../index.html">WaveBlocksND devel documentation</a> &raquo;</li>
+          <li><a href="../interactive_use.html" >Interactive use</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, R. Bourquin.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

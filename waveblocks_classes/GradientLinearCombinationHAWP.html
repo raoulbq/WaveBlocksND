@@ -1,0 +1,176 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>GradientLinearCombinationHAWP &mdash; WaveBlocksND devel documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     'devel',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="WaveBlocksND devel documentation" href="../index.html" />
+    <link rel="next" title="InnerProduct" href="InnerProduct.html" />
+    <link rel="prev" title="GradientLCWP" href="GradientLCWP.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="InnerProduct.html" title="InnerProduct"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="GradientLCWP.html" title="GradientLCWP"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">WaveBlocksND devel documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="gradientlinearcombinationhawp">
+<h1>GradientLinearCombinationHAWP<a class="headerlink" href="#gradientlinearcombinationhawp" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-WaveBlocksND">
+<span id="about-the-gradientlinearcombinationhawp-class"></span><h2>About the <tt class="docutils literal"><span class="pre">GradientLinearCombinationHAWP</span></tt> class<a class="headerlink" href="#module-WaveBlocksND" title="Permalink to this headline">¶</a></h2>
+<p>The WaveBlocks Project</p>
+<p>&#64;author: R. Bourquin
+&#64;copyright: Copyright (C) 2010, 2011, 2012, 2013, 2014 R. Bourquin
+&#64;license: Modified BSD License</p>
+</div>
+<div class="section" id="inheritance-diagram">
+<h2>Inheritance diagram<a class="headerlink" href="#inheritance-diagram" title="Permalink to this headline">¶</a></h2>
+<p class="graphviz">
+<img src="../_images/inheritance-d55d17e66f226b967214257382ad47bec2c3d203.png" alt="Inheritance diagram of GradientLinearCombinationHAWP" class="inheritance"/>
+</p>
+</div>
+<div class="section" id="class-documentation">
+<h2>Class documentation<a class="headerlink" href="#class-documentation" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="WaveBlocksND.GradientLinearCombinationHAWP">
+<em class="property">class </em><tt class="descclassname">WaveBlocksND.</tt><tt class="descname">GradientLinearCombinationHAWP</tt><a class="headerlink" href="#WaveBlocksND.GradientLinearCombinationHAWP" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class implements the computation of the action of the
+gradient operator <img class="math" src="../_images/math/91ad87c48d474ea366080d34a2f5f3d5ef37160b.png" alt="-i \varepsilon^2 \nabla_x"/> applied to
+a linear combination <img class="math" src="../_images/math/d792ba6fac8dc00a5626659c0b9cf56716701f3d.png" alt="\Upsilon"/> of Hagedorn wavepackets <img class="math" src="../_images/math/866f0204648be9ca6b10e14dd72295295dd53a79.png" alt="\Psi"/>.</p>
+<dl class="method">
+<dt id="WaveBlocksND.GradientLinearCombinationHAWP.apply_gradient">
+<tt class="descname">apply_gradient</tt><big>(</big><em>lincomb</em>, <em>component=None</em><big>)</big><a class="headerlink" href="#WaveBlocksND.GradientLinearCombinationHAWP.apply_gradient" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the effect of the gradient operator <img class="math" src="../_images/math/91ad87c48d474ea366080d34a2f5f3d5ef37160b.png" alt="-i \varepsilon^2 \nabla_x"/>
+on the linear combination <img class="math" src="../_images/math/d792ba6fac8dc00a5626659c0b9cf56716701f3d.png" alt="\Upsilon"/> of Hagedorn wavepackets <img class="math" src="../_images/math/866f0204648be9ca6b10e14dd72295295dd53a79.png" alt="\Psi"/>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>lincomb</strong> (A <a class="reference internal" href="LinearCombinationOfHAWPs.html#WaveBlocksND.LinearCombinationOfHAWPs" title="WaveBlocksND.LinearCombinationOfHAWPs"><tt class="xref py py-class docutils literal"><span class="pre">LinearCombinationOfHAWPs</span></tt></a> instance.) &#8211; The linear combination <img class="math" src="../_images/math/d792ba6fac8dc00a5626659c0b9cf56716701f3d.png" alt="\Upsilon"/>.</li>
+<li><strong>component</strong> (Integer or <tt class="docutils literal"><span class="pre">None</span></tt>.) &#8211; The index <img class="math" src="../_images/math/34857b3ba74ce5cd8607f3ebd23e9015908ada71.png" alt="i"/> of the component <img class="math" src="../_images/math/1a1372729059cb0703afe57f9402c351b5bf0e2d.png" alt="\Phi_i"/>.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">One linear combination <img class="math" src="../_images/math/0a2710ade5e36f88cf9270d5c04e9b6e50fe4296.png" alt="\Upsilon_d"/> containing the gradients
+for the component <img class="math" src="../_images/math/12f4a5b0d7748feec94a6b02cc83714c12b0861c.png" alt="\partial_{x_d}"/> for each space dimension
+component <img class="math" src="../_images/math/66843939a131cde3bd7f9aea3616a3204750623b.png" alt="d = 1, \ldots, D"/>.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">GradientLinearCombinationHAWP</a><ul>
+<li><a class="reference internal" href="#module-WaveBlocksND">About the <tt class="docutils literal"><span class="pre">GradientLinearCombinationHAWP</span></tt> class</a></li>
+<li><a class="reference internal" href="#inheritance-diagram">Inheritance diagram</a></li>
+<li><a class="reference internal" href="#class-documentation">Class documentation</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="GradientLCWP.html"
+                        title="previous chapter">GradientLCWP</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="InnerProduct.html"
+                        title="next chapter">InnerProduct</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/waveblocks_classes/GradientLinearCombinationHAWP.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="InnerProduct.html" title="InnerProduct"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="GradientLCWP.html" title="GradientLCWP"
+             >previous</a> |</li>
+        <li><a href="../index.html">WaveBlocksND devel documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, R. Bourquin.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

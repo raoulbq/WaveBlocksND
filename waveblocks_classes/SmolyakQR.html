@@ -1,0 +1,297 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>SmolyakQR &mdash; WaveBlocksND devel documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     'devel',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="WaveBlocksND devel documentation" href="../index.html" />
+    <link rel="next" title="GenzKeisterOriginalQR" href="GenzKeisterOriginalQR.html" />
+    <link rel="prev" title="TensorProductQR" href="TensorProductQR.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="GenzKeisterOriginalQR.html" title="GenzKeisterOriginalQR"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="TensorProductQR.html" title="TensorProductQR"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">WaveBlocksND devel documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="smolyakqr">
+<h1>SmolyakQR<a class="headerlink" href="#smolyakqr" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-WaveBlocksND">
+<span id="about-the-smolyakqr-class"></span><h2>About the <tt class="docutils literal"><span class="pre">SmolyakQR</span></tt> class<a class="headerlink" href="#module-WaveBlocksND" title="Permalink to this headline">¶</a></h2>
+<p>The WaveBlocks Project</p>
+<p>&#64;author: R. Bourquin
+&#64;copyright: Copyright (C) 2010, 2011, 2012, 2013, 2014 R. Bourquin
+&#64;license: Modified BSD License</p>
+</div>
+<div class="section" id="inheritance-diagram">
+<h2>Inheritance diagram<a class="headerlink" href="#inheritance-diagram" title="Permalink to this headline">¶</a></h2>
+<p class="graphviz">
+<img src="../_images/inheritance-c8e5d6c63948d7abd26be380e0e6e5d4bda7b68c.png" alt="Inheritance diagram of SmolyakQR" class="inheritance"/>
+</p>
+</div>
+<div class="section" id="class-documentation">
+<h2>Class documentation<a class="headerlink" href="#class-documentation" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="WaveBlocksND.SmolyakQR">
+<em class="property">class </em><tt class="descclassname">WaveBlocksND.</tt><tt class="descname">SmolyakQR</tt><big>(</big><em>dimension</em>, <em>level</em>, <em>rules</em>, <em>options={}</em><big>)</big><a class="headerlink" href="#WaveBlocksND.SmolyakQR" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class implements the construction of high dimensional
+quadrature rules from one-dimensional ones by applying the
+Smolyak construction.</p>
+<dl class="method">
+<dt id="WaveBlocksND.SmolyakQR.__init__">
+<tt class="descname">__init__</tt><big>(</big><em>dimension</em>, <em>level</em>, <em>rules</em>, <em>options={}</em><big>)</big><a class="headerlink" href="#WaveBlocksND.SmolyakQR.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize a <a class="reference internal" href="#WaveBlocksND.SmolyakQR" title="WaveBlocksND.SmolyakQR"><tt class="xref py py-class docutils literal"><span class="pre">SmolyakQR</span></tt></a> instance.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>dimension</strong> &#8211; The dimension <img class="math" src="../_images/math/9ffb448918db29f2a72f8f87f421b3b3cad18f95.png" alt="D"/> of the final
+quadrature rule.</li>
+<li><strong>level</strong> &#8211; The level <img class="math" src="../_images/math/8c325612684d41304b9751c175df7bcc0f61f64f.png" alt="k"/> of the Smolyak construction.
+From theory we know that a Smolyak rule of order
+<img class="math" src="../_images/math/8c325612684d41304b9751c175df7bcc0f61f64f.png" alt="k"/> is exact up to <img class="math" src="../_images/math/1cdd8446209bc71a9c099606f493851bfe5241cc.png" alt="2 k - 1"/> if the
+individual rules <img class="math" src="../_images/math/a1ef6fb9bb3f4c7cde39e9fe8ef9cd72dddbc484.png" alt="Q_i"/> are exact up to
+<img class="math" src="../_images/math/ae953974e36a0d713430a5345c9fd9e9bea925a5.png" alt="2 i - 1"/>. The level has to be larger than
+or equal 1.</li>
+<li><strong>rules</strong> &#8211; A collection of <a class="reference internal" href="QuadratureRule.html#WaveBlocksND.QuadratureRule" title="WaveBlocksND.QuadratureRule"><tt class="xref py py-class docutils literal"><span class="pre">QuadratureRule</span></tt></a> subclass
+instances. Their nodes and weights will be used
+in the Smolyak construction.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The <tt class="docutils literal"><span class="pre">rules</span></tt> object must implement simple indexing by
+non-negative numbers and for a given index <img class="math" src="../_images/math/8122aa89ea6e80784c6513d22787ad86e36ad0cc.png" alt="j"/> return
+a univariate quadrature rule of order <img class="math" src="../_images/math/8122aa89ea6e80784c6513d22787ad86e36ad0cc.png" alt="j"/>. Special attention
+must be payed in case this object is mutable. We do not copy it.</p>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">This implementation uses a special optimization that
+speeds up the computation of all quadrature nodes, especially
+in high dimension, but is only valid if all one dimensional
+rules have symmetric nodes and weights. That is, for every node
+weight pair <img class="math" src="../_images/math/bd756bafe9aebfa1ac9b6fdc9390578bf2615134.png" alt="(\gamma, \omega)"/> that is part of the rule,
+the pair <img class="math" src="../_images/math/c55ad5f3887b1c06a712e7b1104a24009c36443a.png" alt="(-\gamma, \omega)"/> is also contained
+in the quadrature rule.</p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="WaveBlocksND.SmolyakQR.construct_rule">
+<tt class="descname">construct_rule</tt><big>(</big><em>K</em>, <em>tolerance=1e-15</em><big>)</big><a class="headerlink" href="#WaveBlocksND.SmolyakQR.construct_rule" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the quadrature nodes <img class="math" src="../_images/math/6e8d7600cbbeb6cc9754abf60be6a1e5e8c1edc1.png" alt="\{\gamma_i\}_i"/> and quadrature
+weights <img class="math" src="../_images/math/92c31058dda53919e52954724ff370cd42cce430.png" alt="\{\omega_i\}_i"/>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>K</strong> &#8211; The level <img class="math" src="../_images/math/dfb064112b6c94470339f6571f69d07afc1c024c.png" alt="K"/> of the Smolyak construction.</li>
+<li><strong>tolerance</strong> &#8211; Tolerance for dropping identical quadrature nodes.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This is an internal method and there should be no reason
+to explicitely call it manually.</p>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">This method is very expensive and may take a long time
+to finish. Also, the quadrature nodes may use large amounts
+of memory depending on the dimension and level parameters.</p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="WaveBlocksND.SmolyakQR.get_description">
+<tt class="descname">get_description</tt><big>(</big><big>)</big><a class="headerlink" href="#WaveBlocksND.SmolyakQR.get_description" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a description of this quadrature rule object.
+A description is a <tt class="docutils literal"><span class="pre">dict</span></tt> containing all key-value pairs
+necessary to reconstruct the current instance. A description
+never contains any data.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="WaveBlocksND.SmolyakQR.get_dimension">
+<tt class="descname">get_dimension</tt><big>(</big><big>)</big><a class="headerlink" href="#WaveBlocksND.SmolyakQR.get_dimension" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The space dimension <img class="math" src="../_images/math/9ffb448918db29f2a72f8f87f421b3b3cad18f95.png" alt="D"/> of the quadrature rule.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="WaveBlocksND.SmolyakQR.get_nodes">
+<tt class="descname">get_nodes</tt><big>(</big><em>flat=True</em>, <em>split=False</em><big>)</big><a class="headerlink" href="#WaveBlocksND.SmolyakQR.get_nodes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the quadrature nodes <img class="math" src="../_images/math/6e8d7600cbbeb6cc9754abf60be6a1e5e8c1edc1.png" alt="\{\gamma_i\}_i"/>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>flat</strong> (Boolean, default is <tt class="docutils literal"><span class="pre">True</span></tt>.) &#8211; Dummy parameter for API compatibility with Grids.</li>
+<li><strong>split</strong> (Boolean, default is <tt class="docutils literal"><span class="pre">False</span></tt>.) &#8211; Dummy parameter for API compatibility with Grids.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">An ndarray containing the quadrature nodes <img class="math" src="../_images/math/6e8d7600cbbeb6cc9754abf60be6a1e5e8c1edc1.png" alt="\{\gamma_i\}_i"/>.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="WaveBlocksND.SmolyakQR.get_number_nodes">
+<tt class="descname">get_number_nodes</tt><big>(</big><big>)</big><a class="headerlink" href="#WaveBlocksND.SmolyakQR.get_number_nodes" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The number of quadrature nodes denoted by <img class="math" src="../_images/math/d85b78a13008f6b5839107bb086798bf5b6a37ae.png" alt="|\Gamma|"/> that are
+part of this quadrature rule <img class="math" src="../_images/math/e9e5a10197befc592d996ab016d50c11ce2384c4.png" alt="\Gamma = (\gamma, \omega)"/>.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="WaveBlocksND.SmolyakQR.get_weights">
+<tt class="descname">get_weights</tt><big>(</big><big>)</big><a class="headerlink" href="#WaveBlocksND.SmolyakQR.get_weights" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the quadrature weights <img class="math" src="../_images/math/92c31058dda53919e52954724ff370cd42cce430.png" alt="\{\omega_i\}_i"/>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">An ndarray containing the quadrature weights <img class="math" src="../_images/math/92c31058dda53919e52954724ff370cd42cce430.png" alt="\{\omega_i\}_i"/>.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">SmolyakQR</a><ul>
+<li><a class="reference internal" href="#module-WaveBlocksND">About the <tt class="docutils literal"><span class="pre">SmolyakQR</span></tt> class</a></li>
+<li><a class="reference internal" href="#inheritance-diagram">Inheritance diagram</a></li>
+<li><a class="reference internal" href="#class-documentation">Class documentation</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="TensorProductQR.html"
+                        title="previous chapter">TensorProductQR</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="GenzKeisterOriginalQR.html"
+                        title="next chapter">GenzKeisterOriginalQR</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/waveblocks_classes/SmolyakQR.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="GenzKeisterOriginalQR.html" title="GenzKeisterOriginalQR"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="TensorProductQR.html" title="TensorProductQR"
+             >previous</a> |</li>
+        <li><a href="../index.html">WaveBlocksND devel documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, R. Bourquin.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>
