@@ -118,12 +118,12 @@ for <img class="math" src="../_images/math/e0d2bf360290fd61d1c1557e763f2622363b3
 two out of the three values <img class="math" src="../_images/math/2554b6496c3b678897e9b060ef00aa9f0a7d7ece.png" alt="T"/>, <img class="math" src="../_images/math/1dc1c0119a604b91be9142370dc3159b6a9bbcb9.png" alt="\tau"/> and <img class="math" src="../_images/math/fc97ef67268cd4e91bacdf12b8901d7036c9a056.png" alt="N"/>. If all three
 are given, the user is responsible for compatible values.</p>
 <p>Additionally the class contains some routines for determining
-if and when to save data. But we do not touch any data in here.</p>
+if and when some events (for example saving data) should occur.</p>
 <dl class="method">
-<dt id="WaveBlocksND.TimeManager.add_to_savelist">
-<tt class="descname">add_to_savelist</tt><big>(</big><em>alist</em><big>)</big><a class="headerlink" href="#WaveBlocksND.TimeManager.add_to_savelist" title="Permalink to this definition">¶</a></dt>
-<dd><p>Add a list of times and/or timesteps to the list of times
-which determine when to save data.</p>
+<dt id="WaveBlocksND.TimeManager.add_to_eventlist">
+<tt class="descname">add_to_eventlist</tt><big>(</big><em>alist</em><big>)</big><a class="headerlink" href="#WaveBlocksND.TimeManager.add_to_eventlist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a list of times and/or timesteps to the list of
+times when irregular events get triggered.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -152,15 +152,17 @@ given in monotone order.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="WaveBlocksND.TimeManager.compute_number_saves">
-<tt class="descname">compute_number_saves</tt><big>(</big><big>)</big><a class="headerlink" href="#WaveBlocksND.TimeManager.compute_number_saves" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute the number of saves we will perform during the simulation. This
-can be used to determine how much space to allocate in the output files.</p>
+<dt id="WaveBlocksND.TimeManager.compute_number_events">
+<tt class="descname">compute_number_events</tt><big>(</big><big>)</big><a class="headerlink" href="#WaveBlocksND.TimeManager.compute_number_events" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the number of events we will perform during the simulation.
+This can for example be used to determine how much space to allocate
+in the output files if the events are times at which simulation data
+is saved.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The number of times we will save something.</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The number of events.</td>
 </tr>
 </tbody>
 </table>
@@ -273,9 +275,9 @@ multiple of <img class="math" src="../_images/math/1dc1c0119a604b91be9142370dc31
 </dd></dl>
 
 <dl class="method">
-<dt id="WaveBlocksND.TimeManager.must_save">
-<tt class="descname">must_save</tt><big>(</big><em>n</em><big>)</big><a class="headerlink" href="#WaveBlocksND.TimeManager.must_save" title="Permalink to this definition">¶</a></dt>
-<dd><p>Determine if we have to save right now.</p>
+<dt id="WaveBlocksND.TimeManager.is_event">
+<tt class="descname">is_event</tt><big>(</big><em>n</em><big>)</big><a class="headerlink" href="#WaveBlocksND.TimeManager.is_event" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determine if an event occurs right now.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -319,16 +321,16 @@ multiple of <img class="math" src="../_images/math/1dc1c0119a604b91be9142370dc31
 <dl class="method">
 <dt id="WaveBlocksND.TimeManager.set_interval">
 <tt class="descname">set_interval</tt><big>(</big><em>interval</em><big>)</big><a class="headerlink" href="#WaveBlocksND.TimeManager.set_interval" title="Permalink to this definition">¶</a></dt>
-<dd><p>Set the interval for saving results.</p>
+<dd><p>Set the interval for regular events.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>interval</strong> &#8211; The interval at which we save simulation results.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>interval</strong> &#8211; The interval at which regular events get triggered.</td>
 </tr>
 </tbody>
 </table>
-<p>Note that a value of <tt class="docutils literal"><span class="pre">0</span></tt> means we never save data at any regular interval.</p>
+<p>Note that a value of <tt class="docutils literal"><span class="pre">0</span></tt> means there are no regular events.</p>
 </dd></dl>
 
 <dl class="method">
