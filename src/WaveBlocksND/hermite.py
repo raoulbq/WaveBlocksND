@@ -11,6 +11,8 @@ from numpy import (pi, sqrt, log, sin, cos, arccos, sinh, cosh, arccosh,
                    zeros_like, floating, atleast_1d)
 from scipy.special import airy
 
+from .orthogonal import hermite_recursion
+
 
 def pbcf_asy_s(n, t):
     """Asymptotic series expansion of parabolic cylinder function.
@@ -187,6 +189,14 @@ def hermite_asy_pos(n, x):
     return y
 
 
+def get_tau(n):
+    # TODO: Cache values
+    yrec = hermite_recursion(n, 1.0)
+    yasy = hermite_asy_pos(n, 1.0)
+    tau = yrec / yasy
+    return tau
+
+
 def hermite_asy(n, x):
     x = atleast_1d(x)
     neg = x < 0
@@ -194,4 +204,5 @@ def hermite_asy(n, x):
     y = zeros_like(x, dtype=floating)
     y[neg] = (-1)**(n%2) * hermite_asy_pos(n, -x[neg])
     y[pos] = hermite_asy_pos(n, x[pos])
-    return y
+    tau = get_tau(n)
+    return tau * y
