@@ -11,7 +11,7 @@ from numpy import (pi, sqrt, log, sin, cos, arccos, sinh, cosh, arccosh,
                    zeros_like, floating, atleast_1d)
 from scipy.special import airy
 
-from .orthogonal import hermite_recursion
+from .orthogonal import hermite_recursion, h_roots
 
 # Cache some numerical values
 _tauvalues = {}
@@ -162,10 +162,14 @@ def get_tau(n):
     r"""
     """
     if not _tauvalues.has_key(n):
-        yrec = hermite_recursion(n, 1.0)
-        yasy = hermite_asy_pos(n, 1.0)
-        tau = yrec / yasy
-        _tauvalues[n] = tau
+        if n % 2 == 0:
+            p = 0.0
+        else:
+            # First maximum
+            p = abs(h_roots(n+1)[0]).min()
+        yrec = hermite_recursion(n, p)
+        yasy = hermite_asy_pos(n, p)
+        _tauvalues[n] = yrec / yasy
     return _tauvalues[n]
 
 
