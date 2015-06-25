@@ -13,6 +13,9 @@ from scipy.special import airy
 
 from .orthogonal import hermite_recursion
 
+# Cache some numerical values
+_tauvalues = {}
+
 
 def pbcf_asy_s(n, t):
     """Asymptotic series expansion of parabolic cylinder function.
@@ -190,11 +193,12 @@ def hermite_asy_pos(n, x):
 
 
 def get_tau(n):
-    # TODO: Cache values
-    yrec = hermite_recursion(n, 1.0)
-    yasy = hermite_asy_pos(n, 1.0)
-    tau = yrec / yasy
-    return tau
+    if not _tauvalues.has_key(n):
+        yrec = hermite_recursion(n, 1.0)
+        yasy = hermite_asy_pos(n, 1.0)
+        tau = yrec / yasy
+        _tauvalues[n] = tau
+    return _tauvalues[n]
 
 
 def hermite_asy(n, x):
