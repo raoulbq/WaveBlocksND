@@ -15,11 +15,12 @@ from scipy import exp, sqrt, pi
 from scipy.linalg import inv, schur, det, sqrtm
 
 from Quadrature import Quadrature
+from InnerProductCompatibility import InnerProductCompatibility
 
 __all__ = ["NSDInhomogeneous"]
 
 
-class NSDInhomogeneous(Quadrature):
+class NSDInhomogeneous(Quadrature, InnerProductCompatibility):
     r"""
     """
 
@@ -30,10 +31,7 @@ class NSDInhomogeneous(Quadrature):
         :param QR: Typically one uses an instance of :py:class:`GaussHermiteOriginalQR`.
         """
         # Pure convenience to allow setting of quadrature rule in constructor
-        if QR is not None:
-            self.set_qr(QR)
-        else:
-            self._QR = None
+        self.set_qr(QR)
 
 
     def __str__(self):
@@ -50,6 +48,10 @@ class NSDInhomogeneous(Quadrature):
         d["type"] = "NSDInhomogeneous"
         d["qr"] = self._QR.get_description()
         return d
+
+
+    def get_kind(self):
+        return ("homogeneous", "inhomogeneous")
 
 
     def initialize_packet(self, pacbra, packet=None):

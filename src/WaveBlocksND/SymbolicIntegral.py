@@ -17,11 +17,12 @@ from scipy.special import binom
 
 from InnerProduct import InnerProductException
 from Quadrature import Quadrature
+from InnerProductCompatibility import InnerProductCompatibility
 
 __all__ = ["SymbolicIntegral"]
 
 
-class SymbolicIntegral(Quadrature):
+class SymbolicIntegral(Quadrature, InnerProductCompatibility):
     r"""
     """
 
@@ -51,6 +52,10 @@ class SymbolicIntegral(Quadrature):
         d = {}
         d["type"] = "SymbolicIntegral"
         return d
+
+
+    def get_kind(self):
+        return ("homogeneous", "inhomogeneous")
 
 
     def initialize_packet(self, pacbra, packet=None):
