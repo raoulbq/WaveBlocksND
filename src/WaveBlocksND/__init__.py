@@ -32,6 +32,7 @@ from KineticOperator import KineticOperator
 # Time Propagators
 from Propagator import Propagator
 from FourierPropagator import FourierPropagator
+from ChinChenPropagator import ChinChenPropagator
 from HagedornPropagator import HagedornPropagator
 from MagnusPropagator import MagnusPropagator
 from SemiclassicalPropagator import SemiclassicalPropagator

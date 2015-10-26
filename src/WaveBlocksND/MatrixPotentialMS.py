@@ -301,7 +301,7 @@ class MatrixPotentialMS(MatrixPotential):
 
         # Calculate exponential
         for i in xrange(n):
-            tmp[i,:,:] = linalg.expm(tmp[i,:,:], 10)
+            tmp[i,:,:] = linalg.expm(tmp[i,:,:])
 
         # Split the data into different components
         return tuple([ tmp[:,row,col].reshape((1,n)) for row in xrange(N) for col in xrange(N) ])

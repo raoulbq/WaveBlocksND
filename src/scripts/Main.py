@@ -3,7 +3,7 @@
 This file is main script for running simulations with WaveBlocks.
 
 @author: R. Bourquin
-@copyright: Copyright (C) 2010, 2011, 2012, 2013 R. Bourquin
+@copyright: Copyright (C) 2010, 2011, 2012, 2013, 2014 R. Bourquin
 @license: Modified BSD License
 """
 
@@ -28,7 +28,8 @@ PA = ParameterLoader().load_from_file(args.parametersfile)
 print(PA)
 
 # Decide which simulation loop to use
-if PA["algorithm"] == "fourier":
+if PA["algorithm"] == "fourier" or PA["algorithm"] == "chinchen":
+    # TODO: Split configuration into 'algorithm' and 'propagator'
     from WaveBlocksND import SimulationLoopFourier
     SL = SimulationLoopFourier(PA)
 

@@ -11,7 +11,6 @@ for the Fourier propagator.
 from BlockFactory import BlockFactory
 from Initializer import Initializer
 from BasisTransformationWF import BasisTransformationWF
-from FourierPropagator import FourierPropagator
 from SimulationLoop import SimulationLoop
 from IOManager import IOManager
 
@@ -74,7 +73,15 @@ class SimulationLoopFourier(SimulationLoop):
         BT.transform_to_canonical(initialvalues)
 
         # Finally create and initialize the propagator instance
-        self.propagator = FourierPropagator(potential, initialvalues, self.parameters)
+        # TODO: Clean up this ugly if tree
+        if self.parameters["algorithm"] == "fourier":
+            from FourierPropagator import FourierPropagator
+            self.propagator = FourierPropagator(potential, initialvalues, self.parameters)
+        elif self.parameters["algorithm"] == "chinchen":
+            from ChinChenPropagator import ChinChenPropagator
+            self.propagator = ChinChenPropagator(potential, initialvalues, self.parameters)
+        else:
+            raise NotImplementedError("Unknown propagator type: " + self.parameters["propagator"])
 
         # Write some initial values to disk
         slots = self._tm.compute_number_events()
