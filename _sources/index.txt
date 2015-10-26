@@ -86,6 +86,7 @@ Wavepackets
 
    waveblocks_classes/BasisShape
    waveblocks_classes/HyperCubicShape
+   waveblocks_classes/SimplexShape
    waveblocks_classes/HyperbolicCutShape
    waveblocks_classes/LimitedHyperbolicCutShape
 

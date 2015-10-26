@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -75,6 +73,7 @@
 <span class="sd">                       explicitly. It can be used together with ``data``.</span>
 <span class="sd">    :type reference: A single float number.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c"># TODO: Maybe replace with &#39;unwrap&#39; from numpy?</span>
     <span class="k">assert</span> <span class="n">squeeze</span><span class="p">(</span><span class="n">reference</span><span class="p">)</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="s">&quot;The &#39;reference&#39; must be a scalar value.&quot;</span>
     <span class="n">data</span> <span class="o">=</span> <span class="n">hstack</span><span class="p">([</span><span class="n">array</span><span class="p">(</span><span class="n">reference</span><span class="p">),</span> <span class="n">array</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)])</span>
     <span class="n">offsets</span> <span class="o">=</span> <span class="n">cumsum</span><span class="p">(</span><span class="n">around</span><span class="p">(</span><span class="n">diff</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mf">1.0</span><span class="o">*</span><span class="n">jump</span><span class="p">)))</span>
@@ -190,7 +189,7 @@
     </div>
     <div class="footer">
         &copy; Copyright 2015, R. Bourquin.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
     </div>
   </body>
 </html>

@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -27,7 +25,7 @@
     <script type="text/javascript" src="../_static/doctools.js"></script>
     <link rel="top" title="WaveBlocksND devel documentation" href="../index.html" />
     <link rel="next" title="LimitedHyperbolicCutShape" href="LimitedHyperbolicCutShape.html" />
-    <link rel="prev" title="HyperCubicShape" href="HyperCubicShape.html" /> 
+    <link rel="prev" title="SimplexShape" href="SimplexShape.html" /> 
   </head>
   <body>
     <div class="related">
@@ -43,7 +41,7 @@
           <a href="LimitedHyperbolicCutShape.html" title="LimitedHyperbolicCutShape"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="HyperCubicShape.html" title="HyperCubicShape"
+          <a href="SimplexShape.html" title="SimplexShape"
              accesskey="P">previous</a> |</li>
         <li><a href="../index.html">WaveBlocksND devel documentation</a> &raquo;</li> 
       </ul>
@@ -60,13 +58,17 @@
 <span id="about-the-hyperboliccutshape-class"></span><h2>About the <tt class="docutils literal"><span class="pre">HyperbolicCutShape</span></tt> class<a class="headerlink" href="#module-WaveBlocksND" title="Permalink to this headline">¶</a></h2>
 <p>The WaveBlocks Project</p>
 <p>&#64;author: R. Bourquin
-&#64;copyright: Copyright (C) 2010, 2011, 2012, 2013, 2014 R. Bourquin
+&#64;copyright: Copyright (C) 2010, 2011, 2012, 2013, 2014, 2015 R. Bourquin
 &#64;license: Modified BSD License</p>
 </div>
 <div class="section" id="inheritance-diagram">
 <h2>Inheritance diagram<a class="headerlink" href="#inheritance-diagram" title="Permalink to this headline">¶</a></h2>
 <p class="graphviz">
-<img src="../_images/inheritance-877e4000f8fcac807d9556e4140ce482830a1002.png" alt="Inheritance diagram of HyperbolicCutShape" class="inheritance"/>
+<img src="../_images/inheritance-83e4c8e28121f7e99735f811f8e0ab6b7e80678b.png" alt="Inheritance diagram of HyperbolicCutShape" usemap="#inheritance0df5393bbe" class="inheritance"/>
+<map id="inheritance0df5393bbe" name="inheritance0df5393bbe">
+<area shape="rect" id="node1" title="This class defines the abstract interface to basis shapes." alt="" coords="5,5,181,31"/>
+<area shape="rect" id="node2" title="This class implements the hyperbolic cut basis shape which" alt="" coords="229,5,516,31"/>
+</map>
 </p>
 </div>
 <div class="section" id="class-documentation">
@@ -76,11 +78,11 @@
 <em class="property">class </em><tt class="descclassname">WaveBlocksND.</tt><tt class="descname">HyperbolicCutShape</tt><big>(</big><em>D</em>, <em>K</em><big>)</big><a class="headerlink" href="#WaveBlocksND.HyperbolicCutShape" title="Permalink to this definition">¶</a></dt>
 <dd><p>This class implements the hyperbolic cut basis shape which
 is a special type of sparse basis set. A basis shape is essentially
-all information and operations related to the set <img class="math" src="../_images/math/e026c53d33036cab34ff37c543094cda14d04f7a.png" alt="\mathfrak{K}"/>
-of multi-indices <img class="math" src="../_images/math/8c325612684d41304b9751c175df7bcc0f61f64f.png" alt="k"/>. The hyperbolic cut shape in <img class="math" src="../_images/math/9ffb448918db29f2a72f8f87f421b3b3cad18f95.png" alt="D"/> dimensions
-and with <cite>sparsity</cite> <img class="math" src="../_images/math/dfb064112b6c94470339f6571f69d07afc1c024c.png" alt="K"/> is defined as the set</p>
+all information and operations related to the set <img class="math" src="../_images/math/6f43991b0a0bf1eb4a569c9ea9759ab1f699e1ac.png" alt="\mathfrak{K}"/>
+of multi-indices <img class="math" src="../_images/math/e9203da50e1059455123460d4e716c9c7f440cc3.png" alt="k"/>. The hyperbolic cut shape in <img class="math" src="../_images/math/9dfa31437b58c0473299320aa638151cd88cf61b.png" alt="D"/> dimensions
+and with <cite>sparsity</cite> <img class="math" src="../_images/math/28e003020d0ae96250b302d7d779c791f183f707.png" alt="K"/> is defined as the set</p>
 <div class="math">
-<p><img src="../_images/math/04dd1f62c19a1b1a6f9306330ad3de5abfc7c2a0.png" alt="\mathfrak{K}(D, K) := \{ (k_0, \ldots, k_{D-1}) |
+<p><img src="../_images/math/8f55e4dc1d143b6b8000c28c94898f7ebbf1b216.png" alt="\mathfrak{K}(D, K) := \{ (k_0, \ldots, k_{D-1}) |
                          k_d \geq 0 \forall d \in [0,\ldots,D-1]
                          \land \prod_{d=0}^{D-1}(1+k_d) \leq K \}"/></p>
 </div><dl class="method">
@@ -91,8 +93,8 @@ and with <cite>sparsity</cite> <img class="math" src="../_images/math/dfb064112b
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>D</strong> &#8211; The dimension <img class="math" src="../_images/math/9ffb448918db29f2a72f8f87f421b3b3cad18f95.png" alt="D"/></li>
-<li><strong>K</strong> &#8211; The sparsity parameter <img class="math" src="../_images/math/dfb064112b6c94470339f6571f69d07afc1c024c.png" alt="K"/></li>
+<li><strong>D</strong> &#8211; The dimension <img class="math" src="../_images/math/9dfa31437b58c0473299320aa638151cd88cf61b.png" alt="D"/></li>
+<li><strong>K</strong> &#8211; The sparsity parameter <img class="math" src="../_images/math/28e003020d0ae96250b302d7d779c791f183f707.png" alt="K"/></li>
 </ul>
 </td>
 </tr>
@@ -107,7 +109,7 @@ and with <cite>sparsity</cite> <img class="math" src="../_images/math/dfb064112b
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A string describing the basis shape <img class="math" src="../_images/math/e026c53d33036cab34ff37c543094cda14d04f7a.png" alt="\mathfrak{K}"/>.</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A string describing the basis shape <img class="math" src="../_images/math/6f43991b0a0bf1eb4a569c9ea9759ab1f699e1ac.png" alt="\mathfrak{K}"/>.</td>
 </tr>
 </tbody>
 </table>
@@ -117,8 +119,8 @@ and with <cite>sparsity</cite> <img class="math" src="../_images/math/dfb064112b
 <dt id="WaveBlocksND.HyperbolicCutShape.__hash__">
 <tt class="descname">__hash__</tt><big>(</big><big>)</big><a class="headerlink" href="#WaveBlocksND.HyperbolicCutShape.__hash__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute a unique hash for the basis shape. In the case of hyperbolic
-cut basis shapes <img class="math" src="../_images/math/e026c53d33036cab34ff37c543094cda14d04f7a.png" alt="\mathfrak{K}"/> the basis is fully specified by its
-dimension <img class="math" src="../_images/math/9ffb448918db29f2a72f8f87f421b3b3cad18f95.png" alt="D"/> and the sparsity parameter <img class="math" src="../_images/math/dfb064112b6c94470339f6571f69d07afc1c024c.png" alt="K"/>.</p>
+cut basis shapes <img class="math" src="../_images/math/6f43991b0a0bf1eb4a569c9ea9759ab1f699e1ac.png" alt="\mathfrak{K}"/> the basis is fully specified by its
+dimension <img class="math" src="../_images/math/9dfa31437b58c0473299320aa638151cd88cf61b.png" alt="D"/> and the sparsity parameter <img class="math" src="../_images/math/28e003020d0ae96250b302d7d779c791f183f707.png" alt="K"/>.</p>
 </dd></dl>
 
 <dl class="method">
@@ -130,8 +132,8 @@ dimension <img class="math" src="../_images/math/9ffb448918db29f2a72f8f87f421b3b
 <dl class="method">
 <dt id="WaveBlocksND.HyperbolicCutShape.__iter__">
 <tt class="descname">__iter__</tt><big>(</big><big>)</big><a class="headerlink" href="#WaveBlocksND.HyperbolicCutShape.__iter__" title="Permalink to this definition">¶</a></dt>
-<dd><p>Implements iteration over the multi-indices <img class="math" src="../_images/math/8c325612684d41304b9751c175df7bcc0f61f64f.png" alt="k"/>
-of the basis set <img class="math" src="../_images/math/e026c53d33036cab34ff37c543094cda14d04f7a.png" alt="\mathfrak{K}"/>.</p>
+<dd><p>Implements iteration over the multi-indices <img class="math" src="../_images/math/e9203da50e1059455123460d4e716c9c7f440cc3.png" alt="k"/>
+of the basis set <img class="math" src="../_images/math/6f43991b0a0bf1eb4a569c9ea9759ab1f699e1ac.png" alt="\mathfrak{K}"/>.</p>
 <p>Note: The order of iteration is NOT fixed. If you need a special
 iteration scheme, use <a class="reference internal" href="#WaveBlocksND.HyperbolicCutShape.get_node_iterator" title="WaveBlocksND.HyperbolicCutShape.get_node_iterator"><tt class="xref py py-meth docutils literal"><span class="pre">get_node_iterator()</span></tt></a>.</p>
 </dd></dl>
@@ -139,12 +141,12 @@ iteration scheme, use <a class="reference internal" href="#WaveBlocksND.Hyperbol
 <dl class="method">
 <dt id="WaveBlocksND.HyperbolicCutShape.__contains__">
 <tt class="descname">__contains__</tt><big>(</big><em>k</em><big>)</big><a class="headerlink" href="#WaveBlocksND.HyperbolicCutShape.__contains__" title="Permalink to this definition">¶</a></dt>
-<dd><p>Checks if a given multi-index <img class="math" src="../_images/math/8c325612684d41304b9751c175df7bcc0f61f64f.png" alt="k"/> is part of the basis set <img class="math" src="../_images/math/e026c53d33036cab34ff37c543094cda14d04f7a.png" alt="\mathfrak{K}"/>.</p>
+<dd><p>Checks if a given multi-index <img class="math" src="../_images/math/e9203da50e1059455123460d4e716c9c7f440cc3.png" alt="k"/> is part of the basis set <img class="math" src="../_images/math/6f43991b0a0bf1eb4a569c9ea9759ab1f699e1ac.png" alt="\mathfrak{K}"/>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>k</strong> (<em>tuple</em>) &#8211; The multi-index <img class="math" src="../_images/math/8c325612684d41304b9751c175df7bcc0f61f64f.png" alt="k"/> we want to test.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>k</strong> (<em>tuple</em>) &#8211; The multi-index <img class="math" src="../_images/math/e9203da50e1059455123460d4e716c9c7f440cc3.png" alt="k"/> we want to test.</td>
 </tr>
 </tbody>
 </table>
@@ -153,12 +155,12 @@ iteration scheme, use <a class="reference internal" href="#WaveBlocksND.Hyperbol
 <dl class="method">
 <dt id="WaveBlocksND.HyperbolicCutShape.contains">
 <tt class="descname">contains</tt><big>(</big><em>k</em><big>)</big><a class="headerlink" href="#WaveBlocksND.HyperbolicCutShape.contains" title="Permalink to this definition">¶</a></dt>
-<dd><p>Checks if a given multi-index <img class="math" src="../_images/math/8c325612684d41304b9751c175df7bcc0f61f64f.png" alt="k"/> is part of the basis set <img class="math" src="../_images/math/e026c53d33036cab34ff37c543094cda14d04f7a.png" alt="\mathfrak{K}"/>.</p>
+<dd><p>Checks if a given multi-index <img class="math" src="../_images/math/e9203da50e1059455123460d4e716c9c7f440cc3.png" alt="k"/> is part of the basis set <img class="math" src="../_images/math/6f43991b0a0bf1eb4a569c9ea9759ab1f699e1ac.png" alt="\mathfrak{K}"/>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>k</strong> (<em>tuple</em>) &#8211; The multi-index <img class="math" src="../_images/math/8c325612684d41304b9751c175df7bcc0f61f64f.png" alt="k"/> we want to test.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>k</strong> (<em>tuple</em>) &#8211; The multi-index <img class="math" src="../_images/math/e9203da50e1059455123460d4e716c9c7f440cc3.png" alt="k"/> we want to test.</td>
 </tr>
 </tbody>
 </table>
@@ -174,22 +176,22 @@ boundary nodes are included in the extended basis shape.</p>
 <dl class="method">
 <dt id="WaveBlocksND.HyperbolicCutShape.find_largest_index">
 <tt class="descname">find_largest_index</tt><big>(</big><big>)</big><a class="headerlink" href="#WaveBlocksND.HyperbolicCutShape.find_largest_index" title="Permalink to this definition">¶</a></dt>
-<dd><p>Find the index <img class="math" src="../_images/math/5e43b4137ecdb519857b50e5b1d360b92d2ef463.png" alt="k \in \mathfrak{K}"/> with maximal distance
-<img class="math" src="../_images/math/726609be8d91d2d96dbe6449994fa6a64c8aad7b.png" alt="\sum_{d=0}^D k_d^2"/> from the zero index. In case of
+<dd><p>Find the index <img class="math" src="../_images/math/f364dc342dae06435b4b03258ebc7fbcab96db39.png" alt="k \in \mathfrak{K}"/> with maximal distance
+<img class="math" src="../_images/math/e1144896e09376f22a9709512baeb172c92d3fe0.png" alt="\sum_{d=0}^D k_d^2"/> from the zero index. In case of
 multiple maxima the method returns the first one found.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="WaveBlocksND.HyperbolicCutShape.get_basis_size">
 <tt class="descname">get_basis_size</tt><big>(</big><em>extended=False</em><big>)</big><a class="headerlink" href="#WaveBlocksND.HyperbolicCutShape.get_basis_size" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns the size <img class="math" src="../_images/math/5be940194aa26baa17e694bb8a682199d6c055f1.png" alt="|\mathfrak{K}|"/> of the basis. The size is the
-number of distinct multi-indices <img class="math" src="../_images/math/8c325612684d41304b9751c175df7bcc0f61f64f.png" alt="k"/> that belong to the basis
-<img class="math" src="../_images/math/e026c53d33036cab34ff37c543094cda14d04f7a.png" alt="\mathfrak{K}"/>.</p>
+<dd><p>Returns the size <img class="math" src="../_images/math/20933735c7854a75ecd9f091134f79bfef74f9c1.png" alt="|\mathfrak{K}|"/> of the basis. The size is the
+number of distinct multi-indices <img class="math" src="../_images/math/e9203da50e1059455123460d4e716c9c7f440cc3.png" alt="k"/> that belong to the basis
+<img class="math" src="../_images/math/6f43991b0a0bf1eb4a569c9ea9759ab1f699e1ac.png" alt="\mathfrak{K}"/>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Raise :</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">NotImplementedError</span></tt> Abstract interface.</td>
+<tr class="field-odd field"><th class="field-name">Raise:</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">NotImplementedError</span></tt> Abstract interface.</td>
 </tr>
 </tbody>
 </table>
@@ -207,14 +209,14 @@ never contains any data.</p>
 <dl class="method">
 <dt id="WaveBlocksND.HyperbolicCutShape.get_dimension">
 <tt class="descname">get_dimension</tt><big>(</big><big>)</big><a class="headerlink" href="#WaveBlocksND.HyperbolicCutShape.get_dimension" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns the dimension <img class="math" src="../_images/math/9ffb448918db29f2a72f8f87f421b3b3cad18f95.png" alt="D"/> of the basis shape <img class="math" src="../_images/math/e026c53d33036cab34ff37c543094cda14d04f7a.png" alt="\mathfrak{K}"/>.
+<dd><p>Returns the dimension <img class="math" src="../_images/math/9dfa31437b58c0473299320aa638151cd88cf61b.png" alt="D"/> of the basis shape <img class="math" src="../_images/math/6f43991b0a0bf1eb4a569c9ea9759ab1f699e1ac.png" alt="\mathfrak{K}"/>.
 This is defined as the number of components each multi-index
-<img class="math" src="../_images/math/463329e09b69409b3a09a8cf75621b58ef2e9536.png" alt="k = (k_0, \ldots, k_{D-1})"/> has.</p>
+<img class="math" src="../_images/math/67aacb3d19739daa4afa4fbf9fea63c412eeeec5.png" alt="k = (k_0, \ldots, k_{D-1})"/> has.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Raise :</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">NotImplementedError</span></tt> Abstract interface.</td>
+<tr class="field-odd field"><th class="field-name">Raise:</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">NotImplementedError</span></tt> Abstract interface.</td>
 </tr>
 </tbody>
 </table>
@@ -223,7 +225,7 @@ This is defined as the number of components each multi-index
 <dl class="method">
 <dt id="WaveBlocksND.HyperbolicCutShape.get_limits">
 <tt class="descname">get_limits</tt><big>(</big><big>)</big><a class="headerlink" href="#WaveBlocksND.HyperbolicCutShape.get_limits" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns the upper limit <img class="math" src="../_images/math/dfb064112b6c94470339f6571f69d07afc1c024c.png" alt="K"/> which is the same for all directions <img class="math" src="../_images/math/96ab646de7704969b91c76a214126b45f2b07b25.png" alt="d"/>.</p>
+<dd><p>Returns the upper limit <img class="math" src="../_images/math/28e003020d0ae96250b302d7d779c791f183f707.png" alt="K"/> which is the same for all directions <img class="math" src="../_images/math/425d86ba2f2979d75b7535c2bcf92c33ed6b285a.png" alt="d"/>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -238,8 +240,8 @@ This is defined as the number of components each multi-index
 <dt id="WaveBlocksND.HyperbolicCutShape.get_neighbours">
 <tt class="descname">get_neighbours</tt><big>(</big><em>k</em>, <em>selection=None</em>, <em>direction=None</em><big>)</big><a class="headerlink" href="#WaveBlocksND.HyperbolicCutShape.get_neighbours" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a list of all multi-indices that are neighbours of a given
-multi-index <img class="math" src="../_images/math/8c325612684d41304b9751c175df7bcc0f61f64f.png" alt="k"/>. A direct neighbour is defined as
-<img class="math" src="../_images/math/7cc229a87ffcc7708cfafbd77fbc2612004340b2.png" alt="(k_0, \ldots, k_d \pm 1, \ldots, k_{D-1}) \forall d \in [0 \ldots D-1]"/>.</p>
+multi-index <img class="math" src="../_images/math/e9203da50e1059455123460d4e716c9c7f440cc3.png" alt="k"/>. A direct neighbour is defined as
+<img class="math" src="../_images/math/16e636cfe8f9ae057568a0b8f026e4541ce77877.png" alt="(k_0, \ldots, k_d \pm 1, \ldots, k_{D-1}) \forall d \in [0 \ldots D-1]"/>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -248,12 +250,12 @@ multi-index <img class="math" src="../_images/math/8c325612684d41304b9751c175df7
 <li><strong>k</strong> (<em>tuple</em>) &#8211; The multi-index of which we want to get the neighbours.</li>
 <li><strong>selection</strong> (string with fixed values <tt class="docutils literal"><span class="pre">forward</span></tt>, <tt class="docutils literal"><span class="pre">backward</span></tt> or <tt class="docutils literal"><span class="pre">all</span></tt>.
 The values <tt class="docutils literal"><span class="pre">all</span></tt> is equivalent to the value <tt class="docutils literal"><span class="pre">None</span></tt> (default).) &#8211; </li>
-<li><strong>direction</strong> (<em>int</em>) &#8211; The direction <img class="math" src="../_images/math/9ae72ce213c7ba820c516d9c16dc9c3e6339637f.png" alt="0 \leq d &lt; D"/> in which we want to find
-the neighbours <img class="math" src="../_images/math/2c27d525f307a5878db48ef7254529f901cd67f6.png" alt="k \pm e_d"/>.</li>
+<li><strong>direction</strong> (<em>int</em>) &#8211; The direction <img class="math" src="../_images/math/caad2dfb9cbe44796c5ea89eb90f32ae3907e286.png" alt="0 \leq d &lt; D"/> in which we want to find
+the neighbours <img class="math" src="../_images/math/825f4d551c6c6b4c7f76abb0c331258ec41b6699.png" alt="k \pm e_d"/>.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A list containing the pairs <img class="math" src="../_images/math/ec6875c367e414241e1153a3e470e101e31e824b.png" alt="(d, k^\prime)"/>.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A list containing the pairs <img class="math" src="../_images/math/32e61e1bef7fc93d469b7bd83940d51829c4c00d.png" alt="(d, k^\prime)"/>.</p>
 </td>
 </tr>
 </tbody>
@@ -263,7 +265,7 @@ the neighbours <img class="math" src="../_images/math/2c27d525f307a5878db48ef725
 <dl class="method">
 <dt id="WaveBlocksND.HyperbolicCutShape.get_node_iterator">
 <tt class="descname">get_node_iterator</tt><big>(</big><em>mode='lex'</em>, <em>direction=None</em><big>)</big><a class="headerlink" href="#WaveBlocksND.HyperbolicCutShape.get_node_iterator" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns an iterator to iterate over all basis elements <img class="math" src="../_images/math/5e43b4137ecdb519857b50e5b1d360b92d2ef463.png" alt="k \in \mathfrak{K}"/>.</p>
+<dd><p>Returns an iterator to iterate over all basis elements <img class="math" src="../_images/math/f364dc342dae06435b4b03258ebc7fbcab96db39.png" alt="k \in \mathfrak{K}"/>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -303,8 +305,8 @@ the chains go.</li>
 </ul>
 
   <h4>Previous topic</h4>
-  <p class="topless"><a href="HyperCubicShape.html"
-                        title="previous chapter">HyperCubicShape</a></p>
+  <p class="topless"><a href="SimplexShape.html"
+                        title="previous chapter">SimplexShape</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="LimitedHyperbolicCutShape.html"
                         title="next chapter">LimitedHyperbolicCutShape</a></p>
@@ -343,14 +345,14 @@ the chains go.</li>
           <a href="LimitedHyperbolicCutShape.html" title="LimitedHyperbolicCutShape"
              >next</a> |</li>
         <li class="right" >
-          <a href="HyperCubicShape.html" title="HyperCubicShape"
+          <a href="SimplexShape.html" title="SimplexShape"
              >previous</a> |</li>
         <li><a href="../index.html">WaveBlocksND devel documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">
         &copy; Copyright 2015, R. Bourquin.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
     </div>
   </body>
 </html>

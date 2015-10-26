@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -60,13 +58,17 @@
 <span id="about-the-innerproduct-class"></span><h2>About the <tt class="docutils literal"><span class="pre">InnerProduct</span></tt> class<a class="headerlink" href="#module-WaveBlocksND" title="Permalink to this headline">¶</a></h2>
 <p>The WaveBlocks Project</p>
 <p>&#64;author: R. Bourquin
-&#64;copyright: Copyright (C) 2010, 2011, 2012, 2013, 2014 R. Bourquin
+&#64;copyright: Copyright (C) 2010, 2011, 2012, 2013, 2014, 2015 R. Bourquin
 &#64;license: Modified BSD License</p>
 </div>
 <div class="section" id="inheritance-diagram">
 <h2>Inheritance diagram<a class="headerlink" href="#inheritance-diagram" title="Permalink to this headline">¶</a></h2>
 <p class="graphviz">
-<img src="../_images/inheritance-482ba53e221c880a4ef9762e5858632baf6e7300.png" alt="Inheritance diagram of InnerProduct" class="inheritance"/>
+<img src="../_images/inheritance-2f639f4ff73353292a020a5cac6ba313d971e58c.png" alt="Inheritance diagram of InnerProduct" usemap="#inheritancea2008c2191" class="inheritance"/>
+<map id="inheritancea2008c2191" name="inheritancea2008c2191">
+<area shape="rect" id="node1" title="This class is an abstract interface to inner products in general." alt="" coords="37,55,225,80"/>
+<area shape="rect" id="node2" title="Exception to raise in case an inner product fails for whatever reason." alt="" coords="5,5,256,31"/>
+</map>
 </p>
 </div>
 <div class="section" id="class-documentation">
@@ -78,14 +80,14 @@
 <dl class="method">
 <dt id="WaveBlocksND.InnerProduct.build_matrix">
 <tt class="descname">build_matrix</tt><big>(</big><big>)</big><a class="headerlink" href="#WaveBlocksND.InnerProduct.build_matrix" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculate the matrix elements of <img class="math" src="../_images/math/76b659d3798b9f64dc4b6ff48836208f1127deeb.png" alt="\langle\Psi|f|\Psi\rangle"/>
-for a general function <img class="math" src="../_images/math/c96dd6ec1dc4ad7520fbdc78fcdbec9edd068d0c.png" alt="f(x)"/> with <img class="math" src="../_images/math/f85da18535db12c4e7f18590bcd375be0cd399eb.png" alt="x \in \mathbb{R}^D"/>.
+<dd><p>Calculate the matrix elements of <img class="math" src="../_images/math/d40290424834d8cf3cdd74e0cc853cd80ba61734.png" alt="\langle\Psi|f|\Psi\rangle"/>
+for a general function <img class="math" src="../_images/math/14546c27a7b929642f7840acca5f851c503ea109.png" alt="f(x)"/> with <img class="math" src="../_images/math/71928d7ec88b1eddd6b449fc1b5d32192eca4885.png" alt="x \in \mathbb{R}^D"/>.
 Note that the arguments may vary through subclasses!</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Raise :</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">NotImplementedError</span></tt> Abstract interface.</td>
+<tr class="field-odd field"><th class="field-name">Raise:</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">NotImplementedError</span></tt> Abstract interface.</td>
 </tr>
 </tbody>
 </table>
@@ -118,14 +120,14 @@ never contains any data.</p>
 <dl class="method">
 <dt id="WaveBlocksND.InnerProduct.quadrature">
 <tt class="descname">quadrature</tt><big>(</big><big>)</big><a class="headerlink" href="#WaveBlocksND.InnerProduct.quadrature" title="Permalink to this definition">¶</a></dt>
-<dd><p>Performs the quadrature of <img class="math" src="../_images/math/76b659d3798b9f64dc4b6ff48836208f1127deeb.png" alt="\langle\Psi|f|\Psi\rangle"/> for a general
-function <img class="math" src="../_images/math/c96dd6ec1dc4ad7520fbdc78fcdbec9edd068d0c.png" alt="f(x)"/> with <img class="math" src="../_images/math/f85da18535db12c4e7f18590bcd375be0cd399eb.png" alt="x \in \mathbb{R}^D"/>.
+<dd><p>Performs the quadrature of <img class="math" src="../_images/math/d40290424834d8cf3cdd74e0cc853cd80ba61734.png" alt="\langle\Psi|f|\Psi\rangle"/> for a general
+function <img class="math" src="../_images/math/14546c27a7b929642f7840acca5f851c503ea109.png" alt="f(x)"/> with <img class="math" src="../_images/math/71928d7ec88b1eddd6b449fc1b5d32192eca4885.png" alt="x \in \mathbb{R}^D"/>.
 Note that the arguments may vary through subclasses!</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Raise :</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">NotImplementedError</span></tt> Abstract interface.</td>
+<tr class="field-odd field"><th class="field-name">Raise:</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">NotImplementedError</span></tt> Abstract interface.</td>
 </tr>
 </tbody>
 </table>
@@ -220,7 +222,7 @@ Note that the arguments may vary through subclasses!</p>
     </div>
     <div class="footer">
         &copy; Copyright 2015, R. Bourquin.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
     </div>
   </body>
 </html>

@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -60,13 +58,17 @@
 <span id="about-the-observableslcwp-class"></span><h2>About the <tt class="docutils literal"><span class="pre">ObservablesLCWP</span></tt> class<a class="headerlink" href="#module-WaveBlocksND" title="Permalink to this headline">¶</a></h2>
 <p>The WaveBlocks Project</p>
 <p>&#64;author: R. Bourquin
-&#64;copyright: Copyright (C) 2010, 2011, 2012, 2013, 2014 R. Bourquin
+&#64;copyright: Copyright (C) 2010, 2011, 2012, 2013, 2014, 2015 R. Bourquin
 &#64;license: Modified BSD License</p>
 </div>
 <div class="section" id="inheritance-diagram">
 <h2>Inheritance diagram<a class="headerlink" href="#inheritance-diagram" title="Permalink to this headline">¶</a></h2>
 <p class="graphviz">
-<img src="../_images/inheritance-329c57122687dfca2c33e072c122fc0004faca5f.png" alt="Inheritance diagram of ObservablesLCWP" class="inheritance"/>
+<img src="../_images/inheritance-9c0b7985514f340851881bfdaa7de43ed84e3076.png" alt="Inheritance diagram of ObservablesLCWP" usemap="#inheritance36aaf4f919" class="inheritance"/>
+<map id="inheritance36aaf4f919" name="inheritance36aaf4f919">
+<area shape="rect" id="node1" title="This class is the interface definition for general observable" alt="" coords="5,5,189,31"/>
+<area shape="rect" id="node2" title="This class implements observable computation for linear combinations :math:`\Upsilon`" alt="" coords="237,5,489,31"/>
+</map>
 </p>
 </div>
 <div class="section" id="class-documentation">
@@ -74,20 +76,20 @@
 <dl class="class">
 <dt id="WaveBlocksND.ObservablesLCWP">
 <em class="property">class </em><tt class="descclassname">WaveBlocksND.</tt><tt class="descname">ObservablesLCWP</tt><big>(</big><em>innerproduct=None</em><big>)</big><a class="headerlink" href="#WaveBlocksND.ObservablesLCWP" title="Permalink to this definition">¶</a></dt>
-<dd><p>This class implements observable computation for linear combinations <img class="math" src="../_images/math/d792ba6fac8dc00a5626659c0b9cf56716701f3d.png" alt="\Upsilon"/>
-of wavepackets <img class="math" src="../_images/math/62ed0f266e815e996092950d8b63f91d8833b2c3.png" alt="\Psi_j"/>. There are no assumptions made on the type of the wavepackets
-<img class="math" src="../_images/math/62ed0f266e815e996092950d8b63f91d8833b2c3.png" alt="\Psi_j"/> in <img class="math" src="../_images/math/ed9df0f5dafff0664226216adb90c857ce03eb81.png" alt="\Upsilon := \sum_{j=0}^J c_j \Psi_j"/>.</p>
+<dd><p>This class implements observable computation for linear combinations <img class="math" src="../_images/math/e838cc7ce47de4242e2d27771140908bff604da6.png" alt="\Upsilon"/>
+of wavepackets <img class="math" src="../_images/math/ab7f7c655bbc8fec08f08c10d8cf1eeb56560103.png" alt="\Psi_j"/>. There are no assumptions made on the type of the wavepackets
+<img class="math" src="../_images/math/ab7f7c655bbc8fec08f08c10d8cf1eeb56560103.png" alt="\Psi_j"/> in <img class="math" src="../_images/math/bbfa6bbabc2a66e18ca2269a641607f071c75c64.png" alt="\Upsilon := \sum_{j=0}^J c_j \Psi_j"/>.</p>
 <dl class="method">
 <dt id="WaveBlocksND.ObservablesLCWP.__init__">
 <tt class="descname">__init__</tt><big>(</big><em>innerproduct=None</em><big>)</big><a class="headerlink" href="#WaveBlocksND.ObservablesLCWP.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialize a new <a class="reference internal" href="#WaveBlocksND.ObservablesLCWP" title="WaveBlocksND.ObservablesLCWP"><tt class="xref py py-class docutils literal"><span class="pre">ObservablesLCWP</span></tt></a> instance for observable computation
-of linear combinations <img class="math" src="../_images/math/d792ba6fac8dc00a5626659c0b9cf56716701f3d.png" alt="\Upsilon"/> of wavepackets <img class="math" src="../_images/math/62ed0f266e815e996092950d8b63f91d8833b2c3.png" alt="\Psi_j"/>.</p>
+of linear combinations <img class="math" src="../_images/math/e838cc7ce47de4242e2d27771140908bff604da6.png" alt="\Upsilon"/> of wavepackets <img class="math" src="../_images/math/ab7f7c655bbc8fec08f08c10d8cf1eeb56560103.png" alt="\Psi_j"/>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>innerproduct</strong> (A <a class="reference internal" href="InnerProduct.html#WaveBlocksND.InnerProduct" title="WaveBlocksND.InnerProduct"><tt class="xref py py-class docutils literal"><span class="pre">InnerProduct</span></tt></a> subclass instance.) &#8211; An inner product for computing the integrals. The inner product is
-used for the computation of brakets <img class="math" src="../_images/math/9e1b1cf4ccd167e75beea8c6b50f7d1db3c67e8d.png" alt="\langle\Psi|\cdot|\Psi\rangle"/>.</td>
+used for the computation of brakets <img class="math" src="../_images/math/7a1d37442d441073ca3b0d6b448ad0776f9d570c.png" alt="\langle\Psi|\cdot|\Psi\rangle"/>.</td>
 </tr>
 </tbody>
 </table>
@@ -100,23 +102,23 @@ used for the computation of brakets <img class="math" src="../_images/math/9e1b1
 <dl class="method">
 <dt id="WaveBlocksND.ObservablesLCWP.kinetic_energy">
 <tt class="descname">kinetic_energy</tt><big>(</big><em>lincomb</em>, <em>matrix=None</em>, <em>component=None</em>, <em>summed=False</em>, <em>return_matrix=False</em><big>)</big><a class="headerlink" href="#WaveBlocksND.ObservablesLCWP.kinetic_energy" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute the kinetic energy <img class="math" src="../_images/math/8abf1adadd1272a8cb0873cc4c37709175d26b2c.png" alt="E_{\text{kin}} := \langle\Upsilon|T|\Upsilon\rangle"/>
-of a linear combination <img class="math" src="../_images/math/d792ba6fac8dc00a5626659c0b9cf56716701f3d.png" alt="\Upsilon"/> of wavepackets.</p>
+<dd><p>Compute the kinetic energy <img class="math" src="../_images/math/27607bdeea8e877d7029c62145cccd9af7b8d5d5.png" alt="E_{\text{kin}} := \langle\Upsilon|T|\Upsilon\rangle"/>
+of a linear combination <img class="math" src="../_images/math/e838cc7ce47de4242e2d27771140908bff604da6.png" alt="\Upsilon"/> of wavepackets.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>linbomc</strong> &#8211; The linear combination <img class="math" src="../_images/math/d792ba6fac8dc00a5626659c0b9cf56716701f3d.png" alt="\Upsilon"/> of which we compute the kinetic energy.</li>
+<li><strong>linbomc</strong> &#8211; The linear combination <img class="math" src="../_images/math/e838cc7ce47de4242e2d27771140908bff604da6.png" alt="\Upsilon"/> of which we compute the kinetic energy.</li>
 <li><strong>matrix</strong> (An <tt class="docutils literal"><span class="pre">ndarray</span></tt> or <tt class="docutils literal"><span class="pre">None</span></tt> (default).) &#8211; The kinetic overlap matrix. If <tt class="docutils literal"><span class="pre">None</span></tt> the matrix is computed internally.</li>
-<li><strong>component</strong> (Integer or <tt class="docutils literal"><span class="pre">None</span></tt>.) &#8211; The index <img class="math" src="../_images/math/34857b3ba74ce5cd8607f3ebd23e9015908ada71.png" alt="i"/> of the components <img class="math" src="../_images/math/1a1372729059cb0703afe57f9402c351b5bf0e2d.png" alt="\Phi_i"/> whose
+<li><strong>component</strong> (Integer or <tt class="docutils literal"><span class="pre">None</span></tt>.) &#8211; The index <img class="math" src="../_images/math/a581f053bbfa5115f42c13094857cdd12a37ec49.png" alt="i"/> of the components <img class="math" src="../_images/math/7e85868a38cec20390ec1816976ad68089bb2a48.png" alt="\Phi_i"/> whose
 kinetic energy we want to compute. If set to <tt class="docutils literal"><span class="pre">None</span></tt> the
-computation is performed for all <img class="math" src="../_images/math/fc97ef67268cd4e91bacdf12b8901d7036c9a056.png" alt="N"/> components.</li>
+computation is performed for all <img class="math" src="../_images/math/75e27f04188974063be3230dca208cd495b77ce1.png" alt="N"/> components.</li>
 <li><strong>return_matrix</strong> (Boolean, default is <tt class="docutils literal"><span class="pre">False</span></tt>.) &#8211; Whether to return the kinetic overlap matrix used internally.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The kinetic energy of <img class="math" src="../_images/math/d792ba6fac8dc00a5626659c0b9cf56716701f3d.png" alt="\Upsilon"/> and optionally the kinetic overlap matrix <img class="math" src="../_images/math/71fba394fe41e84c2f811d772bfbbde49e015105.png" alt="M_T"/>.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The kinetic energy of <img class="math" src="../_images/math/e838cc7ce47de4242e2d27771140908bff604da6.png" alt="\Upsilon"/> and optionally the kinetic overlap matrix <img class="math" src="../_images/math/aae0db378a6c094311c8da0198e30b8da3034855.png" alt="M_T"/>.</p>
 </td>
 </tr>
 </tbody>
@@ -126,20 +128,20 @@ computation is performed for all <img class="math" src="../_images/math/fc97ef67
 <dl class="method">
 <dt id="WaveBlocksND.ObservablesLCWP.kinetic_overlap_matrix">
 <tt class="descname">kinetic_overlap_matrix</tt><big>(</big><em>lincomb</em>, <em>component=None</em><big>)</big><a class="headerlink" href="#WaveBlocksND.ObservablesLCWP.kinetic_overlap_matrix" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute the kinetic overlap matrix <img class="math" src="../_images/math/3cd945d5cb20e553c38e09aa1b97eb4a351a4189.png" alt="{M_T}_{r,c} = \langle\Upsilon_r|T|\Upsilon_c\rangle"/>.</p>
+<dd><p>Compute the kinetic overlap matrix <img class="math" src="../_images/math/af3c5881a77eff150d03ff82481b0b4936242688.png" alt="{M_T}_{r,c} = \langle\Upsilon_r|T|\Upsilon_c\rangle"/>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>lincomb</strong> &#8211; The linear combination <img class="math" src="../_images/math/d792ba6fac8dc00a5626659c0b9cf56716701f3d.png" alt="\Upsilon"/>.</li>
-<li><strong>component</strong> (Integer or <tt class="docutils literal"><span class="pre">None</span></tt>.) &#8211; The index <img class="math" src="../_images/math/34857b3ba74ce5cd8607f3ebd23e9015908ada71.png" alt="i"/> of the components <img class="math" src="../_images/math/1a1372729059cb0703afe57f9402c351b5bf0e2d.png" alt="\Phi_i"/> whose
+<li><strong>lincomb</strong> &#8211; The linear combination <img class="math" src="../_images/math/e838cc7ce47de4242e2d27771140908bff604da6.png" alt="\Upsilon"/>.</li>
+<li><strong>component</strong> (Integer or <tt class="docutils literal"><span class="pre">None</span></tt>.) &#8211; The index <img class="math" src="../_images/math/a581f053bbfa5115f42c13094857cdd12a37ec49.png" alt="i"/> of the components <img class="math" src="../_images/math/7e85868a38cec20390ec1816976ad68089bb2a48.png" alt="\Phi_i"/> whose
 kinetic energy we want to compute. If set to <tt class="docutils literal"><span class="pre">None</span></tt> the
-computation is performed for all <img class="math" src="../_images/math/fc97ef67268cd4e91bacdf12b8901d7036c9a056.png" alt="N"/> components.</li>
+computation is performed for all <img class="math" src="../_images/math/75e27f04188974063be3230dca208cd495b77ce1.png" alt="N"/> components.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The matrix <img class="math" src="../_images/math/71fba394fe41e84c2f811d772bfbbde49e015105.png" alt="M_T"/>.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The matrix <img class="math" src="../_images/math/aae0db378a6c094311c8da0198e30b8da3034855.png" alt="M_T"/>.</p>
 </td>
 </tr>
 </tbody>
@@ -149,23 +151,23 @@ computation is performed for all <img class="math" src="../_images/math/fc97ef67
 <dl class="method">
 <dt id="WaveBlocksND.ObservablesLCWP.norm">
 <tt class="descname">norm</tt><big>(</big><em>lincomb</em>, <em>matrix=None</em>, <em>component=None</em>, <em>summed=False</em>, <em>return_matrix=False</em><big>)</big><a class="headerlink" href="#WaveBlocksND.ObservablesLCWP.norm" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute the <img class="math" src="../_images/math/07c3de5211dc08b13546363f8b139700a16dd963.png" alt="L^2"/> norm <img class="math" src="../_images/math/a34d577bbe09f59d60968eb9c4d99b87160de0c5.png" alt="\langle\Upsilon|\Upsilon\rangle"/>
-of a linear combination <img class="math" src="../_images/math/d792ba6fac8dc00a5626659c0b9cf56716701f3d.png" alt="\Upsilon"/> of wavepackets.</p>
+<dd><p>Compute the <img class="math" src="../_images/math/8e53b35e6dba31d49686a9f1ea7ef219da16e494.png" alt="L^2"/> norm <img class="math" src="../_images/math/7d33da274a03272a679aa0a97e24cf41bdbc6508.png" alt="\langle\Upsilon|\Upsilon\rangle"/>
+of a linear combination <img class="math" src="../_images/math/e838cc7ce47de4242e2d27771140908bff604da6.png" alt="\Upsilon"/> of wavepackets.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>lincomb</strong> (A <a class="reference internal" href="LinearCombinationOfWavepackets.html#WaveBlocksND.LinearCombinationOfWavepackets" title="WaveBlocksND.LinearCombinationOfWavepackets"><tt class="xref py py-class docutils literal"><span class="pre">LinearCombinationOfWavepackets</span></tt></a> subclass instance.) &#8211; The linear combination <img class="math" src="../_images/math/d792ba6fac8dc00a5626659c0b9cf56716701f3d.png" alt="\Upsilon"/> of which we compute the norm.</li>
+<li><strong>lincomb</strong> (A <a class="reference internal" href="LinearCombinationOfWavepackets.html#WaveBlocksND.LinearCombinationOfWavepackets" title="WaveBlocksND.LinearCombinationOfWavepackets"><tt class="xref py py-class docutils literal"><span class="pre">LinearCombinationOfWavepackets</span></tt></a> subclass instance.) &#8211; The linear combination <img class="math" src="../_images/math/e838cc7ce47de4242e2d27771140908bff604da6.png" alt="\Upsilon"/> of which we compute the norm.</li>
 <li><strong>matrix</strong> (An <tt class="docutils literal"><span class="pre">ndarray</span></tt> or <tt class="docutils literal"><span class="pre">None</span></tt> (default).) &#8211; The overlap matrix. If <tt class="docutils literal"><span class="pre">None</span></tt> the matrix is computed internally.</li>
-<li><strong>component</strong> &#8211; The index <img class="math" src="../_images/math/34857b3ba74ce5cd8607f3ebd23e9015908ada71.png" alt="i"/> of the components <img class="math" src="../_images/math/1a1372729059cb0703afe57f9402c351b5bf0e2d.png" alt="\Phi_i"/> whose norm
+<li><strong>component</strong> &#8211; The index <img class="math" src="../_images/math/a581f053bbfa5115f42c13094857cdd12a37ec49.png" alt="i"/> of the components <img class="math" src="../_images/math/7e85868a38cec20390ec1816976ad68089bb2a48.png" alt="\Phi_i"/> whose norm
 is calculated. The default value is <tt class="docutils literal"><span class="pre">None</span></tt> which means to compute
-norms of all <img class="math" src="../_images/math/fc97ef67268cd4e91bacdf12b8901d7036c9a056.png" alt="N"/> components.</li>
+norms of all <img class="math" src="../_images/math/75e27f04188974063be3230dca208cd495b77ce1.png" alt="N"/> components.</li>
 <li><strong>return_matrix</strong> (Boolean, default is <tt class="docutils literal"><span class="pre">False</span></tt>.) &#8211; Whether to return the overlap matrix used internally.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The norm of <img class="math" src="../_images/math/d792ba6fac8dc00a5626659c0b9cf56716701f3d.png" alt="\Upsilon"/> and optionally the overlap matrix <img class="math" src="../_images/math/5d1e4485dc90c450e8c76826516c1b2ccb8fce16.png" alt="M"/>.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The norm of <img class="math" src="../_images/math/e838cc7ce47de4242e2d27771140908bff604da6.png" alt="\Upsilon"/> and optionally the overlap matrix <img class="math" src="../_images/math/2de38926392ba23abeac75effc66c37a5f5be5fd.png" alt="M"/>.</p>
 </td>
 </tr>
 </tbody>
@@ -175,7 +177,7 @@ norms of all <img class="math" src="../_images/math/fc97ef67268cd4e91bacdf12b890
 <dl class="method">
 <dt id="WaveBlocksND.ObservablesLCWP.overlap_matrix">
 <tt class="descname">overlap_matrix</tt><big>(</big><em>lincomb</em>, <em>component=None</em><big>)</big><a class="headerlink" href="#WaveBlocksND.ObservablesLCWP.overlap_matrix" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute the overlap matrix <img class="math" src="../_images/math/90f98658e790aac84b0ee31cbf6aa05bfd15c003.png" alt="M_{r,c} = \langle\Upsilon_r|\Upsilon_c\rangle"/>.</p>
+<dd><p>Compute the overlap matrix <img class="math" src="../_images/math/a58f0fdeb5f086c228310b976852ee9184ff0460.png" alt="M_{r,c} = \langle\Upsilon_r|\Upsilon_c\rangle"/>.</p>
 <p>Note that this function is just a shortcut for calling the inner
 product evaluator directly.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -183,14 +185,14 @@ product evaluator directly.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>lincomb</strong> &#8211; The linear combination <img class="math" src="../_images/math/d792ba6fac8dc00a5626659c0b9cf56716701f3d.png" alt="\Upsilon"/>.</li>
-<li><strong>component</strong> (int or <tt class="docutils literal"><span class="pre">None</span></tt>.) &#8211; The index <img class="math" src="../_images/math/34857b3ba74ce5cd8607f3ebd23e9015908ada71.png" alt="i"/> of the components <img class="math" src="../_images/math/1a1372729059cb0703afe57f9402c351b5bf0e2d.png" alt="\Phi_i"/> whose overlap
+<li><strong>lincomb</strong> &#8211; The linear combination <img class="math" src="../_images/math/e838cc7ce47de4242e2d27771140908bff604da6.png" alt="\Upsilon"/>.</li>
+<li><strong>component</strong> (int or <tt class="docutils literal"><span class="pre">None</span></tt>.) &#8211; The index <img class="math" src="../_images/math/a581f053bbfa5115f42c13094857cdd12a37ec49.png" alt="i"/> of the components <img class="math" src="../_images/math/7e85868a38cec20390ec1816976ad68089bb2a48.png" alt="\Phi_i"/> whose overlap
 is calculated. The default value is <tt class="docutils literal"><span class="pre">None</span></tt> which means to compute
-overlaps of all <img class="math" src="../_images/math/fc97ef67268cd4e91bacdf12b8901d7036c9a056.png" alt="N"/> components.</li>
+overlaps of all <img class="math" src="../_images/math/75e27f04188974063be3230dca208cd495b77ce1.png" alt="N"/> components.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The matrix <img class="math" src="../_images/math/5d1e4485dc90c450e8c76826516c1b2ccb8fce16.png" alt="M"/>.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The matrix <img class="math" src="../_images/math/2de38926392ba23abeac75effc66c37a5f5be5fd.png" alt="M"/>.</p>
 </td>
 </tr>
 </tbody>
@@ -200,25 +202,25 @@ overlaps of all <img class="math" src="../_images/math/fc97ef67268cd4e91bacdf12b
 <dl class="method">
 <dt id="WaveBlocksND.ObservablesLCWP.potential_energy">
 <tt class="descname">potential_energy</tt><big>(</big><em>lincomb</em>, <em>potential</em>, <em>matrix=None</em>, <em>component=None</em>, <em>summed=False</em>, <em>return_matrix=False</em><big>)</big><a class="headerlink" href="#WaveBlocksND.ObservablesLCWP.potential_energy" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute the potential energy <img class="math" src="../_images/math/859cf6c42a39fe3533879fbe3d798fa400608937.png" alt="E_{\text{pot}} := \langle\Upsilon|V|\Upsilon\rangle"/>.
-of a linear combination <img class="math" src="../_images/math/d792ba6fac8dc00a5626659c0b9cf56716701f3d.png" alt="\Upsilon"/> of wavepackets.</p>
+<dd><p>Compute the potential energy <img class="math" src="../_images/math/92810122c86e255355fadae6579eff603efc5fa0.png" alt="E_{\text{pot}} := \langle\Upsilon|V|\Upsilon\rangle"/>.
+of a linear combination <img class="math" src="../_images/math/e838cc7ce47de4242e2d27771140908bff604da6.png" alt="\Upsilon"/> of wavepackets.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>linbomc</strong> &#8211; The linear combination <img class="math" src="../_images/math/d792ba6fac8dc00a5626659c0b9cf56716701f3d.png" alt="\Upsilon"/> of which we compute the potential energy.</li>
-<li><strong>potential</strong> &#8211; The potential <img class="math" src="../_images/math/2e93af720b470a88780063377da0dd4f28e4a9f5.png" alt="V(x)"/>. (Actually, not the potential object itself
+<li><strong>linbomc</strong> &#8211; The linear combination <img class="math" src="../_images/math/e838cc7ce47de4242e2d27771140908bff604da6.png" alt="\Upsilon"/> of which we compute the potential energy.</li>
+<li><strong>potential</strong> &#8211; The potential <img class="math" src="../_images/math/e0ec0629769ae6a9454173e71aa1df11f9209631.png" alt="V(x)"/>. (Actually, not the potential object itself
 but one of its <tt class="docutils literal"><span class="pre">V.evaluate_*</span></tt> methods.)</li>
 <li><strong>matrix</strong> (An <tt class="docutils literal"><span class="pre">ndarray</span></tt> or <tt class="docutils literal"><span class="pre">None</span></tt> per default.) &#8211; The potential overlap matrix. If <tt class="docutils literal"><span class="pre">None</span></tt> the matrix is computed internally.</li>
-<li><strong>component</strong> (Integer or <tt class="docutils literal"><span class="pre">None</span></tt>.) &#8211; The index <img class="math" src="../_images/math/34857b3ba74ce5cd8607f3ebd23e9015908ada71.png" alt="i"/> of the components <img class="math" src="../_images/math/1a1372729059cb0703afe57f9402c351b5bf0e2d.png" alt="\Phi_i"/> whose
+<li><strong>component</strong> (Integer or <tt class="docutils literal"><span class="pre">None</span></tt>.) &#8211; The index <img class="math" src="../_images/math/a581f053bbfa5115f42c13094857cdd12a37ec49.png" alt="i"/> of the components <img class="math" src="../_images/math/7e85868a38cec20390ec1816976ad68089bb2a48.png" alt="\Phi_i"/> whose
 potential energy we want to compute. If set to <tt class="docutils literal"><span class="pre">None</span></tt> the
-computation is performed for all <img class="math" src="../_images/math/fc97ef67268cd4e91bacdf12b8901d7036c9a056.png" alt="N"/> components.</li>
+computation is performed for all <img class="math" src="../_images/math/75e27f04188974063be3230dca208cd495b77ce1.png" alt="N"/> components.</li>
 <li><strong>return_matrix</strong> (Boolean, default is <tt class="docutils literal"><span class="pre">False</span></tt>.) &#8211; Whether to return the potential overlap matrix used internally.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The potential energy of <img class="math" src="../_images/math/d792ba6fac8dc00a5626659c0b9cf56716701f3d.png" alt="\Upsilon"/> and optionally the potential overlap matrix <img class="math" src="../_images/math/db572e04be67f38e9da26ae0d16acb66a5ba5d4d.png" alt="M_V"/>.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The potential energy of <img class="math" src="../_images/math/e838cc7ce47de4242e2d27771140908bff604da6.png" alt="\Upsilon"/> and optionally the potential overlap matrix <img class="math" src="../_images/math/bd2a86d11354475662d6f0ef026a0e407149b6d0.png" alt="M_V"/>.</p>
 </td>
 </tr>
 </tbody>
@@ -228,22 +230,22 @@ computation is performed for all <img class="math" src="../_images/math/fc97ef67
 <dl class="method">
 <dt id="WaveBlocksND.ObservablesLCWP.potential_overlap_matrix">
 <tt class="descname">potential_overlap_matrix</tt><big>(</big><em>lincomb</em>, <em>potential</em>, <em>component=None</em><big>)</big><a class="headerlink" href="#WaveBlocksND.ObservablesLCWP.potential_overlap_matrix" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute the potential overlap matrix <img class="math" src="../_images/math/1db77a0b04dfb1340b77d0577e3b7513afd04239.png" alt="{M_V}_{r,c} = \langle\Upsilon_r|V|\Upsilon_c\rangle"/>.</p>
+<dd><p>Compute the potential overlap matrix <img class="math" src="../_images/math/09347b12c7f3c4c3ded56403b0563700206aac86.png" alt="{M_V}_{r,c} = \langle\Upsilon_r|V|\Upsilon_c\rangle"/>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>lincomb</strong> &#8211; The linear combination <img class="math" src="../_images/math/d792ba6fac8dc00a5626659c0b9cf56716701f3d.png" alt="\Upsilon"/>.</li>
-<li><strong>potential</strong> &#8211; The potential <img class="math" src="../_images/math/2e93af720b470a88780063377da0dd4f28e4a9f5.png" alt="V(x)"/>. (Actually, not the potential object itself
+<li><strong>lincomb</strong> &#8211; The linear combination <img class="math" src="../_images/math/e838cc7ce47de4242e2d27771140908bff604da6.png" alt="\Upsilon"/>.</li>
+<li><strong>potential</strong> &#8211; The potential <img class="math" src="../_images/math/e0ec0629769ae6a9454173e71aa1df11f9209631.png" alt="V(x)"/>. (Actually, not the potential object itself
 but one of its <tt class="docutils literal"><span class="pre">V.evaluate_*</span></tt> methods.)</li>
-<li><strong>component</strong> (Integer or <tt class="docutils literal"><span class="pre">None</span></tt>.) &#8211; The index <img class="math" src="../_images/math/34857b3ba74ce5cd8607f3ebd23e9015908ada71.png" alt="i"/> of the components <img class="math" src="../_images/math/1a1372729059cb0703afe57f9402c351b5bf0e2d.png" alt="\Phi_i"/> whose
+<li><strong>component</strong> (Integer or <tt class="docutils literal"><span class="pre">None</span></tt>.) &#8211; The index <img class="math" src="../_images/math/a581f053bbfa5115f42c13094857cdd12a37ec49.png" alt="i"/> of the components <img class="math" src="../_images/math/7e85868a38cec20390ec1816976ad68089bb2a48.png" alt="\Phi_i"/> whose
 potential energy we want to compute. If set to <tt class="docutils literal"><span class="pre">None</span></tt> the
-computation is performed for all <img class="math" src="../_images/math/fc97ef67268cd4e91bacdf12b8901d7036c9a056.png" alt="N"/> components.</li>
+computation is performed for all <img class="math" src="../_images/math/75e27f04188974063be3230dca208cd495b77ce1.png" alt="N"/> components.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The matrix <img class="math" src="../_images/math/db572e04be67f38e9da26ae0d16acb66a5ba5d4d.png" alt="M_V"/>.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The matrix <img class="math" src="../_images/math/bd2a86d11354475662d6f0ef026a0e407149b6d0.png" alt="M_V"/>.</p>
 </td>
 </tr>
 </tbody>
@@ -259,7 +261,7 @@ computation is performed for all <img class="math" src="../_images/math/fc97ef67
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>innerproduct</strong> (A <a class="reference internal" href="InnerProduct.html#WaveBlocksND.InnerProduct" title="WaveBlocksND.InnerProduct"><tt class="xref py py-class docutils literal"><span class="pre">InnerProduct</span></tt></a> subclass instance.) &#8211; An inner product for computing the integrals. The inner product is
-used for the computation of brakets <img class="math" src="../_images/math/9e1b1cf4ccd167e75beea8c6b50f7d1db3c67e8d.png" alt="\langle\Psi|\cdot|\Psi\rangle"/>.</td>
+used for the computation of brakets <img class="math" src="../_images/math/7a1d37442d441073ca3b0d6b448ad0776f9d570c.png" alt="\langle\Psi|\cdot|\Psi\rangle"/>.</td>
 </tr>
 </tbody>
 </table>
@@ -338,7 +340,7 @@ used for the computation of brakets <img class="math" src="../_images/math/9e1b1
     </div>
     <div class="footer">
         &copy; Copyright 2015, R. Bourquin.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
     </div>
   </body>
 </html>

@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -60,7 +58,7 @@
 <span id="about-the-iom-plugin-inhomogwavepacket-class"></span><h2>About the <tt class="docutils literal"><span class="pre">IOM_plugin_inhomogwavepacket</span></tt> class<a class="headerlink" href="#module-WaveBlocksND" title="Permalink to this headline">¶</a></h2>
 <p>The WaveBlocks Project</p>
 <p>&#64;author: R. Bourquin
-&#64;copyright: Copyright (C) 2010, 2011, 2012, 2013, 2014 R. Bourquin
+&#64;copyright: Copyright (C) 2010, 2011, 2012, 2013, 2014, 2015 R. Bourquin
 &#64;license: Modified BSD License</p>
 </div>
 <div class="section" id="module-IOM_plugin_inhomogwavepacket">
@@ -116,7 +114,7 @@ It is included only for convenience and is not particularly efficient.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>timestep</strong> &#8211; The timestep <img class="math" src="../_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/> at which we load the wavepacket.</li>
+<li><strong>timestep</strong> &#8211; The timestep <img class="math" src="../_images/math/413f8a8e40062a9090d9d50b88bc7b551b314c26.png" alt="n"/> at which we load the wavepacket.</li>
 <li><strong>key</strong> (Tuple of valid identifier strings that are <tt class="docutils literal"><span class="pre">q</span></tt>, <tt class="docutils literal"><span class="pre">p</span></tt>, <tt class="docutils literal"><span class="pre">Q</span></tt>, <tt class="docutils literal"><span class="pre">P</span></tt>, <tt class="docutils literal"><span class="pre">S</span></tt> and <tt class="docutils literal"><span class="pre">adQ</span></tt>.
 Default is <tt class="docutils literal"><span class="pre">(&quot;q&quot;,</span> <span class="pre">&quot;p&quot;,</span> <span class="pre">&quot;Q&quot;,</span> <span class="pre">&quot;P&quot;,</span> <span class="pre">&quot;S&quot;,</span> <span class="pre">&quot;adQ&quot;)</span></tt>.) &#8211; Specify which parameters to save. All are independent.</li>
 <li><strong>blockid</strong> &#8211; The ID of the data block to operate on.</li>
@@ -170,7 +168,7 @@ already set up with the correct <a class="reference internal" href="#IOM_plugin_
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>packet</strong> &#8211; The <tt class="xref py py-class docutils literal"><span class="pre">HagedornWavepacketInhomogeneous</span></tt> instance we want to save.</li>
-<li><strong>timestep</strong> &#8211; The timestep <img class="math" src="../_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/> at which we save the wavepacket.</li>
+<li><strong>timestep</strong> &#8211; The timestep <img class="math" src="../_images/math/413f8a8e40062a9090d9d50b88bc7b551b314c26.png" alt="n"/> at which we save the wavepacket.</li>
 <li><strong>key</strong> (Tuple of valid identifier strings that are <tt class="docutils literal"><span class="pre">q</span></tt>, <tt class="docutils literal"><span class="pre">p</span></tt>, <tt class="docutils literal"><span class="pre">Q</span></tt>, <tt class="docutils literal"><span class="pre">P</span></tt>, <tt class="docutils literal"><span class="pre">S</span></tt> and <tt class="docutils literal"><span class="pre">adQ</span></tt>.
 Default is <tt class="docutils literal"><span class="pre">(&quot;q&quot;,</span> <span class="pre">&quot;p&quot;,</span> <span class="pre">&quot;Q&quot;,</span> <span class="pre">&quot;P&quot;,</span> <span class="pre">&quot;S&quot;,</span> <span class="pre">&quot;adQ&quot;)</span></tt>.) &#8211; Specify which parameters to save. All are independent.</li>
 <li><strong>blockid</strong> &#8211; The ID of the data block to operate on.</li>
@@ -206,8 +204,8 @@ You have to save the basis shape with the corresponding function too.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>coefficients</strong> (A <tt class="docutils literal"><span class="pre">list</span></tt> with <img class="math" src="../_images/math/fc97ef67268cd4e91bacdf12b8901d7036c9a056.png" alt="N"/> suitable <tt class="docutils literal"><span class="pre">ndarrays</span></tt>.) &#8211; The coefficients of the Hagedorn wavepacket.</li>
-<li><strong>basisshapes</strong> (A <tt class="docutils literal"><span class="pre">list</span></tt> with <img class="math" src="../_images/math/fc97ef67268cd4e91bacdf12b8901d7036c9a056.png" alt="N"/> <tt class="xref py py-class docutils literal"><span class="pre">BasisShape</span></tt> subclass instances.) &#8211; The corresponding basis shapes of the Hagedorn wavepacket.</li>
+<li><strong>coefficients</strong> (A <tt class="docutils literal"><span class="pre">list</span></tt> with <img class="math" src="../_images/math/75e27f04188974063be3230dca208cd495b77ce1.png" alt="N"/> suitable <tt class="docutils literal"><span class="pre">ndarrays</span></tt>.) &#8211; The coefficients of the Hagedorn wavepacket.</li>
+<li><strong>basisshapes</strong> (A <tt class="docutils literal"><span class="pre">list</span></tt> with <img class="math" src="../_images/math/75e27f04188974063be3230dca208cd495b77ce1.png" alt="N"/> <tt class="xref py py-class docutils literal"><span class="pre">BasisShape</span></tt> subclass instances.) &#8211; The corresponding basis shapes of the Hagedorn wavepacket.</li>
 </ul>
 </td>
 </tr>
@@ -218,13 +216,13 @@ You have to save the basis shape with the corresponding function too.</p>
 <dl class="function">
 <dt id="IOM_plugin_inhomogwavepacket.save_inhomogwavepacket_parameters">
 <tt class="descclassname">IOM_plugin_inhomogwavepacket.</tt><tt class="descname">save_inhomogwavepacket_parameters</tt><big>(</big><em>self</em>, <em>parameters</em>, <em>timestep=None</em>, <em>blockid=0</em>, <em>key=('q'</em>, <em>'p'</em>, <em>'Q'</em>, <em>'P'</em>, <em>'S')</em><big>)</big><a class="reference internal" href="../_modules/IOM_plugin_inhomogwavepacket.html#save_inhomogwavepacket_parameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#IOM_plugin_inhomogwavepacket.save_inhomogwavepacket_parameters" title="Permalink to this definition">¶</a></dt>
-<dd><p>Save the parameter set <img class="math" src="../_images/math/c3e77f8dac39bd44cff4ca15469c871bab27c02e.png" alt="\Pi"/> of the Hagedorn wavepacket <img class="math" src="../_images/math/866f0204648be9ca6b10e14dd72295295dd53a79.png" alt="\Psi"/> to a file.</p>
+<dd><p>Save the parameter set <img class="math" src="../_images/math/fab626933a4c5c14dc2c29fb783db0f824a4a9d8.png" alt="\Pi"/> of the Hagedorn wavepacket <img class="math" src="../_images/math/de6f6ec55da5bff04bdf591d5bb35136eb51b579.png" alt="\Psi"/> to a file.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>parameters</strong> (A <tt class="docutils literal"><span class="pre">list</span></tt> containing the five <tt class="docutils literal"><span class="pre">ndarrays</span></tt> like <img class="math" src="../_images/math/3bb712a9fa7d9f25a832daa4e5b30d59000e0119.png" alt="(q,p,Q,P,S)"/>) &#8211; The parameter set of the Hagedorn wavepacket.</li>
+<li><strong>parameters</strong> (A <tt class="docutils literal"><span class="pre">list</span></tt> containing the five <tt class="docutils literal"><span class="pre">ndarrays</span></tt> like <img class="math" src="../_images/math/bec511c316ac530a543999d70bbd377a09fe196f.png" alt="(q,p,Q,P,S)"/>) &#8211; The parameter set of the Hagedorn wavepacket.</li>
 <li><strong>key</strong> (Tuple of valid identifier strings that are <tt class="docutils literal"><span class="pre">q</span></tt>, <tt class="docutils literal"><span class="pre">p</span></tt>, <tt class="docutils literal"><span class="pre">Q</span></tt>, <tt class="docutils literal"><span class="pre">P</span></tt>, <tt class="docutils literal"><span class="pre">S</span></tt> and <tt class="docutils literal"><span class="pre">adQ</span></tt>.
 Default is <tt class="docutils literal"><span class="pre">(&quot;q&quot;,</span> <span class="pre">&quot;p&quot;,</span> <span class="pre">&quot;Q&quot;,</span> <span class="pre">&quot;P&quot;,</span> <span class="pre">&quot;S&quot;)</span></tt>.) &#8211; Specify which parameters to save. All are independent.</li>
 </ul>
@@ -300,7 +298,7 @@ Default is <tt class="docutils literal"><span class="pre">(&quot;q&quot;,</span>
     </div>
     <div class="footer">
         &copy; Copyright 2015, R. Bourquin.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
     </div>
   </body>
 </html>

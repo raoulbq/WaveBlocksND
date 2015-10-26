@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -60,13 +58,17 @@
 <span id="about-the-gradientlcwp-class"></span><h2>About the <tt class="docutils literal"><span class="pre">GradientLCWP</span></tt> class<a class="headerlink" href="#module-WaveBlocksND" title="Permalink to this headline">¶</a></h2>
 <p>The WaveBlocks Project</p>
 <p>&#64;author: R. Bourquin
-&#64;copyright: Copyright (C) 2010, 2011, 2012, 2013, 2014 R. Bourquin
+&#64;copyright: Copyright (C) 2010, 2011, 2012, 2013, 2014, 2015 R. Bourquin
 &#64;license: Modified BSD License</p>
 </div>
 <div class="section" id="inheritance-diagram">
 <h2>Inheritance diagram<a class="headerlink" href="#inheritance-diagram" title="Permalink to this headline">¶</a></h2>
 <p class="graphviz">
-<img src="../_images/inheritance-2100cfdafca3898c03ddf72a3a7c7a7b01687907.png" alt="Inheritance diagram of GradientLCWP" class="inheritance"/>
+<img src="../_images/inheritance-a3970cf69f6012596686c93a51ff01716dca583a.png" alt="Inheritance diagram of GradientLCWP" usemap="#inheritance9144644e97" class="inheritance"/>
+<map id="inheritance9144644e97" name="inheritance9144644e97">
+<area shape="rect" id="node1" title="This class implements the computation of the action of the" alt="" coords="5,5,141,31"/>
+<area shape="rect" id="node2" title="This class implements the computation of the action of the" alt="" coords="189,5,393,31"/>
+</map>
 </p>
 </div>
 <div class="section" id="class-documentation">
@@ -75,26 +77,26 @@
 <dt id="WaveBlocksND.GradientLCWP">
 <em class="property">class </em><tt class="descclassname">WaveBlocksND.</tt><tt class="descname">GradientLCWP</tt><a class="headerlink" href="#WaveBlocksND.GradientLCWP" title="Permalink to this definition">¶</a></dt>
 <dd><p>This class implements the computation of the action of the
-gradient operator <img class="math" src="../_images/math/91ad87c48d474ea366080d34a2f5f3d5ef37160b.png" alt="-i \varepsilon^2 \nabla_x"/> applied to
-a linear combination <img class="math" src="../_images/math/d792ba6fac8dc00a5626659c0b9cf56716701f3d.png" alt="\Upsilon"/> of arbitrary wavepackets.</p>
+gradient operator <img class="math" src="../_images/math/4af8e4c631258261de0d58bef92fa010d1b6aa50.png" alt="-i \varepsilon^2 \nabla_x"/> applied to
+a linear combination <img class="math" src="../_images/math/e838cc7ce47de4242e2d27771140908bff604da6.png" alt="\Upsilon"/> of arbitrary wavepackets.</p>
 <dl class="method">
 <dt id="WaveBlocksND.GradientLCWP.apply_gradient">
 <tt class="descname">apply_gradient</tt><big>(</big><em>lincomb</em>, <em>component=None</em><big>)</big><a class="headerlink" href="#WaveBlocksND.GradientLCWP.apply_gradient" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute the effect of the gradient operator <img class="math" src="../_images/math/91ad87c48d474ea366080d34a2f5f3d5ef37160b.png" alt="-i \varepsilon^2 \nabla_x"/>
-applied to a linear combination <img class="math" src="../_images/math/d792ba6fac8dc00a5626659c0b9cf56716701f3d.png" alt="\Upsilon"/> of arbitrary wavepackets.</p>
+<dd><p>Compute the effect of the gradient operator <img class="math" src="../_images/math/4af8e4c631258261de0d58bef92fa010d1b6aa50.png" alt="-i \varepsilon^2 \nabla_x"/>
+applied to a linear combination <img class="math" src="../_images/math/e838cc7ce47de4242e2d27771140908bff604da6.png" alt="\Upsilon"/> of arbitrary wavepackets.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>lincomb</strong> (A <a class="reference internal" href="LinearCombinationOfWPs.html#WaveBlocksND.LinearCombinationOfWPs" title="WaveBlocksND.LinearCombinationOfWPs"><tt class="xref py py-class docutils literal"><span class="pre">LinearCombinationOfWPs</span></tt></a> instance.) &#8211; The lincomb <img class="math" src="../_images/math/d792ba6fac8dc00a5626659c0b9cf56716701f3d.png" alt="\Upsilon"/> containing the wavepackets <img class="math" src="../_images/math/62ed0f266e815e996092950d8b63f91d8833b2c3.png" alt="\Psi_j"/>.</li>
-<li><strong>component</strong> (Integer or <tt class="docutils literal"><span class="pre">None</span></tt>.) &#8211; The index <img class="math" src="../_images/math/34857b3ba74ce5cd8607f3ebd23e9015908ada71.png" alt="i"/> of the component <img class="math" src="../_images/math/1a1372729059cb0703afe57f9402c351b5bf0e2d.png" alt="\Phi_i"/> of each <img class="math" src="../_images/math/62ed0f266e815e996092950d8b63f91d8833b2c3.png" alt="\Psi_j"/>.</li>
+<li><strong>lincomb</strong> (A <a class="reference internal" href="LinearCombinationOfWPs.html#WaveBlocksND.LinearCombinationOfWPs" title="WaveBlocksND.LinearCombinationOfWPs"><tt class="xref py py-class docutils literal"><span class="pre">LinearCombinationOfWPs</span></tt></a> instance.) &#8211; The lincomb <img class="math" src="../_images/math/e838cc7ce47de4242e2d27771140908bff604da6.png" alt="\Upsilon"/> containing the wavepackets <img class="math" src="../_images/math/ab7f7c655bbc8fec08f08c10d8cf1eeb56560103.png" alt="\Psi_j"/>.</li>
+<li><strong>component</strong> (Integer or <tt class="docutils literal"><span class="pre">None</span></tt>.) &#8211; The index <img class="math" src="../_images/math/a581f053bbfa5115f42c13094857cdd12a37ec49.png" alt="i"/> of the component <img class="math" src="../_images/math/7e85868a38cec20390ec1816976ad68089bb2a48.png" alt="\Phi_i"/> of each <img class="math" src="../_images/math/ab7f7c655bbc8fec08f08c10d8cf1eeb56560103.png" alt="\Psi_j"/>.</li>
 </ul>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A list of linear combinations of the gradients of all packets from the given
-linearcombination. There are <img class="math" src="../_images/math/9ffb448918db29f2a72f8f87f421b3b3cad18f95.png" alt="D"/> linearcombinations <img class="math" src="../_images/math/0a2710ade5e36f88cf9270d5c04e9b6e50fe4296.png" alt="\Upsilon_d"/>,
-one for each space variable component <img class="math" src="../_images/math/12f4a5b0d7748feec94a6b02cc83714c12b0861c.png" alt="\partial_{x_d}"/> of the gradient.</p>
+linearcombination. There are <img class="math" src="../_images/math/9dfa31437b58c0473299320aa638151cd88cf61b.png" alt="D"/> linearcombinations <img class="math" src="../_images/math/9190aad6e8e560838b088f1df10add2580a8295e.png" alt="\Upsilon_d"/>,
+one for each space variable component <img class="math" src="../_images/math/354aa290e824f42d96a393ee2da0f3f489f67c17.png" alt="\partial_{x_d}"/> of the gradient.</p>
 </td>
 </tr>
 </tbody>
@@ -170,7 +172,7 @@ one for each space variable component <img class="math" src="../_images/math/12f
     </div>
     <div class="footer">
         &copy; Copyright 2015, R. Bourquin.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
     </div>
   </body>
 </html>

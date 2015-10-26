@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -123,7 +121,7 @@ a list of arbitrary length. Each entry is a list itself having the format:</p>
 <p>where the <tt class="docutils literal"><span class="pre">level</span></tt> is the energy level, the <tt class="docutils literal"><span class="pre">parameters</span></tt> is a 5-tuple
 of the usual form <tt class="docutils literal"><span class="pre">(q,p,Q,P,S)</span></tt> containing the wavepacket&#8217;s parameter. The
 third part is a list containing one or several <tt class="docutils literal"><span class="pre">(index,value)</span></tt> pairs
-which hold the value <img class="math" src="../_images/math/1e95be43c04d6869c67861aae1e3e69123fedd8c.png" alt="c_i"/> of the coefficient with index <img class="math" src="../_images/math/34857b3ba74ce5cd8607f3ebd23e9015908ada71.png" alt="i"/>. We know
+which hold the value <img class="math" src="../_images/math/496867ca68c428fa123f26f0f73997632e61e116.png" alt="c_i"/> of the coefficient with index <img class="math" src="../_images/math/a581f053bbfa5115f42c13094857cdd12a37ec49.png" alt="i"/>. We know
 that this is all the data necessary for constructing a wavepacket that lives on
 the given energy level. (But remember that these packets are sampled at the grid
 nodes later to be usable for the Fourier propagation.)</p>
@@ -145,8 +143,8 @@ wavepacket. We can specify the parameters as follows:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">parameters</span> <span class="o">=</span> <span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">Q</span><span class="p">,</span> <span class="n">P</span><span class="p">,</span> <span class="n">S</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>with some meaningful values for <img class="math" src="../_images/math/9866e3a998d628ba0941eb4fea0666ac391d149a.png" alt="Q"/>, <img class="math" src="../_images/math/4b4cade9ca8a2c8311fafcf040bc5b15ca507f52.png" alt="P"/>, <img class="math" src="../_images/math/ad28c83c99a8fd0dd2e2e594c9d02ee532765a0a.png" alt="S"/> and <img class="math" src="../_images/math/0615acc3725de21025457e7d6f7694dab8e2f758.png" alt="q"/>
-and <img class="math" src="../_images/math/36f73fc1312ee0349b3f3a0f3bd9eb5504339011.png" alt="p"/>. For compatibility with the inhomogeneous case, we can also
+<p>with some meaningful values for <img class="math" src="../_images/math/7b1816c51f7d31275cd3ad400208fb7b3ce136a0.png" alt="Q"/>, <img class="math" src="../_images/math/f48b617185733d8dd6712643f1ab17c736661a06.png" alt="P"/>, <img class="math" src="../_images/math/11a85f3c69ae6702cb1d99d3de451913b8f84c04.png" alt="S"/> and <img class="math" src="../_images/math/23f1b45408e5b4130c0f940fcbfcec54492cbdcd.png" alt="q"/>
+and <img class="math" src="../_images/math/3eca8557203e86160952e1c0f735f7417f3285b1.png" alt="p"/>. For compatibility with the inhomogeneous case, we can also
 specify the parameters as:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">parameters</span> <span class="o">=</span> <span class="p">[</span> <span class="p">(</span><span class="n">P0</span><span class="p">,</span> <span class="n">Q0</span><span class="p">,</span> <span class="n">S0</span><span class="p">,</span> <span class="n">p0</span><span class="p">,</span> <span class="n">q0</span><span class="p">),</span> <span class="o">...</span><span class="p">,</span> <span class="p">(</span><span class="n">Pn</span><span class="p">,</span> <span class="n">Qn</span><span class="p">,</span> <span class="n">Sn</span><span class="p">,</span> <span class="n">pn</span><span class="p">,</span> <span class="n">qn</span><span class="p">)</span> <span class="p">]</span>
 </pre></div>
@@ -155,7 +153,7 @@ specify the parameters as:</p>
 code then picks just the single tuple with its index matching the
 <tt class="docutils literal"><span class="pre">leading_component</span></tt> value. This allows easy sharing of
 configuration files with minimal editing.</p>
-<p>The coefficients <img class="math" src="../_images/math/1e95be43c04d6869c67861aae1e3e69123fedd8c.png" alt="c_i"/> of the linear combination are specified for each
+<p>The coefficients <img class="math" src="../_images/math/496867ca68c428fa123f26f0f73997632e61e116.png" alt="c_i"/> of the linear combination are specified for each
 level separately. There is a list of <tt class="docutils literal"><span class="pre">(index,value)</span></tt> pairs for
 each energy level and all these lists are collected in one big list
 assigned to the variable <tt class="docutils literal"><span class="pre">coefficients</span></tt>. This could for example look like:</p>
@@ -164,10 +162,10 @@ assigned to the variable <tt class="docutils literal"><span class="pre">coeffici
 </pre></div>
 </div>
 <p>where we have two energy levels (note that the wave function here is not normalized!).
-These <tt class="docutils literal"><span class="pre">(index,value)</span></tt> pairs give the value <img class="math" src="../_images/math/1e95be43c04d6869c67861aae1e3e69123fedd8c.png" alt="c_i"/> of the coefficient
-with index <img class="math" src="../_images/math/34857b3ba74ce5cd8607f3ebd23e9015908ada71.png" alt="i"/>. For example the list containing only the pair <tt class="docutils literal"><span class="pre">[</span> <span class="pre">(2,1.0)</span> <span class="pre">]</span></tt>
-yields a <img class="math" src="../_images/math/39f267913db90a1788d6adbf5c815a0df075358f.png" alt="\varphi_2"/> packet while the list <tt class="docutils literal"><span class="pre">[</span> <span class="pre">(0,0.5),</span> <span class="pre">(1,0.5)</span> <span class="pre">]</span></tt> gives
-a superposition of <img class="math" src="../_images/math/11f5ab47b445c0b7fee046bbd7e65d20682c6d22.png" alt="\frac{1}{2} \left( \varphi_0 + \varphi_1 \right)"/>. If you
+These <tt class="docutils literal"><span class="pre">(index,value)</span></tt> pairs give the value <img class="math" src="../_images/math/496867ca68c428fa123f26f0f73997632e61e116.png" alt="c_i"/> of the coefficient
+with index <img class="math" src="../_images/math/a581f053bbfa5115f42c13094857cdd12a37ec49.png" alt="i"/>. For example the list containing only the pair <tt class="docutils literal"><span class="pre">[</span> <span class="pre">(2,1.0)</span> <span class="pre">]</span></tt>
+yields a <img class="math" src="../_images/math/ba8ba273266cae7460d2cfa3241911b4f0bdbda2.png" alt="\varphi_2"/> packet while the list <tt class="docutils literal"><span class="pre">[</span> <span class="pre">(0,0.5),</span> <span class="pre">(1,0.5)</span> <span class="pre">]</span></tt> gives
+a superposition of <img class="math" src="../_images/math/75483e29d15b3779cff5999c20c43d52c7924d73.png" alt="\frac{1}{2} \left( \varphi_0 + \varphi_1 \right)"/>. If you
 wish to have no wavepacket on an energy level just provide the dummy pair <tt class="docutils literal"><span class="pre">[</span> <span class="pre">(0,0.0)</span> <span class="pre">]</span></tt>.</p>
 </div>
 <div class="section" id="for-the-multihagedorn-propagator">
@@ -177,7 +175,7 @@ the data structure must look like:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">parameters</span> <span class="o">=</span> <span class="p">[</span> <span class="p">(</span><span class="n">P0</span><span class="p">,</span> <span class="n">Q0</span><span class="p">,</span> <span class="n">S0</span><span class="p">,</span> <span class="n">p0</span><span class="p">,</span> <span class="n">q0</span><span class="p">),</span> <span class="o">...</span><span class="p">,</span> <span class="p">(</span><span class="n">Pn</span><span class="p">,</span> <span class="n">Qn</span><span class="p">,</span> <span class="n">Sn</span><span class="p">,</span> <span class="n">pn</span><span class="p">,</span> <span class="n">qn</span><span class="p">)</span> <span class="p">]</span>
 </pre></div>
 </div>
-<p>where there are as many inner tuples as energy levels. The coefficients <img class="math" src="../_images/math/1e95be43c04d6869c67861aae1e3e69123fedd8c.png" alt="c_i"/>
+<p>where there are as many inner tuples as energy levels. The coefficients <img class="math" src="../_images/math/496867ca68c428fa123f26f0f73997632e61e116.png" alt="c_i"/>
 are specified the same way as in the homogeneous case above.</p>
 </div>
 </div>
@@ -229,7 +227,7 @@ script. Just make sure there is no variable name clash.</p>
 </ul>
 </dd>
 <dt><tt class="docutils literal"><span class="pre">parameters</span></tt></dt>
-<dd>The Hagedorn parameters <img class="math" src="../_images/math/e19d0db3a155ddab6223a26bc4d41890ad690913.png" alt="\{P, Q, S, p, q \}"/> of the
+<dd>The Hagedorn parameters <img class="math" src="../_images/math/b49f9b49a48b174896a3a0ba9712c6efb07e51e0.png" alt="\{P, Q, S, p, q \}"/> of the
 initial wavepackets. The exact format of this variable depends on the
 simulation algorithm used, see above.</dd>
 <dt><tt class="docutils literal"><span class="pre">coefficients</span></tt></dt>
@@ -337,8 +335,8 @@ propagator too because we compute initial values from wavepackets.</p>
 of the wavepackets&#8217; parameters.</p>
 <ul class="last">
 <li><dl class="first docutils">
-<dt>Possible values: Integer in the range 0 to <img class="math" src="../_images/math/a256c70ad4c46ec1127c5be68f8bb3075e9ced31.png" alt="N-1"/> inclusive,</dt>
-<dd><p class="first last">where <img class="math" src="../_images/math/fc97ef67268cd4e91bacdf12b8901d7036c9a056.png" alt="N"/> is the number of energy levels the
+<dt>Possible values: Integer in the range 0 to <img class="math" src="../_images/math/19f9ae9a7d789d9a8e661b478df966192038b540.png" alt="N-1"/> inclusive,</dt>
+<dd><p class="first last">where <img class="math" src="../_images/math/75e27f04188974063be3230dca208cd495b77ce1.png" alt="N"/> is the number of energy levels the
 given potential supports.</p>
 </dd>
 </dl>
@@ -414,8 +412,8 @@ functions the basis projection is performed. This only makes sense in
 combination with the <tt class="docutils literal"><span class="pre">spawn_method</span></tt> parameter set to <tt class="docutils literal"><span class="pre">projection</span></tt>.</p>
 <ul class="last">
 <li><dl class="first docutils">
-<dt>Possible values: Non-negative integer in the range <img class="math" src="../_images/math/7a6666218e0ac354c5d24973d8fbafdeebe3b835.png" alt="\left[0, \ldots, K\right]"/></dt>
-<dd><p class="first last">where <img class="math" src="../_images/math/dfb064112b6c94470339f6571f69d07afc1c024c.png" alt="K"/> is the basis size given by <tt class="docutils literal"><span class="pre">basis_size</span></tt>.</p>
+<dt>Possible values: Non-negative integer in the range <img class="math" src="../_images/math/04c321ae1756ddc0ff954b48c1ce7c9ba7ef4ed7.png" alt="\left[0, \ldots, K\right]"/></dt>
+<dd><p class="first last">where <img class="math" src="../_images/math/28e003020d0ae96250b302d7d779c791f183f707.png" alt="K"/> is the basis size given by <tt class="docutils literal"><span class="pre">basis_size</span></tt>.</p>
 </dd>
 </dl>
 </li>
@@ -431,14 +429,14 @@ combination with the <tt class="docutils literal"><span class="pre">spawn_method
 </div>
 <dl class="docutils">
 <dt><tt class="docutils literal"><span class="pre">spawn_order</span></tt></dt>
-<dd><p class="first">The spawned wavepacket is assumed to be of the form of <img class="math" src="../_images/math/b91ac9c58c0e22ff0b88f239dbda5d97e8329e81.png" alt="\phi_k"/> at leading
-order. This is not always true but we need the value of <img class="math" src="../_images/math/8c325612684d41304b9751c175df7bcc0f61f64f.png" alt="k"/> in the algorithms
-for formal reasons. If the value of <img class="math" src="../_images/math/8c325612684d41304b9751c175df7bcc0f61f64f.png" alt="k"/> is wrong then the results may be
+<dd><p class="first">The spawned wavepacket is assumed to be of the form of <img class="math" src="../_images/math/34ea3b8fe46ef695984759103d7bcdecd553f321.png" alt="\phi_k"/> at leading
+order. This is not always true but we need the value of <img class="math" src="../_images/math/e9203da50e1059455123460d4e716c9c7f440cc3.png" alt="k"/> in the algorithms
+for formal reasons. If the value of <img class="math" src="../_images/math/e9203da50e1059455123460d4e716c9c7f440cc3.png" alt="k"/> is wrong then the results may be
 much worse. (Consider this to be a limitation of the current algorithms.)</p>
 <ul class="last">
 <li><dl class="first docutils">
-<dt>Possible values: Non-negative integer in the range <img class="math" src="../_images/math/7a6666218e0ac354c5d24973d8fbafdeebe3b835.png" alt="\left[0, \ldots, K\right]"/></dt>
-<dd><p class="first last">where <img class="math" src="../_images/math/dfb064112b6c94470339f6571f69d07afc1c024c.png" alt="K"/> is the basis size given by <tt class="docutils literal"><span class="pre">basis_size</span></tt>.</p>
+<dt>Possible values: Non-negative integer in the range <img class="math" src="../_images/math/04c321ae1756ddc0ff954b48c1ce7c9ba7ef4ed7.png" alt="\left[0, \ldots, K\right]"/></dt>
+<dd><p class="first last">where <img class="math" src="../_images/math/28e003020d0ae96250b302d7d779c791f183f707.png" alt="K"/> is the basis size given by <tt class="docutils literal"><span class="pre">basis_size</span></tt>.</p>
 </dd>
 </dl>
 </li>
@@ -496,12 +494,12 @@ examined. Its norm has to exceed this value in order to initiate the spawning pr
 </ul>
 </dd>
 <dt><tt class="docutils literal"><span class="pre">spawn_K0</span></tt></dt>
-<dd><p class="first">The index of the coefficient <img class="math" src="../_images/math/846d68ab9ee14e290b5538d5b8042bf2cb443a29.png" alt="c_{K0}"/> where splitting in low and high
-coefficients is applied. (<img class="math" src="../_images/math/846d68ab9ee14e290b5538d5b8042bf2cb443a29.png" alt="c_{K0}"/> is included into the set of high ones.)</p>
+<dd><p class="first">The index of the coefficient <img class="math" src="../_images/math/c4bd1482b6c6b6656b7869a3a7b0805f35eae90b.png" alt="c_{K0}"/> where splitting in low and high
+coefficients is applied. (<img class="math" src="../_images/math/c4bd1482b6c6b6656b7869a3a7b0805f35eae90b.png" alt="c_{K0}"/> is included into the set of high ones.)</p>
 <ul class="last">
 <li><dl class="first docutils">
-<dt>Possible values: Non-negative integer in the range <img class="math" src="../_images/math/7a6666218e0ac354c5d24973d8fbafdeebe3b835.png" alt="\left[0, \ldots, K\right]"/></dt>
-<dd><p class="first last">where <img class="math" src="../_images/math/dfb064112b6c94470339f6571f69d07afc1c024c.png" alt="K"/> is the basis size given by <img class="math" src="../_images/math/d37528ce72c52819024812fd864fb06b033a9619.png" alt="basis_size"/>.</p>
+<dt>Possible values: Non-negative integer in the range <img class="math" src="../_images/math/04c321ae1756ddc0ff954b48c1ce7c9ba7ef4ed7.png" alt="\left[0, \ldots, K\right]"/></dt>
+<dd><p class="first last">where <img class="math" src="../_images/math/28e003020d0ae96250b302d7d779c791f183f707.png" alt="K"/> is the basis size given by <img class="math" src="../_images/math/d3873d87ae387a4130f0f5a03bda82411310184f.png" alt="basis_size"/>.</p>
 </dd>
 </dl>
 </li>
@@ -559,7 +557,7 @@ spawning. The derivative is usually approximated by simple finite differences.</
 <dd><p class="first">The time when we want to spawn.</p>
 <ul class="last">
 <li><dl class="first docutils">
-<dt>Possible values: Real values in the range <img class="math" src="../_images/math/e4f1d46aa6e48e7c3aab59e19939014d0d5b477a.png" alt="[0, T]"/>. The values will</dt>
+<dt>Possible values: Real values in the range <img class="math" src="../_images/math/1d3cb81063fd04cd699285c31684aa3e5b20ada6.png" alt="[0, T]"/>. The values will</dt>
 <dd><p class="first last">be rounded to the nearest timestep interval.</p>
 </dd>
 </dl>
@@ -715,7 +713,7 @@ save the data at the timesteps 1, 2, 3, 10 and 40 and save the data at the time 
 23.45 and 23.55.</cite> It is assumed that <cite>time</cite> is an integer multiple of the
 <tt class="docutils literal"><span class="pre">timestep</span></tt> size. (Otherwise more or less careful rounding will be applied.)
 The list doesn&#8217;t have to be in monotone order and duplicates will be removed as well
-as values outside the interval <img class="math" src="../_images/math/e4f1d46aa6e48e7c3aab59e19939014d0d5b477a.png" alt="[0, T]"/> where <img class="math" src="../_images/math/2554b6496c3b678897e9b060ef00aa9f0a7d7ece.png" alt="T"/> is the time at which
+as values outside the interval <img class="math" src="../_images/math/1d3cb81063fd04cd699285c31684aa3e5b20ada6.png" alt="[0, T]"/> where <img class="math" src="../_images/math/6d42c88506b8da39a2a23653aecbfb7c29728063.png" alt="T"/> is the time at which
 the simulation stops. A good use case for a mixed specification is for example saving at big
 intervals but including the very end of the simulation:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">write_nth</span> <span class="o">=</span> <span class="mi">35</span>
@@ -813,7 +811,8 @@ Do an explicit example walk through somewhere.</p>
 <h3>Preparing simulations<a class="headerlink" href="#preparing-simulations" title="Permalink to this headline">¶</a></h3>
 <p>Preparing a whole bunch of simulations is easy. Given the <cite>metaconfiguration</cite>
 file we call the script <cite>ConfigurationGenerator.py</cite> like:</p>
-<div class="highlight-python"><pre>python ConfigurationGenerator.py  &lt;metaconfiguration.py&gt; &lt;configurations_dir&gt;</pre>
+<div class="highlight-python"><div class="highlight"><pre>python ConfigurationGenerator.py  &lt;metaconfiguration.py&gt; &lt;configurations_dir&gt;
+</pre></div>
 </div>
 <p>where the <tt class="docutils literal"><span class="pre">configurations_dir</span></tt> is optional. If not given a directory called
 <tt class="docutils literal"><span class="pre">autogen_configurations</span></tt> will be created. Remember to move the configuration
@@ -849,7 +848,8 @@ using black magic and may fail now and then!</li>
 <h3>Running simulations<a class="headerlink" href="#running-simulations" title="Permalink to this headline">¶</a></h3>
 <p>To run a single simulation, use the <tt class="docutils literal"><span class="pre">Main.py</span></tt> script. The first command-line
 argument is the simulation configuration file (with an arbitrary file path):</p>
-<div class="highlight-python"><pre>python Main.py path/to/the/simulationparameters.py</pre>
+<div class="highlight-python"><div class="highlight"><pre>python Main.py path/to/the/simulationparameters.py
+</pre></div>
 </div>
 <p>The results will be written to the file <tt class="docutils literal"><span class="pre">simulation_results.hdf5</span></tt> in the
 <cite>local</cite> directory where the script was called and <cite>not</cite> where the configuration
@@ -866,7 +866,8 @@ will be treated as simulation configurations. The directory path defaults to
 directory path where the simulation results (numerical data, plots etc) will be
 placed after the simulation finishes. This defaults to <tt class="docutils literal"><span class="pre">./results/</span></tt>
 with one subdirectory for each simulation configuration. A call looks like:</p>
-<div class="highlight-python"><pre>python Batch.py batchconfiguration.py configurations_dir results_dir</pre>
+<div class="highlight-python"><div class="highlight"><pre>python Batch.py batchconfiguration.py configurations_dir results_dir
+</pre></div>
 </div>
 <p>This is all you need to know to be able to run simulations.</p>
 </div>
@@ -991,7 +992,7 @@ some values.</p>
     </div>
     <div class="footer">
         &copy; Copyright 2015, R. Bourquin.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
     </div>
   </body>
 </html>

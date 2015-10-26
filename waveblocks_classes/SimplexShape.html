@@ -1,0 +1,356 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>SimplexShape &mdash; WaveBlocksND devel documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     'devel',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="WaveBlocksND devel documentation" href="../index.html" />
+    <link rel="next" title="HyperbolicCutShape" href="HyperbolicCutShape.html" />
+    <link rel="prev" title="HyperCubicShape" href="HyperCubicShape.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="HyperbolicCutShape.html" title="HyperbolicCutShape"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="HyperCubicShape.html" title="HyperCubicShape"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">WaveBlocksND devel documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="simplexshape">
+<h1>SimplexShape<a class="headerlink" href="#simplexshape" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-WaveBlocksND">
+<span id="about-the-simplexshape-class"></span><h2>About the <tt class="docutils literal"><span class="pre">SimplexShape</span></tt> class<a class="headerlink" href="#module-WaveBlocksND" title="Permalink to this headline">¶</a></h2>
+<p>The WaveBlocks Project</p>
+<p>&#64;author: R. Bourquin
+&#64;copyright: Copyright (C) 2010, 2011, 2012, 2013, 2014, 2015 R. Bourquin
+&#64;license: Modified BSD License</p>
+</div>
+<div class="section" id="inheritance-diagram">
+<h2>Inheritance diagram<a class="headerlink" href="#inheritance-diagram" title="Permalink to this headline">¶</a></h2>
+<p class="graphviz">
+<img src="../_images/inheritance-bc0da36225e251b617a208b07da9927ca910dfe7.png" alt="Inheritance diagram of SimplexShape" usemap="#inheritancec48d294d39" class="inheritance"/>
+<map id="inheritancec48d294d39" name="inheritancec48d294d39">
+<area shape="rect" id="node1" title="This class defines the abstract interface to basis shapes." alt="" coords="5,5,181,31"/>
+<area shape="rect" id="node2" title="This class implements the simplex basis shape which is a special type" alt="" coords="229,5,440,31"/>
+</map>
+</p>
+</div>
+<div class="section" id="class-documentation">
+<h2>Class documentation<a class="headerlink" href="#class-documentation" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="WaveBlocksND.SimplexShape">
+<em class="property">class </em><tt class="descclassname">WaveBlocksND.</tt><tt class="descname">SimplexShape</tt><big>(</big><em>D</em>, <em>K</em><big>)</big><a class="headerlink" href="#WaveBlocksND.SimplexShape" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class implements the simplex basis shape which is a special type
+of sparse basis set. A basis shape is essentially all information and operations
+related to the set <img class="math" src="../_images/math/6f43991b0a0bf1eb4a569c9ea9759ab1f699e1ac.png" alt="\mathfrak{K}"/> of multi-indices <img class="math" src="../_images/math/e9203da50e1059455123460d4e716c9c7f440cc3.png" alt="k"/>. The simplex
+shape in <img class="math" src="../_images/math/9dfa31437b58c0473299320aa638151cd88cf61b.png" alt="D"/> dimensions and with maximal 1-norm <img class="math" src="../_images/math/28e003020d0ae96250b302d7d779c791f183f707.png" alt="K"/> is defined as the set</p>
+<div class="math">
+<p><img src="../_images/math/ab991b20833d5e186724f58d804abe7ee9284e29.png" alt="\mathfrak{K}(D, K) := \{ (k_0, \ldots, k_{D-1}) |
+                         \sum_{d=0}^{D-1} k_d = \| k \|_1 \leq K \}"/></p>
+</div><dl class="method">
+<dt id="WaveBlocksND.SimplexShape.__init__">
+<tt class="descname">__init__</tt><big>(</big><em>D</em>, <em>K</em><big>)</big><a class="headerlink" href="#WaveBlocksND.SimplexShape.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>D</strong> &#8211; The dimension <img class="math" src="../_images/math/9dfa31437b58c0473299320aa638151cd88cf61b.png" alt="D"/></li>
+<li><strong>K</strong> &#8211; The maximal 1-norm <img class="math" src="../_images/math/28e003020d0ae96250b302d7d779c791f183f707.png" alt="K"/></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="WaveBlocksND.SimplexShape.__str__">
+<tt class="descname">__str__</tt><big>(</big><big>)</big><a class="headerlink" href="#WaveBlocksND.SimplexShape.__str__" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A string describing the basis shape <img class="math" src="../_images/math/6f43991b0a0bf1eb4a569c9ea9759ab1f699e1ac.png" alt="\mathfrak{K}"/>.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="WaveBlocksND.SimplexShape.__hash__">
+<tt class="descname">__hash__</tt><big>(</big><big>)</big><a class="headerlink" href="#WaveBlocksND.SimplexShape.__hash__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute a unique hash for the basis shape. In the case of simplex
+basis shapes <img class="math" src="../_images/math/6f43991b0a0bf1eb4a569c9ea9759ab1f699e1ac.png" alt="\mathfrak{K}"/> the basis is fully specified by its
+dimension <img class="math" src="../_images/math/9dfa31437b58c0473299320aa638151cd88cf61b.png" alt="D"/> and the maximal 1-norm parameter <img class="math" src="../_images/math/28e003020d0ae96250b302d7d779c791f183f707.png" alt="K"/>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="WaveBlocksND.SimplexShape.__getitem__">
+<tt class="descname">__getitem__</tt><big>(</big><em>k</em><big>)</big><a class="headerlink" href="#WaveBlocksND.SimplexShape.__getitem__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make map look ups.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="WaveBlocksND.SimplexShape.__iter__">
+<tt class="descname">__iter__</tt><big>(</big><big>)</big><a class="headerlink" href="#WaveBlocksND.SimplexShape.__iter__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Implements iteration over the multi-indices <img class="math" src="../_images/math/e9203da50e1059455123460d4e716c9c7f440cc3.png" alt="k"/>
+of the basis set <img class="math" src="../_images/math/6f43991b0a0bf1eb4a569c9ea9759ab1f699e1ac.png" alt="\mathfrak{K}"/>.</p>
+<p>Note: The order of iteration is NOT fixed. If you need a special
+iteration scheme, use <a class="reference internal" href="#WaveBlocksND.SimplexShape.get_node_iterator" title="WaveBlocksND.SimplexShape.get_node_iterator"><tt class="xref py py-meth docutils literal"><span class="pre">get_node_iterator()</span></tt></a>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="WaveBlocksND.SimplexShape.__contains__">
+<tt class="descname">__contains__</tt><big>(</big><em>k</em><big>)</big><a class="headerlink" href="#WaveBlocksND.SimplexShape.__contains__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if a given multi-index <img class="math" src="../_images/math/e9203da50e1059455123460d4e716c9c7f440cc3.png" alt="k"/> is part of the basis set <img class="math" src="../_images/math/6f43991b0a0bf1eb4a569c9ea9759ab1f699e1ac.png" alt="\mathfrak{K}"/>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>k</strong> (<em>tuple</em>) &#8211; The multi-index <img class="math" src="../_images/math/e9203da50e1059455123460d4e716c9c7f440cc3.png" alt="k"/> we want to test.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="WaveBlocksND.SimplexShape.contains">
+<tt class="descname">contains</tt><big>(</big><em>k</em><big>)</big><a class="headerlink" href="#WaveBlocksND.SimplexShape.contains" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if a given multi-index <img class="math" src="../_images/math/e9203da50e1059455123460d4e716c9c7f440cc3.png" alt="k"/> is part of the basis set <img class="math" src="../_images/math/6f43991b0a0bf1eb4a569c9ea9759ab1f699e1ac.png" alt="\mathfrak{K}"/>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>k</strong> (<em>tuple</em>) &#8211; The multi-index <img class="math" src="../_images/math/e9203da50e1059455123460d4e716c9c7f440cc3.png" alt="k"/> we want to test.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="WaveBlocksND.SimplexShape.extend">
+<tt class="descname">extend</tt><big>(</big><big>)</big><a class="headerlink" href="#WaveBlocksND.SimplexShape.extend" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extend the basis shape such that (at least) all neighbours of all
+boundary nodes are included in the extended basis shape.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="WaveBlocksND.SimplexShape.find_largest_index">
+<tt class="descname">find_largest_index</tt><big>(</big><big>)</big><a class="headerlink" href="#WaveBlocksND.SimplexShape.find_largest_index" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find the index <img class="math" src="../_images/math/f364dc342dae06435b4b03258ebc7fbcab96db39.png" alt="k \in \mathfrak{K}"/> with maximal distance
+<img class="math" src="../_images/math/e1144896e09376f22a9709512baeb172c92d3fe0.png" alt="\sum_{d=0}^D k_d^2"/> from the zero index. In case of
+multiple maxima the method returns the first one found.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="WaveBlocksND.SimplexShape.get_basis_size">
+<tt class="descname">get_basis_size</tt><big>(</big><em>extended=False</em><big>)</big><a class="headerlink" href="#WaveBlocksND.SimplexShape.get_basis_size" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the size <img class="math" src="../_images/math/20933735c7854a75ecd9f091134f79bfef74f9c1.png" alt="|\mathfrak{K}|"/> of the basis. The size is the
+number of distinct multi-indices <img class="math" src="../_images/math/e9203da50e1059455123460d4e716c9c7f440cc3.png" alt="k"/> that belong to the basis
+<img class="math" src="../_images/math/6f43991b0a0bf1eb4a569c9ea9759ab1f699e1ac.png" alt="\mathfrak{K}"/>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Raise:</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">NotImplementedError</span></tt> Abstract interface.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="WaveBlocksND.SimplexShape.get_description">
+<tt class="descname">get_description</tt><big>(</big><big>)</big><a class="headerlink" href="#WaveBlocksND.SimplexShape.get_description" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a description of this basis shape object.
+A description is a <tt class="docutils literal"><span class="pre">dict</span></tt> containing all key-value pairs
+necessary to reconstruct the current basis shape. A description
+never contains any data.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="WaveBlocksND.SimplexShape.get_dimension">
+<tt class="descname">get_dimension</tt><big>(</big><big>)</big><a class="headerlink" href="#WaveBlocksND.SimplexShape.get_dimension" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the dimension <img class="math" src="../_images/math/9dfa31437b58c0473299320aa638151cd88cf61b.png" alt="D"/> of the basis shape <img class="math" src="../_images/math/6f43991b0a0bf1eb4a569c9ea9759ab1f699e1ac.png" alt="\mathfrak{K}"/>.
+This is defined as the number of components each multi-index
+<img class="math" src="../_images/math/67aacb3d19739daa4afa4fbf9fea63c412eeeec5.png" alt="k = (k_0, \ldots, k_{D-1})"/> has.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Raise:</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">NotImplementedError</span></tt> Abstract interface.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="WaveBlocksND.SimplexShape.get_limits">
+<tt class="descname">get_limits</tt><big>(</big><big>)</big><a class="headerlink" href="#WaveBlocksND.SimplexShape.get_limits" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the upper limit <img class="math" src="../_images/math/28e003020d0ae96250b302d7d779c791f183f707.png" alt="K"/> which is the same for all directions <img class="math" src="../_images/math/425d86ba2f2979d75b7535c2bcf92c33ed6b285a.png" alt="d"/>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A tuple of the maximum of the multi-index in each direction.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="WaveBlocksND.SimplexShape.get_neighbours">
+<tt class="descname">get_neighbours</tt><big>(</big><em>k</em>, <em>selection=None</em>, <em>direction=None</em><big>)</big><a class="headerlink" href="#WaveBlocksND.SimplexShape.get_neighbours" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of all multi-indices that are neighbours of a given
+multi-index <img class="math" src="../_images/math/e9203da50e1059455123460d4e716c9c7f440cc3.png" alt="k"/>. A direct neighbour is defined as
+<img class="math" src="../_images/math/16e636cfe8f9ae057568a0b8f026e4541ce77877.png" alt="(k_0, \ldots, k_d \pm 1, \ldots, k_{D-1}) \forall d \in [0 \ldots D-1]"/>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>k</strong> (<em>tuple</em>) &#8211; The multi-index of which we want to get the neighbours.</li>
+<li><strong>selection</strong> (string with fixed values <tt class="docutils literal"><span class="pre">forward</span></tt>, <tt class="docutils literal"><span class="pre">backward</span></tt> or <tt class="docutils literal"><span class="pre">all</span></tt>.
+The values <tt class="docutils literal"><span class="pre">all</span></tt> is equivalent to the value <tt class="docutils literal"><span class="pre">None</span></tt> (default).) &#8211; </li>
+<li><strong>direction</strong> (<em>int</em>) &#8211; The direction <img class="math" src="../_images/math/caad2dfb9cbe44796c5ea89eb90f32ae3907e286.png" alt="0 \leq d &lt; D"/> in which we want to find
+the neighbours <img class="math" src="../_images/math/825f4d551c6c6b4c7f76abb0c331258ec41b6699.png" alt="k \pm e_d"/>.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A list containing the pairs <img class="math" src="../_images/math/32e61e1bef7fc93d469b7bd83940d51829c4c00d.png" alt="(d, k^\prime)"/>.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="WaveBlocksND.SimplexShape.get_node_iterator">
+<tt class="descname">get_node_iterator</tt><big>(</big><em>mode='lex'</em>, <em>direction=None</em><big>)</big><a class="headerlink" href="#WaveBlocksND.SimplexShape.get_node_iterator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns an iterator to iterate over all basis elements <img class="math" src="../_images/math/f364dc342dae06435b4b03258ebc7fbcab96db39.png" alt="k \in \mathfrak{K}"/>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>mode</strong> (<em>string</em>) &#8211; The mode by which we iterate over the indices. Default is <tt class="docutils literal"><span class="pre">lex</span></tt>
+for lexicographical order. Supported is also <tt class="docutils literal"><span class="pre">chain</span></tt>, for
+the chain-like mode, details see the manual.</li>
+<li><strong>direction</strong> (<em>integer.</em>) &#8211; If iterating in <cite>chainmode</cite> this specifies the direction
+the chains go.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">SimplexShape</a><ul>
+<li><a class="reference internal" href="#module-WaveBlocksND">About the <tt class="docutils literal"><span class="pre">SimplexShape</span></tt> class</a></li>
+<li><a class="reference internal" href="#inheritance-diagram">Inheritance diagram</a></li>
+<li><a class="reference internal" href="#class-documentation">Class documentation</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="HyperCubicShape.html"
+                        title="previous chapter">HyperCubicShape</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="HyperbolicCutShape.html"
+                        title="next chapter">HyperbolicCutShape</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/waveblocks_classes/SimplexShape.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="HyperbolicCutShape.html" title="HyperbolicCutShape"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="HyperCubicShape.html" title="HyperCubicShape"
+             >previous</a> |</li>
+        <li><a href="../index.html">WaveBlocksND devel documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, R. Bourquin.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

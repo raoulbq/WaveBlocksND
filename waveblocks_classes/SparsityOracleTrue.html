@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -60,13 +58,17 @@
 <span id="about-the-sparsityoracletrue-class"></span><h2>About the <tt class="docutils literal"><span class="pre">SparsityOracleTrue</span></tt> class<a class="headerlink" href="#module-WaveBlocksND" title="Permalink to this headline">¶</a></h2>
 <p>The WaveBlocks Project</p>
 <p>&#64;author: R. Bourquin
-&#64;copyright: Copyright (C) 2010, 2011, 2012, 2013, 2014 R. Bourquin
+&#64;copyright: Copyright (C) 2010, 2011, 2012, 2013, 2014, 2015 R. Bourquin
 &#64;license: Modified BSD License</p>
 </div>
 <div class="section" id="inheritance-diagram">
 <h2>Inheritance diagram<a class="headerlink" href="#inheritance-diagram" title="Permalink to this headline">¶</a></h2>
 <p class="graphviz">
-<img src="../_images/inheritance-9acc86e379c2d8ec91813dab83588eca0e46764c.png" alt="Inheritance diagram of SparsityOracleTrue" class="inheritance"/>
+<img src="../_images/inheritance-bce950ba01cb5e096631d1fde087cef58971718c.png" alt="Inheritance diagram of SparsityOracleTrue" usemap="#inheritance27a28e30c8" class="inheritance"/>
+<map id="inheritance27a28e30c8" name="inheritance27a28e30c8">
+<area shape="rect" id="node1" title="This class defines the interface for general sparsity oracles." alt="" coords="5,5,217,31"/>
+<area shape="rect" id="node2" title="This class implements an oracle always saying" alt="" coords="265,5,529,31"/>
+</map>
 </p>
 </div>
 <div class="section" id="class-documentation">
@@ -80,22 +82,22 @@ the integrals are non-zero.</p>
 <dt id="WaveBlocksND.SparsityOracleTrue.__init__">
 <tt class="descname">__init__</tt><big>(</big><big>)</big><a class="headerlink" href="#WaveBlocksND.SparsityOracleTrue.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialize an oracle for estimating if a specific overlap integral
-<img class="math" src="../_images/math/5ee12211b5a4bf055fe52c00dd38c17b4f0e6b31.png" alt="\langle \Psi_k | \Psi_l \rangle"/> is approximately zero. This
+<img class="math" src="../_images/math/ce0c4b4696ce724d8a8b5834af0224f54d1915cf.png" alt="\langle \Psi_k | \Psi_l \rangle"/> is approximately zero. This
 oracle always returns <tt class="docutils literal"><span class="pre">False</span></tt>.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="WaveBlocksND.SparsityOracleTrue.is_not_zero">
 <tt class="descname">is_not_zero</tt><big>(</big><em>pacbra</em>, <em>packet</em>, <em>component=None</em><big>)</big><a class="headerlink" href="#WaveBlocksND.SparsityOracleTrue.is_not_zero" title="Permalink to this definition">¶</a></dt>
-<dd><p>Try to estimate if the overlap integral <img class="math" src="../_images/math/5ee12211b5a4bf055fe52c00dd38c17b4f0e6b31.png" alt="\langle \Psi_k | \Psi_l \rangle"/>
+<dd><p>Try to estimate if the overlap integral <img class="math" src="../_images/math/ce0c4b4696ce724d8a8b5834af0224f54d1915cf.png" alt="\langle \Psi_k | \Psi_l \rangle"/>
 is zero or at least negligible.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>pacbra</strong> &#8211; The packet <img class="math" src="../_images/math/f76b3949e23879c7cbb0dc98467513e6bc641533.png" alt="\Psi_k"/> that is used for the &#8216;bra&#8217; part.</li>
-<li><strong>packet</strong> &#8211; The packet <img class="math" src="../_images/math/4ec8b6e2f6fc0e44a018fdd47204524070282e7f.png" alt="\Psi_l"/> that is used for the &#8216;ket&#8217; part.</li>
+<li><strong>pacbra</strong> &#8211; The packet <img class="math" src="../_images/math/2b537b2bed799c31f526f1e071c8d0b37b508099.png" alt="\Psi_k"/> that is used for the &#8216;bra&#8217; part.</li>
+<li><strong>packet</strong> &#8211; The packet <img class="math" src="../_images/math/290e9536e6750ac11e6489d5484493b2a323447d.png" alt="\Psi_l"/> that is used for the &#8216;ket&#8217; part.</li>
 <li><strong>component</strong> &#8211; The component of the packet that is considered.</li>
 </ul>
 </td>
@@ -176,7 +178,7 @@ is zero or at least negligible.</p>
     </div>
     <div class="footer">
         &copy; Copyright 2015, R. Bourquin.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
     </div>
   </body>
 </html>

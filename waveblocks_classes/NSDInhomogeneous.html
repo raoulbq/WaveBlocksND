@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -60,13 +58,16 @@
 <span id="about-the-nsdinhomogeneous-class"></span><h2>About the <tt class="docutils literal"><span class="pre">NSDInhomogeneous</span></tt> class<a class="headerlink" href="#module-WaveBlocksND" title="Permalink to this headline">¶</a></h2>
 <p>The WaveBlocks Project</p>
 <p>&#64;author: R. Bourquin
-&#64;copyright: Copyright (C) 2010, 2011, 2012, 2013, 2014 R. Bourquin
+&#64;copyright: Copyright (C) 2010, 2011, 2012, 2013, 2014, 2015 R. Bourquin
 &#64;license: Modified BSD License</p>
 </div>
 <div class="section" id="inheritance-diagram">
 <h2>Inheritance diagram<a class="headerlink" href="#inheritance-diagram" title="Permalink to this headline">¶</a></h2>
 <p class="graphviz">
-<img src="../_images/inheritance-820009f872cb5af88b3c3df37acfbcee97e114af.png" alt="Inheritance diagram of NSDInhomogeneous" class="inheritance"/>
+<img src="../_images/inheritance-ed2af96baac308fd410b457e11b7650779d10eba.png" alt="Inheritance diagram of NSDInhomogeneous" usemap="#inheritance985a2b4335" class="inheritance"/>
+<map id="inheritance985a2b4335" name="inheritance985a2b4335">
+<area shape="rect" id="node2" title="This class is an abstract interface to quadratures in general." alt="" coords="5,5,177,31"/>
+</map>
 </p>
 </div>
 <div class="section" id="class-documentation">
@@ -92,22 +93,22 @@ for quadrature of highly oscillatory overlap integrals.</p>
 <dl class="method">
 <dt id="WaveBlocksND.NSDInhomogeneous.build_bilinear">
 <tt class="descname">build_bilinear</tt><big>(</big><em>Pibra</em>, <em>Piket</em><big>)</big><a class="headerlink" href="#WaveBlocksND.NSDInhomogeneous.build_bilinear" title="Permalink to this definition">¶</a></dt>
-<dd><p>Convert the oscillator <img class="math" src="../_images/math/cb06b25f7c6e2a5fcb9329ff8c18432a4badab7f.png" alt="-\overline{g_k} + g_l"/>
-occuring in the integral <img class="math" src="../_images/math/1dd2afc7b361506b1d2da8a0f18439b189023c77.png" alt="\langle\phi_k\left[\Pi_k\right] | \phi_l\left[\Pi_l\right]\rangle"/>
+<dd><p>Convert the oscillator <img class="math" src="../_images/math/1429c56b096c2710d9662b51c8c2cb61ce4bf90b.png" alt="-\overline{g_k} + g_l"/>
+occuring in the integral <img class="math" src="../_images/math/1548b37da773e0afbff5ebcc66013ec45972314d.png" alt="\langle\phi_k\left[\Pi_k\right] | \phi_l\left[\Pi_l\right]\rangle"/>
 into a bilinear form
-<img class="math" src="../_images/math/d7aea2ccd37bbb1caba98ef36005fc2c53f1b226.png" alt="g(x) = \underline{x}^{\mathrm{H}} \mathbf{A} \underline{x} + \underline{b}^{\mathrm{T}} \underline{x} + c"/>.</p>
+<img class="math" src="../_images/math/0144839bf3ec239063a0ebe61897aa8e570d0848.png" alt="g(x) = \underline{x}^{\mathrm{H}} \mathbf{A} \underline{x} + \underline{b}^{\mathrm{T}} \underline{x} + c"/>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>Pibra</strong> &#8211; The parameters <img class="math" src="../_images/math/ad4f7bb1bccd2ee81af1573a6c22f83a5c520cca.png" alt="\Pi_k = (\underline{q_k}, \underline{p_k}, \mathbf{Q_k}, \mathbf{P_k})"/> from the &#8216;bra&#8217; packet.</li>
-<li><strong>Piket</strong> &#8211; The parameters <img class="math" src="../_images/math/1c2e24a7b8a2eabff43a6d429abceeb298320ba3.png" alt="\Pi_l = (\underline{q_l}, \underline{p_l}, \mathbf{Q_l}, \mathbf{P_l})"/> from the &#8216;ket&#8217; packet.</li>
+<li><strong>Pibra</strong> &#8211; The parameters <img class="math" src="../_images/math/ca3c36d5fabc3d5b4b234d003ae615873b0deb02.png" alt="\Pi_k = (\underline{q_k}, \underline{p_k}, \mathbf{Q_k}, \mathbf{P_k})"/> from the &#8216;bra&#8217; packet.</li>
+<li><strong>Piket</strong> &#8211; The parameters <img class="math" src="../_images/math/583e120285bf84dedabc675683957f541648f9dc.png" alt="\Pi_l = (\underline{q_l}, \underline{p_l}, \mathbf{Q_l}, \mathbf{P_l})"/> from the &#8216;ket&#8217; packet.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Three arrays: a matrix <img class="math" src="../_images/math/f3e830722dede854af533bfa96d549c68ed5997f.png" alt="\mathbf{A}"/> of shape <img class="math" src="../_images/math/9fbfd46fa1571b7ed8555272bffdfd272d2019ad.png" alt="D \times D"/>,
-a vector <img class="math" src="../_images/math/d56cd1d33703c2415169af21967a9cdc3a65b622.png" alt="\underline{b}"/> of shape <img class="math" src="../_images/math/00a72ab2f84f385d47dc6887409454f35b00f4f5.png" alt="D \times 1"/> and a scalar value <img class="math" src="../_images/math/3372c1cb6d68cf97c2d231acc0b47b95a9ed04cc.png" alt="c"/>.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Three arrays: a matrix <img class="math" src="../_images/math/3986f9b8ba3bd56d09ce9ff731826e829e72d8ea.png" alt="\mathbf{A}"/> of shape <img class="math" src="../_images/math/89950087802f1d3fe7d1bcfa3b42695d80ffbe64.png" alt="D \times D"/>,
+a vector <img class="math" src="../_images/math/fca931570b68cd0a7b9a36eeed67ab77c6c6a1f3.png" alt="\underline{b}"/> of shape <img class="math" src="../_images/math/a36d423d93dee0f84c77b8179105bd4952afc3a2.png" alt="D \times 1"/> and a scalar value <img class="math" src="../_images/math/65868d23a5bfe5b3b2d819386b19c14fa36af134.png" alt="c"/>.</p>
 </td>
 </tr>
 </tbody>
@@ -118,19 +119,19 @@ a vector <img class="math" src="../_images/math/d56cd1d33703c2415169af21967a9cdc
 <dt id="WaveBlocksND.NSDInhomogeneous.do_nsd">
 <tt class="descname">do_nsd</tt><big>(</big><em>row</em>, <em>col</em><big>)</big><a class="headerlink" href="#WaveBlocksND.NSDInhomogeneous.do_nsd" title="Permalink to this definition">¶</a></dt>
 <dd><p>Evaluates by numerical steepest descent the integral
-<img class="math" src="../_images/math/59d1674b8959786e57b6f1d8d9abf1c4c4c6dd5f.png" alt="\langle \Phi_i | f | \Phi^\prime_j \rangle"/> for a polynomial
-function <img class="math" src="../_images/math/c96dd6ec1dc4ad7520fbdc78fcdbec9edd068d0c.png" alt="f(x)"/> with <img class="math" src="../_images/math/f85da18535db12c4e7f18590bcd375be0cd399eb.png" alt="x \in \mathbb{R}^D"/>.</p>
+<img class="math" src="../_images/math/dc1db0b8480daabea945d56d260b6b327885014c.png" alt="\langle \Phi_i | f | \Phi^\prime_j \rangle"/> for a polynomial
+function <img class="math" src="../_images/math/14546c27a7b929642f7840acca5f851c503ea109.png" alt="f(x)"/> with <img class="math" src="../_images/math/71928d7ec88b1eddd6b449fc1b5d32192eca4885.png" alt="x \in \mathbb{R}^D"/>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>row</strong> &#8211; The index <img class="math" src="../_images/math/34857b3ba74ce5cd8607f3ebd23e9015908ada71.png" alt="i"/> of the component <img class="math" src="../_images/math/1a1372729059cb0703afe57f9402c351b5bf0e2d.png" alt="\Phi_i"/> of <img class="math" src="../_images/math/866f0204648be9ca6b10e14dd72295295dd53a79.png" alt="\Psi"/>.</li>
-<li><strong>row</strong> &#8211; The index <img class="math" src="../_images/math/8122aa89ea6e80784c6513d22787ad86e36ad0cc.png" alt="j"/> of the component <img class="math" src="../_images/math/98f130cebb4aa36b7dad3e83d1f8e748b47f8002.png" alt="\Phi^\prime_j"/> of <img class="math" src="../_images/math/ed0eb7d94f64ded093e1e0a8159ca93be0ffb20d.png" alt="\Psi^\prime"/>.</li>
+<li><strong>row</strong> &#8211; The index <img class="math" src="../_images/math/a581f053bbfa5115f42c13094857cdd12a37ec49.png" alt="i"/> of the component <img class="math" src="../_images/math/7e85868a38cec20390ec1816976ad68089bb2a48.png" alt="\Phi_i"/> of <img class="math" src="../_images/math/de6f6ec55da5bff04bdf591d5bb35136eb51b579.png" alt="\Psi"/>.</li>
+<li><strong>row</strong> &#8211; The index <img class="math" src="../_images/math/d32c78b759903e3f4bd4fd2ce0b86358f7500c5d.png" alt="j"/> of the component <img class="math" src="../_images/math/924ace1c8e81589280984b0fa6b0a5808fc5ec37.png" alt="\Phi^\prime_j"/> of <img class="math" src="../_images/math/421b68b30d0b8cc1ee3218ee97c944438c36c933.png" alt="\Psi^\prime"/>.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A complex valued matrix of shape <img class="math" src="../_images/math/c09d000f17e4e101ea23830d12328f6bb3b50220.png" alt="|\mathfrak{K}_i| \times |\mathfrak{K}^\prime_j|"/>.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A complex valued matrix of shape <img class="math" src="../_images/math/60dd313b71dcb52ef5cc0ba8c42b5cce2b859872.png" alt="|\mathfrak{K}_i| \times |\mathfrak{K}^\prime_j|"/>.</p>
 </td>
 </tr>
 </tbody>
@@ -210,20 +211,20 @@ used for the &#8216;bra&#8217; as well as the &#8216;ket&#8217; part.</p>
 <dl class="method">
 <dt id="WaveBlocksND.NSDInhomogeneous.mix_parameters">
 <tt class="descname">mix_parameters</tt><big>(</big><em>Pibra</em>, <em>Piket</em><big>)</big><a class="headerlink" href="#WaveBlocksND.NSDInhomogeneous.mix_parameters" title="Permalink to this definition">¶</a></dt>
-<dd><p>Mix the two parameter sets <img class="math" src="../_images/math/67c0242c77a8b89c362b432a41e674e84cf04f10.png" alt="\Pi_i"/> and <img class="math" src="../_images/math/618ef4d9efaa0a0887928587d7e647fcb85afc56.png" alt="\Pi_j"/>
-from the &#8216;bra&#8217; and the &#8216;ket&#8217; wavepackets <img class="math" src="../_images/math/bd118921429c6cdb1aeb5e889b3a4c9a6d126712.png" alt="\Phi\left[\Pi_i\right]"/>
-and <img class="math" src="../_images/math/d0ed69530ece6e0b7b5cd7e129a183379adf3ef8.png" alt="\Phi^\prime\left[\Pi_j\right]"/>.</p>
+<dd><p>Mix the two parameter sets <img class="math" src="../_images/math/7dec972d634439bf5a19ed81c57d4acbdcab587c.png" alt="\Pi_i"/> and <img class="math" src="../_images/math/797501c1a4b0c3a07d7c0ee7d87c0848d71f4f7a.png" alt="\Pi_j"/>
+from the &#8216;bra&#8217; and the &#8216;ket&#8217; wavepackets <img class="math" src="../_images/math/4ebbd138d74ec566a2838325c988a614d1dd1276.png" alt="\Phi\left[\Pi_i\right]"/>
+and <img class="math" src="../_images/math/db14dff0f9663705d33ffd6ce75ba3ec1762fc25.png" alt="\Phi^\prime\left[\Pi_j\right]"/>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>Pibra</strong> &#8211; The parameter set <img class="math" src="../_images/math/67c0242c77a8b89c362b432a41e674e84cf04f10.png" alt="\Pi_i"/> from the bra part wavepacket.</li>
-<li><strong>Piket</strong> &#8211; The parameter set <img class="math" src="../_images/math/618ef4d9efaa0a0887928587d7e647fcb85afc56.png" alt="\Pi_j"/> from the ket part wavepacket.</li>
+<li><strong>Pibra</strong> &#8211; The parameter set <img class="math" src="../_images/math/7dec972d634439bf5a19ed81c57d4acbdcab587c.png" alt="\Pi_i"/> from the bra part wavepacket.</li>
+<li><strong>Piket</strong> &#8211; The parameter set <img class="math" src="../_images/math/797501c1a4b0c3a07d7c0ee7d87c0848d71f4f7a.png" alt="\Pi_j"/> from the ket part wavepacket.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The mixed parameters <img class="math" src="../_images/math/aa5fcb209117ce838a60606e8575439a2029bfca.png" alt="q_0"/> and <img class="math" src="../_images/math/dabafc8c7a170d85f9c5f1dca1d462b0e461bd93.png" alt="Q_S"/>. (See the theory for details.)</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The mixed parameters <img class="math" src="../_images/math/edb0e26cacb2812d4f30d3151e3296b49bf29bcc.png" alt="q_0"/> and <img class="math" src="../_images/math/09d3a718daa62d2ce2a06e4de2a806390d0f3450.png" alt="Q_S"/>. (See the theory for details.)</p>
 </td>
 </tr>
 </tbody>
@@ -234,19 +235,19 @@ and <img class="math" src="../_images/math/d0ed69530ece6e0b7b5cd7e129a183379adf3
 <dt id="WaveBlocksND.NSDInhomogeneous.perform_build_matrix">
 <tt class="descname">perform_build_matrix</tt><big>(</big><em>row</em>, <em>col</em><big>)</big><a class="headerlink" href="#WaveBlocksND.NSDInhomogeneous.perform_build_matrix" title="Permalink to this definition">¶</a></dt>
 <dd><p>Computes by standard quadrature the matrix elements
-<img class="math" src="../_images/math/8f302c1e71313669e03904673a2f90b914ae46ba.png" alt="\langle\Phi_i | f |\Phi^\prime_j\rangle"/> for a general function
-<img class="math" src="../_images/math/c96dd6ec1dc4ad7520fbdc78fcdbec9edd068d0c.png" alt="f(x)"/> with <img class="math" src="../_images/math/f85da18535db12c4e7f18590bcd375be0cd399eb.png" alt="x \in \mathbb{R}^D"/>.</p>
+<img class="math" src="../_images/math/95754092d910f9d6e6cb0fef991c2377bcdee3cf.png" alt="\langle\Phi_i | f |\Phi^\prime_j\rangle"/> for a general function
+<img class="math" src="../_images/math/14546c27a7b929642f7840acca5f851c503ea109.png" alt="f(x)"/> with <img class="math" src="../_images/math/71928d7ec88b1eddd6b449fc1b5d32192eca4885.png" alt="x \in \mathbb{R}^D"/>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>row</strong> &#8211; The index <img class="math" src="../_images/math/34857b3ba74ce5cd8607f3ebd23e9015908ada71.png" alt="i"/> of the component <img class="math" src="../_images/math/1a1372729059cb0703afe57f9402c351b5bf0e2d.png" alt="\Phi_i"/> of <img class="math" src="../_images/math/866f0204648be9ca6b10e14dd72295295dd53a79.png" alt="\Psi"/>.</li>
-<li><strong>row</strong> &#8211; The index <img class="math" src="../_images/math/8122aa89ea6e80784c6513d22787ad86e36ad0cc.png" alt="j"/> of the component <img class="math" src="../_images/math/98f130cebb4aa36b7dad3e83d1f8e748b47f8002.png" alt="\Phi^\prime_j"/> of <img class="math" src="../_images/math/ed0eb7d94f64ded093e1e0a8159ca93be0ffb20d.png" alt="\Psi^\prime"/>.</li>
+<li><strong>row</strong> &#8211; The index <img class="math" src="../_images/math/a581f053bbfa5115f42c13094857cdd12a37ec49.png" alt="i"/> of the component <img class="math" src="../_images/math/7e85868a38cec20390ec1816976ad68089bb2a48.png" alt="\Phi_i"/> of <img class="math" src="../_images/math/de6f6ec55da5bff04bdf591d5bb35136eb51b579.png" alt="\Psi"/>.</li>
+<li><strong>row</strong> &#8211; The index <img class="math" src="../_images/math/d32c78b759903e3f4bd4fd2ce0b86358f7500c5d.png" alt="j"/> of the component <img class="math" src="../_images/math/924ace1c8e81589280984b0fa6b0a5808fc5ec37.png" alt="\Phi^\prime_j"/> of <img class="math" src="../_images/math/421b68b30d0b8cc1ee3218ee97c944438c36c933.png" alt="\Psi^\prime"/>.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A complex valued matrix of shape <img class="math" src="../_images/math/c09d000f17e4e101ea23830d12328f6bb3b50220.png" alt="|\mathfrak{K}_i| \times |\mathfrak{K}^\prime_j|"/>.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A complex valued matrix of shape <img class="math" src="../_images/math/60dd313b71dcb52ef5cc0ba8c42b5cce2b859872.png" alt="|\mathfrak{K}_i| \times |\mathfrak{K}^\prime_j|"/>.</p>
 </td>
 </tr>
 </tbody>
@@ -257,15 +258,15 @@ and <img class="math" src="../_images/math/d0ed69530ece6e0b7b5cd7e129a183379adf3
 <dt id="WaveBlocksND.NSDInhomogeneous.perform_quadrature">
 <tt class="descname">perform_quadrature</tt><big>(</big><em>row</em>, <em>col</em><big>)</big><a class="headerlink" href="#WaveBlocksND.NSDInhomogeneous.perform_quadrature" title="Permalink to this definition">¶</a></dt>
 <dd><p>Evaluates by numerical steepest descent the integral
-<img class="math" src="../_images/math/59d1674b8959786e57b6f1d8d9abf1c4c4c6dd5f.png" alt="\langle \Phi_i | f | \Phi^\prime_j \rangle"/> for a polynomial
-function <img class="math" src="../_images/math/c96dd6ec1dc4ad7520fbdc78fcdbec9edd068d0c.png" alt="f(x)"/> with <img class="math" src="../_images/math/f85da18535db12c4e7f18590bcd375be0cd399eb.png" alt="x \in \mathbb{R}^D"/>.</p>
+<img class="math" src="../_images/math/dc1db0b8480daabea945d56d260b6b327885014c.png" alt="\langle \Phi_i | f | \Phi^\prime_j \rangle"/> for a polynomial
+function <img class="math" src="../_images/math/14546c27a7b929642f7840acca5f851c503ea109.png" alt="f(x)"/> with <img class="math" src="../_images/math/71928d7ec88b1eddd6b449fc1b5d32192eca4885.png" alt="x \in \mathbb{R}^D"/>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>row</strong> &#8211; The index <img class="math" src="../_images/math/34857b3ba74ce5cd8607f3ebd23e9015908ada71.png" alt="i"/> of the component <img class="math" src="../_images/math/1a1372729059cb0703afe57f9402c351b5bf0e2d.png" alt="\Phi_i"/> of <img class="math" src="../_images/math/866f0204648be9ca6b10e14dd72295295dd53a79.png" alt="\Psi"/>.</li>
-<li><strong>row</strong> &#8211; The index <img class="math" src="../_images/math/8122aa89ea6e80784c6513d22787ad86e36ad0cc.png" alt="j"/> of the component <img class="math" src="../_images/math/98f130cebb4aa36b7dad3e83d1f8e748b47f8002.png" alt="\Phi^\prime_j"/> of <img class="math" src="../_images/math/ed0eb7d94f64ded093e1e0a8159ca93be0ffb20d.png" alt="\Psi^\prime"/>.</li>
+<li><strong>row</strong> &#8211; The index <img class="math" src="../_images/math/a581f053bbfa5115f42c13094857cdd12a37ec49.png" alt="i"/> of the component <img class="math" src="../_images/math/7e85868a38cec20390ec1816976ad68089bb2a48.png" alt="\Phi_i"/> of <img class="math" src="../_images/math/de6f6ec55da5bff04bdf591d5bb35136eb51b579.png" alt="\Psi"/>.</li>
+<li><strong>row</strong> &#8211; The index <img class="math" src="../_images/math/d32c78b759903e3f4bd4fd2ce0b86358f7500c5d.png" alt="j"/> of the component <img class="math" src="../_images/math/924ace1c8e81589280984b0fa6b0a5808fc5ec37.png" alt="\Phi^\prime_j"/> of <img class="math" src="../_images/math/421b68b30d0b8cc1ee3218ee97c944438c36c933.png" alt="\Psi^\prime"/>.</li>
 </ul>
 </td>
 </tr>
@@ -280,17 +281,17 @@ function <img class="math" src="../_images/math/c96dd6ec1dc4ad7520fbdc78fcdbec9e
 <dt id="WaveBlocksND.NSDInhomogeneous.prepare">
 <tt class="descname">prepare</tt><big>(</big><em>rows</em>, <em>cols</em><big>)</big><a class="headerlink" href="#WaveBlocksND.NSDInhomogeneous.prepare" title="Permalink to this definition">¶</a></dt>
 <dd><p>Precompute some values needed for evaluating the quadrature
-<img class="math" src="../_images/math/768c675ebc302782751bd13a9765a5bd1571ce62.png" alt="\langle \Phi_i | f(x) | \Phi^\prime_j \rangle"/> or the corresponding
-matrix over the basis functions of <img class="math" src="../_images/math/1a1372729059cb0703afe57f9402c351b5bf0e2d.png" alt="\Phi_i"/> and <img class="math" src="../_images/math/98f130cebb4aa36b7dad3e83d1f8e748b47f8002.png" alt="\Phi^\prime_j"/>.</p>
+<img class="math" src="../_images/math/d02563476e7f9ceb5b255b99e15fa76b4e4318dd.png" alt="\langle \Phi_i | f(x) | \Phi^\prime_j \rangle"/> or the corresponding
+matrix over the basis functions of <img class="math" src="../_images/math/7e85868a38cec20390ec1816976ad68089bb2a48.png" alt="\Phi_i"/> and <img class="math" src="../_images/math/924ace1c8e81589280984b0fa6b0a5808fc5ec37.png" alt="\Phi^\prime_j"/>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>rows</strong> &#8211; A list of all <img class="math" src="../_images/math/34857b3ba74ce5cd8607f3ebd23e9015908ada71.png" alt="i"/> with <img class="math" src="../_images/math/1fbdc3f84fab4719570e6b6299cccc3edae6ee9d.png" alt="0 \leq i \leq N"/>
-selecting the <img class="math" src="../_images/math/1a1372729059cb0703afe57f9402c351b5bf0e2d.png" alt="\Phi_i"/> for which te precompute values.</li>
-<li><strong>cols</strong> &#8211; A list of all <img class="math" src="../_images/math/8122aa89ea6e80784c6513d22787ad86e36ad0cc.png" alt="j"/> with <img class="math" src="../_images/math/860d6b2c72824bd731c4cb8ec520b50fa9c8ca56.png" alt="0 \leq j \leq N"/>
-selecting the <img class="math" src="../_images/math/98f130cebb4aa36b7dad3e83d1f8e748b47f8002.png" alt="\Phi^\prime_j"/> for which te precompute values.</li>
+<li><strong>rows</strong> &#8211; A list of all <img class="math" src="../_images/math/a581f053bbfa5115f42c13094857cdd12a37ec49.png" alt="i"/> with <img class="math" src="../_images/math/c641334893af173dd5b3030f99548af3d0e9ec30.png" alt="0 \leq i \leq N"/>
+selecting the <img class="math" src="../_images/math/7e85868a38cec20390ec1816976ad68089bb2a48.png" alt="\Phi_i"/> for which te precompute values.</li>
+<li><strong>cols</strong> &#8211; A list of all <img class="math" src="../_images/math/d32c78b759903e3f4bd4fd2ce0b86358f7500c5d.png" alt="j"/> with <img class="math" src="../_images/math/8b74560b070d7dc4a60efb67b313b253b717f9ce.png" alt="0 \leq j \leq N"/>
+selecting the <img class="math" src="../_images/math/924ace1c8e81589280984b0fa6b0a5808fc5ec37.png" alt="\Phi^\prime_j"/> for which te precompute values.</li>
 </ul>
 </td>
 </tr>
@@ -382,7 +383,7 @@ selecting the <img class="math" src="../_images/math/98f130cebb4aa36b7dad3e83d1f
     </div>
     <div class="footer">
         &copy; Copyright 2015, R. Bourquin.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
     </div>
   </body>
 </html>

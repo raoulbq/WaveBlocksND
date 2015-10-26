@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -60,7 +58,7 @@
 <span id="about-the-matrixexponential-functions"></span><h2>About the <tt class="docutils literal"><span class="pre">MatrixExponential</span></tt> functions<a class="headerlink" href="#module-WaveBlocksND" title="Permalink to this headline">¶</a></h2>
 <p>The WaveBlocks Project</p>
 <p>&#64;author: R. Bourquin
-&#64;copyright: Copyright (C) 2010, 2011, 2012, 2013, 2014 R. Bourquin
+&#64;copyright: Copyright (C) 2010, 2011, 2012, 2013, 2014, 2015 R. Bourquin
 &#64;license: Modified BSD License</p>
 </div>
 <div class="section" id="module-MatrixExponential">
@@ -76,22 +74,22 @@ Pade approximations and an Arnoldi iteration method.</p>
 <dl class="function">
 <dt id="MatrixExponential.arnoldi">
 <tt class="descclassname">MatrixExponential.</tt><tt class="descname">arnoldi</tt><big>(</big><em>A</em>, <em>v0</em>, <em>k</em><big>)</big><a class="reference internal" href="../_modules/MatrixExponential.html#arnoldi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#MatrixExponential.arnoldi" title="Permalink to this definition">¶</a></dt>
-<dd><p>Arnoldi algorithm to compute the Krylov approximation <img class="math" src="../_images/math/b1902d279ba37d60bdce4e0e987b7cd19d48974e.png" alt="H"/> of a matrix <img class="math" src="../_images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A"/>.</p>
+<dd><p>Arnoldi algorithm to compute the Krylov approximation <img class="math" src="../_images/math/48f75e0b463f2fdb7fca9566cffdc439cae6967f.png" alt="H"/> of a matrix <img class="math" src="../_images/math/0acafa529182e79b4f56165ec677554fba7fcf98.png" alt="A"/>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>A</strong> &#8211; The matrix <img class="math" src="../_images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A"/> of shape <img class="math" src="../_images/math/cb21db0177b65427c9c7fb7bd9183d242bdbcb1f.png" alt="N \times N"/> to approximate.</li>
-<li><strong>v0</strong> &#8211; The initial vector <img class="math" src="../_images/math/a03736fe3d54aefeb282b0bd55d83d70178e1d8d.png" alt="v_0"/> of length <img class="math" src="../_images/math/fc97ef67268cd4e91bacdf12b8901d7036c9a056.png" alt="N"/>.</li>
-<li><strong>k</strong> &#8211; The number <img class="math" src="../_images/math/8c325612684d41304b9751c175df7bcc0f61f64f.png" alt="k"/> of Krylov steps performed.</li>
+<li><strong>A</strong> &#8211; The matrix <img class="math" src="../_images/math/0acafa529182e79b4f56165ec677554fba7fcf98.png" alt="A"/> of shape <img class="math" src="../_images/math/e124387baa3fb78556702e7e00266ce1954002e0.png" alt="N \times N"/> to approximate.</li>
+<li><strong>v0</strong> &#8211; The initial vector <img class="math" src="../_images/math/86b9d0c0fb1047cba5bea0154ea1965aabc6053a.png" alt="v_0"/> of length <img class="math" src="../_images/math/75e27f04188974063be3230dca208cd495b77ce1.png" alt="N"/>.</li>
+<li><strong>k</strong> &#8211; The number <img class="math" src="../_images/math/e9203da50e1059455123460d4e716c9c7f440cc3.png" alt="k"/> of Krylov steps performed.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A tuple <img class="math" src="../_images/math/d26a0d88b6bb981cbd3949730aa425790dfc9c93.png" alt="(V, H)"/> where <img class="math" src="../_images/math/12d58aa29201da09d8e620f8698e3a37547f6b4a.png" alt="V"/> is the large matrix of shape
-<img class="math" src="../_images/math/c5e7ff5f4a5ee4be7229401f98ac16adfaefce78.png" alt="N \times (k+1)"/> containing the orthogonal vectors and <img class="math" src="../_images/math/b1902d279ba37d60bdce4e0e987b7cd19d48974e.png" alt="H"/> is the
-small matrix of shape <img class="math" src="../_images/math/f8e23ec2bbf63f9a010e4526965814183f58cb7c.png" alt="(k+1) \times k"/> containing the Krylov approximation
-of <img class="math" src="../_images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A"/>.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A tuple <img class="math" src="../_images/math/90707230376da68b994f544f1564455618c463f7.png" alt="(V, H)"/> where <img class="math" src="../_images/math/c99df7a209495334da442b1ec998abaabfa320d8.png" alt="V"/> is the large matrix of shape
+<img class="math" src="../_images/math/315114a0b1bf43ec8262f0043d5d0fc5ca87d5d9.png" alt="N \times (k+1)"/> containing the orthogonal vectors and <img class="math" src="../_images/math/48f75e0b463f2fdb7fca9566cffdc439cae6967f.png" alt="H"/> is the
+small matrix of shape <img class="math" src="../_images/math/dc3838f9ed95e822109475842651e1e18aeb54e0.png" alt="(k+1) \times k"/> containing the Krylov approximation
+of <img class="math" src="../_images/math/0acafa529182e79b4f56165ec677554fba7fcf98.png" alt="A"/>.</p>
 </td>
 </tr>
 </tbody>
@@ -101,21 +99,21 @@ of <img class="math" src="../_images/math/019e9892786e493964e145e7c5cf7b700314e5
 <dl class="function">
 <dt id="MatrixExponential.matrix_exp_arnoldi">
 <tt class="descclassname">MatrixExponential.</tt><tt class="descname">matrix_exp_arnoldi</tt><big>(</big><em>A</em>, <em>v</em>, <em>factor</em>, <em>k</em><big>)</big><a class="reference internal" href="../_modules/MatrixExponential.html#matrix_exp_arnoldi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#MatrixExponential.matrix_exp_arnoldi" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute the solution of <img class="math" src="../_images/math/5b37acd4e882afeaf9067ba0fcbb3182b675af29.png" alt="v' = A v"/> via <img class="math" src="../_images/math/8c325612684d41304b9751c175df7bcc0f61f64f.png" alt="k"/>
+<dd><p>Compute the solution of <img class="math" src="../_images/math/7b699334a7af1b9daf14c4603cc8bcf377a64827.png" alt="v' = A v"/> via <img class="math" src="../_images/math/e9203da50e1059455123460d4e716c9c7f440cc3.png" alt="k"/>
 steps of a the Arnoldi krylov method.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>A</strong> &#8211; The matrix <img class="math" src="../_images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A"/> of shape <img class="math" src="../_images/math/cb21db0177b65427c9c7fb7bd9183d242bdbcb1f.png" alt="N \times N"/>.</li>
-<li><strong>v</strong> &#8211; The vector <img class="math" src="../_images/math/a9f23bf124b6b2b2a993eb313c72e678664ac74a.png" alt="v"/> of length <img class="math" src="../_images/math/fc97ef67268cd4e91bacdf12b8901d7036c9a056.png" alt="N"/>.</li>
-<li><strong>factor</strong> &#8211; An additional scalar factor <img class="math" src="../_images/math/10f32377ac67d94f764f12a15ea987e88c85d3e1.png" alt="\alpha"/>.</li>
-<li><strong>k</strong> &#8211; The number <img class="math" src="../_images/math/8c325612684d41304b9751c175df7bcc0f61f64f.png" alt="k"/> of Krylov steps performed.</li>
+<li><strong>A</strong> &#8211; The matrix <img class="math" src="../_images/math/0acafa529182e79b4f56165ec677554fba7fcf98.png" alt="A"/> of shape <img class="math" src="../_images/math/e124387baa3fb78556702e7e00266ce1954002e0.png" alt="N \times N"/>.</li>
+<li><strong>v</strong> &#8211; The vector <img class="math" src="../_images/math/0e22076955898e6c9bb38aa079135195c24dc81e.png" alt="v"/> of length <img class="math" src="../_images/math/75e27f04188974063be3230dca208cd495b77ce1.png" alt="N"/>.</li>
+<li><strong>factor</strong> &#8211; An additional scalar factor <img class="math" src="../_images/math/ad59b6e24a4a00ac621801f8d7513d68be654ab5.png" alt="\alpha"/>.</li>
+<li><strong>k</strong> &#8211; The number <img class="math" src="../_images/math/e9203da50e1059455123460d4e716c9c7f440cc3.png" alt="k"/> of Krylov steps performed.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The (approximate) value of <img class="math" src="../_images/math/7285eb8d9dbe97c73356ecfa736e2aff95539f5f.png" alt="\exp\left(-i \alpha A\right) v"/>.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The (approximate) value of <img class="math" src="../_images/math/4d6665648608239dc5cdf6db03e6935a05dc1f88.png" alt="\exp\left(-i \alpha A\right) v"/>.</p>
 </td>
 </tr>
 </tbody>
@@ -125,20 +123,20 @@ steps of a the Arnoldi krylov method.</p>
 <dl class="function">
 <dt id="MatrixExponential.matrix_exp_pade">
 <tt class="descclassname">MatrixExponential.</tt><tt class="descname">matrix_exp_pade</tt><big>(</big><em>A</em>, <em>v</em>, <em>factor</em><big>)</big><a class="reference internal" href="../_modules/MatrixExponential.html#matrix_exp_pade"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#MatrixExponential.matrix_exp_pade" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute the solution of <img class="math" src="../_images/math/5b37acd4e882afeaf9067ba0fcbb3182b675af29.png" alt="v' = A v"/> with a full
+<dd><p>Compute the solution of <img class="math" src="../_images/math/7b699334a7af1b9daf14c4603cc8bcf377a64827.png" alt="v' = A v"/> with a full
 matrix exponential via Pade approximation.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>A</strong> &#8211; The matrix <img class="math" src="../_images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A"/> of shape <img class="math" src="../_images/math/cb21db0177b65427c9c7fb7bd9183d242bdbcb1f.png" alt="N \times N"/>.</li>
-<li><strong>v</strong> &#8211; The vector <img class="math" src="../_images/math/a9f23bf124b6b2b2a993eb313c72e678664ac74a.png" alt="v"/> of length <img class="math" src="../_images/math/fc97ef67268cd4e91bacdf12b8901d7036c9a056.png" alt="N"/>.</li>
-<li><strong>factor</strong> &#8211; An additional scalar factor <img class="math" src="../_images/math/10f32377ac67d94f764f12a15ea987e88c85d3e1.png" alt="\alpha"/>.</li>
+<li><strong>A</strong> &#8211; The matrix <img class="math" src="../_images/math/0acafa529182e79b4f56165ec677554fba7fcf98.png" alt="A"/> of shape <img class="math" src="../_images/math/e124387baa3fb78556702e7e00266ce1954002e0.png" alt="N \times N"/>.</li>
+<li><strong>v</strong> &#8211; The vector <img class="math" src="../_images/math/0e22076955898e6c9bb38aa079135195c24dc81e.png" alt="v"/> of length <img class="math" src="../_images/math/75e27f04188974063be3230dca208cd495b77ce1.png" alt="N"/>.</li>
+<li><strong>factor</strong> &#8211; An additional scalar factor <img class="math" src="../_images/math/ad59b6e24a4a00ac621801f8d7513d68be654ab5.png" alt="\alpha"/>.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The (approximate) value of <img class="math" src="../_images/math/7285eb8d9dbe97c73356ecfa736e2aff95539f5f.png" alt="\exp\left(-i \alpha A\right) v"/></p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The (approximate) value of <img class="math" src="../_images/math/4d6665648608239dc5cdf6db03e6935a05dc1f88.png" alt="\exp\left(-i \alpha A\right) v"/></p>
 </td>
 </tr>
 </tbody>
@@ -211,7 +209,7 @@ matrix exponential via Pade approximation.</p>
     </div>
     <div class="footer">
         &copy; Copyright 2015, R. Bourquin.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
     </div>
   </body>
 </html>

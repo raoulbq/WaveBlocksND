@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -60,13 +58,17 @@
 <span id="about-the-linearcombinationofwps-class"></span><h2>About the <tt class="docutils literal"><span class="pre">LinearCombinationOfWPs</span></tt> class<a class="headerlink" href="#module-WaveBlocksND" title="Permalink to this headline">¶</a></h2>
 <p>The WaveBlocks Project</p>
 <p>&#64;author: R. Bourquin
-&#64;copyright: Copyright (C) 2010, 2011, 2012, 2013, 2014 R. Bourquin
+&#64;copyright: Copyright (C) 2010, 2011, 2012, 2013, 2014, 2015 R. Bourquin
 &#64;license: Modified BSD License</p>
 </div>
 <div class="section" id="inheritance-diagram">
 <h2>Inheritance diagram<a class="headerlink" href="#inheritance-diagram" title="Permalink to this headline">¶</a></h2>
 <p class="graphviz">
-<img src="../_images/inheritance-004e3151a3fafbe834d39be6c1ac796d4b9d1687.png" alt="Inheritance diagram of LinearCombinationOfWPs" class="inheritance"/>
+<img src="../_images/inheritance-ea61a3624beb932e57c9781d835340bdcf61dceb.png" alt="Inheritance diagram of LinearCombinationOfWPs" usemap="#inheritance08ff346037" class="inheritance"/>
+<map id="inheritance08ff346037" name="inheritance08ff346037">
+<area shape="rect" id="node1" title="This class represents linear combinations" alt="" coords="456,5,763,27"/>
+<area shape="rect" id="node2" title="This class is an abstract interface to linear combinations" alt="" coords="5,5,413,27"/>
+</map>
 </p>
 </div>
 <div class="section" id="class-documentation">
@@ -80,16 +82,16 @@ of general but compatible wavepackets of any kind.</p>
 <dt id="WaveBlocksND.LinearCombinationOfWPs.__init__">
 <tt class="descname">__init__</tt><big>(</big><em>dimension</em>, <em>number_components</em>, <em>number_packets=0</em><big>)</big><a class="headerlink" href="#WaveBlocksND.LinearCombinationOfWPs.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialize a new linear combination of general wavepackets. This
-object represents <img class="math" src="../_images/math/cce8780220214646dcfe8e51ac5549b5f57d0bcc.png" alt="\Upsilon := \sum_{j=0}^{J-1} c_j \Psi_j"/>.
-All <img class="math" src="../_images/math/abb5588023cfa1ac14643e9778699f03eecc57a3.png" alt="J"/> wavepackets <img class="math" src="../_images/math/62ed0f266e815e996092950d8b63f91d8833b2c3.png" alt="\Psi_j"/> have the same number <img class="math" src="../_images/math/fc97ef67268cd4e91bacdf12b8901d7036c9a056.png" alt="N"/>
-components and are defined in the <img class="math" src="../_images/math/9ffb448918db29f2a72f8f87f421b3b3cad18f95.png" alt="D"/> dimensional space.</p>
+object represents <img class="math" src="../_images/math/9a528819d124a32289b0b9a1f9552b42ae47f1a6.png" alt="\Upsilon := \sum_{j=0}^{J-1} c_j \Psi_j"/>.
+All <img class="math" src="../_images/math/372c2a0702e1e5866656215408b37a2ddb8d2d45.png" alt="J"/> wavepackets <img class="math" src="../_images/math/ab7f7c655bbc8fec08f08c10d8cf1eeb56560103.png" alt="\Psi_j"/> have the same number <img class="math" src="../_images/math/75e27f04188974063be3230dca208cd495b77ce1.png" alt="N"/>
+components and are defined in the <img class="math" src="../_images/math/9dfa31437b58c0473299320aa638151cd88cf61b.png" alt="D"/> dimensional space.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>dimension</strong> &#8211; The space dimension <img class="math" src="../_images/math/9ffb448918db29f2a72f8f87f421b3b3cad18f95.png" alt="D"/> the packets have.</li>
-<li><strong>ncomponents</strong> &#8211; The number <img class="math" src="../_images/math/fc97ef67268cd4e91bacdf12b8901d7036c9a056.png" alt="N"/> of components the packets have.</li>
+<li><strong>dimension</strong> &#8211; The space dimension <img class="math" src="../_images/math/9dfa31437b58c0473299320aa638151cd88cf61b.png" alt="D"/> the packets have.</li>
+<li><strong>ncomponents</strong> &#8211; The number <img class="math" src="../_images/math/75e27f04188974063be3230dca208cd495b77ce1.png" alt="N"/> of components the packets have.</li>
 </ul>
 </td>
 </tr>
@@ -107,11 +109,11 @@ components and are defined in the <img class="math" src="../_images/math/9ffb448
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A string describing the linear combination of general</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A string describing the linear combination of general
+wavepackets <img class="math" src="../_images/math/861d42cb469473886f3586a7987bfd1aadf6a502.png" alt="\Upsilon = \sum_{j=0}^J c_j \Psi_j"/>.</td>
 </tr>
 </tbody>
 </table>
-<p>wavepackets <img class="math" src="../_images/math/a8d64f9c76029be2b766cee469d078e990ea0bd3.png" alt="\Upsilon = \sum_{j=0}^J c_j \Psi_j"/>.</p>
 </dd></dl>
 
 <dl class="method">
@@ -123,8 +125,8 @@ components and are defined in the <img class="math" src="../_images/math/9ffb448
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>packet</strong> (A <a class="reference internal" href="Wavepacket.html#WaveBlocksND.Wavepacket" title="WaveBlocksND.Wavepacket"><tt class="xref py py-class docutils literal"><span class="pre">Wavepacket</span></tt></a> subclass instance.) &#8211; The new wavepacket <img class="math" src="../_images/math/62ed0f266e815e996092950d8b63f91d8833b2c3.png" alt="\Psi_j"/> to add.</li>
-<li><strong>coefficient</strong> &#8211; The corresponding coefficient <img class="math" src="../_images/math/88d143238ae2718841dfd3ec099cbea395db77a4.png" alt="c_j"/>, default is 1.0.</li>
+<li><strong>packet</strong> (A <a class="reference internal" href="Wavepacket.html#WaveBlocksND.Wavepacket" title="WaveBlocksND.Wavepacket"><tt class="xref py py-class docutils literal"><span class="pre">Wavepacket</span></tt></a> subclass instance.) &#8211; The new wavepacket <img class="math" src="../_images/math/ab7f7c655bbc8fec08f08c10d8cf1eeb56560103.png" alt="\Psi_j"/> to add.</li>
+<li><strong>coefficient</strong> &#8211; The corresponding coefficient <img class="math" src="../_images/math/25ce8815ff81c2071b842ecaf581c222c39e11c8.png" alt="c_j"/>, default is 1.0.</li>
 </ul>
 </td>
 </tr>
@@ -141,8 +143,8 @@ components and are defined in the <img class="math" src="../_images/math/9ffb448
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>packetlist</strong> (A list of <a class="reference internal" href="Wavepacket.html#WaveBlocksND.Wavepacket" title="WaveBlocksND.Wavepacket"><tt class="xref py py-class docutils literal"><span class="pre">Wavepacket</span></tt></a> subclass instances.) &#8211; A list of new wavepackets <img class="math" src="../_images/math/bf625d884ca23624ad57f3b8df79f2ecfa8f5aa6.png" alt="\{\Psi_j\}"/>.</li>
-<li><strong>coefficients</strong> &#8211; The corresponding coefficient vector <img class="math" src="../_images/math/3372c1cb6d68cf97c2d231acc0b47b95a9ed04cc.png" alt="c"/>, default
+<li><strong>packetlist</strong> (A list of <a class="reference internal" href="Wavepacket.html#WaveBlocksND.Wavepacket" title="WaveBlocksND.Wavepacket"><tt class="xref py py-class docutils literal"><span class="pre">Wavepacket</span></tt></a> subclass instances.) &#8211; A list of new wavepackets <img class="math" src="../_images/math/3013902bf5a439595d9af4b6a1597ab0594c7c65.png" alt="\{\Psi_j\}"/>.</li>
+<li><strong>coefficients</strong> &#8211; The corresponding coefficient vector <img class="math" src="../_images/math/65868d23a5bfe5b3b2d819386b19c14fa36af134.png" alt="c"/>, default
 is a vector of all 1.0.</li>
 </ul>
 </td>
@@ -154,21 +156,21 @@ is a vector of all 1.0.</li>
 <dl class="method">
 <dt id="WaveBlocksND.LinearCombinationOfWPs.evaluate_at">
 <tt class="descname">evaluate_at</tt><big>(</big><em>grid</em>, <em>component=None</em><big>)</big><a class="headerlink" href="#WaveBlocksND.LinearCombinationOfWPs.evaluate_at" title="Permalink to this definition">¶</a></dt>
-<dd><p>Evaluate the linear combination of wavepackets <img class="math" src="../_images/math/d792ba6fac8dc00a5626659c0b9cf56716701f3d.png" alt="\Upsilon"/> at
-the given nodes <img class="math" src="../_images/math/66981fa3920210c6ad8dbe5e968783d5dd7520c3.png" alt="\gamma"/>.</p>
+<dd><p>Evaluate the linear combination of wavepackets <img class="math" src="../_images/math/e838cc7ce47de4242e2d27771140908bff604da6.png" alt="\Upsilon"/> at
+the given nodes <img class="math" src="../_images/math/0ebb67342b546ca42a1c634b1ef03c893c4cdedb.png" alt="\gamma"/>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>grid</strong> (A class having a <tt class="docutils literal"><span class="pre">get_nodes</span></tt> method.) &#8211; The grid <img class="math" src="../_images/math/913e49ea63c6c130bb8d9d1c3556b052ecc404f8.png" alt="\Gamma"/> containing the nodes <img class="math" src="../_images/math/66981fa3920210c6ad8dbe5e968783d5dd7520c3.png" alt="\gamma"/>.</li>
-<li><strong>component</strong> &#8211; The index <img class="math" src="../_images/math/34857b3ba74ce5cd8607f3ebd23e9015908ada71.png" alt="i"/> of a single component to evaluate.
+<li><strong>grid</strong> (A class having a <tt class="docutils literal"><span class="pre">get_nodes</span></tt> method.) &#8211; The grid <img class="math" src="../_images/math/85011adca50d3725af2e048eeb9ec7b02ccdd401.png" alt="\Gamma"/> containing the nodes <img class="math" src="../_images/math/0ebb67342b546ca42a1c634b1ef03c893c4cdedb.png" alt="\gamma"/>.</li>
+<li><strong>component</strong> &#8211; The index <img class="math" src="../_images/math/a581f053bbfa5115f42c13094857cdd12a37ec49.png" alt="i"/> of a single component to evaluate.
 (Defaults to <tt class="docutils literal"><span class="pre">None</span></tt> for evaluating all components.)</li>
 </ul>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A list of arrays or a single array containing the values of the
-<img class="math" src="../_images/math/1a1372729059cb0703afe57f9402c351b5bf0e2d.png" alt="\Phi_i"/> at the nodes <img class="math" src="../_images/math/66981fa3920210c6ad8dbe5e968783d5dd7520c3.png" alt="\gamma"/>.</p>
+<img class="math" src="../_images/math/7e85868a38cec20390ec1816976ad68089bb2a48.png" alt="\Phi_i"/> at the nodes <img class="math" src="../_images/math/0ebb67342b546ca42a1c634b1ef03c893c4cdedb.png" alt="\gamma"/>.</p>
 </td>
 </tr>
 </tbody>
@@ -178,14 +180,14 @@ the given nodes <img class="math" src="../_images/math/66981fa3920210c6ad8dbe5e9
 <dl class="method">
 <dt id="WaveBlocksND.LinearCombinationOfWPs.get_coefficient">
 <tt class="descname">get_coefficient</tt><big>(</big><em>index</em><big>)</big><a class="headerlink" href="#WaveBlocksND.LinearCombinationOfWPs.get_coefficient" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the coefficient <img class="math" src="../_images/math/88d143238ae2718841dfd3ec099cbea395db77a4.png" alt="c_j"/> of the wavepacket <img class="math" src="../_images/math/62ed0f266e815e996092950d8b63f91d8833b2c3.png" alt="\Psi_j"/>.</p>
+<dd><p>Get the coefficient <img class="math" src="../_images/math/25ce8815ff81c2071b842ecaf581c222c39e11c8.png" alt="c_j"/> of the wavepacket <img class="math" src="../_images/math/ab7f7c655bbc8fec08f08c10d8cf1eeb56560103.png" alt="\Psi_j"/>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>index</strong> &#8211; The index <img class="math" src="../_images/math/09507572ff1642da8cab972cd37b262eaab2d004.png" alt="0 \leq j &lt; J"/> of the coefficient to retrieve.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>index</strong> &#8211; The index <img class="math" src="../_images/math/4bd3aed5353a5e7d9a12b531d09970b72e2c10c6.png" alt="0 \leq j &lt; J"/> of the coefficient to retrieve.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The coefficient <img class="math" src="../_images/math/88d143238ae2718841dfd3ec099cbea395db77a4.png" alt="c_j"/>.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The coefficient <img class="math" src="../_images/math/25ce8815ff81c2071b842ecaf581c222c39e11c8.png" alt="c_j"/>.</td>
 </tr>
 </tbody>
 </table>
@@ -194,15 +196,15 @@ the given nodes <img class="math" src="../_images/math/66981fa3920210c6ad8dbe5e9
 <dl class="method">
 <dt id="WaveBlocksND.LinearCombinationOfWPs.get_coefficients">
 <tt class="descname">get_coefficients</tt><big>(</big><big>)</big><a class="headerlink" href="#WaveBlocksND.LinearCombinationOfWPs.get_coefficients" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the vector with all coefficients <img class="math" src="../_images/math/88d143238ae2718841dfd3ec099cbea395db77a4.png" alt="c_j"/> of all wavepackets <img class="math" src="../_images/math/62ed0f266e815e996092950d8b63f91d8833b2c3.png" alt="\Psi_j"/>.</p>
+<dd><p>Get the vector with all coefficients <img class="math" src="../_images/math/25ce8815ff81c2071b842ecaf581c222c39e11c8.png" alt="c_j"/> of all wavepackets <img class="math" src="../_images/math/ab7f7c655bbc8fec08f08c10d8cf1eeb56560103.png" alt="\Psi_j"/>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The vector <img class="math" src="../_images/math/3372c1cb6d68cf97c2d231acc0b47b95a9ed04cc.png" alt="c"/> of all coefficients <img class="math" src="../_images/math/88d143238ae2718841dfd3ec099cbea395db77a4.png" alt="c_j"/>. The vector is of
-shape <img class="math" src="../_images/math/113eb6eec39ce59237a13b5a9219d59b9dca751d.png" alt="(J, 1)"/>.</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The vector <img class="math" src="../_images/math/65868d23a5bfe5b3b2d819386b19c14fa36af134.png" alt="c"/> of all coefficients <img class="math" src="../_images/math/25ce8815ff81c2071b842ecaf581c222c39e11c8.png" alt="c_j"/>. The vector is of
+shape <img class="math" src="../_images/math/a5e52b7b9fa338b2b9cb3a41c67741b4d129037d.png" alt="(J, 1)"/>.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Type :</th><td class="field-body">An <tt class="xref py py-class docutils literal"><span class="pre">ndarray</span></tt></td>
+<tr class="field-even field"><th class="field-name">Type:</th><td class="field-body">An <tt class="xref py py-class docutils literal"><span class="pre">ndarray</span></tt></td>
 </tr>
 </tbody>
 </table>
@@ -224,7 +226,7 @@ never contains any data.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The space dimension <img class="math" src="../_images/math/9ffb448918db29f2a72f8f87f421b3b3cad18f95.png" alt="D"/> of all the wavepackets <img class="math" src="../_images/math/62ed0f266e815e996092950d8b63f91d8833b2c3.png" alt="\Psi_j"/>.</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The space dimension <img class="math" src="../_images/math/9dfa31437b58c0473299320aa638151cd88cf61b.png" alt="D"/> of all the wavepackets <img class="math" src="../_images/math/ab7f7c655bbc8fec08f08c10d8cf1eeb56560103.png" alt="\Psi_j"/>.</td>
 </tr>
 </tbody>
 </table>
@@ -237,7 +239,7 @@ never contains any data.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The number <img class="math" src="../_images/math/fc97ef67268cd4e91bacdf12b8901d7036c9a056.png" alt="N"/> of components all the wavepackets <img class="math" src="../_images/math/62ed0f266e815e996092950d8b63f91d8833b2c3.png" alt="\Psi_j"/> have.</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The number <img class="math" src="../_images/math/75e27f04188974063be3230dca208cd495b77ce1.png" alt="N"/> of components all the wavepackets <img class="math" src="../_images/math/ab7f7c655bbc8fec08f08c10d8cf1eeb56560103.png" alt="\Psi_j"/> have.</td>
 </tr>
 </tbody>
 </table>
@@ -250,7 +252,7 @@ never contains any data.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The number <img class="math" src="../_images/math/abb5588023cfa1ac14643e9778699f03eecc57a3.png" alt="J"/> of wavepackets in the linear combination <img class="math" src="../_images/math/cce8780220214646dcfe8e51ac5549b5f57d0bcc.png" alt="\Upsilon := \sum_{j=0}^{J-1} c_j \Psi_j"/>.</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The number <img class="math" src="../_images/math/372c2a0702e1e5866656215408b37a2ddb8d2d45.png" alt="J"/> of wavepackets in the linear combination <img class="math" src="../_images/math/9a528819d124a32289b0b9a1f9552b42ae47f1a6.png" alt="\Upsilon := \sum_{j=0}^{J-1} c_j \Psi_j"/>.</td>
 </tr>
 </tbody>
 </table>
@@ -259,16 +261,16 @@ never contains any data.</p>
 <dl class="method">
 <dt id="WaveBlocksND.LinearCombinationOfWPs.get_wavepacket">
 <tt class="descname">get_wavepacket</tt><big>(</big><em>index</em><big>)</big><a class="headerlink" href="#WaveBlocksND.LinearCombinationOfWPs.get_wavepacket" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the wavepacket <img class="math" src="../_images/math/62ed0f266e815e996092950d8b63f91d8833b2c3.png" alt="\Psi_j"/> from the linear combination.</p>
+<dd><p>Get the wavepacket <img class="math" src="../_images/math/ab7f7c655bbc8fec08f08c10d8cf1eeb56560103.png" alt="\Psi_j"/> from the linear combination.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>index</strong> &#8211; The index <img class="math" src="../_images/math/09507572ff1642da8cab972cd37b262eaab2d004.png" alt="0 \leq j &lt; J"/> of the packet to retrieve.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>index</strong> &#8211; The index <img class="math" src="../_images/math/4bd3aed5353a5e7d9a12b531d09970b72e2c10c6.png" alt="0 \leq j &lt; J"/> of the packet to retrieve.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The wavepacket <img class="math" src="../_images/math/62ed0f266e815e996092950d8b63f91d8833b2c3.png" alt="\Psi_j"/>.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The wavepacket <img class="math" src="../_images/math/ab7f7c655bbc8fec08f08c10d8cf1eeb56560103.png" alt="\Psi_j"/>.</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Type :</th><td class="field-body">A <a class="reference internal" href="Wavepacket.html#WaveBlocksND.Wavepacket" title="WaveBlocksND.Wavepacket"><tt class="xref py py-class docutils literal"><span class="pre">Wavepacket</span></tt></a> subclass instance.</td>
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">A <a class="reference internal" href="Wavepacket.html#WaveBlocksND.Wavepacket" title="WaveBlocksND.Wavepacket"><tt class="xref py py-class docutils literal"><span class="pre">Wavepacket</span></tt></a> subclass instance.</td>
 </tr>
 </tbody>
 </table>
@@ -277,14 +279,14 @@ never contains any data.</p>
 <dl class="method">
 <dt id="WaveBlocksND.LinearCombinationOfWPs.get_wavepackets">
 <tt class="descname">get_wavepackets</tt><big>(</big><big>)</big><a class="headerlink" href="#WaveBlocksND.LinearCombinationOfWPs.get_wavepackets" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get a list of all wavepackets <img class="math" src="../_images/math/62ed0f266e815e996092950d8b63f91d8833b2c3.png" alt="\Psi_j"/> in the linear combination.</p>
+<dd><p>Get a list of all wavepackets <img class="math" src="../_images/math/ab7f7c655bbc8fec08f08c10d8cf1eeb56560103.png" alt="\Psi_j"/> in the linear combination.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A list of all wavepackets <img class="math" src="../_images/math/62ed0f266e815e996092950d8b63f91d8833b2c3.png" alt="\Psi_j"/>.</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A list of all wavepackets <img class="math" src="../_images/math/ab7f7c655bbc8fec08f08c10d8cf1eeb56560103.png" alt="\Psi_j"/>.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Type :</th><td class="field-body">A list of <a class="reference internal" href="Wavepacket.html#WaveBlocksND.Wavepacket" title="WaveBlocksND.Wavepacket"><tt class="xref py py-class docutils literal"><span class="pre">Wavepacket</span></tt></a> subclass instances.</td>
+<tr class="field-even field"><th class="field-name">Type:</th><td class="field-body">A list of <a class="reference internal" href="Wavepacket.html#WaveBlocksND.Wavepacket" title="WaveBlocksND.Wavepacket"><tt class="xref py py-class docutils literal"><span class="pre">Wavepacket</span></tt></a> subclass instances.</td>
 </tr>
 </tbody>
 </table>
@@ -293,12 +295,12 @@ never contains any data.</p>
 <dl class="method">
 <dt id="WaveBlocksND.LinearCombinationOfWPs.remove_wavepacket">
 <tt class="descname">remove_wavepacket</tt><big>(</big><em>index</em><big>)</big><a class="headerlink" href="#WaveBlocksND.LinearCombinationOfWPs.remove_wavepacket" title="Permalink to this definition">¶</a></dt>
-<dd><p>Remove a wavepacket <img class="math" src="../_images/math/62ed0f266e815e996092950d8b63f91d8833b2c3.png" alt="\Psi_j"/> from the linear combination.</p>
+<dd><p>Remove a wavepacket <img class="math" src="../_images/math/ab7f7c655bbc8fec08f08c10d8cf1eeb56560103.png" alt="\Psi_j"/> from the linear combination.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>index</strong> &#8211; The index <img class="math" src="../_images/math/09507572ff1642da8cab972cd37b262eaab2d004.png" alt="0 \leq j &lt; J"/> of the packet to remove.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>index</strong> &#8211; The index <img class="math" src="../_images/math/4bd3aed5353a5e7d9a12b531d09970b72e2c10c6.png" alt="0 \leq j &lt; J"/> of the packet to remove.</td>
 </tr>
 </tbody>
 </table>
@@ -307,14 +309,14 @@ never contains any data.</p>
 <dl class="method">
 <dt id="WaveBlocksND.LinearCombinationOfWPs.set_coefficient">
 <tt class="descname">set_coefficient</tt><big>(</big><em>index</em>, <em>coefficient</em><big>)</big><a class="headerlink" href="#WaveBlocksND.LinearCombinationOfWPs.set_coefficient" title="Permalink to this definition">¶</a></dt>
-<dd><p>Set the coefficient <img class="math" src="../_images/math/88d143238ae2718841dfd3ec099cbea395db77a4.png" alt="c_j"/> of the wavepacket <img class="math" src="../_images/math/62ed0f266e815e996092950d8b63f91d8833b2c3.png" alt="\Psi_j"/>.</p>
+<dd><p>Set the coefficient <img class="math" src="../_images/math/25ce8815ff81c2071b842ecaf581c222c39e11c8.png" alt="c_j"/> of the wavepacket <img class="math" src="../_images/math/ab7f7c655bbc8fec08f08c10d8cf1eeb56560103.png" alt="\Psi_j"/>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>index</strong> &#8211; The index <img class="math" src="../_images/math/09507572ff1642da8cab972cd37b262eaab2d004.png" alt="0 \leq j &lt; J"/> of the coefficient to retrieve.</li>
-<li><strong>coefficient</strong> &#8211; The coefficient <img class="math" src="../_images/math/88d143238ae2718841dfd3ec099cbea395db77a4.png" alt="c_j"/>.</li>
+<li><strong>index</strong> &#8211; The index <img class="math" src="../_images/math/4bd3aed5353a5e7d9a12b531d09970b72e2c10c6.png" alt="0 \leq j &lt; J"/> of the coefficient to retrieve.</li>
+<li><strong>coefficient</strong> &#8211; The coefficient <img class="math" src="../_images/math/25ce8815ff81c2071b842ecaf581c222c39e11c8.png" alt="c_j"/>.</li>
 </ul>
 </td>
 </tr>
@@ -325,12 +327,12 @@ never contains any data.</p>
 <dl class="method">
 <dt id="WaveBlocksND.LinearCombinationOfWPs.set_coefficients">
 <tt class="descname">set_coefficients</tt><big>(</big><em>coefficients</em><big>)</big><a class="headerlink" href="#WaveBlocksND.LinearCombinationOfWPs.set_coefficients" title="Permalink to this definition">¶</a></dt>
-<dd><p>Update all the coefficients <img class="math" src="../_images/math/3372c1cb6d68cf97c2d231acc0b47b95a9ed04cc.png" alt="c"/> of <img class="math" src="../_images/math/d792ba6fac8dc00a5626659c0b9cf56716701f3d.png" alt="\Upsilon"/>.</p>
+<dd><p>Update all the coefficients <img class="math" src="../_images/math/65868d23a5bfe5b3b2d819386b19c14fa36af134.png" alt="c"/> of <img class="math" src="../_images/math/e838cc7ce47de4242e2d27771140908bff604da6.png" alt="\Upsilon"/>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>coefficients</strong> (An <tt class="xref py py-class docutils literal"><span class="pre">ndarray</span></tt>) &#8211; The vector <img class="math" src="../_images/math/3372c1cb6d68cf97c2d231acc0b47b95a9ed04cc.png" alt="c"/>.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>coefficients</strong> (An <tt class="xref py py-class docutils literal"><span class="pre">ndarray</span></tt>) &#8211; The vector <img class="math" src="../_images/math/65868d23a5bfe5b3b2d819386b19c14fa36af134.png" alt="c"/>.</td>
 </tr>
 </tbody>
 </table>
@@ -339,12 +341,12 @@ never contains any data.</p>
 <dl class="method">
 <dt id="WaveBlocksND.LinearCombinationOfWPs.set_wavepackets">
 <tt class="descname">set_wavepackets</tt><big>(</big><em>packetlist</em><big>)</big><a class="headerlink" href="#WaveBlocksND.LinearCombinationOfWPs.set_wavepackets" title="Permalink to this definition">¶</a></dt>
-<dd><p>Set the list <img class="math" src="../_images/math/eec8159e4ebb0f7e49c8eaa4ebc77c06a6aec05d.png" alt="\{\Psi_j\}_j"/> of new wavepackets.</p>
+<dd><p>Set the list <img class="math" src="../_images/math/7a93f243b448ac80a875f61859e55a906dbb5864.png" alt="\{\Psi_j\}_j"/> of new wavepackets.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>packetlist</strong> (A list of <a class="reference internal" href="Wavepacket.html#WaveBlocksND.Wavepacket" title="WaveBlocksND.Wavepacket"><tt class="xref py py-class docutils literal"><span class="pre">Wavepacket</span></tt></a> subclass instances.) &#8211; A list of new wavepackets <img class="math" src="../_images/math/62ed0f266e815e996092950d8b63f91d8833b2c3.png" alt="\Psi_j"/>.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>packetlist</strong> (A list of <a class="reference internal" href="Wavepacket.html#WaveBlocksND.Wavepacket" title="WaveBlocksND.Wavepacket"><tt class="xref py py-class docutils literal"><span class="pre">Wavepacket</span></tt></a> subclass instances.) &#8211; A list of new wavepackets <img class="math" src="../_images/math/ab7f7c655bbc8fec08f08c10d8cf1eeb56560103.png" alt="\Psi_j"/>.</td>
 </tr>
 </tbody>
 </table>
@@ -419,7 +421,7 @@ never contains any data.</p>
     </div>
     <div class="footer">
         &copy; Copyright 2015, R. Bourquin.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
     </div>
   </body>
 </html>

@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -60,13 +58,16 @@
 <span id="about-the-observables-class"></span><h2>About the <tt class="docutils literal"><span class="pre">Observables</span></tt> class<a class="headerlink" href="#module-WaveBlocksND" title="Permalink to this headline">¶</a></h2>
 <p>The WaveBlocks Project</p>
 <p>&#64;author: R. Bourquin
-&#64;copyright: Copyright (C) 2010, 2011, 2012, 2013, 2014 R. Bourquin
+&#64;copyright: Copyright (C) 2010, 2011, 2012, 2013, 2014, 2015 R. Bourquin
 &#64;license: Modified BSD License</p>
 </div>
 <div class="section" id="inheritance-diagram">
 <h2>Inheritance diagram<a class="headerlink" href="#inheritance-diagram" title="Permalink to this headline">¶</a></h2>
 <p class="graphviz">
-<img src="../_images/inheritance-bc286a1b980892952f35ec107a57de71946c4960.png" alt="Inheritance diagram of Observables" class="inheritance"/>
+<img src="../_images/inheritance-aa9b332b121eff3aaefd41d5fb1ffe3009aea904.png" alt="Inheritance diagram of Observables" usemap="#inheritancefeea46ba71" class="inheritance"/>
+<map id="inheritancefeea46ba71" name="inheritancefeea46ba71">
+<area shape="rect" id="node1" title="This class is the interface definition for general observable" alt="" coords="5,5,189,31"/>
+</map>
 </p>
 </div>
 <div class="section" id="class-documentation">
@@ -79,18 +80,18 @@ computation procedures.</p>
 <dl class="method">
 <dt id="WaveBlocksND.Observables.kinetic_energy">
 <tt class="descname">kinetic_energy</tt><big>(</big><em>ket</em>, <em>T</em><big>)</big><a class="headerlink" href="#WaveBlocksND.Observables.kinetic_energy" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute the kinetic energy <img class="math" src="../_images/math/a0b2412ee6dd191819974ea72917c6601f82aa0e.png" alt="E_{\text{kin}} := \langle\psi|T|\psi\rangle"/>.</p>
+<dd><p>Compute the kinetic energy <img class="math" src="../_images/math/4e3bd5411f16a933fe1c6e4f67e8b948a714e1cb.png" alt="E_{\text{kin}} := \langle\psi|T|\psi\rangle"/>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>ket</strong> &#8211; The object denoted by <img class="math" src="../_images/math/8ada738001410f131563551fb68731e4f302048d.png" alt="\psi"/>.</li>
-<li><strong>T</strong> &#8211; The kinetic energy operator <img class="math" src="../_images/math/2554b6496c3b678897e9b060ef00aa9f0a7d7ece.png" alt="T"/>.</li>
+<li><strong>ket</strong> &#8211; The object denoted by <img class="math" src="../_images/math/1a52481ac36eb889dcbbdcc0783ba2a755ba3547.png" alt="\psi"/>.</li>
+<li><strong>T</strong> &#8211; The kinetic energy operator <img class="math" src="../_images/math/6d42c88506b8da39a2a23653aecbfb7c29728063.png" alt="T"/>.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raise :</th><td class="field-body"><p class="first last"><tt class="xref py py-class docutils literal"><span class="pre">NotImplementedError</span></tt> Abstract interface.</p>
+<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><p class="first last"><tt class="xref py py-class docutils literal"><span class="pre">NotImplementedError</span></tt> Abstract interface.</p>
 </td>
 </tr>
 </tbody>
@@ -100,14 +101,14 @@ computation procedures.</p>
 <dl class="method">
 <dt id="WaveBlocksND.Observables.norm">
 <tt class="descname">norm</tt><big>(</big><em>ket</em><big>)</big><a class="headerlink" href="#WaveBlocksND.Observables.norm" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute the <img class="math" src="../_images/math/07c3de5211dc08b13546363f8b139700a16dd963.png" alt="L^2"/> norm <img class="math" src="../_images/math/97d1a2df148cef9a6899b29d97a362e700395667.png" alt="\sqrt{\langle\psi|\psi\rangle}"/>.</p>
+<dd><p>Compute the <img class="math" src="../_images/math/8e53b35e6dba31d49686a9f1ea7ef219da16e494.png" alt="L^2"/> norm <img class="math" src="../_images/math/517b8140be234657f9d53bde6ba21732e2592ea1.png" alt="\sqrt{\langle\psi|\psi\rangle}"/>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>ket</strong> &#8211; The object denoted by <img class="math" src="../_images/math/8ada738001410f131563551fb68731e4f302048d.png" alt="\psi"/>.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>ket</strong> &#8211; The object denoted by <img class="math" src="../_images/math/1a52481ac36eb889dcbbdcc0783ba2a755ba3547.png" alt="\psi"/>.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raise :</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">NotImplementedError</span></tt> Abstract interface.</td>
+<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">NotImplementedError</span></tt> Abstract interface.</td>
 </tr>
 </tbody>
 </table>
@@ -116,18 +117,18 @@ computation procedures.</p>
 <dl class="method">
 <dt id="WaveBlocksND.Observables.potential_energy">
 <tt class="descname">potential_energy</tt><big>(</big><em>ket</em>, <em>potential</em><big>)</big><a class="headerlink" href="#WaveBlocksND.Observables.potential_energy" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute the potential energy <img class="math" src="../_images/math/a0dda3a4978e70d4c049f0726e0a07044fe90665.png" alt="E_{\text{pot}} := \langle\psi|V|\psi\rangle"/>.</p>
+<dd><p>Compute the potential energy <img class="math" src="../_images/math/ba5bdacd6977f07d9f71d2b92ff8521545709e90.png" alt="E_{\text{pot}} := \langle\psi|V|\psi\rangle"/>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>ket</strong> &#8211; The object denoted by <img class="math" src="../_images/math/8ada738001410f131563551fb68731e4f302048d.png" alt="\psi"/>.</li>
-<li><strong>potential</strong> &#8211; The potential <img class="math" src="../_images/math/2e93af720b470a88780063377da0dd4f28e4a9f5.png" alt="V(x)"/>.</li>
+<li><strong>ket</strong> &#8211; The object denoted by <img class="math" src="../_images/math/1a52481ac36eb889dcbbdcc0783ba2a755ba3547.png" alt="\psi"/>.</li>
+<li><strong>potential</strong> &#8211; The potential <img class="math" src="../_images/math/e0ec0629769ae6a9454173e71aa1df11f9209631.png" alt="V(x)"/>.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raise :</th><td class="field-body"><p class="first last"><tt class="xref py py-class docutils literal"><span class="pre">NotImplementedError</span></tt> Abstract interface.</p>
+<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><p class="first last"><tt class="xref py py-class docutils literal"><span class="pre">NotImplementedError</span></tt> Abstract interface.</p>
 </td>
 </tr>
 </tbody>
@@ -203,7 +204,7 @@ computation procedures.</p>
     </div>
     <div class="footer">
         &copy; Copyright 2015, R. Bourquin.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
     </div>
   </body>
 </html>

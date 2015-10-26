@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -129,7 +127,8 @@ the file <tt class="docutils literal"><span class="pre">parameters_01.py</span><
 <p>For an overview of the available settings, see <em class="xref std std-ref">Required parameter sets</em>.</p>
 <p>Now we have to run the main simulation program. This is done by the following
 command:</p>
-<div class="highlight-python"><pre>python Main.py parameters_01.py</pre>
+<div class="highlight-python"><div class="highlight"><pre>python Main.py parameters_01.py
+</pre></div>
 </div>
 <p>where we have to provide the configuration file as the first command line option
 of the <tt class="docutils literal"><span class="pre">Main.py</span></tt> program. When the program terminates, it leaves a file called
@@ -183,19 +182,22 @@ another one which is used for global preambles. This variable has to be called
 <tt class="docutils literal"><span class="pre">PA</span></tt> and holds a (multi-line) python string of valid python code. These
 statements are written to the very top of every configuration file generated.</p>
 <p>We can run the configuration generator as:</p>
-<div class="highlight-python"><pre>python ConfigurationGenerator.py metaconfiguration_02.py</pre>
+<div class="highlight-python"><div class="highlight"><pre>python ConfigurationGenerator.py metaconfiguration_02.py
+</pre></div>
 </div>
 <p>and it will create the directory <tt class="docutils literal"><span class="pre">autogen_configurations</span></tt> where it puts
 all the configuration files. Let&#8217;s take a look into this directory:</p>
-<div class="highlight-python"><pre>ls -l autogen_configurations/</pre>
+<div class="highlight-python"><div class="highlight"><pre>ls -l autogen_configurations/
+</pre></div>
 </div>
 <p>prints:</p>
-<div class="highlight-python"><pre>Parameters[eps=0.1][delta=0.5eps].py
+<div class="highlight-python"><div class="highlight"><pre>Parameters[eps=0.1][delta=0.5eps].py
 Parameters[eps=0.1][delta=1.0eps].py
 Parameters[eps=0.1][delta=1.5eps].py
 Parameters[eps=0.5][delta=0.5eps].py
 Parameters[eps=0.5][delta=1.0eps].py
-Parameters[eps=0.5][delta=1.5eps].py</pre>
+Parameters[eps=0.5][delta=1.5eps].py
+</pre></div>
 </div>
 <p>and we find 6 configuration files. One file for each combination of a value for
 eps and one for delta. The filenames contain all local parameters as <tt class="docutils literal"><span class="pre">key=value</span></tt>
@@ -211,18 +213,21 @@ there is a better solution.</p>
 <p>There is a simple python script <tt class="docutils literal"><span class="pre">Batch.py</span></tt> which does nothing else than running
 simulations for a set of configurations. The usage is really simple. First create
 a subdirectory called configurations by:</p>
-<div class="highlight-python"><pre>mkdir configurations</pre>
+<div class="highlight-python"><div class="highlight"><pre>mkdir configurations
+</pre></div>
 </div>
 <p>Then we put all the configurations we want to run in the loop into this directory.
 For example if we created the configurations by the means described in the last
 section we just do:</p>
-<div class="highlight-python"><pre>mv autogen_configurations/* configurations/</pre>
+<div class="highlight-python"><div class="highlight"><pre>mv autogen_configurations/* configurations/
+</pre></div>
 </div>
 <p>We can put as many simulations as we like into this directory. Each simulation
 is run totally independently from all others. At the moment we do not run the
 simulations in parallel but it would be possible to do this.</p>
 <p>Now it is time to call the <tt class="docutils literal"><span class="pre">Batch.py</span></tt> script. The most simple call looks like:</p>
-<div class="highlight-python"><pre>python Batch.py</pre>
+<div class="highlight-python"><div class="highlight"><pre>python Batch.py
+</pre></div>
 </div>
 <p>The first thing is does is to create a new directory called <tt class="docutils literal"><span class="pre">results</span></tt>. This is
 the place where it will put all the simulation results. Then it will call the
@@ -230,28 +235,32 @@ the place where it will put all the simulation results. Then it will call the
 run a bunch of data computation and plotting scripts. Finally it puts all the
 simulation results in a subdirectory of results whose name corresponds to the
 configuration file used. If we now look into the results directory by:</p>
-<div class="highlight-python"><pre>ls results</pre>
+<div class="highlight-python"><div class="highlight"><pre>ls results
+</pre></div>
 </div>
 <p>we see the listing:</p>
-<div class="highlight-python"><pre>Parameters[eps=0.1][delta=0.5eps]
+<div class="highlight-python"><div class="highlight"><pre>Parameters[eps=0.1][delta=0.5eps]
 Parameters[eps=0.1][delta=1.0eps]
 Parameters[eps=0.1][delta=1.5eps]
 Parameters[eps=0.5][delta=0.5eps]
 Parameters[eps=0.5][delta=1.0eps]
-Parameters[eps=0.5][delta=1.5eps]</pre>
+Parameters[eps=0.5][delta=1.5eps]
+</pre></div>
 </div>
 <p>and for the results of a single simulation (notice the necessary shell character
 escapes, you can also write the name without escapes in a pair of &#8221;.)</p>
-<div class="highlight-python"><pre>ls results/Parameters\[eps\=0.1\]\[delta\=0.5eps\]</pre>
+<div class="highlight-python"><div class="highlight"><pre>ls results/Parameters\[eps\=0.1\]\[delta\=0.5eps\]
+</pre></div>
 </div>
 <p>we have the following bunch of files:</p>
-<div class="highlight-python"><pre>energies_block0.png
+<div class="highlight-python"><div class="highlight"><pre>energies_block0.png
 energy_drift_block0.png
 norms_block0.png
 norms_drift_block0.png
 norms_sqr_block0.png
 Parameters[eps=0.1][delta=0.5eps].py
-simulation_results.hdf5</pre>
+simulation_results.hdf5
+</pre></div>
 </div>
 <p>Each directory within results contains at least the simulation parameters
 file (<tt class="docutils literal"><span class="pre">Parameters[eps=0.1][delta=0.5eps].py</span></tt>) and the simulation results
@@ -311,12 +320,14 @@ whatever. It would be tedious to call the script with each <tt class="docutils l
 and its correct file path manually. Exactly for this reason there is a script named
 <tt class="docutils literal"><span class="pre">ForAll.py</span></tt>. For example assume we want to plot the potential used in each simulation
 (which is identical in our example but never mind). Then we call:</p>
-<div class="highlight-python"><pre>python ForAll.py PlotPotential.py</pre>
+<div class="highlight-python"><div class="highlight"><pre>python ForAll.py PlotPotential.py
+</pre></div>
 </div>
 <p>which starts by printing:</p>
-<div class="highlight-python"><pre>Will execute the code in 'PlotPotential.py' for all files in 'results'
+<div class="highlight-python"><div class="highlight"><pre>Will execute the code in &#39;PlotPotential.py&#39; for all files in &#39;results&#39;
  Executing code for datafile in results/Parameters[eps=0.5][delta=1.0eps]
- ...</pre>
+ ...
+</pre></div>
 </div>
 <p>and after a while quits with the text <tt class="docutils literal"><span class="pre">Done</span></tt> on the last output line. The script
 can take the path of the directory where the results lie (in the example above
@@ -338,10 +349,11 @@ will show how to compute these data and store them in the output file
 <tt class="docutils literal"><span class="pre">simulation_results.hdf5</span></tt> too.</p>
 <p>All post-processing and plotting scripts can be called with an argument <tt class="docutils literal"><span class="pre">--help</span></tt>
 and provide modern command line switch handling.</p>
-<div class="highlight-python"><pre>python ComputeNorms.py --help</pre>
+<div class="highlight-python"><div class="highlight"><pre>python ComputeNorms.py --help
+</pre></div>
 </div>
 <p>and will print a help message:</p>
-<div class="highlight-python"><pre>usage: ComputeNorms.py [-h] [-d [DATAFILE]] [-b [BLOCKID [BLOCKID ...]]] [-et]
+<div class="highlight-python"><div class="highlight"><pre>usage: ComputeNorms.py [-h] [-d [DATAFILE]] [-b [BLOCKID [BLOCKID ...]]] [-et]
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -351,12 +363,14 @@ optional arguments:
                         The data block to handle
   -et, --eigentransform
                         Transform the data into the eigenbasis before
-                        computing norms</pre>
+                        computing norms
+</pre></div>
 </div>
 <div class="section" id="norms">
 <h3>Norms<a class="headerlink" href="#norms" title="Permalink to this headline">¶</a></h3>
 <p>Computing norms is trivial and fast. Just run the script:</p>
-<div class="highlight-python"><pre>python ComputeNorms.py</pre>
+<div class="highlight-python"><div class="highlight"><pre>python ComputeNorms.py
+</pre></div>
 </div>
 <p>This will compute the norms of all wavepackets or wave functions
 depending on what the simulation setup was and what is already stored
@@ -366,7 +380,8 @@ in <tt class="docutils literal"><span class="pre">simulation_results.hdf5</span>
 <h3>Energies<a class="headerlink" href="#energies" title="Permalink to this headline">¶</a></h3>
 <p>Asking for the energies is almost equally trivial as computing norms.
 All we need is to run:</p>
-<div class="highlight-python"><pre>python ComputeEnergies.py</pre>
+<div class="highlight-python"><div class="highlight"><pre>python ComputeEnergies.py
+</pre></div>
 </div>
 <p>which will compute kinetic and potential energies.</p>
 </div>
@@ -376,9 +391,9 @@ All we need is to run:</p>
 we want to compute is the following overlap integral (here discussed
 in case of wavepackets):</p>
 <div class="math">
-<p><img src="../_images/math/e54600e5345c887dc4b9d44a4c348794a68174c3.png" alt="\langle \Psi(0) | \Psi(t) \rangle"/></p>
-</div><p>which compares the wavepacket at time <img class="math" src="../_images/math/e0d2bf360290fd61d1c1557e763f2622363b3d35.png" alt="t"/> with the initial value
-<img class="math" src="../_images/math/d702341811cdee343806219078adb0c19e5df19a.png" alt="\Psi(0)"/> at time 0. Because this involves wavepackets at two different
+<p><img src="../_images/math/49be9b68526c612afc28c602ca69cc985638a63b.png" alt="\langle \Psi(0) | \Psi(t) \rangle"/></p>
+</div><p>which compares the wavepacket at time <img class="math" src="../_images/math/ef9270877405055756d345facd044e4ab297f858.png" alt="t"/> with the initial value
+<img class="math" src="../_images/math/5e631906dfd06ee73cfb37637f44553e08d9f6d2.png" alt="\Psi(0)"/> at time 0. Because this involves wavepackets at two different
 times we need a specialised quadrature to get accurate results.  We have to tell
 the script which quadrature we would like to use. This is done best by adding a
 top-level snippet like the following to the original simulation setup
@@ -429,18 +444,21 @@ dimensional simlation setup:</p>
 </pre></div>
 </div>
 <p>The only thing we have to do then is to call the corresponding post-processor script:</p>
-<div class="highlight-python"><pre>python ComputeAutocorrelation.py</pre>
+<div class="highlight-python"><div class="highlight"><pre>python ComputeAutocorrelation.py
+</pre></div>
 </div>
 </div>
 <div class="section" id="wavepacket-sampling">
 <h3>Wavepacket sampling<a class="headerlink" href="#wavepacket-sampling" title="Permalink to this headline">¶</a></h3>
 <p>If we made a simulation with wavepackets only and want to sample them
 on a regular grid for example for plotting then there is a script for this purpose:</p>
-<div class="highlight-python"><pre>python EvaluateWavepackets.py</pre>
+<div class="highlight-python"><div class="highlight"><pre>python EvaluateWavepackets.py
+</pre></div>
 </div>
 <p>This script is for homogeneous Hagedorn wavepackets only. For the
 inhomogeneous variant there is another script:</p>
-<div class="highlight-python"><pre>python EvaluateWavepacketsInhomog.py</pre>
+<div class="highlight-python"><div class="highlight"><pre>python EvaluateWavepacketsInhomog.py
+</pre></div>
 </div>
 </div>
 <div class="section" id="eigentransformations">
@@ -466,26 +484,29 @@ canonical basis:</p>
 </pre></div>
 </div>
 <p>The reason why this script exists is that it makes a difference whether
-we use <img class="math" src="../_images/math/2e93af720b470a88780063377da0dd4f28e4a9f5.png" alt="V(x)"/> or <img class="math" src="../_images/math/3222e2e8733d4e10d63bf38486a6cd0ca73821c0.png" alt="\Lambda(x)"/> in the code.</p>
+we use <img class="math" src="../_images/math/e0ec0629769ae6a9454173e71aa1df11f9209631.png" alt="V(x)"/> or <img class="math" src="../_images/math/7b6b6c4275f6e0b44e048947e78a385d0bdf3294.png" alt="\Lambda(x)"/> in the code.</p>
 <div class="section" id="explicit-eigentransformation">
 <h4>Explicit Eigentransformation<a class="headerlink" href="#explicit-eigentransformation" title="Permalink to this headline">¶</a></h4>
 <p>In case we want to convert all the simulation data (think: wavefunction values
 or wavepacket data) once to the eigenbasis there is this script:</p>
-<div class="highlight-python"><pre>python ComputeTransformToEigen.py --help</pre>
+<div class="highlight-python"><div class="highlight"><pre>python ComputeTransformToEigen.py --help
+</pre></div>
 </div>
 <p>According to its help text:</p>
-<div class="highlight-python"><pre>usage: ComputeTransformToEigen.py [-h] [-i INPUTFILE] [-o OUTPUTFILE]
+<div class="highlight-python"><div class="highlight"><pre>usage: ComputeTransformToEigen.py [-h] [-i INPUTFILE] [-o OUTPUTFILE]
 
 optional arguments:
   -h, --help            show this help message and exit
   -i INPUTFILE, --inputfile INPUTFILE
                         The data file to read the data from.
   -o OUTPUTFILE, --outputfile OUTPUTFILE
-                        The data file to write the transformed data.</pre>
+                        The data file to write the transformed data.
+</pre></div>
 </div>
 <p>it will read the input file <tt class="docutils literal"><span class="pre">simulation_results.hdf5</span></tt> and write output into a
 new data file. A typical invoke could look like:</p>
-<div class="highlight-python"><pre>python ComputeTransformToEigen.py -i simulation_results.hdf5 -o simulation_results_eigen.hdf5</pre>
+<div class="highlight-python"><div class="highlight"><pre>python ComputeTransformToEigen.py -i simulation_results.hdf5 -o simulation_results_eigen.hdf5
+</pre></div>
 </div>
 </div>
 </div>
@@ -510,24 +531,24 @@ following scripts can be used:</p>
 </div>
 <div class="section" id="plotting-wavepackets">
 <h3>Plotting Wavepackets<a class="headerlink" href="#plotting-wavepackets" title="Permalink to this headline">¶</a></h3>
-<p>Given a Hagedorn wavepacket <img class="math" src="../_images/math/866f0204648be9ca6b10e14dd72295295dd53a79.png" alt="\Psi"/> we can plot various quantities like the
-time evolution of the parameter set <img class="math" src="../_images/math/0885abbb221e809d50bec7acb7cbedb8b0ade464.png" alt="\Pi(t)"/>. In one and <img class="math" src="../_images/math/9ffb448918db29f2a72f8f87f421b3b3cad18f95.png" alt="D"/>
+<p>Given a Hagedorn wavepacket <img class="math" src="../_images/math/de6f6ec55da5bff04bdf591d5bb35136eb51b579.png" alt="\Psi"/> we can plot various quantities like the
+time evolution of the parameter set <img class="math" src="../_images/math/954d4334741b0d5eb565f847bb4b58493f74e591.png" alt="\Pi(t)"/>. In one and <img class="math" src="../_images/math/9dfa31437b58c0473299320aa638151cd88cf61b.png" alt="D"/>
 dimensions this is done with:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">PlotWavepacketParameters1D</span><span class="o">.</span><span class="n">py</span>
 <span class="n">PlotWavepacketParametersDD</span><span class="o">.</span><span class="n">py</span>
 </pre></div>
 </div>
 <p>Further in case of a two dimensional simulation we can plot the trajectories
-of <img class="math" src="../_images/math/a8d7557f9764a7f29250233cefe8c860b49f472a.png" alt="q(t)"/> and <img class="math" src="../_images/math/e2a662e2209e4d2ee234a3ae367d5337a31409e0.png" alt="p(t)"/> in the <img class="math" src="../_images/math/643e1765342cf3807fd7d130ee679b71ecd4789b.png" alt="x-y"/> plane by:</p>
+of <img class="math" src="../_images/math/b73191f0a80b96b5e944911e77fa2b61c11bc85e.png" alt="q(t)"/> and <img class="math" src="../_images/math/1e9194773ee92c201d9ca785b348761aeae8001a.png" alt="p(t)"/> in the <img class="math" src="../_images/math/2beae53edd0fd852a630f9d58e89f54ecf2405aa.png" alt="x-y"/> plane by:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">PlotWavepacketParametersTrajectory2D</span><span class="o">.</span><span class="n">py</span>
 </pre></div>
 </div>
-<p>For a schematic propagation plot including also the spreads <img class="math" src="../_images/math/4cd3bd684973a2f27540634a1dfa19310c182d40.png" alt="Q(t)"/> and
-<img class="math" src="../_images/math/db78b95eb8ad3b90e7a653cd85be93e20ec984d9.png" alt="P(t)"/> of the packets we can use:</p>
+<p>For a schematic propagation plot including also the spreads <img class="math" src="../_images/math/28671f777356b768e2872f1c1b0357e17ed515c1.png" alt="Q(t)"/> and
+<img class="math" src="../_images/math/c56e0a7e40558869b6d6b558a57458e5b3091a67.png" alt="P(t)"/> of the packets we can use:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">PlotWavepacketParametersSchema2D</span><span class="o">.</span><span class="n">py</span>
 </pre></div>
 </div>
-<p>Plotting the wavepacket coefficients <img class="math" src="../_images/math/5697d0050641c0c8ec7565c04878edbdf56e673b.png" alt="c(t)"/> can be done by several scripts
+<p>Plotting the wavepacket coefficients <img class="math" src="../_images/math/83208c30e4108d67519822499963411aa1eb3ecf.png" alt="c(t)"/> can be done by several scripts
 available which emphasize different aspects. Usually one wants to use one of:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">PlotWavepacketCoefficients</span><span class="o">.</span><span class="n">py</span>
 <span class="n">PlotWavepacketCoefficientsStem</span><span class="o">.</span><span class="n">py</span>
@@ -570,9 +591,10 @@ three dimensional surface plots by calling either of:</p>
 <p>Three and higher dimensional wavefunctions can not be plotted but
 the need to do so occurs rarely anyway due to the vast amount of data involved.
 All plot scripts can set the viewport by command line arguments, for example:</p>
-<div class="highlight-python"><pre>python ../plotters/PlotWavefunction1D.py --help</pre>
+<div class="highlight-python"><div class="highlight"><pre>python ../plotters/PlotWavefunction1D.py --help
+</pre></div>
 </div>
-<div class="highlight-python"><pre>usage: PlotWavefunction1D.py [-h] [-d [DATAFILE]] [-p [PARAMFILE]]
+<div class="highlight-python"><div class="highlight"><pre>usage: PlotWavefunction1D.py [-h] [-d [DATAFILE]] [-p [PARAMFILE]]
                              [-b [BLOCKID [BLOCKID ...]]] [-x XRANGE XRANGE]
                              [-y YRANGE YRANGE] [--plotphase]
                              [--plotcomponents] [--plotabssqr]
@@ -591,7 +613,8 @@ optional arguments:
                         The plot range on the y-axis
   --plotphase           Plot the complex phase (slow)
   --plotcomponents      Plot the real/imaginary parts
-  --plotabssqr          Plot the absolute value squared</pre>
+  --plotabssqr          Plot the absolute value squared
+</pre></div>
 </div>
 </div>
 <div class="section" id="plotting-the-potentials">
@@ -706,7 +729,7 @@ files. For this purpose there is a submodule called
     </div>
     <div class="footer">
         &copy; Copyright 2015, R. Bourquin.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
     </div>
   </body>
 </html>

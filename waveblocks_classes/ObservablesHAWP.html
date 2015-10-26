@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -60,13 +58,17 @@
 <span id="about-the-observableshawp-class"></span><h2>About the <tt class="docutils literal"><span class="pre">ObservablesHAWP</span></tt> class<a class="headerlink" href="#module-WaveBlocksND" title="Permalink to this headline">¶</a></h2>
 <p>The WaveBlocks Project</p>
 <p>&#64;author: R. Bourquin
-&#64;copyright: Copyright (C) 2010, 2011, 2012, 2013, 2014 R. Bourquin
+&#64;copyright: Copyright (C) 2010, 2011, 2012, 2013, 2014, 2015 R. Bourquin
 &#64;license: Modified BSD License</p>
 </div>
 <div class="section" id="inheritance-diagram">
 <h2>Inheritance diagram<a class="headerlink" href="#inheritance-diagram" title="Permalink to this headline">¶</a></h2>
 <p class="graphviz">
-<img src="../_images/inheritance-a3d545495efcdb7c9324ac455de253f35dcce416.png" alt="Inheritance diagram of ObservablesHAWP" class="inheritance"/>
+<img src="../_images/inheritance-cbe58ec40438611e27202a4400f30333c072ae95.png" alt="Inheritance diagram of ObservablesHAWP" usemap="#inheritancef3d6cb9437" class="inheritance"/>
+<map id="inheritancef3d6cb9437" name="inheritancef3d6cb9437">
+<area shape="rect" id="node1" title="This class is the interface definition for general observable" alt="" coords="5,5,189,31"/>
+<area shape="rect" id="node2" title="This class implements observable computation for Hagedorn wavepackets :math:`\Psi`." alt="" coords="237,5,493,31"/>
+</map>
 </p>
 </div>
 <div class="section" id="class-documentation">
@@ -74,23 +76,23 @@
 <dl class="class">
 <dt id="WaveBlocksND.ObservablesHAWP">
 <em class="property">class </em><tt class="descclassname">WaveBlocksND.</tt><tt class="descname">ObservablesHAWP</tt><big>(</big><em>innerproduct=None</em><big>)</big><a class="headerlink" href="#WaveBlocksND.ObservablesHAWP" title="Permalink to this definition">¶</a></dt>
-<dd><p>This class implements observable computation for Hagedorn wavepackets <img class="math" src="../_images/math/866f0204648be9ca6b10e14dd72295295dd53a79.png" alt="\Psi"/>.</p>
+<dd><p>This class implements observable computation for Hagedorn wavepackets <img class="math" src="../_images/math/de6f6ec55da5bff04bdf591d5bb35136eb51b579.png" alt="\Psi"/>.</p>
 <dl class="method">
 <dt id="WaveBlocksND.ObservablesHAWP.kinetic_energy">
 <tt class="descname">kinetic_energy</tt><big>(</big><em>wavepacket</em>, <em>component=None</em>, <em>summed=False</em><big>)</big><a class="headerlink" href="#WaveBlocksND.ObservablesHAWP.kinetic_energy" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute the kinetic energy <img class="math" src="../_images/math/1740d2cc5f0d8d0e722f880c565cc29f9f108206.png" alt="E_{\text{kin}} := \langle \Psi | T | \Psi \rangle"/>
-of the different components <img class="math" src="../_images/math/1a1372729059cb0703afe57f9402c351b5bf0e2d.png" alt="\Phi_i"/> of the wavepacket <img class="math" src="../_images/math/866f0204648be9ca6b10e14dd72295295dd53a79.png" alt="\Psi"/>.</p>
+<dd><p>Compute the kinetic energy <img class="math" src="../_images/math/c6cf6c1d3b5b884b27052518463c9ba685c1f479.png" alt="E_{\text{kin}} := \langle \Psi | T | \Psi \rangle"/>
+of the different components <img class="math" src="../_images/math/7e85868a38cec20390ec1816976ad68089bb2a48.png" alt="\Phi_i"/> of the wavepacket <img class="math" src="../_images/math/de6f6ec55da5bff04bdf591d5bb35136eb51b579.png" alt="\Psi"/>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>wavepacket</strong> (A <a class="reference internal" href="HagedornWavepacketBase.html#WaveBlocksND.HagedornWavepacketBase" title="WaveBlocksND.HagedornWavepacketBase"><tt class="xref py py-class docutils literal"><span class="pre">HagedornWavepacketBase</span></tt></a> subclass instance.) &#8211; The wavepacket <img class="math" src="../_images/math/866f0204648be9ca6b10e14dd72295295dd53a79.png" alt="\Psi"/> of which we compute the kinetic energy.</li>
-<li><strong>component</strong> (Integer or <tt class="docutils literal"><span class="pre">None</span></tt>.) &#8211; The index <img class="math" src="../_images/math/34857b3ba74ce5cd8607f3ebd23e9015908ada71.png" alt="i"/> of the component <img class="math" src="../_images/math/1a1372729059cb0703afe57f9402c351b5bf0e2d.png" alt="\Phi_i"/> whose
+<li><strong>wavepacket</strong> (A <a class="reference internal" href="HagedornWavepacketBase.html#WaveBlocksND.HagedornWavepacketBase" title="WaveBlocksND.HagedornWavepacketBase"><tt class="xref py py-class docutils literal"><span class="pre">HagedornWavepacketBase</span></tt></a> subclass instance.) &#8211; The wavepacket <img class="math" src="../_images/math/de6f6ec55da5bff04bdf591d5bb35136eb51b579.png" alt="\Psi"/> of which we compute the kinetic energy.</li>
+<li><strong>component</strong> (Integer or <tt class="docutils literal"><span class="pre">None</span></tt>.) &#8211; The index <img class="math" src="../_images/math/a581f053bbfa5115f42c13094857cdd12a37ec49.png" alt="i"/> of the component <img class="math" src="../_images/math/7e85868a38cec20390ec1816976ad68089bb2a48.png" alt="\Phi_i"/> whose
 kinetic energy we want to compute. If set to <tt class="docutils literal"><span class="pre">None</span></tt> the
-computation is performed for all <img class="math" src="../_images/math/fc97ef67268cd4e91bacdf12b8901d7036c9a056.png" alt="N"/> components.</li>
-<li><strong>summed</strong> (Boolean, default is <tt class="docutils literal"><span class="pre">False</span></tt>.) &#8211; Whether to sum up the kinetic energies <img class="math" src="../_images/math/f8f358aa01478e43f1a663db574b83f88d7be478.png" alt="E_i"/> of the individual
-components <img class="math" src="../_images/math/1a1372729059cb0703afe57f9402c351b5bf0e2d.png" alt="\Phi_i"/>.</li>
+computation is performed for all <img class="math" src="../_images/math/75e27f04188974063be3230dca208cd495b77ce1.png" alt="N"/> components.</li>
+<li><strong>summed</strong> (Boolean, default is <tt class="docutils literal"><span class="pre">False</span></tt>.) &#8211; Whether to sum up the kinetic energies <img class="math" src="../_images/math/b027139ad09fca3ca4adfe7d1149b9b2a69dbe3a.png" alt="E_i"/> of the individual
+components <img class="math" src="../_images/math/7e85868a38cec20390ec1816976ad68089bb2a48.png" alt="\Phi_i"/>.</li>
 </ul>
 </td>
 </tr>
@@ -105,7 +107,7 @@ overall kinetic energy of the wavepacket. (Depending on the optional arguments.)
 <dl class="method">
 <dt id="WaveBlocksND.ObservablesHAWP.norm">
 <tt class="descname">norm</tt><big>(</big><em>wavepacket</em>, <em>component=None</em>, <em>summed=False</em><big>)</big><a class="headerlink" href="#WaveBlocksND.ObservablesHAWP.norm" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculate the <img class="math" src="../_images/math/07c3de5211dc08b13546363f8b139700a16dd963.png" alt="L^2"/> norm <img class="math" src="../_images/math/389be6920931f4ba4b32d6e93f4e25b875c763fc.png" alt="\langle \Psi | \Psi \rangle"/> of the wavepacket <img class="math" src="../_images/math/866f0204648be9ca6b10e14dd72295295dd53a79.png" alt="\Psi"/>.</p>
+<dd><p>Calculate the <img class="math" src="../_images/math/8e53b35e6dba31d49686a9f1ea7ef219da16e494.png" alt="L^2"/> norm <img class="math" src="../_images/math/2690bb868a5c00bd4492d84d4b957d8b92d42bae.png" alt="\langle \Psi | \Psi \rangle"/> of the wavepacket <img class="math" src="../_images/math/de6f6ec55da5bff04bdf591d5bb35136eb51b579.png" alt="\Psi"/>.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">This method is just a shortcut and calls the <a class="reference internal" href="HagedornWavepacketBase.html#WaveBlocksND.HagedornWavepacketBase.norm" title="WaveBlocksND.HagedornWavepacketBase.norm"><tt class="xref py py-meth docutils literal"><span class="pre">HagedornWavepacketBase.norm()</span></tt></a>
@@ -116,15 +118,15 @@ method of the given wavepacket.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>wavepacket</strong> (A <a class="reference internal" href="HagedornWavepacketBase.html#WaveBlocksND.HagedornWavepacketBase" title="WaveBlocksND.HagedornWavepacketBase"><tt class="xref py py-class docutils literal"><span class="pre">HagedornWavepacketBase</span></tt></a> subclass instance.) &#8211; The wavepacket <img class="math" src="../_images/math/866f0204648be9ca6b10e14dd72295295dd53a79.png" alt="\Psi"/> of which we compute the norm.</li>
-<li><strong>component</strong> (int or <tt class="docutils literal"><span class="pre">None</span></tt>.) &#8211; The index <img class="math" src="../_images/math/34857b3ba74ce5cd8607f3ebd23e9015908ada71.png" alt="i"/> of the component <img class="math" src="../_images/math/1a1372729059cb0703afe57f9402c351b5bf0e2d.png" alt="\Phi_i"/> whose norm is calculated.
-The default value is <tt class="docutils literal"><span class="pre">None</span></tt> which means to compute the norms of all <img class="math" src="../_images/math/fc97ef67268cd4e91bacdf12b8901d7036c9a056.png" alt="N"/> components.</li>
-<li><strong>summed</strong> (Boolean, default is <tt class="docutils literal"><span class="pre">False</span></tt>.) &#8211; Whether to sum up the norms <img class="math" src="../_images/math/97d6594eaa6f0fdb95b71fa10888e2bce3b2c927.png" alt="\langle \Phi_i | \Phi_i \rangle"/> of the
-individual components <img class="math" src="../_images/math/1a1372729059cb0703afe57f9402c351b5bf0e2d.png" alt="\Phi_i"/>.</li>
+<li><strong>wavepacket</strong> (A <a class="reference internal" href="HagedornWavepacketBase.html#WaveBlocksND.HagedornWavepacketBase" title="WaveBlocksND.HagedornWavepacketBase"><tt class="xref py py-class docutils literal"><span class="pre">HagedornWavepacketBase</span></tt></a> subclass instance.) &#8211; The wavepacket <img class="math" src="../_images/math/de6f6ec55da5bff04bdf591d5bb35136eb51b579.png" alt="\Psi"/> of which we compute the norm.</li>
+<li><strong>component</strong> (int or <tt class="docutils literal"><span class="pre">None</span></tt>.) &#8211; The index <img class="math" src="../_images/math/a581f053bbfa5115f42c13094857cdd12a37ec49.png" alt="i"/> of the component <img class="math" src="../_images/math/7e85868a38cec20390ec1816976ad68089bb2a48.png" alt="\Phi_i"/> whose norm is calculated.
+The default value is <tt class="docutils literal"><span class="pre">None</span></tt> which means to compute the norms of all <img class="math" src="../_images/math/75e27f04188974063be3230dca208cd495b77ce1.png" alt="N"/> components.</li>
+<li><strong>summed</strong> (Boolean, default is <tt class="docutils literal"><span class="pre">False</span></tt>.) &#8211; Whether to sum up the norms <img class="math" src="../_images/math/c04f12a4518bccf7aacc1b2a6f734770c54fe6fa.png" alt="\langle \Phi_i | \Phi_i \rangle"/> of the
+individual components <img class="math" src="../_images/math/7e85868a38cec20390ec1816976ad68089bb2a48.png" alt="\Phi_i"/>.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The norm of <img class="math" src="../_images/math/866f0204648be9ca6b10e14dd72295295dd53a79.png" alt="\Psi"/> or the norm of <img class="math" src="../_images/math/1a1372729059cb0703afe57f9402c351b5bf0e2d.png" alt="\Phi_i"/> or a list with the <img class="math" src="../_images/math/fc97ef67268cd4e91bacdf12b8901d7036c9a056.png" alt="N"/>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The norm of <img class="math" src="../_images/math/de6f6ec55da5bff04bdf591d5bb35136eb51b579.png" alt="\Psi"/> or the norm of <img class="math" src="../_images/math/7e85868a38cec20390ec1816976ad68089bb2a48.png" alt="\Phi_i"/> or a list with the <img class="math" src="../_images/math/75e27f04188974063be3230dca208cd495b77ce1.png" alt="N"/>
 norms of all components. Depending on the values of <tt class="docutils literal"><span class="pre">component</span></tt> and <tt class="docutils literal"><span class="pre">summed</span></tt>.</p>
 </td>
 </tr>
@@ -135,21 +137,21 @@ norms of all components. Depending on the values of <tt class="docutils literal"
 <dl class="method">
 <dt id="WaveBlocksND.ObservablesHAWP.potential_energy">
 <tt class="descname">potential_energy</tt><big>(</big><em>wavepacket</em>, <em>potential</em>, <em>component=None</em>, <em>summed=False</em><big>)</big><a class="headerlink" href="#WaveBlocksND.ObservablesHAWP.potential_energy" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute the potential energy <img class="math" src="../_images/math/b137952a130782bba6401b891e59367b0fd0af22.png" alt="E_{\text{pot}} := \langle \Psi | V(x) | \Psi \rangle"/>
-of the different components <img class="math" src="../_images/math/1a1372729059cb0703afe57f9402c351b5bf0e2d.png" alt="\Phi_i"/> of the wavepacket <img class="math" src="../_images/math/866f0204648be9ca6b10e14dd72295295dd53a79.png" alt="\Psi"/>.</p>
+<dd><p>Compute the potential energy <img class="math" src="../_images/math/66efd1abb2fb7ef202e939ef2d7c5ea5026a9517.png" alt="E_{\text{pot}} := \langle \Psi | V(x) | \Psi \rangle"/>
+of the different components <img class="math" src="../_images/math/7e85868a38cec20390ec1816976ad68089bb2a48.png" alt="\Phi_i"/> of the wavepacket <img class="math" src="../_images/math/de6f6ec55da5bff04bdf591d5bb35136eb51b579.png" alt="\Psi"/>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>wavepacket</strong> (A <a class="reference internal" href="HagedornWavepacketBase.html#WaveBlocksND.HagedornWavepacketBase" title="WaveBlocksND.HagedornWavepacketBase"><tt class="xref py py-class docutils literal"><span class="pre">HagedornWavepacketBase</span></tt></a> subclass instance.) &#8211; The wavepacket <img class="math" src="../_images/math/866f0204648be9ca6b10e14dd72295295dd53a79.png" alt="\Psi"/> of which we compute the potential energy.</li>
-<li><strong>potential</strong> &#8211; The potential <img class="math" src="../_images/math/2e93af720b470a88780063377da0dd4f28e4a9f5.png" alt="V(x)"/>. (Actually, not the potential object itself
+<li><strong>wavepacket</strong> (A <a class="reference internal" href="HagedornWavepacketBase.html#WaveBlocksND.HagedornWavepacketBase" title="WaveBlocksND.HagedornWavepacketBase"><tt class="xref py py-class docutils literal"><span class="pre">HagedornWavepacketBase</span></tt></a> subclass instance.) &#8211; The wavepacket <img class="math" src="../_images/math/de6f6ec55da5bff04bdf591d5bb35136eb51b579.png" alt="\Psi"/> of which we compute the potential energy.</li>
+<li><strong>potential</strong> &#8211; The potential <img class="math" src="../_images/math/e0ec0629769ae6a9454173e71aa1df11f9209631.png" alt="V(x)"/>. (Actually, not the potential object itself
 but one of its <tt class="docutils literal"><span class="pre">V.evaluate_*</span></tt> methods.)</li>
-<li><strong>component</strong> (Integer or <tt class="docutils literal"><span class="pre">None</span></tt>.) &#8211; The index <img class="math" src="../_images/math/34857b3ba74ce5cd8607f3ebd23e9015908ada71.png" alt="i"/> of the component <img class="math" src="../_images/math/1a1372729059cb0703afe57f9402c351b5bf0e2d.png" alt="\Phi_i"/> whose
+<li><strong>component</strong> (Integer or <tt class="docutils literal"><span class="pre">None</span></tt>.) &#8211; The index <img class="math" src="../_images/math/a581f053bbfa5115f42c13094857cdd12a37ec49.png" alt="i"/> of the component <img class="math" src="../_images/math/7e85868a38cec20390ec1816976ad68089bb2a48.png" alt="\Phi_i"/> whose
 potential energy we want to compute. If set to <tt class="docutils literal"><span class="pre">None</span></tt> the
-computation is performed for all <img class="math" src="../_images/math/fc97ef67268cd4e91bacdf12b8901d7036c9a056.png" alt="N"/> components.</li>
-<li><strong>summed</strong> (Boolean, default is <tt class="docutils literal"><span class="pre">False</span></tt>.) &#8211; Whether to sum up the potential energies <img class="math" src="../_images/math/f8f358aa01478e43f1a663db574b83f88d7be478.png" alt="E_i"/> of the individual
-components <img class="math" src="../_images/math/1a1372729059cb0703afe57f9402c351b5bf0e2d.png" alt="\Phi_i"/>.</li>
+computation is performed for all <img class="math" src="../_images/math/75e27f04188974063be3230dca208cd495b77ce1.png" alt="N"/> components.</li>
+<li><strong>summed</strong> (Boolean, default is <tt class="docutils literal"><span class="pre">False</span></tt>.) &#8211; Whether to sum up the potential energies <img class="math" src="../_images/math/b027139ad09fca3ca4adfe7d1149b9b2a69dbe3a.png" alt="E_i"/> of the individual
+components <img class="math" src="../_images/math/7e85868a38cec20390ec1816976ad68089bb2a48.png" alt="\Phi_i"/>.</li>
 </ul>
 </td>
 </tr>
@@ -170,7 +172,7 @@ overall potential energy of the wavepacket. (Depending on the optional arguments
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>innerproduct</strong> (A <a class="reference internal" href="InnerProduct.html#WaveBlocksND.InnerProduct" title="WaveBlocksND.InnerProduct"><tt class="xref py py-class docutils literal"><span class="pre">InnerProduct</span></tt></a> subclass instance.) &#8211; An innerproduct for computing the integrals. The inner product is only used for
-the computation of the potential energy <img class="math" src="../_images/math/3db783fd872352231abbbc0c8a26ab75434495bc.png" alt="\langle \Psi | V(x) | \Psi \rangle"/>
+the computation of the potential energy <img class="math" src="../_images/math/73fa49230d8dcef9d7941b5e18a2e9cce23757a2.png" alt="\langle \Psi | V(x) | \Psi \rangle"/>
 but not for the kinetic energy.</td>
 </tr>
 </tbody>
@@ -246,7 +248,7 @@ but not for the kinetic energy.</td>
     </div>
     <div class="footer">
         &copy; Copyright 2015, R. Bourquin.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
     </div>
   </body>
 </html>

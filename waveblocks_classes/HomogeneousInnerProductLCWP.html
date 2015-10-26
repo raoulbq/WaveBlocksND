@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -60,13 +58,16 @@
 <span id="about-the-homogeneousinnerproductlcwp-class"></span><h2>About the <tt class="docutils literal"><span class="pre">HomogeneousInnerProductLCWP</span></tt> class<a class="headerlink" href="#module-WaveBlocksND" title="Permalink to this headline">¶</a></h2>
 <p>The WaveBlocks Project</p>
 <p>&#64;author: R. Bourquin
-&#64;copyright: Copyright (C) 2010, 2011, 2012, 2013, 2014 R. Bourquin
+&#64;copyright: Copyright (C) 2010, 2011, 2012, 2013, 2014, 2015 R. Bourquin
 &#64;license: Modified BSD License</p>
 </div>
 <div class="section" id="inheritance-diagram">
 <h2>Inheritance diagram<a class="headerlink" href="#inheritance-diagram" title="Permalink to this headline">¶</a></h2>
 <p class="graphviz">
-<img src="../_images/inheritance-d2df27082175e32c70912163193317a2216fe7f7.png" alt="Inheritance diagram of HomogeneousInnerProductLCWP" class="inheritance"/>
+<img src="../_images/inheritance-9d5bb145584f55a76c1c3555cbbd015951ad1653.png" alt="Inheritance diagram of HomogeneousInnerProductLCWP" usemap="#inheritancebac9a02624" class="inheritance"/>
+<map id="inheritancebac9a02624" name="inheritancebac9a02624">
+<area shape="rect" id="node2" title="This class is an abstract interface to inner products in general." alt="" coords="5,5,193,31"/>
+</map>
 </p>
 </div>
 <div class="section" id="class-documentation">
@@ -78,9 +79,9 @@
 <dt id="WaveBlocksND.HomogeneousInnerProductLCWP.__init__">
 <tt class="descname">__init__</tt><big>(</big><em>delegate=None</em>, <em>oracle=None</em><big>)</big><a class="headerlink" href="#WaveBlocksND.HomogeneousInnerProductLCWP.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Note that although this class computes the homogeneous inner product
-<img class="math" src="../_images/math/598d36ee0cffa2d4162fa9358006022c3d3f6ac0.png" alt="\langle\Upsilon|f|\Upsilon\rangle"/> of a single linear combination
-<img class="math" src="../_images/math/d792ba6fac8dc00a5626659c0b9cf56716701f3d.png" alt="\Upsilon"/> with itself, the delegate inner product class used
-for computing <img class="math" src="../_images/math/55d7f908b96df64e3ded06f443f0fe832f8d0b42.png" alt="\langle\Psi|f|\Psi^\prime\rangle"/> has still to
+<img class="math" src="../_images/math/9967bda4ad4ad0befd0ca2d68cae811fedb6ad06.png" alt="\langle\Upsilon|f|\Upsilon\rangle"/> of a single linear combination
+<img class="math" src="../_images/math/e838cc7ce47de4242e2d27771140908bff604da6.png" alt="\Upsilon"/> with itself, the delegate inner product class used
+for computing <img class="math" src="../_images/math/8ebace35b1086a20a01ffdb68efe48002ab1ae46.png" alt="\langle\Psi|f|\Psi^\prime\rangle"/> has still to
 be of <em>inhomogeneous</em> type.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -104,26 +105,26 @@ no oracle is used and all integrals are computed.</li>
 <dl class="method">
 <dt id="WaveBlocksND.HomogeneousInnerProductLCWP.build_matrix">
 <tt class="descname">build_matrix</tt><big>(</big><em>lcket</em>, <em>operator=None</em>, <em>component=None</em>, <em>eval_at_once=False</em><big>)</big><a class="headerlink" href="#WaveBlocksND.HomogeneousInnerProductLCWP.build_matrix" title="Permalink to this definition">¶</a></dt>
-<dd><p>Delegates the computation of the matrix elements of <img class="math" src="../_images/math/598d36ee0cffa2d4162fa9358006022c3d3f6ac0.png" alt="\langle\Upsilon|f|\Upsilon\rangle"/>
-for a general function <img class="math" src="../_images/math/c96dd6ec1dc4ad7520fbdc78fcdbec9edd068d0c.png" alt="f(x)"/> with <img class="math" src="../_images/math/f85da18535db12c4e7f18590bcd375be0cd399eb.png" alt="x \in \mathbb{R}^D"/>.
-The matrix is computed without including the coefficients <img class="math" src="../_images/math/88d143238ae2718841dfd3ec099cbea395db77a4.png" alt="c_j"/>.</p>
+<dd><p>Delegates the computation of the matrix elements of <img class="math" src="../_images/math/9967bda4ad4ad0befd0ca2d68cae811fedb6ad06.png" alt="\langle\Upsilon|f|\Upsilon\rangle"/>
+for a general function <img class="math" src="../_images/math/14546c27a7b929642f7840acca5f851c503ea109.png" alt="f(x)"/> with <img class="math" src="../_images/math/71928d7ec88b1eddd6b449fc1b5d32192eca4885.png" alt="x \in \mathbb{R}^D"/>.
+The matrix is computed without including the coefficients <img class="math" src="../_images/math/25ce8815ff81c2071b842ecaf581c222c39e11c8.png" alt="c_j"/>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>lcket</strong> &#8211; The linear combination <img class="math" src="../_images/math/d792ba6fac8dc00a5626659c0b9cf56716701f3d.png" alt="\Upsilon"/> with <img class="math" src="../_images/math/abb5588023cfa1ac14643e9778699f03eecc57a3.png" alt="J"/> summands <img class="math" src="../_images/math/62ed0f266e815e996092950d8b63f91d8833b2c3.png" alt="\Psi_j"/>.</li>
-<li><strong>operator</strong> &#8211; A matrix-valued function <img class="math" src="../_images/math/3deea821ac3faef19eaf41751830c64059271ea7.png" alt="f(x): \mathbb{R}^D \rightarrow \mathbb{R}^{N \times N}"/>.</li>
-<li><strong>component</strong> (Integer or <tt class="docutils literal"><span class="pre">None</span></tt>, default is <tt class="docutils literal"><span class="pre">None</span></tt>.) &#8211; The index <img class="math" src="../_images/math/34857b3ba74ce5cd8607f3ebd23e9015908ada71.png" alt="i"/> of the component <img class="math" src="../_images/math/50b214d63eebc044875a6a505f0d6f7577456d05.png" alt="\Phi_j"/> of <img class="math" src="../_images/math/62ed0f266e815e996092950d8b63f91d8833b2c3.png" alt="\Psi_j"/>. If set only those
+<li><strong>lcket</strong> &#8211; The linear combination <img class="math" src="../_images/math/e838cc7ce47de4242e2d27771140908bff604da6.png" alt="\Upsilon"/> with <img class="math" src="../_images/math/372c2a0702e1e5866656215408b37a2ddb8d2d45.png" alt="J"/> summands <img class="math" src="../_images/math/ab7f7c655bbc8fec08f08c10d8cf1eeb56560103.png" alt="\Psi_j"/>.</li>
+<li><strong>operator</strong> &#8211; A matrix-valued function <img class="math" src="../_images/math/b0b125f51cb07e6cef3e9b2e9bacf924e6174028.png" alt="f(x): \mathbb{R}^D \rightarrow \mathbb{R}^{N \times N}"/>.</li>
+<li><strong>component</strong> (Integer or <tt class="docutils literal"><span class="pre">None</span></tt>, default is <tt class="docutils literal"><span class="pre">None</span></tt>.) &#8211; The index <img class="math" src="../_images/math/a581f053bbfa5115f42c13094857cdd12a37ec49.png" alt="i"/> of the component <img class="math" src="../_images/math/98b0d5028b29b85afa71c3c88139b0c48f6df1e0.png" alt="\Phi_j"/> of <img class="math" src="../_images/math/ab7f7c655bbc8fec08f08c10d8cf1eeb56560103.png" alt="\Psi_j"/>. If set only those
 components will be taken into account for the computation.</li>
 <li><strong>eval_at_once</strong> (Boolean, default is <tt class="docutils literal"><span class="pre">False</span></tt>.) &#8211; Flag to tell whether the operator supports the <tt class="docutils literal"><span class="pre">entry=(r,c)</span></tt> call syntax.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A matrix of size <img class="math" src="../_images/math/09606a29a62802bc87098b145d114e2a2610ac90.png" alt="\sum_{j\in J} N_j \times \sum_{j\in J} N_{j}"/>.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A matrix of size <img class="math" src="../_images/math/7836b5ed068316847b29ad4505200061ce5302e6.png" alt="\sum_{j\in J} N_j \times \sum_{j\in J} N_{j}"/>.</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Type :</th><td class="field-body"><p class="first last">An <tt class="xref py py-class docutils literal"><span class="pre">ndarray</span></tt>.</p>
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><p class="first last">An <tt class="xref py py-class docutils literal"><span class="pre">ndarray</span></tt>.</p>
 </td>
 </tr>
 </tbody>
@@ -163,25 +164,25 @@ never contains any data.</p>
 <dl class="method">
 <dt id="WaveBlocksND.HomogeneousInnerProductLCWP.quadrature">
 <tt class="descname">quadrature</tt><big>(</big><em>lcket</em>, <em>operator=None</em>, <em>component=None</em>, <em>eval_at_once=False</em><big>)</big><a class="headerlink" href="#WaveBlocksND.HomogeneousInnerProductLCWP.quadrature" title="Permalink to this definition">¶</a></dt>
-<dd><p>Delegates the evaluation of <img class="math" src="../_images/math/598d36ee0cffa2d4162fa9358006022c3d3f6ac0.png" alt="\langle\Upsilon|f|\Upsilon\rangle"/> for a general
-function <img class="math" src="../_images/math/c96dd6ec1dc4ad7520fbdc78fcdbec9edd068d0c.png" alt="f(x)"/> with <img class="math" src="../_images/math/f85da18535db12c4e7f18590bcd375be0cd399eb.png" alt="x \in \mathbb{R}^D"/>.</p>
+<dd><p>Delegates the evaluation of <img class="math" src="../_images/math/9967bda4ad4ad0befd0ca2d68cae811fedb6ad06.png" alt="\langle\Upsilon|f|\Upsilon\rangle"/> for a general
+function <img class="math" src="../_images/math/14546c27a7b929642f7840acca5f851c503ea109.png" alt="f(x)"/> with <img class="math" src="../_images/math/71928d7ec88b1eddd6b449fc1b5d32192eca4885.png" alt="x \in \mathbb{R}^D"/>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>lcket</strong> &#8211; The linear combination <img class="math" src="../_images/math/d792ba6fac8dc00a5626659c0b9cf56716701f3d.png" alt="\Upsilon"/> with <img class="math" src="../_images/math/abb5588023cfa1ac14643e9778699f03eecc57a3.png" alt="J"/> summands <img class="math" src="../_images/math/62ed0f266e815e996092950d8b63f91d8833b2c3.png" alt="\Psi_j"/>.</li>
-<li><strong>operator</strong> &#8211; A matrix-valued function <img class="math" src="../_images/math/3deea821ac3faef19eaf41751830c64059271ea7.png" alt="f(x): \mathbb{R}^D \rightarrow \mathbb{R}^{N \times N}"/>.</li>
-<li><strong>component</strong> (Integer or <tt class="docutils literal"><span class="pre">None</span></tt>, default is <tt class="docutils literal"><span class="pre">None</span></tt>.) &#8211; The index <img class="math" src="../_images/math/34857b3ba74ce5cd8607f3ebd23e9015908ada71.png" alt="i"/> of the component <img class="math" src="../_images/math/50b214d63eebc044875a6a505f0d6f7577456d05.png" alt="\Phi_j"/> of <img class="math" src="../_images/math/62ed0f266e815e996092950d8b63f91d8833b2c3.png" alt="\Psi_j"/>. If set only those
+<li><strong>lcket</strong> &#8211; The linear combination <img class="math" src="../_images/math/e838cc7ce47de4242e2d27771140908bff604da6.png" alt="\Upsilon"/> with <img class="math" src="../_images/math/372c2a0702e1e5866656215408b37a2ddb8d2d45.png" alt="J"/> summands <img class="math" src="../_images/math/ab7f7c655bbc8fec08f08c10d8cf1eeb56560103.png" alt="\Psi_j"/>.</li>
+<li><strong>operator</strong> &#8211; A matrix-valued function <img class="math" src="../_images/math/b0b125f51cb07e6cef3e9b2e9bacf924e6174028.png" alt="f(x): \mathbb{R}^D \rightarrow \mathbb{R}^{N \times N}"/>.</li>
+<li><strong>component</strong> (Integer or <tt class="docutils literal"><span class="pre">None</span></tt>, default is <tt class="docutils literal"><span class="pre">None</span></tt>.) &#8211; The index <img class="math" src="../_images/math/a581f053bbfa5115f42c13094857cdd12a37ec49.png" alt="i"/> of the component <img class="math" src="../_images/math/98b0d5028b29b85afa71c3c88139b0c48f6df1e0.png" alt="\Phi_j"/> of <img class="math" src="../_images/math/ab7f7c655bbc8fec08f08c10d8cf1eeb56560103.png" alt="\Psi_j"/>. If set only those
 components will be taken into account for the computation.</li>
 <li><strong>eval_at_once</strong> (Boolean, default is <tt class="docutils literal"><span class="pre">False</span></tt>.) &#8211; Flag to tell whether the operator supports the <tt class="docutils literal"><span class="pre">entry=(r,c)</span></tt> call syntax.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The value of <img class="math" src="../_images/math/598d36ee0cffa2d4162fa9358006022c3d3f6ac0.png" alt="\langle\Upsilon|f|\Upsilon\rangle"/>.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The value of <img class="math" src="../_images/math/9967bda4ad4ad0befd0ca2d68cae811fedb6ad06.png" alt="\langle\Upsilon|f|\Upsilon\rangle"/>.</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Type :</th><td class="field-body"><p class="first last">An <tt class="xref py py-class docutils literal"><span class="pre">ndarray</span></tt>.</p>
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><p class="first last">An <tt class="xref py py-class docutils literal"><span class="pre">ndarray</span></tt>.</p>
 </td>
 </tr>
 </tbody>
@@ -286,7 +287,7 @@ no oracle is used and all integrals are computed.</td>
     </div>
     <div class="footer">
         &copy; Copyright 2015, R. Bourquin.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
     </div>
   </body>
 </html>

@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -60,13 +58,17 @@
 <span id="about-the-gausslaguerreqr-class"></span><h2>About the <tt class="docutils literal"><span class="pre">GaussLaguerreQR</span></tt> class<a class="headerlink" href="#module-WaveBlocksND" title="Permalink to this headline">¶</a></h2>
 <p>The WaveBlocks Project</p>
 <p>&#64;author: R. Bourquin
-&#64;copyright: Copyright (C) 2010, 2011, 2012, 2013, 2014 R. Bourquin
+&#64;copyright: Copyright (C) 2010, 2011, 2012, 2013, 2014, 2015 R. Bourquin
 &#64;license: Modified BSD License</p>
 </div>
 <div class="section" id="inheritance-diagram">
 <h2>Inheritance diagram<a class="headerlink" href="#inheritance-diagram" title="Permalink to this headline">¶</a></h2>
 <p class="graphviz">
-<img src="../_images/inheritance-895c85a3ca6c66c21bd4e9e8dff96234e274e178.png" alt="Inheritance diagram of GaussLaguerreQR" class="inheritance"/>
+<img src="../_images/inheritance-6447d2a899562c52d099c3ddc023a770a529b7f9.png" alt="Inheritance diagram of GaussLaguerreQR" usemap="#inheritance4e3d993a11" class="inheritance"/>
+<map id="inheritance4e3d993a11" name="inheritance4e3d993a11">
+<area shape="rect" id="node1" title="This class implements a (generalized) Gauss&#45;Laguerre quadrature rule." alt="" coords="277,5,533,31"/>
+<area shape="rect" id="node2" title="This class is an abstract interface to quadrature rules in general." alt="" coords="5,5,229,31"/>
+</map>
 </p>
 </div>
 <div class="section" id="class-documentation">
@@ -84,16 +86,16 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>order</strong> &#8211; The order <img class="math" src="../_images/math/8c325612684d41304b9751c175df7bcc0f61f64f.png" alt="k"/> of the Gauss-Laguerre quadrature.
+<li><strong>order</strong> &#8211; The order <img class="math" src="../_images/math/e9203da50e1059455123460d4e716c9c7f440cc3.png" alt="k"/> of the Gauss-Laguerre quadrature.
 From theory we know that a Gauss quadrature rule
-of order <img class="math" src="../_images/math/8c325612684d41304b9751c175df7bcc0f61f64f.png" alt="k"/> is exact for polynomials up to
-degree <img class="math" src="../_images/math/1cdd8446209bc71a9c099606f493851bfe5241cc.png" alt="2 k - 1"/>.</li>
-<li><strong>a</strong> &#8211; The parameter <img class="math" src="../_images/math/f7c12f5dedaaeccd3d711c9fb5b1e77c137c7225.png" alt="a &gt; -1"/> of the generalized Gauss-Laguerre quadrature.
+of order <img class="math" src="../_images/math/e9203da50e1059455123460d4e716c9c7f440cc3.png" alt="k"/> is exact for polynomials up to
+degree <img class="math" src="../_images/math/c65e1779c5a1d2d22eeef49774e9791dcd69207c.png" alt="2 k - 1"/>.</li>
+<li><strong>a</strong> &#8211; The parameter <img class="math" src="../_images/math/44ca2a08946708d70722708637879dfcf3b011ed.png" alt="a &gt; -1"/> of the generalized Gauss-Laguerre quadrature.
 This value defaults to <cite>0</cite> resulting in classical Gauss-Laguerre quadrature.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raise :</th><td class="field-body"><p class="first last"><tt class="xref py py-class docutils literal"><span class="pre">ValueError</span></tt> if order <tt class="docutils literal"><span class="pre">order</span></tt> is not 1 or above.</p>
+<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><p class="first last"><tt class="xref py py-class docutils literal"><span class="pre">ValueError</span></tt> if order <tt class="docutils literal"><span class="pre">order</span></tt> is not 1 or above.</p>
 </td>
 </tr>
 </tbody>
@@ -101,7 +103,7 @@ This value defaults to <cite>0</cite> resulting in classical Gauss-Laguerre quad
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
 <p class="last">This quadrature is made specifically for our needs. Therefore the default
-values of <img class="math" src="../_images/math/10f32377ac67d94f764f12a15ea987e88c85d3e1.png" alt="\alpha"/> is not 0 but set to <img class="math" src="../_images/math/a7748d3d38355a68b51bddc29d7647230728287e.png" alt="-\frac{1}{2}"/>. There
+values of <img class="math" src="../_images/math/ad59b6e24a4a00ac621801f8d7513d68be654ab5.png" alt="\alpha"/> is not 0 but set to <img class="math" src="../_images/math/1272ad7d1a930eed065c9e15ed709af7c8638675.png" alt="-\frac{1}{2}"/>. There
 is hope that this will give less confusion and hidden errors.</p>
 </div>
 </dd></dl>
@@ -122,7 +124,7 @@ never contains any data.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The space dimension <img class="math" src="../_images/math/9ffb448918db29f2a72f8f87f421b3b3cad18f95.png" alt="D"/> of the quadrature rule.</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The space dimension <img class="math" src="../_images/math/9dfa31437b58c0473299320aa638151cd88cf61b.png" alt="D"/> of the quadrature rule.</td>
 </tr>
 </tbody>
 </table>
@@ -131,12 +133,12 @@ never contains any data.</p>
 <dl class="method">
 <dt id="WaveBlocksND.GaussLaguerreQR.get_nodes">
 <tt class="descname">get_nodes</tt><big>(</big><big>)</big><a class="headerlink" href="#WaveBlocksND.GaussLaguerreQR.get_nodes" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns the quadrature nodes <img class="math" src="../_images/math/6e8d7600cbbeb6cc9754abf60be6a1e5e8c1edc1.png" alt="\{\gamma_i\}_i"/>.</p>
+<dd><p>Returns the quadrature nodes <img class="math" src="../_images/math/72c82a512fdcf651b011831d045774d332782320.png" alt="\{\gamma_i\}_i"/>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">An array containing the quadrature nodes <img class="math" src="../_images/math/6e8d7600cbbeb6cc9754abf60be6a1e5e8c1edc1.png" alt="\{\gamma_i\}_i"/>.</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">An array containing the quadrature nodes <img class="math" src="../_images/math/72c82a512fdcf651b011831d045774d332782320.png" alt="\{\gamma_i\}_i"/>.</td>
 </tr>
 </tbody>
 </table>
@@ -149,8 +151,8 @@ never contains any data.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The number of quadrature nodes denoted by <img class="math" src="../_images/math/d85b78a13008f6b5839107bb086798bf5b6a37ae.png" alt="|\Gamma|"/> that are
-part of this quadrature rule <img class="math" src="../_images/math/e9e5a10197befc592d996ab016d50c11ce2384c4.png" alt="\Gamma = (\gamma, \omega)"/>.</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The number of quadrature nodes denoted by <img class="math" src="../_images/math/0de5e5343aaf9413370055e0b0230e62d881120a.png" alt="|\Gamma|"/> that are
+part of this quadrature rule <img class="math" src="../_images/math/c3a2bdedae50edc770051c6fac45ce16555507f7.png" alt="\Gamma = (\gamma, \omega)"/>.</td>
 </tr>
 </tbody>
 </table>
@@ -159,12 +161,12 @@ part of this quadrature rule <img class="math" src="../_images/math/e9e5a10197be
 <dl class="method">
 <dt id="WaveBlocksND.GaussLaguerreQR.get_weights">
 <tt class="descname">get_weights</tt><big>(</big><big>)</big><a class="headerlink" href="#WaveBlocksND.GaussLaguerreQR.get_weights" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns the quadrature weights <img class="math" src="../_images/math/92c31058dda53919e52954724ff370cd42cce430.png" alt="\{\omega_i\}_i"/>.</p>
+<dd><p>Returns the quadrature weights <img class="math" src="../_images/math/e9a1cc441abfee5dc1f5b96317326e843502d221.png" alt="\{\omega_i\}_i"/>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">An array containing the quadrature weights <img class="math" src="../_images/math/92c31058dda53919e52954724ff370cd42cce430.png" alt="\{\omega_i\}_i"/>.</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">An array containing the quadrature weights <img class="math" src="../_images/math/e9a1cc441abfee5dc1f5b96317326e843502d221.png" alt="\{\omega_i\}_i"/>.</td>
 </tr>
 </tbody>
 </table>
@@ -239,7 +241,7 @@ part of this quadrature rule <img class="math" src="../_images/math/e9e5a10197be
     </div>
     <div class="footer">
         &copy; Copyright 2015, R. Bourquin.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
     </div>
   </body>
 </html>

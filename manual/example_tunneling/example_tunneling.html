@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -62,15 +60,15 @@
 Gaussian wavepacket coming from the far left. There is a ready-made example
 setup bundled with WaveBlocks. The Eckart potential models some kind of
 tunneling at a smooth barrier. It is therefore natural to ask for the tunneling
-probability in dependence of time. The maximum of the potential <img class="math" src="../../_images/math/2e93af720b470a88780063377da0dd4f28e4a9f5.png" alt="V(x)"/>
-is at 0 and we compute the norm of the part of <img class="math" src="../../_images/math/4f0854145c40beaf4d1a86d91a94d02626d99081.png" alt="\Psi(x,t)"/> that tunneled
+probability in dependence of time. The maximum of the potential <img class="math" src="../../_images/math/e0ec0629769ae6a9454173e71aa1df11f9209631.png" alt="V(x)"/>
+is at 0 and we compute the norm of the part of <img class="math" src="../../_images/math/6b5ce89e8e5e6150ba2879652827acd084f0ac33.png" alt="\Psi(x,t)"/> that tunneled
 onto the right side:</p>
 <div class="math">
-<p><img src="../../_images/math/48c16502abd9c10709ea9a358f84f1533434492a.png" alt="P(t) = \int_0^\infty \overline{\Psi(x)} \Psi(x) \mathrm{d} x"/></p>
+<p><img src="../../_images/math/b2265d360aeb1a28923a73db0336df11d8f693b7.png" alt="P(t) = \int_0^\infty \overline{\Psi(x)} \Psi(x) \mathrm{d} x"/></p>
 </div><p>There is no generic python script doing this for us. The script <tt class="docutils literal"><span class="pre">ComputeNorms.py</span></tt>
 only computes the integral over the whole space. This is clearly not applicable
 here. But with a few lines of python code, possibly entered at an interactive python
-shell or ipython notebook we can find <img class="math" src="../../_images/math/db78b95eb8ad3b90e7a653cd85be93e20ec984d9.png" alt="P(t)"/>. In the following we show
+shell or ipython notebook we can find <img class="math" src="../../_images/math/c56e0a7e40558869b6d6b558a57458e5b3091a67.png" alt="P(t)"/>. In the following we show
 step by step how to do it.</p>
 <p>First load the scientific libraries and <tt class="docutils literal"><span class="pre">WaveBlocksND</span></tt>:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="o">*</span>
@@ -94,8 +92,8 @@ some of the more complicated objects, given the simulation parameters:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">BF</span> <span class="o">=</span> <span class="n">BlockFactory</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>An empty new wavepacket with the initial values set for <img class="math" src="../../_images/math/e2a63918a6fa75b62ad87ad17aaf65f782d71546.png" alt="\varepsilon"/>, the parameter
-set <img class="math" src="../../_images/math/c3e77f8dac39bd44cff4ca15469c871bab27c02e.png" alt="\Pi"/> and the coefficients <img class="math" src="../../_images/math/3372c1cb6d68cf97c2d231acc0b47b95a9ed04cc.png" alt="c"/>. Note that the block factory automatically
+<p>An empty new wavepacket with the initial values set for <img class="math" src="../../_images/math/f348c73e654151e416e3c525b2ff7803590754ce.png" alt="\varepsilon"/>, the parameter
+set <img class="math" src="../../_images/math/fab626933a4c5c14dc2c29fb783db0f824a4a9d8.png" alt="\Pi"/> and the coefficients <img class="math" src="../../_images/math/65868d23a5bfe5b3b2d819386b19c14fa36af134.png" alt="c"/>. Note that the block factory automatically
 creates the necessary <tt class="xref py py-class docutils literal"><span class="pre">BasisShape</span></tt> that matches the initial values:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">HAWP</span> <span class="o">=</span> <span class="n">BF</span><span class="o">.</span><span class="n">create_wavepacket</span><span class="p">(</span><span class="n">PA</span><span class="p">[</span><span class="s">&quot;wp0&quot;</span><span class="p">])</span>
 </pre></div>
@@ -119,8 +117,8 @@ saved the simulation:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">tun_no</span> <span class="o">=</span> <span class="p">[]</span>
 </pre></div>
 </div>
-<p>Now loop over all time steps, First load and set the wavepacket parameters <img class="math" src="../../_images/math/0885abbb221e809d50bec7acb7cbedb8b0ade464.png" alt="\Pi(t)"/>
-and coefficients <img class="math" src="../../_images/math/5697d0050641c0c8ec7565c04878edbdf56e673b.png" alt="c(t)"/>, then evaluate the wavepacket of our truncated computational
+<p>Now loop over all time steps, First load and set the wavepacket parameters <img class="math" src="../../_images/math/954d4334741b0d5eb565f847bb4b58493f74e591.png" alt="\Pi(t)"/>
+and coefficients <img class="math" src="../../_images/math/83208c30e4108d67519822499963411aa1eb3ecf.png" alt="c(t)"/>, then evaluate the wavepacket of our truncated computational
 domain <tt class="docutils literal"><span class="pre">x</span></tt>. Put these values into the <tt class="docutils literal"><span class="pre">WF</span></tt> object and tell it to compute the norm:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="k">for</span> <span class="n">step</span> <span class="ow">in</span> <span class="n">tg</span><span class="p">:</span>
     <span class="n">Pi</span> <span class="o">=</span> <span class="n">IOM</span><span class="o">.</span><span class="n">load_wavepacket_parameters</span><span class="p">(</span><span class="n">timestep</span><span class="o">=</span><span class="n">step</span><span class="p">)</span>
@@ -139,7 +137,7 @@ domain <tt class="docutils literal"><span class="pre">x</span></tt>. Put these v
 <div class="highlight-python"><div class="highlight"><pre><span class="n">tun_no</span> <span class="o">=</span> <span class="n">array</span><span class="p">(</span><span class="n">tun_no</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>At this point we have computed all the values <img class="math" src="../../_images/math/db78b95eb8ad3b90e7a653cd85be93e20ec984d9.png" alt="P(t)"/>. What remains
+<p>At this point we have computed all the values <img class="math" src="../../_images/math/c56e0a7e40558869b6d6b558a57458e5b3091a67.png" alt="P(t)"/>. What remains
 is plotting. But first we create a <tt class="xref py py-class docutils literal"><span class="pre">TimeManager</span></tt> such that we can
 easily compute the physical times corresponding to out time steps it <tt class="docutils literal"><span class="pre">tg</span></tt>:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">TM</span> <span class="o">=</span> <span class="n">TimeManager</span><span class="p">(</span><span class="n">PA</span><span class="p">)</span>
@@ -161,7 +159,7 @@ easily compute the physical times corresponding to out time steps it <tt class="
 </div>
 <p>This is the plot we got:</p>
 <img alt="../../_images/tunneling_probability_packet.png" src="../../_images/tunneling_probability_packet.png" />
-<p>The values could make sense given how the wavefunction looks like at time <img class="math" src="../../_images/math/7815ac51fced47db2b62407b3e6f41792a0e3628.png" alt="t = 50"/>:</p>
+<p>The values could make sense given how the wavefunction looks like at time <img class="math" src="../../_images/math/df99f822cc9fdce55ca2e462656f75b0e7cb71fd.png" alt="t = 50"/>:</p>
 <a class="reference internal image-reference" href="../../_images/wavefunction_block0_0010000.png"><img alt="../../_images/wavefunction_block0_0010000.png" src="../../_images/wavefunction_block0_0010000.png" style="width: 600.0px; height: 450.0px;" /></a>
 <p>If we use the <tt class="docutils literal"><span class="pre">fourier</span></tt> algorithm instead of wavepackets to perform the same simulation,
 then the process would differ in a few aspects. We show here the script performing the
@@ -180,7 +178,7 @@ same computation as above:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">G</span> <span class="o">=</span> <span class="n">IOM</span><span class="o">.</span><span class="n">load_grid</span><span class="p">(</span><span class="n">blockid</span><span class="o">=</span><span class="s">&quot;global&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Get all grid nodes <img class="math" src="../../_images/math/cae4fd68f44ac9b909f8d91f9d498de5759bb45b.png" alt="x &gt; 0"/> by some numpy magic:</p>
+<p>Get all grid nodes <img class="math" src="../../_images/math/6ebe7694cc742ac5afb6e7781fb3a2c26d0329cf.png" alt="x &gt; 0"/> by some numpy magic:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">indices</span> <span class="o">=</span> <span class="n">G</span> <span class="o">&gt;=</span> <span class="mi">0</span>
 <span class="n">x</span> <span class="o">=</span> <span class="n">G</span><span class="p">[</span><span class="n">indices</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
 </pre></div>
@@ -280,7 +278,7 @@ norm:</p>
     </div>
     <div class="footer">
         &copy; Copyright 2015, R. Bourquin.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
     </div>
   </body>
 </html>

@@ -1,0 +1,4 @@
+<map id="inheritance55dd11601a" name="inheritance55dd11601a">
+<area shape="rect" id="node1" title="This class defines the interface for general sparsity oracles." alt="" coords="5,5,217,31"/>
+<area shape="rect" id="node2" title="This class implements an oracle by looking at Gaussian integrals." alt="" coords="265,5,576,31"/>
+</map>

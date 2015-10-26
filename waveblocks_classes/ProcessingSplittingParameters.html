@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -60,7 +58,7 @@
 <span id="about-the-processingsplittingparameters-class"></span><h2>About the <tt class="docutils literal"><span class="pre">ProcessingSplittingParameters</span></tt> class<a class="headerlink" href="#module-WaveBlocksND" title="Permalink to this headline">¶</a></h2>
 <p>The WaveBlocks Project</p>
 <p>&#64;author: R. Bourquin
-&#64;copyright: Copyright (C) 2010, 2011, 2012, 2013, 2014 R. Bourquin
+&#64;copyright: Copyright (C) 2010, 2011, 2012, 2013, 2014, 2015 R. Bourquin
 &#64;license: Modified BSD License</p>
 </div>
 <div class="section" id="inheritance-diagram">
@@ -83,7 +81,7 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>method</strong> &#8211; A string specifying the method for time integration.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Four arrays <img class="math" src="../_images/math/c7d457e388298246adb06c587bccd419ea67f7e8.png" alt="a"/>, <img class="math" src="../_images/math/8136a7ef6a03334a7246df9097e5bcc31ba33fd2.png" alt="b"/> and <img class="math" src="../_images/math/092e364e1d9d19ad5fffb0b46ef4cc7f2da02c1c.png" alt="y"/>, <img class="math" src="../_images/math/b13f21416d84e13708696f34dea81026cda583c9.png" alt="z"/>.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Four arrays <img class="math" src="../_images/math/7dd2a5ea01fbd72ad2a58dd1f3d6ecbfde6208a1.png" alt="a"/>, <img class="math" src="../_images/math/5e87bf41a96deddf6cb485ff530f153f2590e9cc.png" alt="b"/> and <img class="math" src="../_images/math/b124ff74afb0914bb434e8fb849eb56d734412f8.png" alt="y"/>, <img class="math" src="../_images/math/84d7271dd9e78c1e05d6c3c6ecb60309ef7dfc73.png" alt="z"/>.</td>
 </tr>
 </tbody>
 </table>
@@ -121,23 +119,23 @@ SIAM Journal on Scientific Computing, Volume 21, Issue 2, (1999) 711-727.</td></
 
 <dl class="method">
 <dt id="WaveBlocksND.ProcessingSplittingParameters.intprepsplit">
-<tt class="descname">intprepsplit</tt><big>(</big><em>psi1</em>, <em>psi2</em>, <em>a</em>, <em>b</em>, <em>y</em>, <em>z</em>, <em>tspan</em>, <em>N</em>, <em>args1=</em><span class="optional">[</span><span class="optional">]</span>, <em>args2=</em><span class="optional">[</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#WaveBlocksND.ProcessingSplittingParameters.intprepsplit" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">intprepsplit</tt><big>(</big><em>psi1</em>, <em>psi2</em>, <em>a</em>, <em>b</em>, <em>y</em>, <em>z</em>, <em>tspan</em>, <em>N</em>, <em>args1=[]</em>, <em>args2=[]</em><big>)</big><a class="headerlink" href="#WaveBlocksND.ProcessingSplittingParameters.intprepsplit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute a single, full propagation step by processing operator splitting.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>psi1</strong> &#8211; First evolution operator <img class="math" src="../_images/math/5704864677f1bee9106fcb1c79c623fc364d3e0b.png" alt="\Psi_a"/></li>
-<li><strong>psi2</strong> &#8211; Second evolution operator <img class="math" src="../_images/math/f8aa66a4e7cd7d89d87d48692311faa46982e49d.png" alt="\Psi_b"/></li>
-<li><strong>a</strong> &#8211; Parameters for evolution with operator <img class="math" src="../_images/math/5704864677f1bee9106fcb1c79c623fc364d3e0b.png" alt="\Psi_a"/></li>
-<li><strong>b</strong> &#8211; Parameters for evolution with operator <img class="math" src="../_images/math/f8aa66a4e7cd7d89d87d48692311faa46982e49d.png" alt="\Psi_b"/></li>
-<li><strong>y</strong> &#8211; Parameters for evolution with processor <img class="math" src="../_images/math/1ed7d91f7c1959808ccc94087119e41a06c17c7d.png" alt="\Pi_y"/></li>
-<li><strong>z</strong> &#8211; Parameters for evolution with processor <img class="math" src="../_images/math/37b70d3ca3197295bbdbdab24d7d702ead22ef59.png" alt="\Pi_z"/></li>
-<li><strong>tspan</strong> &#8211; Timespan <img class="math" src="../_images/math/e0d2bf360290fd61d1c1557e763f2622363b3d35.png" alt="t"/> of a single, full splitting step</li>
+<li><strong>psi1</strong> &#8211; First evolution operator <img class="math" src="../_images/math/87de8ae280ea6763121c43c70585fa4a49936c7c.png" alt="\Psi_a"/></li>
+<li><strong>psi2</strong> &#8211; Second evolution operator <img class="math" src="../_images/math/0c681241c2c31f6549ddb7c25f0c13848cb68c6c.png" alt="\Psi_b"/></li>
+<li><strong>a</strong> &#8211; Parameters for evolution with operator <img class="math" src="../_images/math/87de8ae280ea6763121c43c70585fa4a49936c7c.png" alt="\Psi_a"/></li>
+<li><strong>b</strong> &#8211; Parameters for evolution with operator <img class="math" src="../_images/math/0c681241c2c31f6549ddb7c25f0c13848cb68c6c.png" alt="\Psi_b"/></li>
+<li><strong>y</strong> &#8211; Parameters for evolution with processor <img class="math" src="../_images/math/1d6662de026786bd0dc85aabfb8e05a10ec15ded.png" alt="\Pi_y"/></li>
+<li><strong>z</strong> &#8211; Parameters for evolution with processor <img class="math" src="../_images/math/83159cb998008481b808ef4a954c8f18317bd6b9.png" alt="\Pi_z"/></li>
+<li><strong>tspan</strong> &#8211; Timespan <img class="math" src="../_images/math/ef9270877405055756d345facd044e4ab297f858.png" alt="t"/> of a single, full splitting step</li>
 <li><strong>N</strong> &#8211; Number of substeps to perform</li>
-<li><strong>args1</strong> &#8211; Additional optional arguments of <img class="math" src="../_images/math/5704864677f1bee9106fcb1c79c623fc364d3e0b.png" alt="\Psi_a"/></li>
-<li><strong>args2</strong> &#8211; Additional optional arguments of <img class="math" src="../_images/math/f8aa66a4e7cd7d89d87d48692311faa46982e49d.png" alt="\Psi_b"/></li>
+<li><strong>args1</strong> &#8211; Additional optional arguments of <img class="math" src="../_images/math/87de8ae280ea6763121c43c70585fa4a49936c7c.png" alt="\Psi_a"/></li>
+<li><strong>args2</strong> &#8211; Additional optional arguments of <img class="math" src="../_images/math/0c681241c2c31f6549ddb7c25f0c13848cb68c6c.png" alt="\Psi_b"/></li>
 </ul>
 </td>
 </tr>
@@ -219,7 +217,7 @@ SIAM Journal on Scientific Computing, Volume 21, Issue 2, (1999) 711-727.</td></
     </div>
     <div class="footer">
         &copy; Copyright 2015, R. Bourquin.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
     </div>
   </body>
 </html>

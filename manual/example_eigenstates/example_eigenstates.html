@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -60,10 +58,10 @@
 <h1>Computing Eigenstates<a class="headerlink" href="#computing-eigenstates" title="Permalink to this headline">¶</a></h1>
 <p>In this section we show how to compute eigenstates on the
 example of the Henon-Heiles potential. This two-dimensional
-potential in the variables <img class="math" src="../../_images/math/26eeb5258ca5099acf8fe96b2a1049c48c89a5e6.png" alt="x"/> and <img class="math" src="../../_images/math/092e364e1d9d19ad5fffb0b46ef4cc7f2da02c1c.png" alt="y"/> is given by:</p>
+potential in the variables <img class="math" src="../../_images/math/188c175aac0a8a9c22499336711b5d7256407254.png" alt="x"/> and <img class="math" src="../../_images/math/b124ff74afb0914bb434e8fb849eb56d734412f8.png" alt="y"/> is given by:</p>
 <div class="math">
-<p><img src="../../_images/math/1ccd385359a64e7d86f71d8110771942f436abea.png" alt="V(x) = \frac{a}{2} \left(x^{2} + y^{2}\right) + b \left(x^{2} y - \frac{y^{3}}{3}\right)"/></p>
-</div><p>where we set <img class="math" src="../../_images/math/48d02444a59b917b64e8bd0963b88712fc7fa0a3.png" alt="a = 1"/> and  <img class="math" src="../../_images/math/e00655acfa0e0ba15a3cdda028697def7de3c90b.png" alt="b = 1/2"/>. To compute the
+<p><img src="../../_images/math/9e322c6f65662b252d4de17eef898977f4a529da.png" alt="V(x) = \frac{a}{2} \left(x^{2} + y^{2}\right) + b \left(x^{2} y - \frac{y^{3}}{3}\right)"/></p>
+</div><p>where we set <img class="math" src="../../_images/math/43f2f20146486a3c666597f49c782a2612f847e4.png" alt="a = 1"/> and  <img class="math" src="../../_images/math/06f252d5447ed7f79345802e90079a1e85b6211c.png" alt="b = 1/2"/>. To compute the
 eigenstates we write a configuration file <tt class="docutils literal"><span class="pre">eigenstates.py</span></tt> like:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">dimension</span> <span class="o">=</span> <span class="mi">2</span>
 <span class="n">ncomponents</span> <span class="o">=</span> <span class="mi">1</span>
@@ -104,16 +102,17 @@ eigenstates we write a configuration file <tt class="docutils literal"><span cla
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>We compute the first 15 eigenstates <img class="math" src="../../_images/math/7d1919245b3cd2b8fccbdd84d03b1a86e34e8e00.png" alt="\Psi_0"/> up to <img class="math" src="../../_images/math/d9395a42d52f0008d42f6b25a2cfa00a89d5fbf6.png" alt="\Psi_{14}"/>.
+<p>We compute the first 15 eigenstates <img class="math" src="../../_images/math/553167ada8dc56e742292f9109553767febf3bc7.png" alt="\Psi_0"/> up to <img class="math" src="../../_images/math/4e8d109f3137408589b50fb18190e66578a7d171.png" alt="\Psi_{14}"/>.
 The parameter <tt class="docutils literal"><span class="pre">starting_point</span></tt> sets the starting value for the minimization
 of the potential surface. This value is choosen such to stay in the local minimum
 we are interested in. The basis consists of the space spanned by all wavepackets
-indexed in the hyperbolic cut having sparsity <img class="math" src="../../_images/math/b9d31c8c8cd465ac27fdc7d417c3f612654fe7de.png" alt="K=24"/>. The actual computation
+indexed in the hyperbolic cut having sparsity <img class="math" src="../../_images/math/1d3d2cb43b185cf38f50e28c8cc489c54e0c61ee.png" alt="K=24"/>. The actual computation
 is done by using the script <tt class="docutils literal"><span class="pre">ComputeEigenstates.py</span></tt>:</p>
-<div class="highlight-python"><pre>python ComputeEigenstates.py eigenstates.py</pre>
+<div class="highlight-python"><div class="highlight"><pre>python ComputeEigenstates.py eigenstates.py
+</pre></div>
 </div>
 <p>and will print some output:</p>
-<div class="highlight-python"><pre>Using configuration from file: eigenstates.py
+<div class="highlight-python"><div class="highlight"><pre>Using configuration from file: eigenstates.py
 Requested function: add_parameters
 Plugin to load: IOM_plugin_parameters
 Optimization terminated successfully.
@@ -154,12 +153,14 @@ Coefficients:
    1.53830363e-05+0.j   4.64872426e-06+0.j   1.40044195e-06+0.j
    9.48658758e-07+0.j   3.83630231e-07+0.j   1.42241989e-07+0.j
    7.84302527e-08+0.j   3.66375058e-08+0.j   1.58225631e-08+0.j
-...</pre>
+...
+</pre></div>
 </div>
 <p>and produce an <cite>eigenstates.hdf5</cite> file containing all the wavepackets computed.
 Next we compute norms and energies of these states by:</p>
-<div class="highlight-python"><pre>python ComputeNorms.py -d eigenstates.hdf5
-python ComputeEnergies.py -d eigenstates.hdf5</pre>
+<div class="highlight-python"><div class="highlight"><pre>python ComputeNorms.py -d eigenstates.hdf5
+python ComputeEnergies.py -d eigenstates.hdf5
+</pre></div>
 </div>
 <p>We could also evaluate and plot the packets or call any other
 post-processing script. But we like to do some custom computations
@@ -334,7 +335,7 @@ and therefore switch to an interactive python session now:</p>
     </div>
     <div class="footer">
         &copy; Copyright 2015, R. Bourquin.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
     </div>
   </body>
 </html>

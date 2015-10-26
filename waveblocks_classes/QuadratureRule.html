@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -60,13 +58,16 @@
 <span id="about-the-quadraturerule-class"></span><h2>About the <tt class="docutils literal"><span class="pre">QuadratureRule</span></tt> class<a class="headerlink" href="#module-WaveBlocksND" title="Permalink to this headline">¶</a></h2>
 <p>The WaveBlocks Project</p>
 <p>&#64;author: R. Bourquin
-&#64;copyright: Copyright (C) 2010, 2011, 2012, 2013, 2014 R. Bourquin
+&#64;copyright: Copyright (C) 2010, 2011, 2012, 2013, 2014, 2015 R. Bourquin
 &#64;license: Modified BSD License</p>
 </div>
 <div class="section" id="inheritance-diagram">
 <h2>Inheritance diagram<a class="headerlink" href="#inheritance-diagram" title="Permalink to this headline">¶</a></h2>
 <p class="graphviz">
-<img src="../_images/inheritance-9f27a4e2ec4ddd2ea11edb57d653e188aec4ff8e.png" alt="Inheritance diagram of QuadratureRule" class="inheritance"/>
+<img src="../_images/inheritance-f698b7fd2885482da5c70c4a59c2b5f76277afa7.png" alt="Inheritance diagram of QuadratureRule" usemap="#inheritancecdceb24804" class="inheritance"/>
+<map id="inheritancecdceb24804" name="inheritancecdceb24804">
+<area shape="rect" id="node1" title="This class is an abstract interface to quadrature rules in general." alt="" coords="5,5,229,31"/>
+</map>
 </p>
 </div>
 <div class="section" id="class-documentation">
@@ -91,7 +92,7 @@ never contains any data.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The space dimension <img class="math" src="../_images/math/9ffb448918db29f2a72f8f87f421b3b3cad18f95.png" alt="D"/> of the quadrature rule.</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The space dimension <img class="math" src="../_images/math/9dfa31437b58c0473299320aa638151cd88cf61b.png" alt="D"/> of the quadrature rule.</td>
 </tr>
 </tbody>
 </table>
@@ -104,8 +105,8 @@ never contains any data.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A two-dimensional ndarray containing the quadrature nodes <img class="math" src="../_images/math/08090c52f275458c98d6e3fd1f9baf8bfd91cfe9.png" alt="\gamma_i"/>.
-The array must have a shape of <img class="math" src="../_images/math/65386017ecf42bb0ef1872b47350d2d05d532fe7.png" alt="(D, |\Gamma|)"/>.</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A two-dimensional ndarray containing the quadrature nodes <img class="math" src="../_images/math/c0a367a725bde748cd7d77d56c15a2159bed91c8.png" alt="\gamma_i"/>.
+The array must have a shape of <img class="math" src="../_images/math/d16e6a6e129385b62ac6a9a940374a6653447d01.png" alt="(D, |\Gamma|)"/>.</td>
 </tr>
 </tbody>
 </table>
@@ -118,8 +119,8 @@ The array must have a shape of <img class="math" src="../_images/math/65386017ec
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The number of quadrature nodes denoted by <img class="math" src="../_images/math/d85b78a13008f6b5839107bb086798bf5b6a37ae.png" alt="|\Gamma|"/> that are
-part of this quadrature rule <img class="math" src="../_images/math/e9e5a10197befc592d996ab016d50c11ce2384c4.png" alt="\Gamma = (\gamma, \omega)"/>.</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The number of quadrature nodes denoted by <img class="math" src="../_images/math/0de5e5343aaf9413370055e0b0230e62d881120a.png" alt="|\Gamma|"/> that are
+part of this quadrature rule <img class="math" src="../_images/math/c3a2bdedae50edc770051c6fac45ce16555507f7.png" alt="\Gamma = (\gamma, \omega)"/>.</td>
 </tr>
 </tbody>
 </table>
@@ -132,8 +133,8 @@ part of this quadrature rule <img class="math" src="../_images/math/e9e5a10197be
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A two-dimensional ndarray containing the quadrature weights <img class="math" src="../_images/math/8fc80d5e036efbaf3de0e9dab053194a1e6676ee.png" alt="\omega_i"/>.
-The array must have a shape of <img class="math" src="../_images/math/3b704a4a61cba3a5126cbfde22f30d91451a8c77.png" alt="(1, |\Gamma|)"/>.</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A two-dimensional ndarray containing the quadrature weights <img class="math" src="../_images/math/e5afb90623dcfbcf5856bbd0da4569065f0f72e8.png" alt="\omega_i"/>.
+The array must have a shape of <img class="math" src="../_images/math/7e91db70d2c236fa6c80382f7ef726155a826c87.png" alt="(1, |\Gamma|)"/>.</td>
 </tr>
 </tbody>
 </table>
@@ -208,7 +209,7 @@ The array must have a shape of <img class="math" src="../_images/math/3b704a4a61
     </div>
     <div class="footer">
         &copy; Copyright 2015, R. Bourquin.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
     </div>
   </body>
 </html>

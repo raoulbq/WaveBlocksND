@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -60,13 +58,16 @@
 <span id="about-the-propagator-class"></span><h2>About the <tt class="docutils literal"><span class="pre">Propagator</span></tt> class<a class="headerlink" href="#module-WaveBlocksND" title="Permalink to this headline">¶</a></h2>
 <p>The WaveBlocks Project</p>
 <p>&#64;author: R. Bourquin
-&#64;copyright: Copyright (C) 2010, 2011, 2012, 2013, 2014 R. Bourquin
+&#64;copyright: Copyright (C) 2010, 2011, 2012, 2013, 2014, 2015 R. Bourquin
 &#64;license: Modified BSD License</p>
 </div>
 <div class="section" id="inheritance-diagram">
 <h2>Inheritance diagram<a class="headerlink" href="#inheritance-diagram" title="Permalink to this headline">¶</a></h2>
 <p class="graphviz">
-<img src="../_images/inheritance-f5c610dd92bff36142a8dae3dee7ec83abf2065b.png" alt="Inheritance diagram of Propagator" class="inheritance"/>
+<img src="../_images/inheritance-8aab71ddbcfcd7f1aa1af0eb99a3243d39786f0a.png" alt="Inheritance diagram of Propagator" usemap="#inheritancebbe391b2a5" class="inheritance"/>
+<map id="inheritancebbe391b2a5" name="inheritancebbe391b2a5">
+<area shape="rect" id="node1" title="Propagators can numerically simulate the time evolution of quantum states" alt="" coords="5,5,172,31"/>
+</map>
 </p>
 </div>
 <div class="section" id="class-documentation">
@@ -75,13 +76,13 @@
 <dt id="WaveBlocksND.Propagator">
 <em class="property">class </em><tt class="descclassname">WaveBlocksND.</tt><tt class="descname">Propagator</tt><a class="headerlink" href="#WaveBlocksND.Propagator" title="Permalink to this definition">¶</a></dt>
 <dd><p>Propagators can numerically simulate the time evolution of quantum states
-<img class="math" src="../_images/math/d294992dbe3b5a0db02cd64a9e3e8d0966319a3e.png" alt="\psi(x,t)"/> as described by the time-dependent Schroedinger equation</p>
+<img class="math" src="../_images/math/f6ddc1d13565af7e1f5a25dcb3409f9e78beb2ae.png" alt="\psi(x,t)"/> as described by the time-dependent Schroedinger equation</p>
 <div class="math">
-<p><img src="../_images/math/1ee20407e448d9d05231f2581c07ff91535d009f.png" alt="i \varepsilon^2 \frac{\partial}{\partial t} \psi(x,t) = H \psi(x,t)"/></p>
-</div><p>where the semi-classical scaling parameter <img class="math" src="../_images/math/a42ffbf9adbf3b07afb6a1fc58005a37e9c445b8.png" alt="\varepsilon &gt; 0"/> is already included.
-The Hamiltonian operator <img class="math" src="../_images/math/b1902d279ba37d60bdce4e0e987b7cd19d48974e.png" alt="H"/> is defined as</p>
+<p><img src="../_images/math/5137638e7a89b45e7c23aa3731378d9ee4dea3a2.png" alt="i \varepsilon^2 \frac{\partial}{\partial t} \psi(x,t) = H \psi(x,t)"/></p>
+</div><p>where the semi-classical scaling parameter <img class="math" src="../_images/math/cd6eafa4bba4aa03fc36c58e65ea69a9b2aa1744.png" alt="\varepsilon &gt; 0"/> is already included.
+The Hamiltonian operator <img class="math" src="../_images/math/48f75e0b463f2fdb7fca9566cffdc439cae6967f.png" alt="H"/> is defined as</p>
 <div class="math">
-<p><img src="../_images/math/79f0936380728f5fa1b60d46ccfb55bd56212054.png" alt="H = T + V(x) = -\frac{\varepsilon^4}{2} \Delta + V(x)"/></p>
+<p><img src="../_images/math/69cec163be80c80b3245a070fcc1f0f85f23ee9e.png" alt="H = T + V(x) = -\frac{\varepsilon^4}{2} \Delta + V(x)"/></p>
 </div><dl class="method">
 <dt id="WaveBlocksND.Propagator.get_number_components">
 <tt class="descname">get_number_components</tt><big>(</big><big>)</big><a class="headerlink" href="#WaveBlocksND.Propagator.get_number_components" title="Permalink to this definition">¶</a></dt>
@@ -89,9 +90,9 @@ The Hamiltonian operator <img class="math" src="../_images/math/b1902d279ba37d60
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The number <img class="math" src="../_images/math/fc97ef67268cd4e91bacdf12b8901d7036c9a056.png" alt="N"/> components of <img class="math" src="../_images/math/d294992dbe3b5a0db02cd64a9e3e8d0966319a3e.png" alt="\psi(x,t)"/>.</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The number <img class="math" src="../_images/math/75e27f04188974063be3230dca208cd495b77ce1.png" alt="N"/> components of <img class="math" src="../_images/math/f6ddc1d13565af7e1f5a25dcb3409f9e78beb2ae.png" alt="\psi(x,t)"/>.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raise :</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">NotImplementedError</span></tt> This is an abstract base class.</td>
+<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">NotImplementedError</span></tt> This is an abstract base class.</td>
 </tr>
 </tbody>
 </table>
@@ -100,7 +101,7 @@ The Hamiltonian operator <img class="math" src="../_images/math/b1902d279ba37d60
 <dl class="method">
 <dt id="WaveBlocksND.Propagator.get_potential">
 <tt class="descname">get_potential</tt><big>(</big><big>)</big><a class="headerlink" href="#WaveBlocksND.Propagator.get_potential" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns the potential <img class="math" src="../_images/math/2e93af720b470a88780063377da0dd4f28e4a9f5.png" alt="V(x)"/> used for time propagation.</p>
+<dd><p>Returns the potential <img class="math" src="../_images/math/e0ec0629769ae6a9454173e71aa1df11f9209631.png" alt="V(x)"/> used for time propagation.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -114,7 +115,7 @@ The Hamiltonian operator <img class="math" src="../_images/math/b1902d279ba37d60
 <dl class="method">
 <dt id="WaveBlocksND.Propagator.post_propagate">
 <tt class="descname">post_propagate</tt><big>(</big><big>)</big><a class="headerlink" href="#WaveBlocksND.Propagator.post_propagate" title="Permalink to this definition">¶</a></dt>
-<dd><p>Given the wavefunction <img class="math" src="../_images/math/8ada738001410f131563551fb68731e4f302048d.png" alt="\psi"/> at final time <img class="math" src="../_images/math/2554b6496c3b678897e9b060ef00aa9f0a7d7ece.png" alt="T"/>,
+<dd><p>Given the wavefunction <img class="math" src="../_images/math/1a52481ac36eb889dcbbdcc0783ba2a755ba3547.png" alt="\psi"/> at final time <img class="math" src="../_images/math/6d42c88506b8da39a2a23653aecbfb7c29728063.png" alt="T"/>,
 perform some computations exactly once after running the ordinary
 time propagation and before each time simulation data will be saved.</p>
 <p>This method does not raise an exception but instead just does
@@ -124,7 +125,7 @@ nothing and returns.</p>
 <dl class="method">
 <dt id="WaveBlocksND.Propagator.pre_propagate">
 <tt class="descname">pre_propagate</tt><big>(</big><big>)</big><a class="headerlink" href="#WaveBlocksND.Propagator.pre_propagate" title="Permalink to this definition">¶</a></dt>
-<dd><p>Given the wavefunction <img class="math" src="../_images/math/8ada738001410f131563551fb68731e4f302048d.png" alt="\psi"/> at initial time <img class="math" src="../_images/math/10fde25257f32317828fde97047bbe76438b6305.png" alt="t_0"/>,
+<dd><p>Given the wavefunction <img class="math" src="../_images/math/1a52481ac36eb889dcbbdcc0783ba2a755ba3547.png" alt="\psi"/> at initial time <img class="math" src="../_images/math/fb761c2e199ad45ccf14767f48b88169479d840f.png" alt="t_0"/>,
 perform some computations exactly once before running the ordinary
 time propagation and after each time simulation data was saved.</p>
 <p>This method does not raise an exception but instead just does
@@ -134,14 +135,14 @@ nothing and returns.</p>
 <dl class="method">
 <dt id="WaveBlocksND.Propagator.propagate">
 <tt class="descname">propagate</tt><big>(</big><big>)</big><a class="headerlink" href="#WaveBlocksND.Propagator.propagate" title="Permalink to this definition">¶</a></dt>
-<dd><p>Given the wavefunction <img class="math" src="../_images/math/8ada738001410f131563551fb68731e4f302048d.png" alt="\psi"/> at time <img class="math" src="../_images/math/e0d2bf360290fd61d1c1557e763f2622363b3d35.png" alt="t"/>, calculate
-the new <img class="math" src="../_images/math/8ada738001410f131563551fb68731e4f302048d.png" alt="\psi"/> at time <img class="math" src="../_images/math/ec23131d24c4d6506e1f79d63c3fde827222ea71.png" alt="t + \tau"/>. We do exactly one timestep
-of size <img class="math" src="../_images/math/1dc1c0119a604b91be9142370dc3159b6a9bbcb9.png" alt="\tau"/> here.</p>
+<dd><p>Given the wavefunction <img class="math" src="../_images/math/1a52481ac36eb889dcbbdcc0783ba2a755ba3547.png" alt="\psi"/> at time <img class="math" src="../_images/math/ef9270877405055756d345facd044e4ab297f858.png" alt="t"/>, calculate
+the new <img class="math" src="../_images/math/1a52481ac36eb889dcbbdcc0783ba2a755ba3547.png" alt="\psi"/> at time <img class="math" src="../_images/math/248f20efaf95b4d4c73e23e7cb9ece1b73e10098.png" alt="t + \tau"/>. We do exactly one timestep
+of size <img class="math" src="../_images/math/d9e99c35d3632bb156b7aca0e93cd78a148a10e8.png" alt="\tau"/> here.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Raise :</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">NotImplementedError</span></tt> This is an abstract base class.</td>
+<tr class="field-odd field"><th class="field-name">Raise:</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">NotImplementedError</span></tt> This is an abstract base class.</td>
 </tr>
 </tbody>
 </table>
@@ -216,7 +217,7 @@ of size <img class="math" src="../_images/math/1dc1c0119a604b91be9142370dc3159b6
     </div>
     <div class="footer">
         &copy; Copyright 2015, R. Bourquin.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
     </div>
   </body>
 </html>

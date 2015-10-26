@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -60,13 +58,17 @@
 <span id="about-the-sparsityoraclegihawp-class"></span><h2>About the <tt class="docutils literal"><span class="pre">SparsityOracleGIHAWP</span></tt> class<a class="headerlink" href="#module-WaveBlocksND" title="Permalink to this headline">¶</a></h2>
 <p>The WaveBlocks Project</p>
 <p>&#64;author: R. Bourquin
-&#64;copyright: Copyright (C) 2010, 2011, 2012, 2013, 2014 R. Bourquin
+&#64;copyright: Copyright (C) 2010, 2011, 2012, 2013, 2014, 2015 R. Bourquin
 &#64;license: Modified BSD License</p>
 </div>
 <div class="section" id="inheritance-diagram">
 <h2>Inheritance diagram<a class="headerlink" href="#inheritance-diagram" title="Permalink to this headline">¶</a></h2>
 <p class="graphviz">
-<img src="../_images/inheritance-6d19a9c82621fecc3488bd5e7f4f09aeceede52a.png" alt="Inheritance diagram of SparsityOracleGIHAWP" class="inheritance"/>
+<img src="../_images/inheritance-ca5184c92de2d4a84168fe8ef057c0dc19b15ae2.png" alt="Inheritance diagram of SparsityOracleGIHAWP" usemap="#inheritance55dd11601a" class="inheritance"/>
+<map id="inheritance55dd11601a" name="inheritance55dd11601a">
+<area shape="rect" id="node1" title="This class defines the interface for general sparsity oracles." alt="" coords="5,5,217,31"/>
+<area shape="rect" id="node2" title="This class implements an oracle by looking at Gaussian integrals." alt="" coords="265,5,576,31"/>
+</map>
 </p>
 </div>
 <div class="section" id="class-documentation">
@@ -79,14 +81,14 @@
 <dt id="WaveBlocksND.SparsityOracleGIHAWP.__init__">
 <tt class="descname">__init__</tt><big>(</big><em>threshold=1e-08</em><big>)</big><a class="headerlink" href="#WaveBlocksND.SparsityOracleGIHAWP.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialize an oracle for estimating if a specific overlap integral
-<img class="math" src="../_images/math/22bf8cd0544d4fcdee1ab0676ef9f27f3bb93bf2.png" alt="\langle \Psi_k | O | \Psi_l \rangle"/> is approximately zero. The
-oracle works by approximating <img class="math" src="../_images/math/5ee12211b5a4bf055fe52c00dd38c17b4f0e6b31.png" alt="\langle \Psi_k | \Psi_l \rangle"/>
+<img class="math" src="../_images/math/7df36a73674cbe98302cfc61ef986eda2da297a9.png" alt="\langle \Psi_k | O | \Psi_l \rangle"/> is approximately zero. The
+oracle works by approximating <img class="math" src="../_images/math/ce0c4b4696ce724d8a8b5834af0224f54d1915cf.png" alt="\langle \Psi_k | \Psi_l \rangle"/>
 with a Gaussian integral. If</p>
 <div class="math">
-<p><img src="../_images/math/60c8b91b4877432514119c6c9643987fc701b7f3.png" alt="\langle \Psi_k | \Psi_l \rangle \approx \langle \Psi_k^G | \Psi_l^G \rangle \leq \tau"/></p>
-</div><p>the value <img class="math" src="../_images/math/22bf8cd0544d4fcdee1ab0676ef9f27f3bb93bf2.png" alt="\langle \Psi_k | O | \Psi_l \rangle"/> is considered
+<p><img src="../_images/math/0d444758e6543654d571516de66350a1246dfcaa.png" alt="\langle \Psi_k | \Psi_l \rangle \approx \langle \Psi_k^G | \Psi_l^G \rangle \leq \tau"/></p>
+</div><p>the value <img class="math" src="../_images/math/7df36a73674cbe98302cfc61ef986eda2da297a9.png" alt="\langle \Psi_k | O | \Psi_l \rangle"/> is considered
 to be zero. Of course this may fail depending on the form of the
-operator <img class="math" src="../_images/math/51da37d984564162c87710ca27bea422f657fb73.png" alt="O"/> or the basis shape <img class="math" src="../_images/math/e026c53d33036cab34ff37c543094cda14d04f7a.png" alt="\mathfrak{K}"/>.</p>
+operator <img class="math" src="../_images/math/f3f716e1c56d5ebdca97bb1546662b9e96f5be07.png" alt="O"/> or the basis shape <img class="math" src="../_images/math/6f43991b0a0bf1eb4a569c9ea9759ab1f699e1ac.png" alt="\mathfrak{K}"/>.</p>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
 <p class="last">This code is highly experimental.</p>
@@ -95,8 +97,8 @@ operator <img class="math" src="../_images/math/51da37d984564162c87710ca27bea422
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>threshold</strong> &#8211; The threshold <img class="math" src="../_images/math/1dc1c0119a604b91be9142370dc3159b6a9bbcb9.png" alt="\tau"/> in the Gaussian integral criterion.
-The default value of <img class="math" src="../_images/math/726ccb1c5b1dd30ff6544e6a48732f1caa842856.png" alt="10^{-8}"/> should be reasonable in most cases.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>threshold</strong> &#8211; The threshold <img class="math" src="../_images/math/d9e99c35d3632bb156b7aca0e93cd78a148a10e8.png" alt="\tau"/> in the Gaussian integral criterion.
+The default value of <img class="math" src="../_images/math/21657abf2dea8e36fed8ad9de97c6a7d36bb6953.png" alt="10^{-8}"/> should be reasonable in most cases.</td>
 </tr>
 </tbody>
 </table>
@@ -105,15 +107,15 @@ The default value of <img class="math" src="../_images/math/726ccb1c5b1dd30ff654
 <dl class="method">
 <dt id="WaveBlocksND.SparsityOracleGIHAWP.is_not_zero">
 <tt class="descname">is_not_zero</tt><big>(</big><em>pacbra</em>, <em>packet</em>, <em>component=None</em><big>)</big><a class="headerlink" href="#WaveBlocksND.SparsityOracleGIHAWP.is_not_zero" title="Permalink to this definition">¶</a></dt>
-<dd><p>Try to estimate if the overlap integral <img class="math" src="../_images/math/5ee12211b5a4bf055fe52c00dd38c17b4f0e6b31.png" alt="\langle \Psi_k | \Psi_l \rangle"/>
+<dd><p>Try to estimate if the overlap integral <img class="math" src="../_images/math/ce0c4b4696ce724d8a8b5834af0224f54d1915cf.png" alt="\langle \Psi_k | \Psi_l \rangle"/>
 is zero or at least negligible.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>pacbra</strong> &#8211; The packet <img class="math" src="../_images/math/f76b3949e23879c7cbb0dc98467513e6bc641533.png" alt="\Psi_k"/> that is used for the &#8216;bra&#8217; part.</li>
-<li><strong>packet</strong> &#8211; The packet <img class="math" src="../_images/math/4ec8b6e2f6fc0e44a018fdd47204524070282e7f.png" alt="\Psi_l"/> that is used for the &#8216;ket&#8217; part.</li>
+<li><strong>pacbra</strong> &#8211; The packet <img class="math" src="../_images/math/2b537b2bed799c31f526f1e071c8d0b37b508099.png" alt="\Psi_k"/> that is used for the &#8216;bra&#8217; part.</li>
+<li><strong>packet</strong> &#8211; The packet <img class="math" src="../_images/math/290e9536e6750ac11e6489d5484493b2a323447d.png" alt="\Psi_l"/> that is used for the &#8216;ket&#8217; part.</li>
 <li><strong>component</strong> &#8211; The component of the packet that is considered.</li>
 </ul>
 </td>
@@ -194,7 +196,7 @@ is zero or at least negligible.</p>
     </div>
     <div class="footer">
         &copy; Copyright 2015, R. Bourquin.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
     </div>
   </body>
 </html>

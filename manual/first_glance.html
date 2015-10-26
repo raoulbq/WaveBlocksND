@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -140,7 +138,8 @@ within your <cite>python path</cite>, otherwise you&#8217;ll have to adapt the e
 <tt class="docutils literal"><span class="pre">PYTHONPATH</span></tt>.</p>
 <p>For example if you place these two directories below <tt class="docutils literal"><span class="pre">~/python</span></tt> then you have
 to adapt the python path as follows:</p>
-<div class="highlight-python"><pre>export PYTHONPATH="$PYTHONPATH:~/python"</pre>
+<div class="highlight-python"><div class="highlight"><pre>export PYTHONPATH=&quot;$PYTHONPATH:~/python&quot;
+</pre></div>
 </div>
 <p>You can write this line into your .bashrc file or any comparable file for your
 default shell. (Otherwise this information is gone when you close the shell.)</p>
@@ -150,21 +149,25 @@ default shell. (Otherwise this information is gone when you close the shell.)</p
 <p>If you want to check out the source code from the repository, the necessary
 steps are similar. First check out the code (we assume here you want to use
 the <cite>master</cite> branch) into a new directory (here <tt class="docutils literal"><span class="pre">~/WB</span></tt>)</p>
-<div class="highlight-python"><pre>git clone https://github.com/raoulbq/WaveBlocksND.git ~/WB</pre>
+<div class="highlight-python"><div class="highlight"><pre>git clone https://github.com/raoulbq/WaveBlocksND.git ~/WB
+</pre></div>
 </div>
 <p>The directory listing should now look like</p>
-<div class="highlight-python"><pre>ls ~/WB/
-doc  examples  src</pre>
+<div class="highlight-python"><div class="highlight"><pre>ls ~/WB/
+doc  examples  src
+</pre></div>
 </div>
 <p>and we find the source code below src,</p>
-<div class="highlight-python"><pre>ls ~/WB/src
-plotters  scripts  sh  tests  WaveBlocksND</pre>
+<div class="highlight-python"><div class="highlight"><pre>ls ~/WB/src
+plotters  scripts  sh  tests  WaveBlocksND
+</pre></div>
 </div>
 <p>Assume we want to install any custom python software locally below <tt class="docutils literal"><span class="pre">~/python</span></tt>
 so we create this directory and put all the things there. We start with the
 <cite>numdifftools</cite> python package.</p>
-<div class="highlight-python"><pre>mkdir ~/python
-cp -r ~/WB/src/numdifftools/ ~/python</pre>
+<div class="highlight-python"><div class="highlight"><pre>mkdir ~/python
+cp -r ~/WB/src/numdifftools/ ~/python
+</pre></div>
 </div>
 <p>We can just copy the files as they won&#8217;t change in the git repository often. But
 it&#8217;s a wise idea not to copy <tt class="docutils literal"><span class="pre">~/WB/src/WaveBlocks</span></tt> but to instead use symbolic
@@ -172,11 +175,13 @@ links. (If you have multiple checkouts this is also a simple way to choose which
 one will be used when you just type <tt class="docutils literal"><span class="pre">import</span> <span class="pre">WaveBlocksND</span></tt> at a python prompt.
 This is similar to the alternatives framework in Debian.) You may just follow
 the shell command given here for a working sample setup.</p>
-<div class="highlight-python"><pre>ln -s ~/WB/src/WaveBlocksND WaveBlocksND</pre>
+<div class="highlight-python"><div class="highlight"><pre>ln -s ~/WB/src/WaveBlocksND WaveBlocksND
+</pre></div>
 </div>
 <p>Finally we have to adapt the python path to include the directory <tt class="docutils literal"><span class="pre">~/python</span></tt>
 which can be done as follows:</p>
-<div class="highlight-python"><pre>export PYTHONPATH="$PYTHONPATH:~/python"</pre>
+<div class="highlight-python"><div class="highlight"><pre>export PYTHONPATH=&quot;$PYTHONPATH:~/python&quot;
+</pre></div>
 </div>
 <p>You can write this last line into your <tt class="docutils literal"><span class="pre">.bashrc</span></tt> file or any comparable file
 for your default shell. (Otherwise this information is gone when you close the shell.)</p>
@@ -270,7 +275,7 @@ However, this has not yet been tested. The primary development platform is
     </div>
     <div class="footer">
         &copy; Copyright 2015, R. Bourquin.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
     </div>
   </body>
 </html>

@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -60,33 +58,37 @@
 <span id="about-the-hagedornpropagator-class"></span><h2>About the <tt class="docutils literal"><span class="pre">HagedornPropagator</span></tt> class<a class="headerlink" href="#module-WaveBlocksND" title="Permalink to this headline">¶</a></h2>
 <p>The WaveBlocks Project</p>
 <p>&#64;author: R. Bourquin
-&#64;copyright: Copyright (C) 2010, 2011, 2012, 2013, 2014 R. Bourquin
+&#64;copyright: Copyright (C) 2010, 2011, 2012, 2013, 2014, 2015 R. Bourquin
 &#64;license: Modified BSD License</p>
 </div>
 <div class="section" id="inheritance-diagram">
 <h2>Inheritance diagram<a class="headerlink" href="#inheritance-diagram" title="Permalink to this headline">¶</a></h2>
 <p class="graphviz">
-<img src="../_images/inheritance-12f862a07d050f1c229283c465bdd3ca149db35b.png" alt="Inheritance diagram of HagedornPropagator" class="inheritance"/>
+<img src="../_images/inheritance-cb75ca24397e78e468af91a00e5462e5154343be.png" alt="Inheritance diagram of HagedornPropagator" usemap="#inheritance81b4f97b95" class="inheritance"/>
+<map id="inheritance81b4f97b95" name="inheritance81b4f97b95">
+<area shape="rect" id="node1" title="This class can numerically propagate given initial values :math:`\Psi` in" alt="" coords="220,5,513,31"/>
+<area shape="rect" id="node2" title="Propagators can numerically simulate the time evolution of quantum states" alt="" coords="5,5,172,31"/>
+</map>
 </p>
 </div>
 <div class="section" id="class-documentation">
 <h2>Class documentation<a class="headerlink" href="#class-documentation" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="WaveBlocksND.HagedornPropagator">
-<em class="property">class </em><tt class="descclassname">WaveBlocksND.</tt><tt class="descname">HagedornPropagator</tt><big>(</big><em>parameters</em>, <em>potential</em>, <em>packets=</em><span class="optional">[</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#WaveBlocksND.HagedornPropagator" title="Permalink to this definition">¶</a></dt>
-<dd><p>This class can numerically propagate given initial values <img class="math" src="../_images/math/866f0204648be9ca6b10e14dd72295295dd53a79.png" alt="\Psi"/> in
-a potential <img class="math" src="../_images/math/2e93af720b470a88780063377da0dd4f28e4a9f5.png" alt="V(x)"/>. The propagation is done for a given set of homogeneous
+<em class="property">class </em><tt class="descclassname">WaveBlocksND.</tt><tt class="descname">HagedornPropagator</tt><big>(</big><em>parameters</em>, <em>potential</em>, <em>packets=[]</em><big>)</big><a class="headerlink" href="#WaveBlocksND.HagedornPropagator" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class can numerically propagate given initial values <img class="math" src="../_images/math/de6f6ec55da5bff04bdf591d5bb35136eb51b579.png" alt="\Psi"/> in
+a potential <img class="math" src="../_images/math/e0ec0629769ae6a9454173e71aa1df11f9209631.png" alt="V(x)"/>. The propagation is done for a given set of homogeneous
 Hagedorn wavepackets neglecting interaction.</p>
 <dl class="method">
 <dt id="WaveBlocksND.HagedornPropagator.add_wavepacket">
 <tt class="descname">add_wavepacket</tt><big>(</big><em>packet</em><big>)</big><a class="headerlink" href="#WaveBlocksND.HagedornPropagator.add_wavepacket" title="Permalink to this definition">¶</a></dt>
-<dd><p>Add a new wavepacket <img class="math" src="../_images/math/866f0204648be9ca6b10e14dd72295295dd53a79.png" alt="\Psi"/> to the list of propagated wavepackets.</p>
+<dd><p>Add a new wavepacket <img class="math" src="../_images/math/de6f6ec55da5bff04bdf591d5bb35136eb51b579.png" alt="\Psi"/> to the list of propagated wavepackets.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>packet</strong> (A tuple <img class="math" src="../_images/math/ece53230b0562cc065db5f118030d32032a1c83d.png" alt="(\Psi, \chi)"/> with <img class="math" src="../_images/math/866f0204648be9ca6b10e14dd72295295dd53a79.png" alt="\Psi"/> a <a class="reference internal" href="HagedornWavepacket.html#WaveBlocksND.HagedornWavepacket" title="WaveBlocksND.HagedornWavepacket"><tt class="xref py py-class docutils literal"><span class="pre">HagedornWavepacket</span></tt></a>
-instance and <img class="math" src="../_images/math/6dcb9b88aaa5f14312835145edf06fb2d0823c29.png" alt="\chi"/> an integer.) &#8211; The new wavepacket <img class="math" src="../_images/math/866f0204648be9ca6b10e14dd72295295dd53a79.png" alt="\Psi"/> and its leading component <img class="math" src="../_images/math/71bc11364eff8b03a6ff9c533a1997506bbf71fa.png" alt="\chi \in [0,N-1]"/>.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>packet</strong> (A tuple <img class="math" src="../_images/math/91989a06ae3d2582be4e597cf7efc43aaa76421a.png" alt="(\Psi, \chi)"/> with <img class="math" src="../_images/math/de6f6ec55da5bff04bdf591d5bb35136eb51b579.png" alt="\Psi"/> a <a class="reference internal" href="HagedornWavepacket.html#WaveBlocksND.HagedornWavepacket" title="WaveBlocksND.HagedornWavepacket"><tt class="xref py py-class docutils literal"><span class="pre">HagedornWavepacket</span></tt></a>
+instance and <img class="math" src="../_images/math/f632c791f693410fc1bf07ad7cb02c6fcfef9aed.png" alt="\chi"/> an integer.) &#8211; The new wavepacket <img class="math" src="../_images/math/de6f6ec55da5bff04bdf591d5bb35136eb51b579.png" alt="\Psi"/> and its leading component <img class="math" src="../_images/math/e42c974e4f72f1cc2a72c01ed46c711b29445e03.png" alt="\chi \in [0,N-1]"/>.</td>
 </tr>
 </tbody>
 </table>
@@ -99,7 +101,7 @@ instance and <img class="math" src="../_images/math/6dcb9b88aaa5f14312835145edf0
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The number <img class="math" src="../_images/math/fc97ef67268cd4e91bacdf12b8901d7036c9a056.png" alt="N"/> of components <img class="math" src="../_images/math/1a1372729059cb0703afe57f9402c351b5bf0e2d.png" alt="\Phi_i"/> of <img class="math" src="../_images/math/866f0204648be9ca6b10e14dd72295295dd53a79.png" alt="\Psi"/>.</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The number <img class="math" src="../_images/math/75e27f04188974063be3230dca208cd495b77ce1.png" alt="N"/> of components <img class="math" src="../_images/math/7e85868a38cec20390ec1816976ad68089bb2a48.png" alt="\Phi_i"/> of <img class="math" src="../_images/math/de6f6ec55da5bff04bdf591d5bb35136eb51b579.png" alt="\Psi"/>.</td>
 </tr>
 </tbody>
 </table>
@@ -108,7 +110,7 @@ instance and <img class="math" src="../_images/math/6dcb9b88aaa5f14312835145edf0
 <dl class="method">
 <dt id="WaveBlocksND.HagedornPropagator.get_potential">
 <tt class="descname">get_potential</tt><big>(</big><big>)</big><a class="headerlink" href="#WaveBlocksND.HagedornPropagator.get_potential" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns the potential <img class="math" src="../_images/math/2e93af720b470a88780063377da0dd4f28e4a9f5.png" alt="V(x)"/> used for time propagation.</p>
+<dd><p>Returns the potential <img class="math" src="../_images/math/e0ec0629769ae6a9454173e71aa1df11f9209631.png" alt="V(x)"/> used for time propagation.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -122,13 +124,13 @@ instance and <img class="math" src="../_images/math/6dcb9b88aaa5f14312835145edf0
 <dl class="method">
 <dt id="WaveBlocksND.HagedornPropagator.get_wavepackets">
 <tt class="descname">get_wavepackets</tt><big>(</big><em>packet=None</em><big>)</big><a class="headerlink" href="#WaveBlocksND.HagedornPropagator.get_wavepackets" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the wavepackets <img class="math" src="../_images/math/98260df03deba34d3043c3c0463575d28d8db4c6.png" alt="\{\Psi_i\}_i"/> that take part in the time propagation by the
+<dd><p>Return the wavepackets <img class="math" src="../_images/math/f208d849d195bf8aa2dcdee96350b0e486b7d291.png" alt="\{\Psi_i\}_i"/> that take part in the time propagation by the
 current <a class="reference internal" href="#WaveBlocksND.HagedornPropagator" title="WaveBlocksND.HagedornPropagator"><tt class="xref py py-class docutils literal"><span class="pre">HagedornPropagator</span></tt></a> instance.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>packet</strong> (Integer or <tt class="docutils literal"><span class="pre">None</span></tt>) &#8211; The index <img class="math" src="../_images/math/34857b3ba74ce5cd8607f3ebd23e9015908ada71.png" alt="i"/> (in this list) of a single packet <img class="math" src="../_images/math/7db5a45d4327ad6879f687c92d40ce584fa41d3f.png" alt="\Psi_i"/> that is
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>packet</strong> (Integer or <tt class="docutils literal"><span class="pre">None</span></tt>) &#8211; The index <img class="math" src="../_images/math/a581f053bbfa5115f42c13094857cdd12a37ec49.png" alt="i"/> (in this list) of a single packet <img class="math" src="../_images/math/034b3ac6431b79d3aa58a3ebe8c185f94fc75713.png" alt="\Psi_i"/> that is
 to be returned. If set to <tt class="docutils literal"><span class="pre">None</span></tt> (default) return the full list with all packets.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A list of <a class="reference internal" href="HagedornWavepacket.html#WaveBlocksND.HagedornWavepacket" title="WaveBlocksND.HagedornWavepacket"><tt class="xref py py-class docutils literal"><span class="pre">HagedornWavepacket</span></tt></a> instances or a single instance.</td>
@@ -140,7 +142,7 @@ to be returned. If set to <tt class="docutils literal"><span class="pre">None</s
 <dl class="method">
 <dt id="WaveBlocksND.HagedornPropagator.post_propagate">
 <tt class="descname">post_propagate</tt><big>(</big><big>)</big><a class="headerlink" href="#WaveBlocksND.HagedornPropagator.post_propagate" title="Permalink to this definition">¶</a></dt>
-<dd><p>Given the wavefunction <img class="math" src="../_images/math/8ada738001410f131563551fb68731e4f302048d.png" alt="\psi"/> at final time <img class="math" src="../_images/math/2554b6496c3b678897e9b060ef00aa9f0a7d7ece.png" alt="T"/>,
+<dd><p>Given the wavefunction <img class="math" src="../_images/math/1a52481ac36eb889dcbbdcc0783ba2a755ba3547.png" alt="\psi"/> at final time <img class="math" src="../_images/math/6d42c88506b8da39a2a23653aecbfb7c29728063.png" alt="T"/>,
 perform some computations exactly once after running the ordinary
 time propagation and before each time simulation data will be saved.</p>
 <p>This method does not raise an exception but instead just does
@@ -150,7 +152,7 @@ nothing and returns.</p>
 <dl class="method">
 <dt id="WaveBlocksND.HagedornPropagator.pre_propagate">
 <tt class="descname">pre_propagate</tt><big>(</big><big>)</big><a class="headerlink" href="#WaveBlocksND.HagedornPropagator.pre_propagate" title="Permalink to this definition">¶</a></dt>
-<dd><p>Given the wavefunction <img class="math" src="../_images/math/8ada738001410f131563551fb68731e4f302048d.png" alt="\psi"/> at initial time <img class="math" src="../_images/math/10fde25257f32317828fde97047bbe76438b6305.png" alt="t_0"/>,
+<dd><p>Given the wavefunction <img class="math" src="../_images/math/1a52481ac36eb889dcbbdcc0783ba2a755ba3547.png" alt="\psi"/> at initial time <img class="math" src="../_images/math/fb761c2e199ad45ccf14767f48b88169479d840f.png" alt="t_0"/>,
 perform some computations exactly once before running the ordinary
 time propagation and after each time simulation data was saved.</p>
 <p>This method does not raise an exception but instead just does
@@ -160,22 +162,22 @@ nothing and returns.</p>
 <dl class="method">
 <dt id="WaveBlocksND.HagedornPropagator.propagate">
 <tt class="descname">propagate</tt><big>(</big><big>)</big><a class="headerlink" href="#WaveBlocksND.HagedornPropagator.propagate" title="Permalink to this definition">¶</a></dt>
-<dd><p>Given a wavepacket <img class="math" src="../_images/math/866f0204648be9ca6b10e14dd72295295dd53a79.png" alt="\Psi"/> at time <img class="math" src="../_images/math/e0d2bf360290fd61d1c1557e763f2622363b3d35.png" alt="t"/> compute the propagated
-wavepacket at time <img class="math" src="../_images/math/ec23131d24c4d6506e1f79d63c3fde827222ea71.png" alt="t + \tau"/>. We perform exactly one timestep of size
-<img class="math" src="../_images/math/1dc1c0119a604b91be9142370dc3159b6a9bbcb9.png" alt="\tau"/> here. This propagation is done for all packets in the list
-<img class="math" src="../_images/math/98260df03deba34d3043c3c0463575d28d8db4c6.png" alt="\{\Psi_i\}_i"/> and neglects any interaction between two packets.</p>
+<dd><p>Given a wavepacket <img class="math" src="../_images/math/de6f6ec55da5bff04bdf591d5bb35136eb51b579.png" alt="\Psi"/> at time <img class="math" src="../_images/math/ef9270877405055756d345facd044e4ab297f858.png" alt="t"/> compute the propagated
+wavepacket at time <img class="math" src="../_images/math/248f20efaf95b4d4c73e23e7cb9ece1b73e10098.png" alt="t + \tau"/>. We perform exactly one timestep of size
+<img class="math" src="../_images/math/d9e99c35d3632bb156b7aca0e93cd78a148a10e8.png" alt="\tau"/> here. This propagation is done for all packets in the list
+<img class="math" src="../_images/math/f208d849d195bf8aa2dcdee96350b0e486b7d291.png" alt="\{\Psi_i\}_i"/> and neglects any interaction between two packets.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="WaveBlocksND.HagedornPropagator.set_wavepackets">
 <tt class="descname">set_wavepackets</tt><big>(</big><em>packetlist</em><big>)</big><a class="headerlink" href="#WaveBlocksND.HagedornPropagator.set_wavepackets" title="Permalink to this definition">¶</a></dt>
-<dd><p>Set the list <img class="math" src="../_images/math/98260df03deba34d3043c3c0463575d28d8db4c6.png" alt="\{\Psi_i\}_i"/> of wavepackets that the propagator will propagate.</p>
+<dd><p>Set the list <img class="math" src="../_images/math/f208d849d195bf8aa2dcdee96350b0e486b7d291.png" alt="\{\Psi_i\}_i"/> of wavepackets that the propagator will propagate.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>packetlist</strong> (A list of <img class="math" src="../_images/math/67566ee1f1925f4eaffa83e5514500648848e910.png" alt="(\Psi_i, \chi_i)"/> tuples.) &#8211; A list of new wavepackets <img class="math" src="../_images/math/7db5a45d4327ad6879f687c92d40ce584fa41d3f.png" alt="\Psi_i"/> and their
-leading components <img class="math" src="../_images/math/a5322621e2d50ee17566bcf467769fc0d47710a9.png" alt="\chi_i"/> to propagate.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>packetlist</strong> (A list of <img class="math" src="../_images/math/216cfab30f07c1916ba38cc380c04fe84c4c0834.png" alt="(\Psi_i, \chi_i)"/> tuples.) &#8211; A list of new wavepackets <img class="math" src="../_images/math/034b3ac6431b79d3aa58a3ebe8c185f94fc75713.png" alt="\Psi_i"/> and their
+leading components <img class="math" src="../_images/math/cc6ea38e465ef83538fbafda2a991a84b3bdb5b1.png" alt="\chi_i"/> to propagate.</td>
 </tr>
 </tbody>
 </table>
@@ -250,7 +252,7 @@ leading components <img class="math" src="../_images/math/a5322621e2d50ee17566bc
     </div>
     <div class="footer">
         &copy; Copyright 2015, R. Bourquin.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
     </div>
   </body>
 </html>

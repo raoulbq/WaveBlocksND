@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -60,13 +58,16 @@
 <span id="about-the-gaussianintegral-class"></span><h2>About the <tt class="docutils literal"><span class="pre">GaussianIntegral</span></tt> class<a class="headerlink" href="#module-WaveBlocksND" title="Permalink to this headline">¶</a></h2>
 <p>The WaveBlocks Project</p>
 <p>&#64;author: R. Bourquin
-&#64;copyright: Copyright (C) 2010, 2011, 2012, 2013, 2014 R. Bourquin
+&#64;copyright: Copyright (C) 2010, 2011, 2012, 2013, 2014, 2015 R. Bourquin
 &#64;license: Modified BSD License</p>
 </div>
 <div class="section" id="inheritance-diagram">
 <h2>Inheritance diagram<a class="headerlink" href="#inheritance-diagram" title="Permalink to this headline">¶</a></h2>
 <p class="graphviz">
-<img src="../_images/inheritance-a4d953141b38e5d1611312ca6542e719eeeb8193.png" alt="Inheritance diagram of GaussianIntegral" class="inheritance"/>
+<img src="../_images/inheritance-f2414818a43d0ef5eb678d8467b30b68fe98fe2f.png" alt="Inheritance diagram of GaussianIntegral" usemap="#inheritance9feee25677" class="inheritance"/>
+<map id="inheritance9feee25677" name="inheritance9feee25677">
+<area shape="rect" id="node2" title="This class is an abstract interface to quadratures in general." alt="" coords="5,5,177,31"/>
+</map>
 </p>
 </div>
 <div class="section" id="class-documentation">
@@ -77,10 +78,10 @@
 <dd><dl class="method">
 <dt id="WaveBlocksND.GaussianIntegral.exact_result_gauss">
 <tt class="descname">exact_result_gauss</tt><big>(</big><em>Pibra</em>, <em>Piket</em>, <em>D</em>, <em>eps</em><big>)</big><a class="headerlink" href="#WaveBlocksND.GaussianIntegral.exact_result_gauss" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute the overlap integral <img class="math" src="../_images/math/46928223a06e0b954c0c4267cafd850dff5e4a19.png" alt="\langle \phi_{\underline{0}} | \phi_{\underline{0}} \rangle"/>
-of the groundstate <img class="math" src="../_images/math/67d977cfcf1e4b7afbe2e4d51b98020b9e67152b.png" alt="\phi_{\underline{0}}"/> by using the symbolic formula:</p>
+<dd><p>Compute the overlap integral <img class="math" src="../_images/math/81a21480d434168026ac220b87b5f113895d60fe.png" alt="\langle \phi_{\underline{0}} | \phi_{\underline{0}} \rangle"/>
+of the groundstate <img class="math" src="../_images/math/f44738a88e4c0e52b5c558009f60c4accc3fea18.png" alt="\phi_{\underline{0}}"/> by using the symbolic formula:</p>
 <div class="math">
-<p><img src="../_images/math/f2f6e7cb68c9a47d34d36a0fdcbd87848b421c69.png" alt="\langle \phi_{\underline{0}} | \phi_{\underline{0}} \rangle
+<p><img src="../_images/math/978f698d15acbd733654f72f99389d36d3ae7403.png" alt="\langle \phi_{\underline{0}} | \phi_{\underline{0}} \rangle
 &amp; = \int C \exp\left(-\frac{1}{2} \underline{x}^{\mathrm{T}} \mathbf{A} \underline{x}
                +\underline{b}^{\mathrm{T}} \underline{x}
                + c
@@ -89,11 +90,11 @@ of the groundstate <img class="math" src="../_images/math/67d977cfcf1e4b7afbe2e4
   \exp\left(-\frac{1}{2} \underline{b}^{\mathrm{T}} \mathbf{A}^{-\mathrm{H}} \underline{b}\right)
   \exp\left(c\right)"/></p>
 </div><p>In a first step we combine the exponential parts of both wavepackets into
-<img class="math" src="../_images/math/e556dd03d39453f128869ff04a5099ef36838912.png" alt="\underline{x}^{\mathrm{H}} \mathbf{A} \underline{x} + \underline{b}^{\mathrm{T}} \underline{x} + c"/>.
-Then we transform <img class="math" src="../_images/math/f3e830722dede854af533bfa96d549c68ed5997f.png" alt="\mathbf{A}"/>, <img class="math" src="../_images/math/d56cd1d33703c2415169af21967a9cdc3a65b622.png" alt="\underline{b}"/> and <img class="math" src="../_images/math/3372c1cb6d68cf97c2d231acc0b47b95a9ed04cc.png" alt="c"/>
+<img class="math" src="../_images/math/94200245ead328983a7759ac13db5af6fecb2283.png" alt="\underline{x}^{\mathrm{H}} \mathbf{A} \underline{x} + \underline{b}^{\mathrm{T}} \underline{x} + c"/>.
+Then we transform <img class="math" src="../_images/math/3986f9b8ba3bd56d09ce9ff731826e829e72d8ea.png" alt="\mathbf{A}"/>, <img class="math" src="../_images/math/fca931570b68cd0a7b9a36eeed67ab77c6c6a1f3.png" alt="\underline{b}"/> and <img class="math" src="../_images/math/65868d23a5bfe5b3b2d819386b19c14fa36af134.png" alt="c"/>
 such that this matches the integrand above. The necessary transformations read:</p>
 <div class="math">
-<p><img src="../_images/math/ffdd1f485cf4efe52e9cf82e515bd2b42f68514d.png" alt="\mathbf{A}^{\prime} &amp;= -2 \frac{i}{\varepsilon^2} \mathbf{A} \\
+<p><img src="../_images/math/0d66f974f1192b73a3b6a78df96a9ab09b5f19ce.png" alt="\mathbf{A}^{\prime} &amp;= -2 \frac{i}{\varepsilon^2} \mathbf{A} \\
 \underline{b}^{\prime} &amp;= \frac{i}{\varepsilon^2} \underline{b} \\
 c &amp;= \frac{i}{\varepsilon^2} c"/></p>
 </div><p>Note that this is an internal method and usually there is no
@@ -103,14 +104,14 @@ reason to call it from outside.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>Pibra</strong> &#8211; The parameter set <img class="math" src="../_images/math/dc0a7d610b102d49d9ea52e4e525404b383cd1c9.png" alt="\Pi = \{q_1,p_1,Q_1,P_1\}"/> of the bra <img class="math" src="../_images/math/fc7947c5545134abcf971ae8dc8964ec2e127067.png" alt="\langle \phi_0 |"/>.</li>
-<li><strong>Piket</strong> &#8211; The parameter set <img class="math" src="../_images/math/9fe1d9a02a6f2d21b8d4a5e640569ac59841ca58.png" alt="\Pi^\prime = \{q_2,p_2,Q_2,P_2\}"/> of the ket <img class="math" src="../_images/math/45ecf9388ad2253c511af1f6758cbad4344cfa37.png" alt="| \phi_0 \rangle"/>.</li>
-<li><strong>D</strong> &#8211; The space dimension <img class="math" src="../_images/math/9ffb448918db29f2a72f8f87f421b3b3cad18f95.png" alt="D"/> the packets have.</li>
-<li><strong>eps</strong> &#8211; The semi-classical scaling parameter <img class="math" src="../_images/math/e2a63918a6fa75b62ad87ad17aaf65f782d71546.png" alt="\varepsilon"/>.</li>
+<li><strong>Pibra</strong> &#8211; The parameter set <img class="math" src="../_images/math/4def07ca0bd48ba37c217fe217a8a1e57f61ae60.png" alt="\Pi = \{q_1,p_1,Q_1,P_1\}"/> of the bra <img class="math" src="../_images/math/7f94126a3b1e093d548cbd4fe0bb358a88007518.png" alt="\langle \phi_0 |"/>.</li>
+<li><strong>Piket</strong> &#8211; The parameter set <img class="math" src="../_images/math/f4cca922f58693378a7d1c37e33506ccfef7f7aa.png" alt="\Pi^\prime = \{q_2,p_2,Q_2,P_2\}"/> of the ket <img class="math" src="../_images/math/3282208e57910464b25ec39fe4afbc823165e803.png" alt="| \phi_0 \rangle"/>.</li>
+<li><strong>D</strong> &#8211; The space dimension <img class="math" src="../_images/math/9dfa31437b58c0473299320aa638151cd88cf61b.png" alt="D"/> the packets have.</li>
+<li><strong>eps</strong> &#8211; The semi-classical scaling parameter <img class="math" src="../_images/math/f348c73e654151e416e3c525b2ff7803590754ce.png" alt="\varepsilon"/>.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The value of the integral <img class="math" src="../_images/math/46928223a06e0b954c0c4267cafd850dff5e4a19.png" alt="\langle \phi_{\underline{0}} | \phi_{\underline{0}} \rangle"/>.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The value of the integral <img class="math" src="../_images/math/81a21480d434168026ac220b87b5f113895d60fe.png" alt="\langle \phi_{\underline{0}} | \phi_{\underline{0}} \rangle"/>.</p>
 </td>
 </tr>
 </tbody>
@@ -194,15 +195,15 @@ wavepackets can be used for the &#8216;bra&#8217; as well as the &#8216;ket&#821
 <dl class="method">
 <dt id="WaveBlocksND.GaussianIntegral.perform_build_matrix">
 <tt class="descname">perform_build_matrix</tt><big>(</big><em>row</em>, <em>col</em><big>)</big><a class="headerlink" href="#WaveBlocksND.GaussianIntegral.perform_build_matrix" title="Permalink to this definition">¶</a></dt>
-<dd><p>Computes the matrix elements <img class="math" src="../_images/math/4b2b4880902cdf2895aaf792c7579d7d9fa888ef.png" alt="\langle\Phi_i |\Phi^\prime_j\rangle"/>
+<dd><p>Computes the matrix elements <img class="math" src="../_images/math/803df1c04ca5fe42c35c60666fad39826e64d8d0.png" alt="\langle\Phi_i |\Phi^\prime_j\rangle"/>
 by an exact symbolic formula.</p>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
 <p class="last">This method does only take into account the ground state
-basis components <img class="math" src="../_images/math/67d977cfcf1e4b7afbe2e4d51b98020b9e67152b.png" alt="\phi_{\underline{0}}"/> from both,
-the &#8216;bra&#8217; and the &#8216;ket&#8217;. If the wavepacket <img class="math" src="../_images/math/b85bbfb165b853d6f5f9734be4cdabbb453f4e43.png" alt="\Phi"/>
-contains higher order basis functions <img class="math" src="../_images/math/31f630cbb883e322f18099d263834a8dbbf569a1.png" alt="\phi_{\underline{k}}"/>
-with non-zero coefficients <img class="math" src="../_images/math/e7370b36da0eef5309c309fa81e8c742f709205e.png" alt="c_{\underline{k}}"/>, the inner products
+basis components <img class="math" src="../_images/math/f44738a88e4c0e52b5c558009f60c4accc3fea18.png" alt="\phi_{\underline{0}}"/> from both,
+the &#8216;bra&#8217; and the &#8216;ket&#8217;. If the wavepacket <img class="math" src="../_images/math/a3b52a61e132c13aa1267b45b1f8fb2fe7f06408.png" alt="\Phi"/>
+contains higher order basis functions <img class="math" src="../_images/math/8e43247b6a1af132c40ac8ff73d577864868610c.png" alt="\phi_{\underline{k}}"/>
+with non-zero coefficients <img class="math" src="../_images/math/7df4a0d2d9c81f2f544f4ce8185424d6e0bcc147.png" alt="c_{\underline{k}}"/>, the inner products
 computed are wrong! There is also no warning about that.</p>
 </div>
 <table class="docutils field-list" frame="void" rules="none">
@@ -210,12 +211,12 @@ computed are wrong! There is also no warning about that.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>row</strong> &#8211; The index <img class="math" src="../_images/math/34857b3ba74ce5cd8607f3ebd23e9015908ada71.png" alt="i"/> of the component <img class="math" src="../_images/math/1a1372729059cb0703afe57f9402c351b5bf0e2d.png" alt="\Phi_i"/> of <img class="math" src="../_images/math/866f0204648be9ca6b10e14dd72295295dd53a79.png" alt="\Psi"/>.</li>
-<li><strong>row</strong> &#8211; The index <img class="math" src="../_images/math/8122aa89ea6e80784c6513d22787ad86e36ad0cc.png" alt="j"/> of the component <img class="math" src="../_images/math/98f130cebb4aa36b7dad3e83d1f8e748b47f8002.png" alt="\Phi^\prime_j"/> of <img class="math" src="../_images/math/ed0eb7d94f64ded093e1e0a8159ca93be0ffb20d.png" alt="\Psi^\prime"/>.</li>
+<li><strong>row</strong> &#8211; The index <img class="math" src="../_images/math/a581f053bbfa5115f42c13094857cdd12a37ec49.png" alt="i"/> of the component <img class="math" src="../_images/math/7e85868a38cec20390ec1816976ad68089bb2a48.png" alt="\Phi_i"/> of <img class="math" src="../_images/math/de6f6ec55da5bff04bdf591d5bb35136eb51b579.png" alt="\Psi"/>.</li>
+<li><strong>row</strong> &#8211; The index <img class="math" src="../_images/math/d32c78b759903e3f4bd4fd2ce0b86358f7500c5d.png" alt="j"/> of the component <img class="math" src="../_images/math/924ace1c8e81589280984b0fa6b0a5808fc5ec37.png" alt="\Phi^\prime_j"/> of <img class="math" src="../_images/math/421b68b30d0b8cc1ee3218ee97c944438c36c933.png" alt="\Psi^\prime"/>.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A complex valued matrix of shape <img class="math" src="../_images/math/c09d000f17e4e101ea23830d12328f6bb3b50220.png" alt="|\mathfrak{K}_i| \times |\mathfrak{K}^\prime_j|"/>.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A complex valued matrix of shape <img class="math" src="../_images/math/60dd313b71dcb52ef5cc0ba8c42b5cce2b859872.png" alt="|\mathfrak{K}_i| \times |\mathfrak{K}^\prime_j|"/>.</p>
 </td>
 </tr>
 </tbody>
@@ -225,15 +226,15 @@ computed are wrong! There is also no warning about that.</p>
 <dl class="method">
 <dt id="WaveBlocksND.GaussianIntegral.perform_quadrature">
 <tt class="descname">perform_quadrature</tt><big>(</big><em>row</em>, <em>col</em><big>)</big><a class="headerlink" href="#WaveBlocksND.GaussianIntegral.perform_quadrature" title="Permalink to this definition">¶</a></dt>
-<dd><p>Evaluates the integral <img class="math" src="../_images/math/18016f56a75a1ef67ffffddb003d6553bdf325e9.png" alt="\langle \Phi_i | \Phi^\prime_j \rangle"/>
+<dd><p>Evaluates the integral <img class="math" src="../_images/math/5e7fecb3ab78459ce4114f10754d5794b3ec0760.png" alt="\langle \Phi_i | \Phi^\prime_j \rangle"/>
 by an exact symbolic formula.</p>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
 <p class="last">This method does only take into account the ground state
-basis components <img class="math" src="../_images/math/67d977cfcf1e4b7afbe2e4d51b98020b9e67152b.png" alt="\phi_{\underline{0}}"/> from both,
-the &#8216;bra&#8217; and the &#8216;ket&#8217;. If the wavepacket <img class="math" src="../_images/math/b85bbfb165b853d6f5f9734be4cdabbb453f4e43.png" alt="\Phi"/>
-contains higher order basis functions <img class="math" src="../_images/math/31f630cbb883e322f18099d263834a8dbbf569a1.png" alt="\phi_{\underline{k}}"/>
-with non-zero coefficients <img class="math" src="../_images/math/e7370b36da0eef5309c309fa81e8c742f709205e.png" alt="c_{\underline{k}}"/>, the inner products
+basis components <img class="math" src="../_images/math/f44738a88e4c0e52b5c558009f60c4accc3fea18.png" alt="\phi_{\underline{0}}"/> from both,
+the &#8216;bra&#8217; and the &#8216;ket&#8217;. If the wavepacket <img class="math" src="../_images/math/a3b52a61e132c13aa1267b45b1f8fb2fe7f06408.png" alt="\Phi"/>
+contains higher order basis functions <img class="math" src="../_images/math/8e43247b6a1af132c40ac8ff73d577864868610c.png" alt="\phi_{\underline{k}}"/>
+with non-zero coefficients <img class="math" src="../_images/math/7df4a0d2d9c81f2f544f4ce8185424d6e0bcc147.png" alt="c_{\underline{k}}"/>, the inner products
 computed are wrong! There is also no warning about that.</p>
 </div>
 <table class="docutils field-list" frame="void" rules="none">
@@ -241,8 +242,8 @@ computed are wrong! There is also no warning about that.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>row</strong> &#8211; The index <img class="math" src="../_images/math/34857b3ba74ce5cd8607f3ebd23e9015908ada71.png" alt="i"/> of the component <img class="math" src="../_images/math/1a1372729059cb0703afe57f9402c351b5bf0e2d.png" alt="\Phi_i"/> of <img class="math" src="../_images/math/866f0204648be9ca6b10e14dd72295295dd53a79.png" alt="\Psi"/>.</li>
-<li><strong>row</strong> &#8211; The index <img class="math" src="../_images/math/8122aa89ea6e80784c6513d22787ad86e36ad0cc.png" alt="j"/> of the component <img class="math" src="../_images/math/98f130cebb4aa36b7dad3e83d1f8e748b47f8002.png" alt="\Phi^\prime_j"/> of <img class="math" src="../_images/math/ed0eb7d94f64ded093e1e0a8159ca93be0ffb20d.png" alt="\Psi^\prime"/>.</li>
+<li><strong>row</strong> &#8211; The index <img class="math" src="../_images/math/a581f053bbfa5115f42c13094857cdd12a37ec49.png" alt="i"/> of the component <img class="math" src="../_images/math/7e85868a38cec20390ec1816976ad68089bb2a48.png" alt="\Phi_i"/> of <img class="math" src="../_images/math/de6f6ec55da5bff04bdf591d5bb35136eb51b579.png" alt="\Psi"/>.</li>
+<li><strong>row</strong> &#8211; The index <img class="math" src="../_images/math/d32c78b759903e3f4bd4fd2ce0b86358f7500c5d.png" alt="j"/> of the component <img class="math" src="../_images/math/924ace1c8e81589280984b0fa6b0a5808fc5ec37.png" alt="\Phi^\prime_j"/> of <img class="math" src="../_images/math/421b68b30d0b8cc1ee3218ee97c944438c36c933.png" alt="\Psi^\prime"/>.</li>
 </ul>
 </td>
 </tr>
@@ -257,18 +258,18 @@ computed are wrong! There is also no warning about that.</p>
 <dt id="WaveBlocksND.GaussianIntegral.prepare">
 <tt class="descname">prepare</tt><big>(</big><em>rows</em>, <em>cols</em><big>)</big><a class="headerlink" href="#WaveBlocksND.GaussianIntegral.prepare" title="Permalink to this definition">¶</a></dt>
 <dd><p>Precompute some values needed for evaluating the integral
-<img class="math" src="../_images/math/18016f56a75a1ef67ffffddb003d6553bdf325e9.png" alt="\langle \Phi_i | \Phi^\prime_j \rangle"/> or the corresponding
-matrix over the basis functions of <img class="math" src="../_images/math/1a1372729059cb0703afe57f9402c351b5bf0e2d.png" alt="\Phi_i"/> and <img class="math" src="../_images/math/98f130cebb4aa36b7dad3e83d1f8e748b47f8002.png" alt="\Phi^\prime_j"/>.
+<img class="math" src="../_images/math/5e7fecb3ab78459ce4114f10754d5794b3ec0760.png" alt="\langle \Phi_i | \Phi^\prime_j \rangle"/> or the corresponding
+matrix over the basis functions of <img class="math" src="../_images/math/7e85868a38cec20390ec1816976ad68089bb2a48.png" alt="\Phi_i"/> and <img class="math" src="../_images/math/924ace1c8e81589280984b0fa6b0a5808fc5ec37.png" alt="\Phi^\prime_j"/>.
 Note that this function does nothing in the current implementation.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>rows</strong> &#8211; A list of all <img class="math" src="../_images/math/34857b3ba74ce5cd8607f3ebd23e9015908ada71.png" alt="i"/> with <img class="math" src="../_images/math/1fbdc3f84fab4719570e6b6299cccc3edae6ee9d.png" alt="0 \leq i \leq N"/>
-selecting the <img class="math" src="../_images/math/1a1372729059cb0703afe57f9402c351b5bf0e2d.png" alt="\Phi_i"/> for which we precompute values.</li>
-<li><strong>cols</strong> &#8211; A list of all <img class="math" src="../_images/math/8122aa89ea6e80784c6513d22787ad86e36ad0cc.png" alt="j"/> with <img class="math" src="../_images/math/860d6b2c72824bd731c4cb8ec520b50fa9c8ca56.png" alt="0 \leq j \leq N"/>
-selecting the <img class="math" src="../_images/math/98f130cebb4aa36b7dad3e83d1f8e748b47f8002.png" alt="\Phi^\prime_j"/> for which we precompute values.</li>
+<li><strong>rows</strong> &#8211; A list of all <img class="math" src="../_images/math/a581f053bbfa5115f42c13094857cdd12a37ec49.png" alt="i"/> with <img class="math" src="../_images/math/c641334893af173dd5b3030f99548af3d0e9ec30.png" alt="0 \leq i \leq N"/>
+selecting the <img class="math" src="../_images/math/7e85868a38cec20390ec1816976ad68089bb2a48.png" alt="\Phi_i"/> for which we precompute values.</li>
+<li><strong>cols</strong> &#8211; A list of all <img class="math" src="../_images/math/d32c78b759903e3f4bd4fd2ce0b86358f7500c5d.png" alt="j"/> with <img class="math" src="../_images/math/8b74560b070d7dc4a60efb67b313b253b717f9ce.png" alt="0 \leq j \leq N"/>
+selecting the <img class="math" src="../_images/math/924ace1c8e81589280984b0fa6b0a5808fc5ec37.png" alt="\Phi^\prime_j"/> for which we precompute values.</li>
 </ul>
 </td>
 </tr>
@@ -359,7 +360,7 @@ selecting the <img class="math" src="../_images/math/98f130cebb4aa36b7dad3e83d1f
     </div>
     <div class="footer">
         &copy; Copyright 2015, R. Bourquin.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
     </div>
   </body>
 </html>

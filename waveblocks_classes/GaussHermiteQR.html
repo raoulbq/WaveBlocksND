@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -60,13 +58,17 @@
 <span id="about-the-gausshermiteqr-class"></span><h2>About the <tt class="docutils literal"><span class="pre">GaussHermiteQR</span></tt> class<a class="headerlink" href="#module-WaveBlocksND" title="Permalink to this headline">¶</a></h2>
 <p>The WaveBlocks Project</p>
 <p>&#64;author: R. Bourquin
-&#64;copyright: Copyright (C) 2010, 2011, 2012, 2013, 2014 R. Bourquin
+&#64;copyright: Copyright (C) 2010, 2011, 2012, 2013, 2014, 2015 R. Bourquin
 &#64;license: Modified BSD License</p>
 </div>
 <div class="section" id="inheritance-diagram">
 <h2>Inheritance diagram<a class="headerlink" href="#inheritance-diagram" title="Permalink to this headline">¶</a></h2>
 <p class="graphviz">
-<img src="../_images/inheritance-8c64f93a3abb3d11e6acc05a2a13acb6c466be71.png" alt="Inheritance diagram of GaussHermiteQR" class="inheritance"/>
+<img src="../_images/inheritance-96ad974ae476d4e24ba65e10d6fffefa4ff4969f.png" alt="Inheritance diagram of GaussHermiteQR" usemap="#inheritancea39d86ac31" class="inheritance"/>
+<map id="inheritancea39d86ac31" name="inheritancea39d86ac31">
+<area shape="rect" id="node1" title="This class implements a Gauss&#45;Hermite quadrature rule." alt="" coords="277,5,524,31"/>
+<area shape="rect" id="node2" title="This class is an abstract interface to quadrature rules in general." alt="" coords="5,5,229,31"/>
+</map>
 </p>
 </div>
 <div class="section" id="class-documentation">
@@ -91,7 +93,7 @@ never contains any data.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The space dimension <img class="math" src="../_images/math/9ffb448918db29f2a72f8f87f421b3b3cad18f95.png" alt="D"/> of the quadrature rule.</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The space dimension <img class="math" src="../_images/math/9dfa31437b58c0473299320aa638151cd88cf61b.png" alt="D"/> of the quadrature rule.</td>
 </tr>
 </tbody>
 </table>
@@ -100,12 +102,12 @@ never contains any data.</p>
 <dl class="method">
 <dt id="WaveBlocksND.GaussHermiteQR.get_nodes">
 <tt class="descname">get_nodes</tt><big>(</big><big>)</big><a class="headerlink" href="#WaveBlocksND.GaussHermiteQR.get_nodes" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns the quadrature nodes <img class="math" src="../_images/math/6e8d7600cbbeb6cc9754abf60be6a1e5e8c1edc1.png" alt="\{\gamma_i\}_i"/>.</p>
+<dd><p>Returns the quadrature nodes <img class="math" src="../_images/math/72c82a512fdcf651b011831d045774d332782320.png" alt="\{\gamma_i\}_i"/>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">An array containing the quadrature nodes <img class="math" src="../_images/math/6e8d7600cbbeb6cc9754abf60be6a1e5e8c1edc1.png" alt="\{\gamma_i\}_i"/>.</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">An array containing the quadrature nodes <img class="math" src="../_images/math/72c82a512fdcf651b011831d045774d332782320.png" alt="\{\gamma_i\}_i"/>.</td>
 </tr>
 </tbody>
 </table>
@@ -118,8 +120,8 @@ never contains any data.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The number of quadrature nodes denoted by <img class="math" src="../_images/math/d85b78a13008f6b5839107bb086798bf5b6a37ae.png" alt="|\Gamma|"/> that are
-part of this quadrature rule <img class="math" src="../_images/math/e9e5a10197befc592d996ab016d50c11ce2384c4.png" alt="\Gamma = (\gamma, \omega)"/>.</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The number of quadrature nodes denoted by <img class="math" src="../_images/math/0de5e5343aaf9413370055e0b0230e62d881120a.png" alt="|\Gamma|"/> that are
+part of this quadrature rule <img class="math" src="../_images/math/c3a2bdedae50edc770051c6fac45ce16555507f7.png" alt="\Gamma = (\gamma, \omega)"/>.</td>
 </tr>
 </tbody>
 </table>
@@ -128,12 +130,12 @@ part of this quadrature rule <img class="math" src="../_images/math/e9e5a10197be
 <dl class="method">
 <dt id="WaveBlocksND.GaussHermiteQR.get_weights">
 <tt class="descname">get_weights</tt><big>(</big><big>)</big><a class="headerlink" href="#WaveBlocksND.GaussHermiteQR.get_weights" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns the quadrature weights <img class="math" src="../_images/math/92c31058dda53919e52954724ff370cd42cce430.png" alt="\{\omega_i\}_i"/>.</p>
+<dd><p>Returns the quadrature weights <img class="math" src="../_images/math/e9a1cc441abfee5dc1f5b96317326e843502d221.png" alt="\{\omega_i\}_i"/>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">An array containing the quadrature weights <img class="math" src="../_images/math/92c31058dda53919e52954724ff370cd42cce430.png" alt="\{\omega_i\}_i"/>.</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">An array containing the quadrature weights <img class="math" src="../_images/math/e9a1cc441abfee5dc1f5b96317326e843502d221.png" alt="\{\omega_i\}_i"/>.</td>
 </tr>
 </tbody>
 </table>
@@ -208,7 +210,7 @@ part of this quadrature rule <img class="math" src="../_images/math/e9e5a10197be
     </div>
     <div class="footer">
         &copy; Copyright 2015, R. Bourquin.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
     </div>
   </body>
 </html>
