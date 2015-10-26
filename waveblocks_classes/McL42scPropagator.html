@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>SemiclassicalPropagator &mdash; WaveBlocksND devel documentation</title>
+    <title>McL42scPropagator &mdash; WaveBlocksND devel documentation</title>
     
     <link rel="stylesheet" href="../_static/default.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -24,8 +24,8 @@
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
     <link rel="top" title="WaveBlocksND devel documentation" href="../index.html" />
-    <link rel="next" title="McL42scPropagator" href="McL42scPropagator.html" />
-    <link rel="prev" title="MagnusPropagator" href="MagnusPropagator.html" /> 
+    <link rel="next" title="McL84scPropagator" href="McL84scPropagator.html" />
+    <link rel="prev" title="SemiclassicalPropagator" href="SemiclassicalPropagator.html" /> 
   </head>
   <body>
     <div class="related">
@@ -38,10 +38,10 @@
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="McL42scPropagator.html" title="McL42scPropagator"
+          <a href="McL84scPropagator.html" title="McL84scPropagator"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="MagnusPropagator.html" title="MagnusPropagator"
+          <a href="SemiclassicalPropagator.html" title="SemiclassicalPropagator"
              accesskey="P">previous</a> |</li>
         <li><a href="../index.html">WaveBlocksND devel documentation</a> &raquo;</li> 
       </ul>
@@ -52,10 +52,10 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <div class="section" id="semiclassicalpropagator">
-<h1>SemiclassicalPropagator<a class="headerlink" href="#semiclassicalpropagator" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="mcl42scpropagator">
+<h1>McL42scPropagator<a class="headerlink" href="#mcl42scpropagator" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="module-WaveBlocksND">
-<span id="about-the-semiclassicalpropagator-class"></span><h2>About the <tt class="docutils literal"><span class="pre">SemiclassicalPropagator</span></tt> class<a class="headerlink" href="#module-WaveBlocksND" title="Permalink to this headline">¶</a></h2>
+<span id="about-the-mcl42scpropagator-class"></span><h2>About the <tt class="docutils literal"><span class="pre">McL42scPropagator</span></tt> class<a class="headerlink" href="#module-WaveBlocksND" title="Permalink to this headline">¶</a></h2>
 <p>The WaveBlocks Project</p>
 <p>&#64;author: R. Bourquin
 &#64;copyright: Copyright (C) 2010, 2011, 2012, 2013, 2014, 2015 R. Bourquin
@@ -64,24 +64,25 @@
 <div class="section" id="inheritance-diagram">
 <h2>Inheritance diagram<a class="headerlink" href="#inheritance-diagram" title="Permalink to this headline">¶</a></h2>
 <p class="graphviz">
-<img src="../_images/inheritance-932018ad9bb0a7478cdb9ad661fff81c0d525337.png" alt="Inheritance diagram of SemiclassicalPropagator" usemap="#inheritancee78b1128a9" class="inheritance"/>
-<map id="inheritancee78b1128a9" name="inheritancee78b1128a9">
-<area shape="rect" id="node1" title="Propagators can numerically simulate the time evolution of quantum states" alt="" coords="61,5,228,31"/>
-<area shape="rect" id="node2" title="This class can numerically propagate given initial values :math:`\Psi` in" alt="" coords="332,31,671,56"/>
+<img src="../_images/inheritance-00794731a428b44879548caa309091ce311aa081.png" alt="Inheritance diagram of McL42scPropagator" usemap="#inheritance9bb90b24fa" class="inheritance"/>
+<map id="inheritance9bb90b24fa" name="inheritance9bb90b24fa">
+<area shape="rect" id="node1" title="This class can numerically propagate given initial values :math:`\Psi` in" alt="" coords="457,31,735,56"/>
+<area shape="rect" id="node2" title="Propagators can numerically simulate the time evolution of quantum states" alt="" coords="124,5,291,31"/>
 </map>
 </p>
 </div>
 <div class="section" id="class-documentation">
 <h2>Class documentation<a class="headerlink" href="#class-documentation" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
-<dt id="WaveBlocksND.SemiclassicalPropagator">
-<em class="property">class </em><tt class="descclassname">WaveBlocksND.</tt><tt class="descname">SemiclassicalPropagator</tt><big>(</big><em>parameters</em>, <em>potential</em>, <em>packets=[]</em><big>)</big><a class="headerlink" href="#WaveBlocksND.SemiclassicalPropagator" title="Permalink to this definition">¶</a></dt>
+<dt id="WaveBlocksND.McL42scPropagator">
+<em class="property">class </em><tt class="descclassname">WaveBlocksND.</tt><tt class="descname">McL42scPropagator</tt><big>(</big><em>parameters</em>, <em>potential</em>, <em>packets=[]</em><big>)</big><a class="headerlink" href="#WaveBlocksND.McL42scPropagator" title="Permalink to this definition">¶</a></dt>
 <dd><p>This class can numerically propagate given initial values <img class="math" src="../_images/math/de6f6ec55da5bff04bdf591d5bb35136eb51b579.png" alt="\Psi"/> in
 a potential <img class="math" src="../_images/math/e0ec0629769ae6a9454173e71aa1df11f9209631.png" alt="V(x)"/>. The propagation is done for a given set of homogeneous
-Hagedorn wavepackets neglecting interaction.</p>
+Hagedorn wavepackets neglecting interaction. It uses the McL42 and the idea of the
+semiclassical splitting</p>
 <dl class="method">
-<dt id="WaveBlocksND.SemiclassicalPropagator.add_wavepacket">
-<tt class="descname">add_wavepacket</tt><big>(</big><em>packet</em><big>)</big><a class="headerlink" href="#WaveBlocksND.SemiclassicalPropagator.add_wavepacket" title="Permalink to this definition">¶</a></dt>
+<dt id="WaveBlocksND.McL42scPropagator.add_wavepacket">
+<tt class="descname">add_wavepacket</tt><big>(</big><em>packet</em><big>)</big><a class="headerlink" href="#WaveBlocksND.McL42scPropagator.add_wavepacket" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add a new wavepacket <img class="math" src="../_images/math/de6f6ec55da5bff04bdf591d5bb35136eb51b579.png" alt="\Psi"/> to the list of propagated wavepackets.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -95,8 +96,8 @@ instance and <img class="math" src="../_images/math/f632c791f693410fc1bf07ad7cb0
 </dd></dl>
 
 <dl class="method">
-<dt id="WaveBlocksND.SemiclassicalPropagator.build">
-<tt class="descname">build</tt><big>(</big><em>method</em><big>)</big><a class="headerlink" href="#WaveBlocksND.SemiclassicalPropagator.build" title="Permalink to this definition">¶</a></dt>
+<dt id="WaveBlocksND.McL42scPropagator.build">
+<tt class="descname">build</tt><big>(</big><em>method</em><big>)</big><a class="headerlink" href="#WaveBlocksND.McL42scPropagator.build" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -109,10 +110,10 @@ instance and <img class="math" src="../_images/math/f632c791f693410fc1bf07ad7cb0
 </table>
 <table border="1" class="docutils">
 <colgroup>
-<col width="11%" />
-<col width="9%" />
-<col width="20%" />
-<col width="61%" />
+<col width="19%" />
+<col width="19%" />
+<col width="28%" />
+<col width="34%" />
 </colgroup>
 <thead valign="bottom">
 <tr class="row-odd"><th class="head">Method</th>
@@ -122,113 +123,46 @@ instance and <img class="math" src="../_images/math/f632c791f693410fc1bf07ad7cb0
 </tr>
 </thead>
 <tbody valign="top">
-<tr class="row-even"><td>LT</td>
-<td>1</td>
-<td>Lie/Trotter</td>
-<td><a class="footnote-reference" href="#id20" id="id1">[1]</a>, <a class="footnote-reference" href="#id22" id="id2">[3]</a> page 42, equation 5.2</td>
+<tr class="row-even"><td>L42</td>
+<td>(4,2)</td>
+<td>McLachlan</td>
+<td><a class="footnote-reference" href="#id6" id="id1">[1]</a> page 6</td>
 </tr>
-<tr class="row-odd"><td>S2</td>
-<td>2</td>
-<td>Strang</td>
-<td><a class="footnote-reference" href="#id21" id="id3">[2]</a>, <a class="footnote-reference" href="#id22" id="id4">[3]</a> page 42, equation 5.3</td>
+<tr class="row-odd"><td>L62</td>
+<td>(6,2)</td>
+<td>McLachlan</td>
+<td><a class="footnote-reference" href="#id6" id="id2">[1]</a> page 6</td>
 </tr>
-<tr class="row-even"><td>SS</td>
-<td>2</td>
-<td>Strang</td>
-<td><a class="footnote-reference" href="#id21" id="id5">[2]</a>, <a class="footnote-reference" href="#id22" id="id6">[3]</a> page 42, equation 5.3</td>
+<tr class="row-even"><td>L82</td>
+<td>(8,2)</td>
+<td>McLachlan</td>
+<td><a class="footnote-reference" href="#id6" id="id3">[1]</a> page 6</td>
 </tr>
-<tr class="row-odd"><td>PRKS6</td>
-<td>4</td>
-<td>Blanes/Moan</td>
-<td><a class="footnote-reference" href="#id23" id="id7">[4]</a> page 318, table 2, &#8216;S6&#8217;</td>
+<tr class="row-odd"><td>L102</td>
+<td>(10,2)</td>
+<td>McLachlan</td>
+<td><a class="footnote-reference" href="#id6" id="id4">[1]</a> page 6</td>
 </tr>
-<tr class="row-even"><td>BM42</td>
-<td>4</td>
-<td>Blanes/Moan</td>
-<td><a class="footnote-reference" href="#id23" id="id8">[4]</a> page 318, table 3, &#8216;SRKNb6&#8217;</td>
-</tr>
-<tr class="row-odd"><td>Y4</td>
-<td>4</td>
-<td>Yoshida</td>
-<td><a class="footnote-reference" href="#id24" id="id9">[5]</a>, <a class="footnote-reference" href="#id22" id="id10">[3]</a> page 40, equation 4.4</td>
-</tr>
-<tr class="row-even"><td>Y61</td>
-<td>6</td>
-<td>Yoshida</td>
-<td><a class="footnote-reference" href="#id24" id="id11">[5]</a>, <a class="footnote-reference" href="#id22" id="id12">[3]</a> page 144, equation 3.11</td>
-</tr>
-<tr class="row-odd"><td>BM63</td>
-<td>6</td>
-<td>Blanes/Moan</td>
-<td><a class="footnote-reference" href="#id23" id="id13">[4]</a> page 318, table 3, &#8216;SRKNa14&#8217;</td>
-</tr>
-<tr class="row-even"><td>KL6</td>
-<td>6</td>
-<td>Kahan/Li</td>
-<td><a class="footnote-reference" href="#id25" id="id14">[6]</a>, <a class="footnote-reference" href="#id22" id="id15">[3]</a> page 144, equation 3.12</td>
-</tr>
-<tr class="row-odd"><td>KL8</td>
-<td>8</td>
-<td>Kahan/Li</td>
-<td><a class="footnote-reference" href="#id25" id="id16">[6]</a>, <a class="footnote-reference" href="#id22" id="id17">[3]</a> page 145, equation 3.14</td>
-</tr>
-<tr class="row-even"><td>KL10</td>
-<td>10</td>
-<td>Kahan/Li</td>
-<td><a class="footnote-reference" href="#id25" id="id18">[6]</a>, <a class="footnote-reference" href="#id22" id="id19">[3]</a> page 146, equation 3.15</td>
+<tr class="row-even"><td>L84</td>
+<td>(8,4)</td>
+<td>McLachlan</td>
+<td><a class="footnote-reference" href="#id6" id="id5">[1]</a> page 8</td>
 </tr>
 </tbody>
 </table>
-<table class="docutils footnote" frame="void" id="id20" rules="none">
+<table class="docutils footnote" frame="void" id="id6" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>H.F. Trotter, &#8220;On the product of semi-groups of operators&#8221;,
-Proc. Am. Math. Soc.1O (1959) 545-551.</td></tr>
-</tbody>
-</table>
-<table class="docutils footnote" frame="void" id="id21" rules="none">
-<colgroup><col class="label" /><col /></colgroup>
-<tbody valign="top">
-<tr><td class="label">[2]</td><td><em>(<a class="fn-backref" href="#id3">1</a>, <a class="fn-backref" href="#id5">2</a>)</em> G. Strang, &#8220;On the construction and comparison of difference schemes&#8221;,
-SIAM J. Numer. Anal. 5 (1968) 506-517.</td></tr>
-</tbody>
-</table>
-<table class="docutils footnote" frame="void" id="id22" rules="none">
-<colgroup><col class="label" /><col /></colgroup>
-<tbody valign="top">
-<tr><td class="label">[3]</td><td><em>(<a class="fn-backref" href="#id2">1</a>, <a class="fn-backref" href="#id4">2</a>, <a class="fn-backref" href="#id6">3</a>, <a class="fn-backref" href="#id10">4</a>, <a class="fn-backref" href="#id12">5</a>, <a class="fn-backref" href="#id15">6</a>, <a class="fn-backref" href="#id17">7</a>, <a class="fn-backref" href="#id19">8</a>)</em> E. Hairer, C. Lubich, and G. Wanner, &#8220;Geometric Numerical Integration -
-Structure-Preserving Algorithms for Ordinary Differential Equations&#8221;,
-Springer-Verlag, New York, 2002 (Corrected second printing 2004).</td></tr>
-</tbody>
-</table>
-<table class="docutils footnote" frame="void" id="id23" rules="none">
-<colgroup><col class="label" /><col /></colgroup>
-<tbody valign="top">
-<tr><td class="label">[4]</td><td><em>(<a class="fn-backref" href="#id7">1</a>, <a class="fn-backref" href="#id8">2</a>, <a class="fn-backref" href="#id13">3</a>)</em> S. Blanes and P.C. Moan, &#8220;Practical Symplectic Partitioned
-Runge-Kutta and Runge-Kutta-Nystrom Methods&#8221;, J. Computational and
-Applied Mathematics, Volume 142, Issue 2, (2002) 313-330.</td></tr>
-</tbody>
-</table>
-<table class="docutils footnote" frame="void" id="id24" rules="none">
-<colgroup><col class="label" /><col /></colgroup>
-<tbody valign="top">
-<tr><td class="label">[5]</td><td><em>(<a class="fn-backref" href="#id9">1</a>, <a class="fn-backref" href="#id11">2</a>)</em> H. Yoshida, &#8220;Construction of higher order symplectic integrators&#8221;,
-Phys. Lett. A 150 (1990) 262-268.</td></tr>
-</tbody>
-</table>
-<table class="docutils footnote" frame="void" id="id25" rules="none">
-<colgroup><col class="label" /><col /></colgroup>
-<tbody valign="top">
-<tr><td class="label">[6]</td><td><em>(<a class="fn-backref" href="#id14">1</a>, <a class="fn-backref" href="#id16">2</a>, <a class="fn-backref" href="#id18">3</a>)</em> W. Kahan and  R.-c. Li, &#8220;Composition constants for raising the orders
-of unconventional schemes for ordinary differential equations&#8221;,
-Math. Comput. 66 (1997) 1089-1099.</td></tr>
+<tr><td class="label">[1]</td><td><em>(<a class="fn-backref" href="#id1">1</a>, <a class="fn-backref" href="#id2">2</a>, <a class="fn-backref" href="#id3">3</a>, <a class="fn-backref" href="#id4">4</a>, <a class="fn-backref" href="#id5">5</a>)</em> R.I. McLachlan, &#8220;Composition methods in the presence of small parameters&#8221;,
+BIT Numerical Mathematics, Volume 35, Issue 2, (1995) 258-268.
+There is also a 2003 version which was used for the implementation.</td></tr>
 </tbody>
 </table>
 </dd></dl>
 
 <dl class="method">
-<dt id="WaveBlocksND.SemiclassicalPropagator.get_number_components">
-<tt class="descname">get_number_components</tt><big>(</big><big>)</big><a class="headerlink" href="#WaveBlocksND.SemiclassicalPropagator.get_number_components" title="Permalink to this definition">¶</a></dt>
+<dt id="WaveBlocksND.McL42scPropagator.get_number_components">
+<tt class="descname">get_number_components</tt><big>(</big><big>)</big><a class="headerlink" href="#WaveBlocksND.McL42scPropagator.get_number_components" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -240,8 +174,8 @@ Math. Comput. 66 (1997) 1089-1099.</td></tr>
 </dd></dl>
 
 <dl class="method">
-<dt id="WaveBlocksND.SemiclassicalPropagator.get_potential">
-<tt class="descname">get_potential</tt><big>(</big><big>)</big><a class="headerlink" href="#WaveBlocksND.SemiclassicalPropagator.get_potential" title="Permalink to this definition">¶</a></dt>
+<dt id="WaveBlocksND.McL42scPropagator.get_potential">
+<tt class="descname">get_potential</tt><big>(</big><big>)</big><a class="headerlink" href="#WaveBlocksND.McL42scPropagator.get_potential" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the potential <img class="math" src="../_images/math/e0ec0629769ae6a9454173e71aa1df11f9209631.png" alt="V(x)"/> used for time propagation.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -254,10 +188,10 @@ Math. Comput. 66 (1997) 1089-1099.</td></tr>
 </dd></dl>
 
 <dl class="method">
-<dt id="WaveBlocksND.SemiclassicalPropagator.get_wavepackets">
-<tt class="descname">get_wavepackets</tt><big>(</big><em>packet=None</em><big>)</big><a class="headerlink" href="#WaveBlocksND.SemiclassicalPropagator.get_wavepackets" title="Permalink to this definition">¶</a></dt>
+<dt id="WaveBlocksND.McL42scPropagator.get_wavepackets">
+<tt class="descname">get_wavepackets</tt><big>(</big><em>packet=None</em><big>)</big><a class="headerlink" href="#WaveBlocksND.McL42scPropagator.get_wavepackets" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the wavepackets <img class="math" src="../_images/math/f208d849d195bf8aa2dcdee96350b0e486b7d291.png" alt="\{\Psi_i\}_i"/> that take part in the time propagation by the
-current <a class="reference internal" href="#WaveBlocksND.SemiclassicalPropagator" title="WaveBlocksND.SemiclassicalPropagator"><tt class="xref py py-class docutils literal"><span class="pre">SemiclassicalPropagator</span></tt></a> instance.</p>
+current <a class="reference internal" href="SemiclassicalPropagator.html#WaveBlocksND.SemiclassicalPropagator" title="WaveBlocksND.SemiclassicalPropagator"><tt class="xref py py-class docutils literal"><span class="pre">SemiclassicalPropagator</span></tt></a> instance.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -272,22 +206,22 @@ to be returned. If set to <tt class="docutils literal"><span class="pre">None</s
 </dd></dl>
 
 <dl class="method">
-<dt id="WaveBlocksND.SemiclassicalPropagator.intsplit">
-<tt class="descname">intsplit</tt><big>(</big><em>psi1</em>, <em>psi2</em>, <em>a</em>, <em>b</em>, <em>tspan</em>, <em>N</em>, <em>args1=[]</em>, <em>args2=[]</em><big>)</big><a class="headerlink" href="#WaveBlocksND.SemiclassicalPropagator.intsplit" title="Permalink to this definition">¶</a></dt>
+<dt id="WaveBlocksND.McL42scPropagator.intsplit">
+<tt class="descname">intsplit</tt><big>(</big><em>psia</em>, <em>psib</em>, <em>a</em>, <em>b</em>, <em>tspan</em>, <em>N</em>, <em>argsa=[]</em>, <em>argsb=[]</em><big>)</big><a class="headerlink" href="#WaveBlocksND.McL42scPropagator.intsplit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute a single, full propagation step by operator splitting.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>psi1</strong> &#8211; First evolution operator <img class="math" src="../_images/math/87de8ae280ea6763121c43c70585fa4a49936c7c.png" alt="\Psi_a"/></li>
-<li><strong>psi2</strong> &#8211; Second evolution operator <img class="math" src="../_images/math/0c681241c2c31f6549ddb7c25f0c13848cb68c6c.png" alt="\Psi_b"/></li>
+<li><strong>psia</strong> &#8211; First evolution operator <img class="math" src="../_images/math/87de8ae280ea6763121c43c70585fa4a49936c7c.png" alt="\Psi_a"/></li>
+<li><strong>psib</strong> &#8211; Second evolution operator <img class="math" src="../_images/math/0c681241c2c31f6549ddb7c25f0c13848cb68c6c.png" alt="\Psi_b"/></li>
 <li><strong>a</strong> &#8211; Parameters for evolution with <img class="math" src="../_images/math/87de8ae280ea6763121c43c70585fa4a49936c7c.png" alt="\Psi_a"/></li>
 <li><strong>b</strong> &#8211; Parameters for evolution with <img class="math" src="../_images/math/0c681241c2c31f6549ddb7c25f0c13848cb68c6c.png" alt="\Psi_b"/></li>
 <li><strong>tspan</strong> &#8211; Timespan <img class="math" src="../_images/math/ef9270877405055756d345facd044e4ab297f858.png" alt="t"/> of a single, full splitting step</li>
 <li><strong>N</strong> &#8211; Number of substeps to perform</li>
-<li><strong>args1</strong> &#8211; Additional optional arguments of <img class="math" src="../_images/math/87de8ae280ea6763121c43c70585fa4a49936c7c.png" alt="\Psi_a"/></li>
-<li><strong>args2</strong> &#8211; Additional optional arguments of <img class="math" src="../_images/math/0c681241c2c31f6549ddb7c25f0c13848cb68c6c.png" alt="\Psi_b"/></li>
+<li><strong>argsa</strong> &#8211; Additional optional arguments of <img class="math" src="../_images/math/87de8ae280ea6763121c43c70585fa4a49936c7c.png" alt="\Psi_a"/></li>
+<li><strong>argsb</strong> &#8211; Additional optional arguments of <img class="math" src="../_images/math/0c681241c2c31f6549ddb7c25f0c13848cb68c6c.png" alt="\Psi_b"/></li>
 </ul>
 </td>
 </tr>
@@ -295,29 +229,14 @@ to be returned. If set to <tt class="docutils literal"><span class="pre">None</s
 </table>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">The values for <tt class="docutils literal"><span class="pre">args1</span></tt> and <tt class="docutils literal"><span class="pre">args2</span></tt> have to be
-<a href="#id26"><span class="problematic" id="id27">``</span></a>list``s even in case of single items.</p>
+<p class="last">The values for <tt class="docutils literal"><span class="pre">argsa</span></tt> and <tt class="docutils literal"><span class="pre">argsb</span></tt> have to be
+<a href="#id7"><span class="problematic" id="id8">``</span></a>list``s even in case of single items.</p>
 </div>
 </dd></dl>
 
 <dl class="method">
-<dt id="WaveBlocksND.SemiclassicalPropagator.order">
-<tt class="descname">order</tt><big>(</big><em>method</em><big>)</big><a class="headerlink" href="#WaveBlocksND.SemiclassicalPropagator.order" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>method</strong> &#8211; A string specifying the method for time integration.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The order of this method.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="WaveBlocksND.SemiclassicalPropagator.post_propagate">
-<tt class="descname">post_propagate</tt><big>(</big><big>)</big><a class="headerlink" href="#WaveBlocksND.SemiclassicalPropagator.post_propagate" title="Permalink to this definition">¶</a></dt>
+<dt id="WaveBlocksND.McL42scPropagator.post_propagate">
+<tt class="descname">post_propagate</tt><big>(</big><big>)</big><a class="headerlink" href="#WaveBlocksND.McL42scPropagator.post_propagate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Given the wavefunction <img class="math" src="../_images/math/1a52481ac36eb889dcbbdcc0783ba2a755ba3547.png" alt="\psi"/> at final time <img class="math" src="../_images/math/6d42c88506b8da39a2a23653aecbfb7c29728063.png" alt="T"/>,
 perform some computations exactly once after running the ordinary
 time propagation and before each time simulation data will be saved.</p>
@@ -326,8 +245,8 @@ nothing and returns.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="WaveBlocksND.SemiclassicalPropagator.pre_propagate">
-<tt class="descname">pre_propagate</tt><big>(</big><big>)</big><a class="headerlink" href="#WaveBlocksND.SemiclassicalPropagator.pre_propagate" title="Permalink to this definition">¶</a></dt>
+<dt id="WaveBlocksND.McL42scPropagator.pre_propagate">
+<tt class="descname">pre_propagate</tt><big>(</big><big>)</big><a class="headerlink" href="#WaveBlocksND.McL42scPropagator.pre_propagate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Given the wavefunction <img class="math" src="../_images/math/1a52481ac36eb889dcbbdcc0783ba2a755ba3547.png" alt="\psi"/> at initial time <img class="math" src="../_images/math/fb761c2e199ad45ccf14767f48b88169479d840f.png" alt="t_0"/>,
 perform some computations exactly once before running the ordinary
 time propagation and after each time simulation data was saved.</p>
@@ -336,18 +255,17 @@ nothing and returns.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="WaveBlocksND.SemiclassicalPropagator.propagate">
-<tt class="descname">propagate</tt><big>(</big><big>)</big><a class="headerlink" href="#WaveBlocksND.SemiclassicalPropagator.propagate" title="Permalink to this definition">¶</a></dt>
+<dt id="WaveBlocksND.McL42scPropagator.propagate">
+<tt class="descname">propagate</tt><big>(</big><big>)</big><a class="headerlink" href="#WaveBlocksND.McL42scPropagator.propagate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Given a wavepacket <img class="math" src="../_images/math/de6f6ec55da5bff04bdf591d5bb35136eb51b579.png" alt="\Psi"/> at time <img class="math" src="../_images/math/ef9270877405055756d345facd044e4ab297f858.png" alt="t"/> compute the propagated
 wavepacket at time <img class="math" src="../_images/math/248f20efaf95b4d4c73e23e7cb9ece1b73e10098.png" alt="t + \tau"/>. We perform exactly one timestep of size
 <img class="math" src="../_images/math/d9e99c35d3632bb156b7aca0e93cd78a148a10e8.png" alt="\tau"/> here. This propagation is done for all packets in the list
-<img class="math" src="../_images/math/f208d849d195bf8aa2dcdee96350b0e486b7d291.png" alt="\{\Psi_i\}_i"/> and neglects any interaction between two packets.
-The semiclassical propagation scheme is used.</p>
+<img class="math" src="../_images/math/f208d849d195bf8aa2dcdee96350b0e486b7d291.png" alt="\{\Psi_i\}_i"/> and neglects any interaction between two packets.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="WaveBlocksND.SemiclassicalPropagator.set_wavepackets">
-<tt class="descname">set_wavepackets</tt><big>(</big><em>packetlist</em><big>)</big><a class="headerlink" href="#WaveBlocksND.SemiclassicalPropagator.set_wavepackets" title="Permalink to this definition">¶</a></dt>
+<dt id="WaveBlocksND.McL42scPropagator.set_wavepackets">
+<tt class="descname">set_wavepackets</tt><big>(</big><em>packetlist</em><big>)</big><a class="headerlink" href="#WaveBlocksND.McL42scPropagator.set_wavepackets" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the list <img class="math" src="../_images/math/f208d849d195bf8aa2dcdee96350b0e486b7d291.png" alt="\{\Psi_i\}_i"/> of wavepackets that the propagator will propagate.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -373,8 +291,8 @@ leading components <img class="math" src="../_images/math/cc6ea38e465ef83538fbaf
         <div class="sphinxsidebarwrapper">
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">SemiclassicalPropagator</a><ul>
-<li><a class="reference internal" href="#module-WaveBlocksND">About the <tt class="docutils literal"><span class="pre">SemiclassicalPropagator</span></tt> class</a></li>
+<li><a class="reference internal" href="#">McL42scPropagator</a><ul>
+<li><a class="reference internal" href="#module-WaveBlocksND">About the <tt class="docutils literal"><span class="pre">McL42scPropagator</span></tt> class</a></li>
 <li><a class="reference internal" href="#inheritance-diagram">Inheritance diagram</a></li>
 <li><a class="reference internal" href="#class-documentation">Class documentation</a></li>
 </ul>
@@ -382,14 +300,14 @@ leading components <img class="math" src="../_images/math/cc6ea38e465ef83538fbaf
 </ul>
 
   <h4>Previous topic</h4>
-  <p class="topless"><a href="MagnusPropagator.html"
-                        title="previous chapter">MagnusPropagator</a></p>
+  <p class="topless"><a href="SemiclassicalPropagator.html"
+                        title="previous chapter">SemiclassicalPropagator</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="McL42scPropagator.html"
-                        title="next chapter">McL42scPropagator</a></p>
+  <p class="topless"><a href="McL84scPropagator.html"
+                        title="next chapter">McL84scPropagator</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
-    <li><a href="../_sources/waveblocks_classes/SemiclassicalPropagator.txt"
+    <li><a href="../_sources/waveblocks_classes/McL42scPropagator.txt"
            rel="nofollow">Show Source</a></li>
   </ul>
 <div id="searchbox" style="display: none">
@@ -419,10 +337,10 @@ leading components <img class="math" src="../_images/math/cc6ea38e465ef83538fbaf
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="McL42scPropagator.html" title="McL42scPropagator"
+          <a href="McL84scPropagator.html" title="McL84scPropagator"
              >next</a> |</li>
         <li class="right" >
-          <a href="MagnusPropagator.html" title="MagnusPropagator"
+          <a href="SemiclassicalPropagator.html" title="SemiclassicalPropagator"
              >previous</a> |</li>
         <li><a href="../index.html">WaveBlocksND devel documentation</a> &raquo;</li> 
       </ul>
