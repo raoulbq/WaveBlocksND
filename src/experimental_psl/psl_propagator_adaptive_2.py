@@ -665,7 +665,7 @@ close(fig)
 
 # Plot Observables
 timegrid = IOM.load_norm_timegrid()
-time = TM.compute_time(timegrid)
+time = array(map(TM.compute_time, timegrid))
 norms = squeeze(IOM.load_norm())
 
 figure()
@@ -685,7 +685,7 @@ ylabel(r"$||\Psi(0)| - |\Psi(t)||$")
 savefig("norms_drift_log.png")
 
 timegridek, timegridep = IOM.load_energy_timegrid()
-time = TM.compute_time(timegridek)
+time = array(map(TM.compute_time, timegridek))
 ekin, epot = map(squeeze, IOM.load_energy())
 
 figure()
