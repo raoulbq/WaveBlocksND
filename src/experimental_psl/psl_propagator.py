@@ -1,8 +1,9 @@
 from numpy import *
+from numpy.linalg import eig
 from scipy.linalg import svd, pinv
 
-from matplotlib.pyplot import *
 import matplotlib.cm as cm
+from matplotlib.pyplot import *
 
 from WaveBlocksND import *
 from WaveBlocksND.Plot import plotcf
@@ -438,6 +439,32 @@ matshow(log(abs(ApinvTHETA)), cmap=cm.viridis)
 colorbar()
 xlabel(r'$\log |A^{+}\Theta|$')
 savefig("mpi_log.pdf")
+close(fig)
+
+ew, ev = eig(ApinvTHETA)
+ewgood = ew[abs(abs(ew) - 1.0) < 1e-2]
+ewbad = ew[abs(abs(ew) - 1.0) >= 1e-2]
+ewabs = abs(ew)
+ewabs.sort()
+
+fig = figure(figsize=(6,6))
+plot(real(ewbad), imag(ewbad), 'or')
+plot(real(ewgood), imag(ewgood), 'ob')
+grid(True)
+xlim(-1.2, 1.2)
+ylim(-1.2, 1.2)
+xlabel(r"$\Re \lambda_k$")
+ylabel(r"$\Im \lambda_k$")
+savefig("ew_at.pdf")
+close(fig)
+
+fig = figure()
+plot(ewabs[::-1], 'o')
+xlim(0, K-1)
+grid(True)
+xlabel(r"$k$")
+ylabel(r"$|\lambda_k|$")
+savefig("ewabs_at.pdf")
 close(fig)
 
 # ------------------------------------------------------------------------
