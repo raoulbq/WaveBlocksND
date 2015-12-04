@@ -86,12 +86,12 @@ E0 = Ekin + Epot
 latdist = latdistratio * eps * sqrt(pi)
 
 Nq = int(qm/latdist) + 1
-qu = linspace(-qm, qm, 2*Nq)
+qu = linspace(-qm, qm, 2*Nq+1)
 
 Np = int(pm/latdist) + 1
-pu = linspace(-pm, pm, 2*Np)
+pu = linspace(-pm, pm, 2*Np+1)
 
-x, y = ogrid[:2*Nq,:2*Np]
+x, y = ogrid[:2*Nq+1,:2*Np+1]
 
 Z = V.evaluate_at(qu[x], entry=(0,0)).T + 0.5*pu[y]**2
 qq, pp = where(abs(Z - E0) < delta)
