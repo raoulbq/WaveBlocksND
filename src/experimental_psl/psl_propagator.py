@@ -86,10 +86,10 @@ E0 = Ekin + Epot
 
 latdist = latdistratio * eps * sqrt(pi)
 
-Nq = int(qm/latdist) + 1
+Nq = int(qm/latdist)
 qu = linspace(-qm, qm, 2*Nq+1)
 
-Np = int(pm/latdist) + 1
+Np = int(pm/latdist)
 pu = linspace(-pm, pm, 2*Np+1)
 
 x, y = ogrid[:2*Nq+1,:2*Np+1]
