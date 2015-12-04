@@ -4,6 +4,7 @@ from scipy.linalg import svd, pinv
 
 import matplotlib.cm as cm
 from matplotlib.pyplot import *
+from matplotlib.patches import Circle, Ellipse
 
 from WaveBlocksND import *
 from WaveBlocksND.Plot import plotcf
@@ -102,10 +103,12 @@ fig = figure()
 ax = fig.gca()
 ax.plot(qs, ps, ".")
 for q, p in zip(qs, ps):
-    circle = Circle((q,p), eps, color="b", fill=False)
-    ax.add_artist(circle)
-circle0 = Circle((q0,p0), eps, color="r", fill=False)
-ax.add_artist(circle0)
+    #circle = Circle((q,p), abs(eps*sqrt(1.0/1.0j)), color="b", fill=False)
+    ellipse = Ellipse((q,p), 2*eps*abs(sqrt(1.0)), 2*eps*abs(sqrt(1.0j)), color="b", fill=False)
+    ax.add_artist(ellipse)
+#circle0 = Circle((q0,p0), abs(eps*sqrt(Q0/P0)), color="r", fill=False)
+ellipse0 = Ellipse((q0,p0), 2*eps*abs(sqrt(Q0)), 2*eps*abs(sqrt(P0)), color="r", fill=False)
+ax.add_artist(ellipse0)
 grid(True)
 ax.axis('equal')
 ax.set_xlabel(r"$q$")
@@ -170,6 +173,20 @@ for i in xrange(1, nsteps+1):
     prop.propagate()
 
 #IOM.save_lincombwp_wavepackets(LC1.get_wavepackets(), timestep=1)
+
+fig = figure()
+ax = fig.gca()
+for psi in LC1.get_wavepackets():
+    qk, pk, Qk, Pk = map(squeeze, psi.get_parameters(key=("q","p","Q","P"), component=0))
+    ax.plot(qk, pk, "ob")
+    ellipse = Ellipse((real(qk),real(pk)), 2*eps*abs(sqrt(Qk)), 2*eps*abs(sqrt(Pk)), color="b", fill=False)
+    ax.add_artist(ellipse)
+grid(True)
+ax.axis('equal')
+ax.set_xlabel(r"$q$")
+ax.set_ylabel(r"$p$")
+savefig("phasespace_propagated.png")
+close(fig)
 
 # ------------------------------------------------------------------------
 # Compute the overlaping matrix of the generating system
